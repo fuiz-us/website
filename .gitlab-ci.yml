@@ -1,6 +1,8 @@
 image: node:latest
 pages:
   stage: deploy
+  variables:
+    NODE_ENV: "production"
   script:
     - npm ci
     - npm run build

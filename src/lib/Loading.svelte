@@ -1,0 +1,21 @@
+<script>
+	import LoadingCircle from './LoadingCircle.svelte';
+	import NiceBackground from './NiceBackground.svelte';
+</script>
+
+<div style:height="100%" style:display="flex" style:flex-direction="column">
+	<div style:flex="1">
+		<NiceBackground>
+			<div
+				style:height="100%"
+				style:display="flex"
+				style:justify-content="center"
+				style:align-items="center"
+			>
+				<div style:height="40px" style:width="40px">
+					<LoadingCircle borderWidth={8} color={'#00000040'} />
+				</div>
+			</div>
+		</NiceBackground>
+	</div>
+</div>

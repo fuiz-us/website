@@ -18,7 +18,9 @@ const config = {
 			precompress: false,
 			strict: true
 		})
-	}
+	},
+
+	publicPath: process.env.NODE_ENV === 'production' ? '/fuiz-website/' : '/'
 };
 
 export default config;

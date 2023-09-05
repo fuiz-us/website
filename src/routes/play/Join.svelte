@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import FancyButton from '$lib/FancyButton.svelte';
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
@@ -7,17 +7,25 @@
 	let button = 'Join';
 	let loading = false;
 	let disabled = false;
-	let placeholder = 'Game ID';
+	let placeholder = 'Game Code';
+	let gameCode = '';
 
-	function submit() {
+	async function submit() {
 		disabled = true;
 		loading = true;
 		button = 'Loading';
+
+		location.replace('/play/' + gameCode);
 	}
 </script>
 
 <NiceBackground>
-	<div class="centered" style:font-size="x-large">
+	<div
+		style:height="100%"
+		style:display="flex"
+		style:justify-content="center"
+		style:font-size="x-large"
+	>
 		<form on:submit|preventDefault={submit}>
 			<img
 				src={logo}
@@ -28,7 +36,7 @@
 				style:display="block"
 				style:margin="10px 0 40px"
 			/>
-			<input type="text" {placeholder} required {disabled} />
+			<input type="text" {placeholder} required {disabled} bind:value={gameCode} />
 			<div style:margin="5px 0" style:width="100%">
 				<FancyButton bind:disabled>
 					<div
@@ -51,12 +59,6 @@
 </NiceBackground>
 
 <style>
-	.centered {
-		display: flex;
-		justify-content: center;
-		height: 100%;
-	}
-
 	form {
 		flex: 1;
 		display: flex;
@@ -76,9 +78,10 @@
 		box-sizing: border-box;
 		font: inherit;
 		margin: 5px 0;
+		box-sizing: border-box;
 		text-align: center;
 		padding: 6.5px 5px;
 		font-weight: bold;
-		text-transform: uppercase;
+		resize: none;
 	}
 </style>

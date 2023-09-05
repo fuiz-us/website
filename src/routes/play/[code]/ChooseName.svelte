@@ -1,23 +1,44 @@
-<script>
+<script lang="ts">
+	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import logo from '$lib/assets/logo.svg';
+	import { createEventDispatcher } from 'svelte';
 
-	let button = 'Join';
+	let button = "I'm Ready!";
 	let loading = false;
 	let disabled = false;
-	let placeholder = 'Game ID';
+	let placeholder = 'Nickname';
+	export let errorMessage = '';
+	let name = '';
 
-	function submit() {
+	const dispatch = createEventDispatcher<{
+		setName: string;
+	}>();
+
+	export function reset() {
+		disabled = false;
+		loading = false;
+		button = "I'm Ready!";
+	}
+
+	async function submit() {
 		disabled = true;
 		loading = true;
 		button = 'Loading';
+
+		dispatch('setName', name);
 	}
 </script>
 
 <NiceBackground>
-	<div class="centered" style:font-size="x-large">
+	<div
+		style:height="100%"
+		style:display="flex"
+		style:justify-content="center"
+		style:font-size="x-large"
+	>
 		<form on:submit|preventDefault={submit}>
 			<img
 				src={logo}
@@ -28,7 +49,8 @@
 				style:display="block"
 				style:margin="10px 0 40px"
 			/>
-			<input type="text" {placeholder} required {disabled} />
+			<ErrorMessage {errorMessage} />
+			<input type="text" {placeholder} required {disabled} bind:value={name} />
 			<div style:margin="5px 0" style:width="100%">
 				<FancyButton bind:disabled>
 					<div
@@ -51,12 +73,6 @@
 </NiceBackground>
 
 <style>
-	.centered {
-		display: flex;
-		justify-content: center;
-		height: 100%;
-	}
-
 	form {
 		flex: 1;
 		display: flex;
@@ -76,9 +92,10 @@
 		box-sizing: border-box;
 		font: inherit;
 		margin: 5px 0;
+		box-sizing: border-box;
 		text-align: center;
 		padding: 6.5px 5px;
 		font-weight: bold;
-		text-transform: uppercase;
+		resize: none;
 	}
 </style>

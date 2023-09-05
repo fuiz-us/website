@@ -28,8 +28,10 @@
 
 	let nameChooser: ChooseName;
 
+	const code = $page.url.searchParams.get('code') || 'FOOBAR';
+
 	onMount(() => {
-		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + $page.params.code);
+		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code);
 
 		// // Listen for messages
 		socket.addEventListener('message', (event) => {
@@ -118,7 +120,7 @@
 		<WaitingOthers {name} {score} />
 	{:else if 'Game' in msg}
 		{#if 'WaitingScreen' in msg.Game}
-			<WaitingMobile {name} gameCode={$page.params.code} />
+			<WaitingMobile {name} gameCode={code} />
 		{/if}
 	{:else if 'MultipleChoice' in msg}
 		{#if 'QuestionAnnouncment' in msg.MultipleChoice}

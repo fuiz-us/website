@@ -20,8 +20,10 @@
 		timer = Math.max(0, timer - 1000);
 	}, 1000);
 
+	const code = $page.url.searchParams.get('code') || 'FOOBAR';
+
 	onMount(() => {
-		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + $page.params.code);
+		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code);
 
 		// Listen for messages
 		socket.addEventListener('message', (event) => {
@@ -87,20 +89,20 @@
 
 {#if msg !== undefined}
 	{#if 'Game' in msg}
-		<Waiting on:next={next} code={$page.params.code} players={msg.Game.WaitingScreen} />
+		<Waiting on:next={next} {code} players={msg.Game.WaitingScreen} />
 	{:else if 'MultipleChoice' in msg}
 		{#if 'QuestionAnnouncment' in msg.MultipleChoice}
 			<Question
 				on:next={next}
 				questionIndex={msg.MultipleChoice.QuestionAnnouncment.index}
 				questionTotalCount={msg.MultipleChoice.QuestionAnnouncment.count}
-				gameId={$page.params.code}
+				gameId={code}
 				questionText={msg.MultipleChoice.QuestionAnnouncment.question}
 			/>
 		{:else if 'AnswersAnnouncement' in msg.MultipleChoice}
 			<QuestionAnswers
 				on:next={next}
-				gameId={$page.params.code}
+				gameId={code}
 				questionIndex={msg.MultipleChoice.AnswersAnnouncement.index || 0}
 				questionTotalCount={msg.MultipleChoice.AnswersAnnouncement.count || 1}
 				questionText={msg.MultipleChoice.AnswersAnnouncement.question || ''}
@@ -118,7 +120,7 @@
 		{:else if 'AnswersResults' in msg.MultipleChoice}
 			<QuestionStatistics
 				on:next={next}
-				gameId={$page.params.code}
+				gameId={code}
 				questionIndex={msg.MultipleChoice.AnswersResults.index || 0}
 				questionTotalCount={msg.MultipleChoice.AnswersResults.count || 1}
 				questionText={msg.MultipleChoice.AnswersResults.question || ''}
@@ -134,7 +136,7 @@
 		{:else if 'Leaderboard' in msg.MultipleChoice}
 			<Leaderboard
 				on:next={next}
-				gameId={$page.params.code}
+				gameId={code}
 				questionIndex={msg.MultipleChoice.Leaderboard.index || 0}
 				questionTotalCount={msg.MultipleChoice.Leaderboard.count || 1}
 				results={msg.MultipleChoice.Leaderboard.points}

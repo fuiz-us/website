@@ -1,8 +1,5 @@
 <script lang="ts">
-	import {
-		PUBLIC_DISPLAY_PLAY_URL,
-		PUBLIC_PLAY_URL
-	} from '$env/static/public';
+	import { PUBLIC_DISPLAY_PLAY_URL, PUBLIC_PLAY_URL } from '$env/static/public';
 	import { palette_light } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Fullscreen from '$lib/Fullscreen.svelte';

@@ -15,7 +15,7 @@
 		loading = true;
 		button = 'Loading';
 
-		location.replace('/play/' + gameCode);
+		location.replace('g/?code=' + gameCode);
 	}
 </script>
 

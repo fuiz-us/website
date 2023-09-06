@@ -44,7 +44,7 @@
 			return reset('Malformed JSON');
 		}
 
-		location.replace('/host/' + (await res.text()));
+		location.replace('g/?code=' + (await res.text()));
 	}
 </script>
 

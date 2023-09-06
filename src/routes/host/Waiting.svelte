@@ -12,7 +12,7 @@
 	export let players: string[];
 	let codeTitle = 'Copy to Clipboard';
 
-	$: actualUrl = PUBLIC_PLAY_URL + '/play/' + code;
+	$: actualUrl = PUBLIC_PLAY_URL + '/play/g/?code=' + code;
 
 	const dispatch = createEventDispatcher();
 

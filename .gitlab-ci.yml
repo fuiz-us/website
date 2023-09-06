@@ -4,7 +4,7 @@ pages:
   variables:
     NODE_ENV: "production"
   script:
-    - npm install
+    - npm ci --production=false
     - npm run build
   artifacts:
     paths:

@@ -1,11 +1,11 @@
-image: node:latest
+image: oven/bun:latest
 pages:
   stage: deploy
   variables:
     NODE_ENV: "production"
   script:
-    - npm ci --production=false
-    - npm run build
+    - bun install --frozen-lockfile
+    - bun run build
   artifacts:
     paths:
       - public

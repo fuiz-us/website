@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { buttonColors, buttonSymbols } from '$lib';
-	import FancyButton from './FancyButton.svelte';
+	import FancyButton from '../FancyButton.svelte';
 
 	export let index: number;
 </script>

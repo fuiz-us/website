@@ -1,10 +1,10 @@
 <script lang="ts">
-	import AnsweredCount from '$lib/AnsweredCount.svelte';
-	import Answers from '$lib/Answers.svelte';
-	import MediaContainer from '$lib/MediaContainer.svelte';
+	import AnsweredCount from '$lib/Game/AnsweredCount.svelte';
+	import Answers from '$lib/Game/Answers.svelte';
+	import MediaContainer from '$lib/Game/MediaContainer.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
-	import QuestionText from '$lib/QuestionText.svelte';
-	import TimeLeft from '$lib/TimeLeft.svelte';
+	import QuestionText from '$lib/Game/QuestionText.svelte';
+	import TimeLeft from '$lib/Game/TimeLeft.svelte';
 	import VerticalSplit from '$lib/VerticalSplit.svelte';
 	import Topbar from './Topbar.svelte';
 

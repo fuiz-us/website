@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
-	import Waiting from '../Waiting.svelte';
-	import Question from '../Question.svelte';
-	import QuestionAnswers from '../QuestionAnswers.svelte';
-	import QuestionStatistics from '../QuestionStatistics.svelte';
+	import Waiting from './Waiting.svelte';
+	import Question from './Question.svelte';
+	import QuestionAnswers from './QuestionAnswers.svelte';
+	import QuestionStatistics from './QuestionStatistics.svelte';
 	import { zip, type ServerIncomingMessage } from '$lib';
-	import Leaderboard from '../Leaderboard.svelte';
+	import Leaderboard from './Leaderboard.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import { PUBLIC_WS_URL } from '$env/static/public';
 
@@ -20,7 +20,7 @@
 		timer = Math.max(0, timer - 1000);
 	}, 1000);
 
-	const code = $page.url.searchParams.get('code') || 'FOOBAR';
+	export let code: string;
 
 	onMount(() => {
 		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code);

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Answers from '$lib/Answers.svelte';
+	import Answers from '$lib/Game/Answers.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
-	import QuestionText from '$lib/QuestionText.svelte';
-	import Statistics from '$lib/Statistics.svelte';
-	import TimeLeft from '$lib/TimeLeft.svelte';
+	import QuestionText from '$lib/Game/QuestionText.svelte';
+	import Statistics from '$lib/Game/Statistics.svelte';
+	import TimeLeft from '$lib/Game/TimeLeft.svelte';
 	import VerticalSplit from '$lib/VerticalSplit.svelte';
 	import Topbar from './Topbar.svelte';
 

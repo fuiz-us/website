@@ -4,15 +4,15 @@
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Fullscreen from '$lib/Fullscreen.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
-	import PlayersList from '$lib/PlayersList.svelte';
-	import QrCode from '$lib/QRCode.svelte';
+	import PlayersList from '$lib/Game/PlayersList.svelte';
+	import QrCode from '$lib/Game/QRCode.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let code: string;
 	export let players: string[];
 	let codeTitle = 'Copy to Clipboard';
 
-	$: actualUrl = PUBLIC_PLAY_URL + '/play/g/?code=' + code;
+	$: actualUrl = PUBLIC_PLAY_URL + '/play?code=' + code;
 
 	const dispatch = createEventDispatcher();
 

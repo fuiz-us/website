@@ -1,6 +1,6 @@
 <script lang="ts">
 	import FancyButton from '$lib/FancyButton.svelte';
-	import LeaderboardRecord from '$lib/LeaderboardRecord.svelte';
+	import LeaderboardRecord from '$lib/Game/LeaderboardRecord.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import Topbar from './Topbar.svelte';

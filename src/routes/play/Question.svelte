@@ -1,6 +1,6 @@
 <script lang="ts">
 	import NiceBackground from '$lib/NiceBackground.svelte';
-	import QuestionText from '$lib/QuestionText.svelte';
+	import QuestionText from '$lib/Game/QuestionText.svelte';
 	import Topbar from './Topbar.svelte';
 
 	export let name: string;

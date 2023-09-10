@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import FancyButton from './FancyButton.svelte';
+	import FancyButton from '../FancyButton.svelte';
 	import { palette_light } from '$lib';
 	export let questionText: string;
 	export let topShadow = false;

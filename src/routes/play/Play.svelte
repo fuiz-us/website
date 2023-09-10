@@ -28,7 +28,7 @@
 
 	let nameChooser: ChooseName;
 
-	const code = $page.url.searchParams.get('code') || 'FOOBAR';
+	export let code: string;
 
 	onMount(() => {
 		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code);

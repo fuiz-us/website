@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { toDataURL } from 'qrcode';
-	import LoadingCircle from './LoadingCircle.svelte';
+	import LoadingCircle from '../LoadingCircle.svelte';
 
 	let expandQR = false;
 	export let url: string;

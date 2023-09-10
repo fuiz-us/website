@@ -1,5 +1,5 @@
 <script lang="ts">
-	import EmptyAnswers from '$lib/EmptyAnswers.svelte';
+	import EmptyAnswers from '$lib/Game/EmptyAnswers.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 

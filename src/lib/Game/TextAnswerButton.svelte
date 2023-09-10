@@ -2,7 +2,7 @@
 	import { buttonColors, buttonSymbols } from '$lib';
 	import wrong from '$lib/assets/wrong.svg';
 	import factual from '$lib/assets/correct.svg';
-	import FancyButton from './FancyButton.svelte';
+	import FancyButton from '../FancyButton.svelte';
 
 	export let index: number;
 	export let answerText: string;

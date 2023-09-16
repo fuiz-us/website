@@ -11,12 +11,16 @@
 	import Leaderboard from './Leaderboard.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import { PUBLIC_WS_URL } from '$env/static/public';
+	import NiceBackground from '$lib/NiceBackground.svelte';
+	import ErrorMessage from '$lib/ErrorMessage.svelte';
 
 	let socket: WebSocket;
 
 	let msg: IncomingMessageState | undefined = undefined;
 
 	let loading = true;
+
+	let status: 'loading' | 'open' | 'error' = 'loading';
 
 	let name: string | undefined = undefined;
 
@@ -97,6 +101,21 @@
 
 			msg = new_msg as IncomingMessageState;
 		});
+
+		socket.addEventListener('close', () => {
+			status = 'error';
+			errorMessage = "Game Code doesn't exist";
+		});
+
+		socket.addEventListener('open', () => {
+			status = 'open';
+			errorMessage = "";
+		});
+
+		socket.addEventListener('error', () => {
+			status = 'error';
+			errorMessage = "Game Code doesn't exist";
+		});
 	});
 
 	function requestName(name: string) {
@@ -111,7 +130,22 @@
 	}
 </script>
 
-{#if loading}
+{#if status === 'loading'}
+	<Loading />
+{:else if status === 'error'}
+	<NiceBackground>
+		<div
+			style:align-items="center"
+			style:justify-content="center"
+			style:height="100%"
+			style:display="flex"
+		>
+			<div style:max-width="40ch" style:font-size=xx-large>
+				<ErrorMessage {errorMessage} />
+			</div>
+		</div>
+	</NiceBackground>
+{:else if loading}
 	<Loading />
 {:else if name === undefined}
 	<ChooseName bind:this={nameChooser} on:setName={(x) => requestName(x.detail)} {errorMessage} />

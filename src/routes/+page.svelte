@@ -13,6 +13,7 @@
 			style:flex-direction="column"
 			style:align-items="center"
 			style:justify-content="center"
+			style:padding="0 10px"
 			style:gap="10px"
 		>
 			<img
@@ -20,12 +21,18 @@
 				alt="a deck of cards representing fuiz logo and the word fuiz"
 				width="500px"
 				height="200px"
+				style:max-width="100%"
 				style:padding-right="48px"
 				style:display="block"
+				style:box-sizing="border-box"
 			/>
-			<div style:font-family="Poppins" style:font-size="xxx-large">Host live quizzes freely</div>
-			<div style:font-size="x-large" style:max-width=50ch>
-				<ErrorMessage errorMessage="Fuiz is under development. Check here later once we're ready!" />
+			<div style:text-align="center" style:font-family="Poppins" style:font-size="xxx-large">
+				Host live quizzes freely
+			</div>
+			<div style:font-size="x-large" style:max-width="50ch">
+				<ErrorMessage
+					errorMessage="Fuiz is under development. Check here later once we're ready!"
+				/>
 			</div>
 		</div>
 	</div>

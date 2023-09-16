@@ -9,10 +9,16 @@
 	import Leaderboard from './Leaderboard.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import { PUBLIC_WS_URL } from '$env/static/public';
+	import NiceBackground from '$lib/NiceBackground.svelte';
+	import ErrorMessage from '$lib/ErrorMessage.svelte';
 
 	let msg: ServerIncomingMessage | undefined = undefined;
 
 	let socket: WebSocket;
+
+	let status: 'loading' | 'open' | 'error' = 'loading';
+
+	let errorMessage = '';
 
 	let timer = 0;
 
@@ -78,6 +84,21 @@
 
 			msg = new_msg;
 		});
+
+		socket.addEventListener('close', () => {
+			status = 'error';
+			errorMessage = "Game Code doesn't exist";
+		});
+
+		socket.addEventListener('open', () => {
+			status = 'open';
+			errorMessage = '';
+		});
+
+		socket.addEventListener('error', () => {
+			status = 'error';
+			errorMessage = "Game Code doesn't exist";
+		});
 	});
 
 	function next() {
@@ -87,7 +108,20 @@
 	const HOST_NEXT = JSON.stringify({ Host: 'Next' });
 </script>
 
-{#if msg !== undefined}
+{#if status === 'error'}
+	<NiceBackground>
+		<div
+			style:align-items="center"
+			style:justify-content="center"
+			style:height="100%"
+			style:display="flex"
+		>
+			<div style:max-width="40ch" style:font-size="xx-large">
+				<ErrorMessage {errorMessage} />
+			</div>
+		</div>
+	</NiceBackground>
+{:else if msg !== undefined}
 	{#if 'Game' in msg}
 		<Waiting on:next={next} {code} players={msg.Game.WaitingScreen} />
 	{:else if 'MultipleChoice' in msg}

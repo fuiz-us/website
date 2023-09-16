@@ -6,9 +6,9 @@
 </script>
 
 <NiceBackground>
-	<div style:display="flex" style:flex-direction="column">
+	<div style:display="flex" style:flex-direction="column" style:height="100%">
 		<div
-			style:height="100vh"
+			style:height="100%"
 			style:display="flex"
 			style:flex-direction="column"
 			style:align-items="center"

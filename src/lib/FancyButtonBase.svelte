@@ -1,8 +1,9 @@
-<script>
-	export let foregroundColor = '#FFFFFF';
-	export let backgroundColor = '#D4131B';
-	export let backgroundDeepColor = '#a40e13';
+<script lang="ts">
+	export let foregroundColor: string;
+	export let backgroundColor: string;
+	export let backgroundDeepColor: string;
 	export let disabled = false;
+	export let active = true;
 </script>
 
 <button
@@ -14,7 +15,7 @@
 	style:width="100%"
 	style:height="100%"
 	style:font="inherit"
-	{disabled}
+	disabled={disabled || !active}
 	on:click
 >
 	<div

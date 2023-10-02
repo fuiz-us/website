@@ -1,12 +1,13 @@
 <script lang="ts">
 	import AnsweredCount from '$lib/Game/AnsweredCount.svelte';
 	import Answers from '$lib/Game/Answers.svelte';
-	import MediaContainer from '$lib/Game/MediaContainer.svelte';
+	import MediaContainer from '$lib/MediaContainer.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import QuestionText from '$lib/Game/QuestionText.svelte';
 	import TimeLeft from '$lib/Game/TimeLeft.svelte';
 	import VerticalSplit from '$lib/VerticalSplit.svelte';
 	import Topbar from './Topbar.svelte';
+	import type { Media } from '$lib';
 
 	export let questionIndex: number;
 	export let questionTotalCount: number;
@@ -15,6 +16,7 @@
 	export let answers: string[];
 	export let timeLeft: number;
 	export let answeredCount: number;
+	export let media: Media | null;
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">
@@ -25,9 +27,7 @@
 			<VerticalSplit>
 				<svelte:fragment slot="top">
 					<TimeLeft {timeLeft} />
-					<MediaContainer>
-						<slot />
-					</MediaContainer>
+					<MediaContainer {media} />
 					<AnsweredCount {answeredCount} />
 				</svelte:fragment>
 				<svelte:fragment slot="bottom">

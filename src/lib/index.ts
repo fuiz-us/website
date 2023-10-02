@@ -2,6 +2,8 @@ import heart from '$lib/assets/cards-heart.svg';
 import club from '$lib/assets/cards-club.svg';
 import spade from '$lib/assets/cards-spade.svg';
 import diamond from '$lib/assets/cards-diamond.svg';
+import { PUBLIC_BACKEND_URL } from '$env/static/public';
+import { goto } from '$app/navigation';
 
 export const buttonColors = [
 	['#D4131B', '#a40e13'],
@@ -39,15 +41,25 @@ export function zip<T, U>(a: Array<T>, b: Array<U>): Array<[T, U]> {
 	return b.map((v, i) => [a[i], v]);
 }
 
-type NamesError = 'Used' | 'Assigned';
+export function is_not_undefined<T>(a?: T): a is T {
+	return a !== undefined;
+}
+
+type NamesError = 'Used' | 'Assigned' | 'Empty' | 'Sinful' | 'TooLong';
+
+type WaitingScreenMessage = {
+	exact_count: number;
+	players: string[];
+	truncated: boolean;
+};
 
 type ServerGameIncomingMessage = {
-	WaitingScreen: string[];
+	WaitingScreen: WaitingScreenMessage;
 };
 
 type GameIncomingMessage =
 	| {
-			WaitingScreen: string[];
+			WaitingScreen: WaitingScreenMessage;
 	  }
 	| {
 			NameAssign: string;
@@ -58,7 +70,7 @@ type GameIncomingMessage =
 	| 'NameChoose';
 
 type GameIncomingMessageState = {
-	WaitingScreen: string[];
+	WaitingScreen: WaitingScreenMessage;
 };
 
 type Image = {
@@ -68,7 +80,7 @@ type Image = {
 	};
 };
 
-type Media = {
+export type Media = {
 	Image: Image;
 };
 
@@ -87,7 +99,7 @@ type MultipleChoiceIncomingMessage =
 				index: number;
 				count: number;
 				question: string;
-				media?: Media;
+				media: Media | null;
 				duration: number;
 			};
 	  }
@@ -96,7 +108,7 @@ type MultipleChoiceIncomingMessage =
 				index?: number;
 				count?: number;
 				question?: string;
-				media?: Media;
+				media: Media | null;
 				answers: Array<TextOrMedia>;
 				answered_count?: number;
 				duration: number;
@@ -142,7 +154,92 @@ export type IncomingMessageState =
 	| {
 			Game: GameIncomingMessageState;
 	  }
-	| 'WaitingForOthers'
+	| {
+			WaitingForOthers: {
+				count?: number;
+				index?: number;
+			};
+	  }
 	| {
 			MultipleChoice: MultipleChoiceIncomingMessage;
 	  };
+
+export type MultipleChoiceAnswer = {
+	correct: boolean;
+	content: TextOrMedia;
+};
+
+export type MultipleChoiceSlide = {
+	title: string;
+	media: Media | null;
+	introduce_question: number;
+	time_limit: number;
+	points_awarded: number;
+	answers: MultipleChoiceAnswer[];
+};
+
+export type Slide = {
+	MultipleChoice: MultipleChoiceSlide;
+	id: number;
+};
+
+export type FuizConfig = {
+	title: string;
+	slides: Slide[];
+};
+
+export type ExportedFuiz = {
+	config: FuizConfig;
+	last_edited: number;
+};
+
+export function get_backend_config(config: FuizConfig) {
+	return {
+		title: config.title,
+		slides: config.slides.map((slide) => ({
+			MultipleChoice: {
+				title: slide.MultipleChoice.title,
+				media: slide.MultipleChoice.media,
+				introduce_question: slide.MultipleChoice.introduce_question * 1000,
+				time_limit: slide.MultipleChoice.time_limit * 1000,
+				points_awarded: slide.MultipleChoice.points_awarded,
+				answers: slide.MultipleChoice.answers
+			}
+		}))
+	};
+}
+
+export function get_slide(id: number): ExportedFuiz | undefined {
+	const config = localStorage.getItem(id.toString());
+	if (config !== null) {
+		return JSON.parse(config);
+	} else {
+		return undefined;
+	}
+}
+
+export async function play_local(id: number) {
+	const config = get_slide(id);
+	if (config !== undefined) {
+		const res = await bring(PUBLIC_BACKEND_URL + '/add', {
+			method: 'POST',
+			mode: 'cors',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			credentials: 'include',
+			body: JSON.stringify(get_backend_config(config.config))
+		});
+
+		if (res === undefined) {
+			// return reset('Inaccessible Server');
+			return;
+		}
+
+		// if (!res.ok) {
+		// 	return reset('Malformed JSON');
+		// }
+
+		goto('/host?code=' + (await res.text()));
+	}
+}

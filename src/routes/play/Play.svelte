@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import type { IncomingMessage, IncomingMessageState } from '$lib';
 	import { onMount } from 'svelte';
 	import ChooseName from './ChooseName.svelte';
@@ -11,8 +10,7 @@
 	import Leaderboard from './Leaderboard.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import { PUBLIC_WS_URL } from '$env/static/public';
-	import NiceBackground from '$lib/NiceBackground.svelte';
-	import ErrorMessage from '$lib/ErrorMessage.svelte';
+	import ErrorPage from '$lib/ErrorPage.svelte';
 
 	let socket: WebSocket;
 
@@ -50,53 +48,66 @@
 					name = new_msg.Game.NameAssign;
 					return;
 				} else if ('NameError' in new_msg.Game) {
-					if (new_msg.Game.NameError == 'Used') {
+					if (new_msg.Game.NameError === 'Used') {
 						errorMessage = 'Nickname already in-use';
-					} else if (new_msg.Game.NameError == 'Assigned') {
+					} else if (new_msg.Game.NameError === 'Assigned') {
 						errorMessage = 'You already have a nickname';
+					} else if (new_msg.Game.NameError === 'Empty') {
+						errorMessage = 'Nickname cannot be empty';
+					} else if (new_msg.Game.NameError === 'Sinful') {
+						errorMessage = 'Nickname is inappropriate';
+					} else if (new_msg.Game.NameError === 'TooLong') {
+						errorMessage = 'Nickname is too long';
 					}
 					nameChooser.reset();
 					return;
 				}
 			} else if ('MultipleChoice' in new_msg) {
-				if (msg && msg !== 'WaitingForOthers' && 'MultipleChoice' in msg) {
-					if (
-						'AnswersAnnouncement' in new_msg.MultipleChoice &&
-						'QuestionAnnouncment' in msg.MultipleChoice
-					) {
-						new_msg.MultipleChoice.AnswersAnnouncement.question ||=
-							msg.MultipleChoice.QuestionAnnouncment.question;
-						new_msg.MultipleChoice.AnswersAnnouncement.index ||=
-							msg.MultipleChoice.QuestionAnnouncment.index;
-						new_msg.MultipleChoice.AnswersAnnouncement.count ||=
-							msg.MultipleChoice.QuestionAnnouncment.count;
-						new_msg.MultipleChoice.AnswersAnnouncement.media ||=
-							msg.MultipleChoice.QuestionAnnouncment.media;
+				if (msg) {
+					if ('MultipleChoice' in msg) {
+						if (
+							'AnswersAnnouncement' in new_msg.MultipleChoice &&
+							'QuestionAnnouncment' in msg.MultipleChoice
+						) {
+							new_msg.MultipleChoice.AnswersAnnouncement.question ||=
+								msg.MultipleChoice.QuestionAnnouncment.question;
+							new_msg.MultipleChoice.AnswersAnnouncement.index ||=
+								msg.MultipleChoice.QuestionAnnouncment.index;
+							new_msg.MultipleChoice.AnswersAnnouncement.count ||=
+								msg.MultipleChoice.QuestionAnnouncment.count;
+							new_msg.MultipleChoice.AnswersAnnouncement.media ||=
+								msg.MultipleChoice.QuestionAnnouncment.media;
+						}
+						if (
+							'AnswersResults' in new_msg.MultipleChoice &&
+							'AnswersAnnouncement' in msg.MultipleChoice
+						) {
+							new_msg.MultipleChoice.AnswersResults.question ||=
+								msg.MultipleChoice.AnswersAnnouncement.question;
+							new_msg.MultipleChoice.AnswersResults.index ||=
+								msg.MultipleChoice.AnswersAnnouncement.index;
+							new_msg.MultipleChoice.AnswersResults.count ||=
+								msg.MultipleChoice.AnswersAnnouncement.count;
+							new_msg.MultipleChoice.AnswersResults.answers ||=
+								msg.MultipleChoice.AnswersAnnouncement.answers;
+						}
+						if ('Leaderboard' in new_msg.MultipleChoice && 'AnswersResults' in msg.MultipleChoice) {
+							new_msg.MultipleChoice.Leaderboard.index ||= msg.MultipleChoice.AnswersResults.index;
+							new_msg.MultipleChoice.Leaderboard.count ||= msg.MultipleChoice.AnswersResults.count;
+						}
+					} else if ('WaitingForOthers' in msg) {
+						if ('AnswersResults' in new_msg.MultipleChoice) {
+							new_msg.MultipleChoice.AnswersResults.index ||= msg.WaitingForOthers.index;
+							new_msg.MultipleChoice.AnswersResults.count ||= msg.WaitingForOthers.count;
+						}
 					}
-					if (
-						'AnswersResults' in new_msg.MultipleChoice &&
-						'AnswersAnnouncement' in msg.MultipleChoice
-					) {
-						new_msg.MultipleChoice.AnswersResults.question ||=
-							msg.MultipleChoice.AnswersAnnouncement.question;
-						new_msg.MultipleChoice.AnswersResults.index ||=
-							msg.MultipleChoice.AnswersAnnouncement.index;
-						new_msg.MultipleChoice.AnswersResults.count ||=
-							msg.MultipleChoice.AnswersAnnouncement.count;
-						new_msg.MultipleChoice.AnswersResults.answers ||=
-							msg.MultipleChoice.AnswersAnnouncement.answers;
-					}
-					if ('Leaderboard' in new_msg.MultipleChoice && 'AnswersResults' in msg.MultipleChoice) {
-						new_msg.MultipleChoice.Leaderboard.index ||= msg.MultipleChoice.AnswersResults.index;
-						new_msg.MultipleChoice.Leaderboard.count ||= msg.MultipleChoice.AnswersResults.count;
-					}
-				}
 
-				if ('AnswersAnnouncement' in new_msg.MultipleChoice) {
-					last_answered = undefined;
-				} else if ('Leaderboard' in new_msg.MultipleChoice) {
-					score = new_msg.MultipleChoice.Leaderboard.points.find(([x]) => x === name)?.[1] ?? 0;
-				} else if ('AnswersCount' in new_msg.MultipleChoice) return;
+					if ('AnswersAnnouncement' in new_msg.MultipleChoice) {
+						last_answered = undefined;
+					} else if ('Leaderboard' in new_msg.MultipleChoice) {
+						score = new_msg.MultipleChoice.Leaderboard.points.find(([x]) => x === name)?.[1] ?? 0;
+					} else if ('AnswersCount' in new_msg.MultipleChoice) return;
+				}
 			}
 
 			msg = new_msg as IncomingMessageState;
@@ -109,7 +120,7 @@
 
 		socket.addEventListener('open', () => {
 			status = 'open';
-			errorMessage = "";
+			errorMessage = '';
 		});
 
 		socket.addEventListener('error', () => {
@@ -126,31 +137,31 @@
 	function sendAnswer(index: number) {
 		socket.send(JSON.stringify({ Player: { IndexAnswer: index } }));
 		last_answered = index;
-		msg = 'WaitingForOthers';
+		msg = {
+			WaitingForOthers:
+				msg && 'MultipleChoice' in msg && 'AnswersAnnouncement' in msg.MultipleChoice
+					? {
+							count: msg.MultipleChoice.AnswersAnnouncement.count,
+							index: msg.MultipleChoice.AnswersAnnouncement.index
+					  }
+					: {
+							count: undefined,
+							index: undefined
+					  }
+		};
 	}
 </script>
 
 {#if status === 'loading'}
 	<Loading />
 {:else if status === 'error'}
-	<NiceBackground>
-		<div
-			style:align-items="center"
-			style:justify-content="center"
-			style:height="100%"
-			style:display="flex"
-		>
-			<div style:max-width="40ch" style:font-size=xx-large>
-				<ErrorMessage {errorMessage} />
-			</div>
-		</div>
-	</NiceBackground>
+	<ErrorPage {errorMessage} />
 {:else if loading}
 	<Loading />
 {:else if name === undefined}
 	<ChooseName bind:this={nameChooser} on:setName={(x) => requestName(x.detail)} {errorMessage} />
 {:else if msg !== undefined}
-	{#if 'WaitingForOthers' === msg}
+	{#if 'WaitingForOthers' in msg}
 		<WaitingOthers {name} {score} />
 	{:else if 'Game' in msg}
 		{#if 'WaitingScreen' in msg.Game}

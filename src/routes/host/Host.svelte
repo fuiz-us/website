@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import Waiting from './Waiting.svelte';
 	import Question from './Question.svelte';
@@ -9,8 +8,7 @@
 	import Leaderboard from './Leaderboard.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import { PUBLIC_WS_URL } from '$env/static/public';
-	import NiceBackground from '$lib/NiceBackground.svelte';
-	import ErrorMessage from '$lib/ErrorMessage.svelte';
+	import ErrorPage from '$lib/ErrorPage.svelte';
 
 	let msg: ServerIncomingMessage | undefined = undefined;
 
@@ -86,8 +84,10 @@
 		});
 
 		socket.addEventListener('close', () => {
-			status = 'error';
-			errorMessage = "Game Code doesn't exist";
+			if (status !== 'error') {
+				status = 'error';
+				errorMessage = 'Connection Closed';
+			}
 		});
 
 		socket.addEventListener('open', () => {
@@ -97,7 +97,7 @@
 
 		socket.addEventListener('error', () => {
 			status = 'error';
-			errorMessage = "Game Code doesn't exist";
+			errorMessage = "Game Code Doesn't Exist";
 		});
 	});
 
@@ -105,25 +105,22 @@
 		socket.send(HOST_NEXT);
 	}
 
+	$: console.log(msg);
+
 	const HOST_NEXT = JSON.stringify({ Host: 'Next' });
 </script>
 
 {#if status === 'error'}
-	<NiceBackground>
-		<div
-			style:align-items="center"
-			style:justify-content="center"
-			style:height="100%"
-			style:display="flex"
-		>
-			<div style:max-width="40ch" style:font-size="xx-large">
-				<ErrorMessage {errorMessage} />
-			</div>
-		</div>
-	</NiceBackground>
+	<ErrorPage {errorMessage} />
 {:else if msg !== undefined}
 	{#if 'Game' in msg}
-		<Waiting on:next={next} {code} players={msg.Game.WaitingScreen} />
+		<Waiting
+			on:next={next}
+			{code}
+			players={msg.Game.WaitingScreen.players}
+			exact_count={msg.Game.WaitingScreen.exact_count}
+			truncated={msg.Game.WaitingScreen.truncated}
+		/>
 	{:else if 'MultipleChoice' in msg}
 		{#if 'QuestionAnnouncment' in msg.MultipleChoice}
 			<Question
@@ -143,14 +140,8 @@
 				answers={msg.MultipleChoice.AnswersAnnouncement.answers.map((x) => x.Text)}
 				timeLeft={timer}
 				answeredCount={msg.MultipleChoice.AnswersAnnouncement.answered_count || 0}
-			>
-				{#if msg.MultipleChoice.AnswersAnnouncement.media}
-					<img
-						src={msg.MultipleChoice.AnswersAnnouncement.media.Image.Internet.url}
-						alt={msg.MultipleChoice.AnswersAnnouncement.media.Image.Internet.alt}
-					/>
-				{/if}
-			</QuestionAnswers>
+				media={msg.MultipleChoice.AnswersAnnouncement.media}
+			/>
 		{:else if 'AnswersResults' in msg.MultipleChoice}
 			<QuestionStatistics
 				on:next={next}

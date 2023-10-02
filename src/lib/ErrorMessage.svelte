@@ -10,7 +10,7 @@
 		style:display="flex"
 		style:align-items="center"
 		style:background="#e01b2430"
-		style:padding="5px"
+		style:padding="5px 15px"
 		style:box-sizing="border-box"
 		style:border-radius="5px"
 		style:gap="5px"

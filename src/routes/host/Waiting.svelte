@@ -10,6 +10,8 @@
 
 	export let code: string;
 	export let players: string[];
+	export let exact_count: number;
+	export let truncated: boolean;
 	let codeTitle = 'Copy to Clipboard';
 
 	$: actualUrl = PUBLIC_PLAY_URL + '/play?code=' + code;
@@ -35,7 +37,7 @@
 				<div style:font-size="xx-large" style:padding="10px">
 					<div>Join at</div>
 					<div style:font-weight="bold">
-						{PUBLIC_DISPLAY_PLAY_URL}
+						{PUBLIC_DISPLAY_PLAY_URL}/play
 					</div>
 				</div>
 				<button
@@ -88,7 +90,7 @@
 					style:max-height="500px"
 					style:overflow="scroll"
 				>
-					<PlayersList {players} />
+					<PlayersList {players} {exact_count} {truncated} />
 				</div>
 				<div style:display="flex" style:justify-content="center">
 					<div style:width="fit-content">

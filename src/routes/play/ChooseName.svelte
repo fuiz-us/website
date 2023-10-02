@@ -1,9 +1,10 @@
 <script lang="ts">
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
+	import Footer from '$lib/Footer.svelte';
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
+	import Logo from '$lib/Logo.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
-	import logo from '$lib/assets/logo.svg';
 	import { createEventDispatcher } from 'svelte';
 
 	let button = "I'm Ready!";
@@ -36,19 +37,14 @@
 	<div
 		style:height="100%"
 		style:display="flex"
-		style:justify-content="center"
+		style:flex-direction="column"
+		style:align-items="center"
 		style:font-size="x-large"
 	>
 		<form on:submit|preventDefault={submit}>
-			<img
-				src={logo}
-				alt="a deck of cards representing fuiz logo and the word fuiz"
-				width="250px"
-				height="100px"
-				style:padding-right="24px"
-				style:display="block"
-				style:margin="10px 0 40px"
-			/>
+			<a href="/" style:height="100px" style:margin="10px 0 40px" style:overflow="hidden">
+				<Logo />
+			</a>
 			<ErrorMessage {errorMessage} />
 			<input type="text" {placeholder} required {disabled} bind:value={name} />
 			<div style:margin="5px 0" style:width="100%">
@@ -69,6 +65,7 @@
 				</FancyButton>
 			</div>
 		</form>
+		<Footer />
 	</div>
 </NiceBackground>
 

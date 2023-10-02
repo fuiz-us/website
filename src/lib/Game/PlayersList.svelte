@@ -1,6 +1,8 @@
 <script lang="ts">
 	export let players: string[];
-	let hide: boolean;
+	export let exact_count: number;
+	export let truncated: boolean;
+	let hide = true;
 </script>
 
 {#each players.slice(0, hide ? 50 : undefined) as player}
@@ -13,7 +15,7 @@
 		{player}
 	</div>
 {/each}
-{#if players.length > 50 && hide}
+{#if truncated || (players.length > 50 && hide)}
 	<button
 		on:click={() => (hide = false)}
 		style:font="inherit"
@@ -25,6 +27,6 @@
 		style:border-radius="5px"
 		style:color="white"
 	>
-		{players.length - 50} more...
+		{exact_count - 50} more...
 	</button>
 {/if}

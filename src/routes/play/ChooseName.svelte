@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Footer from '$lib/Footer.svelte';
@@ -42,7 +43,7 @@
 		style:font-size="x-large"
 	>
 		<form on:submit|preventDefault={submit}>
-			<a href="/" style:height="100px" style:margin="10px 0 40px" style:overflow="hidden">
+			<a href="{base}/" style:height="100px" style:margin="10px 0 40px" style:overflow="hidden">
 				<Logo />
 			</a>
 			<ErrorMessage {errorMessage} />

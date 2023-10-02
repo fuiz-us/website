@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { PUBLIC_BACKEND_URL } from '$env/static/public';
 	import { bring } from '$lib';
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
@@ -59,7 +60,7 @@
 		style:font-size="x-large"
 	>
 		<form on:submit|preventDefault={submit}>
-			<a href="/" style:height="100px" style:margin="10px 0 40px" style:overflow="hidden">
+			<a href="{base}/" style:height="100px" style:margin="10px 0 40px" style:overflow="hidden">
 				<Logo />
 			</a>
 			<ErrorMessage {errorMessage} />

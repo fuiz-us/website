@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
@@ -30,7 +31,7 @@
 		style:font-size="x-large"
 	>
 		<form on:submit|preventDefault={submit}>
-			<a href="/" style:height="100px" style:margin="10px 0 40px" style:overflow="hidden">
+			<a href="{base}/" style:height="100px" style:margin="10px 0 40px" style:overflow="hidden">
 				<Logo />
 			</a>
 			<input type="text" {placeholder} required {disabled} bind:value={gameCode} />

@@ -9,6 +9,7 @@
 	import add from '$lib/assets/add.svg';
 	import IconButton from '$lib/IconButton.svelte';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 
 	export let creations: {
 		id: number;
@@ -62,7 +63,7 @@
 				style:margin-bottom="20px"
 				style:justify-content="center"
 			>
-				<a href="/" style:height="65px" style:overflow="hidden">
+				<a href="{base}/" style:height="65px" style:overflow="hidden">
 					<Logo />
 				</a>
 			</div>

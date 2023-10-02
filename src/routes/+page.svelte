@@ -6,6 +6,7 @@
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import { goto } from '$app/navigation';
 	import Footer from '$lib/Footer.svelte';
+	import { base } from '$app/paths';
 </script>
 
 <NiceBackground>
@@ -27,7 +28,7 @@
 				style:gap="20px"
 				style:flex="1"
 			>
-				<a href="/" style:height="100px" style:overflow="hidden">
+				<a href="{base}/" style:height="100px" style:overflow="hidden">
 					<Logo />
 				</a>
 				<div
@@ -55,7 +56,7 @@
 					<div>
 						<FancyButton
 							on:click={() => {
-								goto('/create');
+								goto(base + '/create');
 							}}
 						>
 							<div
@@ -81,7 +82,7 @@
 					<div>
 						<FancyButton
 							on:click={() => {
-								goto('/play');
+								goto(base + '/play');
 							}}
 						>
 							<div

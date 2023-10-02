@@ -5,6 +5,7 @@
 	import { backOut } from 'svelte/easing';
 	import Footer from './Footer.svelte';
 	import Logo from './Logo.svelte';
+	import { base } from '$app/paths';
 
 	export let errorMessage: string;
 </script>
@@ -17,7 +18,7 @@
 		style:align-items="center"
 		style:font-size="x-large"
 	>
-		<a href="/" style:height="100px" style:margin="10px 0 40px" style:overflow="hidden">
+		<a href="{base}/" style:height="100px" style:margin="10px 0 40px" style:overflow="hidden">
 			<Logo />
 		</a>
 		<div

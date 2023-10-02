@@ -86,7 +86,7 @@
 		socket.addEventListener('close', async () => {
 			if (status !== 'error') {
 				const res = await bring(PUBLIC_BACKEND_URL + '/alive/' + code, {
-					method: 'POST',
+					method: 'GET',
 					mode: 'cors',
 					headers: {
 						'Content-Type': 'application/json'

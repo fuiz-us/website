@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { IncomingMessage, IncomingMessageState } from '$lib';
+	import { bring, type IncomingMessage, type IncomingMessageState } from '$lib';
 	import { onMount } from 'svelte';
 	import ChooseName from './ChooseName.svelte';
 	import WaitingMobile from './WaitingMobile.svelte';
@@ -9,7 +9,7 @@
 	import WaitingOthers from './WaitingOthers.svelte';
 	import Leaderboard from './Leaderboard.svelte';
 	import Loading from '$lib/Loading.svelte';
-	import { PUBLIC_WS_URL } from '$env/static/public';
+	import { PUBLIC_BACKEND_URL, PUBLIC_WS_URL } from '$env/static/public';
 	import ErrorPage from '$lib/ErrorPage.svelte';
 
 	let socket: WebSocket;
@@ -113,9 +113,29 @@
 			msg = new_msg as IncomingMessageState;
 		});
 
-		socket.addEventListener('close', () => {
-			status = 'error';
-			errorMessage = "Game Code doesn't exist";
+		socket.addEventListener('close', async () => {
+			if (status !== 'error') {
+				const res = await bring(PUBLIC_BACKEND_URL + '/alive/' + code, {
+					method: 'GET',
+					mode: 'cors',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					credentials: 'include'
+				});
+				if (res === undefined) {
+					status = 'error';
+					errorMessage = 'Connection Closed';
+				} else {
+					let text = await res.text();
+					if (text === 'true') {
+						location.reload();
+					} else {
+						status = 'error';
+						errorMessage = 'Game Ended';
+					}
+				}
+			}
 		});
 
 		socket.addEventListener('open', () => {

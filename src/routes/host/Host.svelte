@@ -4,10 +4,10 @@
 	import Question from './Question.svelte';
 	import QuestionAnswers from './QuestionAnswers.svelte';
 	import QuestionStatistics from './QuestionStatistics.svelte';
-	import { zip, type ServerIncomingMessage } from '$lib';
+	import { zip, type ServerIncomingMessage, bring } from '$lib';
 	import Leaderboard from './Leaderboard.svelte';
 	import Loading from '$lib/Loading.svelte';
-	import { PUBLIC_WS_URL } from '$env/static/public';
+	import { PUBLIC_BACKEND_URL, PUBLIC_WS_URL } from '$env/static/public';
 	import ErrorPage from '$lib/ErrorPage.svelte';
 
 	let msg: ServerIncomingMessage | undefined = undefined;
@@ -83,10 +83,28 @@
 			msg = new_msg;
 		});
 
-		socket.addEventListener('close', () => {
+		socket.addEventListener('close', async () => {
 			if (status !== 'error') {
-				status = 'error';
-				errorMessage = 'Connection Closed';
+				const res = await bring(PUBLIC_BACKEND_URL + '/alive/' + code, {
+					method: 'POST',
+					mode: 'cors',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					credentials: 'include'
+				});
+				if (res === undefined) {
+					status = 'error';
+					errorMessage = 'Connection Closed';
+				} else {
+					let text = await res.text();
+					if (text === 'true') {
+						location.reload();
+					} else {
+						status = 'error';
+						errorMessage = 'Game Ended';
+					}
+				}
 			}
 		});
 

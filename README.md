@@ -13,4 +13,3 @@ This is the static front-end component. Once you've created a project and instal
 ```bash
 npm run dev
 ```
-

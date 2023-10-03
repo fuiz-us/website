@@ -11,7 +11,7 @@
 	style:background="none"
 	style:border="none"
 	style:box-sizing="border-box"
-	style:padding="5px 0 0 0"
+	style:padding="7px 0 0 0"
 	style:width="100%"
 	style:height="100%"
 	style:font="inherit"
@@ -39,7 +39,16 @@
 </button>
 
 <style>
-	button:not(:active:not(:disabled)) .front {
+	button .front {
 		transform: translateY(-5px);
+		transition: transform 150ms;
+	}
+
+	button:active:not(:disabled) .front {
+		transform: translateY(0px);
+	}
+
+	button:hover .front {
+		transform: translateY(-7px);
 	}
 </style>

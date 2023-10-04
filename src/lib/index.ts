@@ -94,6 +94,38 @@ type AnswerResult = {
 	count: number;
 };
 
+type BingoIncomingMessage =
+	| {
+			List: {
+				index: number;
+				count: number;
+				all_statements: {
+					id: number;
+					text: string;
+				}[];
+				assigned_statement: number[];
+				crossed: number[];
+				user_votes: number[];
+			};
+	  }
+	| {
+			Cross: {
+				crossed: number[];
+			};
+	  }
+	| {
+			Votes: {
+				user_votes: number[];
+			};
+	  }
+	| {
+			Leaderboard: {
+				index: number;
+				count: number;
+				winners: string[];
+			};
+	  };
+
 type MultipleChoiceIncomingMessage =
 	| {
 			QuestionAnnouncment: {
@@ -141,6 +173,9 @@ export type ServerIncomingMessage =
 	  }
 	| {
 			MultipleChoice: MultipleChoiceIncomingMessage;
+	  }
+	| {
+			Bingo: BingoIncomingMessage;
 	  };
 
 export type IncomingMessage =
@@ -149,6 +184,9 @@ export type IncomingMessage =
 	  }
 	| {
 			MultipleChoice: MultipleChoiceIncomingMessage;
+	  }
+	| {
+			Bingo: BingoIncomingMessage;
 	  };
 
 export type IncomingMessageState =
@@ -163,6 +201,9 @@ export type IncomingMessageState =
 	  }
 	| {
 			MultipleChoice: MultipleChoiceIncomingMessage;
+	  }
+	| {
+			Bingo: BingoIncomingMessage;
 	  };
 
 export type MultipleChoiceAnswer = {

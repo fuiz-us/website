@@ -33,6 +33,8 @@
 	</div>
 	<div style:text-align="center" style:padding="5px 0" style:box-shadow="0 -2px 2px #00000040">
 		<div style:font-size="x-large" style:font-weight="bold">Game Code:</div>
-		<div style:font-size="xxx-large" style:font-family="Poppins">{gameCode}</div>
+		<div style:font-size="xxx-large" style:font-family="Poppins" style:text-transform="uppercase">
+			{gameCode}
+		</div>
 	</div>
 </div>

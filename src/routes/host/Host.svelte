@@ -9,6 +9,8 @@
 	import Loading from '$lib/Loading.svelte';
 	import { PUBLIC_BACKEND_URL, PUBLIC_WS_URL } from '$env/static/public';
 	import ErrorPage from '$lib/ErrorPage.svelte';
+	import Bingo from './Bingo.svelte';
+	import Winners from './Winners.svelte';
 
 	let msg: ServerIncomingMessage | undefined = undefined;
 
@@ -80,6 +82,17 @@
 				}
 			}
 
+			if ('Bingo' in new_msg && msg && 'Bingo' in msg) {
+				if ('Cross' in new_msg.Bingo && 'List' in msg.Bingo) {
+					msg.Bingo.List.crossed = new_msg.Bingo.Cross.crossed;
+					return;
+				}
+				if ('Votes' in new_msg.Bingo && 'List' in msg.Bingo) {
+					msg.Bingo.List.user_votes = new_msg.Bingo.Votes.user_votes;
+					return;
+				}
+			}
+
 			msg = new_msg;
 		});
 
@@ -123,9 +136,13 @@
 		socket.send(HOST_NEXT);
 	}
 
-	$: console.log(msg);
+	function index(u: number) {
+		socket.send(JSON.stringify({ Host: { Index: u } }));
+	}
 
 	const HOST_NEXT = JSON.stringify({ Host: 'Next' });
+
+	$: console.log(msg);
 </script>
 
 {#if status === 'error'}
@@ -185,6 +202,26 @@
 				results={msg.MultipleChoice.Leaderboard.points}
 				final={(msg.MultipleChoice.Leaderboard.index || 0) + 1 ===
 					(msg.MultipleChoice.Leaderboard.count || 1)}
+			/>
+		{/if}
+	{:else if 'Bingo' in msg}
+		{#if 'List' in msg.Bingo}
+			<Bingo
+				questionIndex={msg.Bingo.List.index}
+				questionTotalCount={msg.Bingo.List.count}
+				crossed={msg.Bingo.List.crossed}
+				all_statements={msg.Bingo.List.all_statements}
+				user_votes={msg.Bingo.List.user_votes}
+				gameId={code}
+				on:index={(e) => index(e.detail)}
+			/>
+		{:else if 'Leaderboard' in msg.Bingo}
+			<Winners
+				questionIndex={msg.Bingo.Leaderboard.index}
+				questionTotalCount={msg.Bingo.Leaderboard.count}
+				winners={msg.Bingo.Leaderboard.winners}
+				gameId={code}
+				on:next={next}
 			/>
 		{/if}
 	{/if}

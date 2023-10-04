@@ -11,6 +11,8 @@
 	import Loading from '$lib/Loading.svelte';
 	import { PUBLIC_BACKEND_URL, PUBLIC_WS_URL } from '$env/static/public';
 	import ErrorPage from '$lib/ErrorPage.svelte';
+	import Bingo from './Bingo.svelte';
+	import Winners from './Winners.svelte';
 
 	let socket: WebSocket;
 
@@ -108,6 +110,17 @@
 						score = new_msg.MultipleChoice.Leaderboard.points.find(([x]) => x === name)?.[1] ?? 0;
 					} else if ('AnswersCount' in new_msg.MultipleChoice) return;
 				}
+			} else if ('Bingo' in new_msg) {
+				if (msg && 'Bingo' in msg) {
+					if ('Cross' in new_msg.Bingo && 'List' in msg.Bingo) {
+						msg.Bingo.List.crossed = new_msg.Bingo.Cross.crossed;
+						return;
+					}
+					if ('Votes' in new_msg.Bingo && 'List' in msg.Bingo) {
+						msg.Bingo.List.user_votes = new_msg.Bingo.Votes.user_votes;
+						return;
+					}
+				}
 			}
 
 			msg = new_msg as IncomingMessageState;
@@ -170,6 +183,10 @@
 					  }
 		};
 	}
+
+	function sendVote(index: number) {
+		socket.send(JSON.stringify({ Player: { IndexAnswer: index } }));
+	}
 </script>
 
 {#if status === 'loading'}
@@ -212,6 +229,25 @@
 				position={msg.MultipleChoice.Leaderboard.points.findIndex(([x]) => x === name)}
 				final={msg.MultipleChoice.Leaderboard.index !== undefined &&
 					msg.MultipleChoice.Leaderboard.index + 1 === msg.MultipleChoice.Leaderboard.count}
+			/>
+		{/if}
+	{:else if 'Bingo' in msg}
+		{#if 'List' in msg.Bingo}
+			<Bingo
+				{name}
+				{score}
+				crossed={msg.Bingo.List.crossed}
+				all_statements={msg.Bingo.List.all_statements}
+				user_votes={msg.Bingo.List.user_votes}
+				assigned_statements={msg.Bingo.List.assigned_statement}
+				on:index={(e) => sendVote(e.detail)}
+			/>
+		{:else if 'Leaderboard' in msg.Bingo}
+			<Winners
+				{score}
+				{name}
+				winners={msg.Bingo.Leaderboard.winners}
+				is_winner={msg.Bingo.Leaderboard.winners.includes(name)}
 			/>
 		{/if}
 	{/if}

@@ -52,6 +52,7 @@
 					style:display="flex"
 					style:background="#00000020"
 					style:border-radius="5px"
+					style:text-transform="uppercase"
 				>
 					{code}
 				</button>

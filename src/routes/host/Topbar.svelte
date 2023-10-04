@@ -25,7 +25,7 @@
 		style:align-items="baseline"
 	>
 		Game ID:
-		<div style:font-family="Poppins">
+		<div style:font-family="Poppins" style:text-transform="uppercase">
 			{gameId}
 		</div>
 	</div>

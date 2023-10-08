@@ -2,7 +2,7 @@ import heart from '$lib/assets/cards-heart.svg';
 import club from '$lib/assets/cards-club.svg';
 import spade from '$lib/assets/cards-spade.svg';
 import diamond from '$lib/assets/cards-diamond.svg';
-import { PUBLIC_BACKEND_URL } from '$env/static/public';
+import { PUBLIC_BACKEND_URL, PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import { goto } from '$app/navigation';
 import { base } from '$app/paths';
 
@@ -46,6 +46,10 @@ export function is_not_undefined<T>(a?: T): a is T {
 	return a !== undefined;
 }
 
+export function is_not_null<T>(a: T | null): a is T {
+	return a !== null;
+}
+
 type NamesError = 'Used' | 'Assigned' | 'Empty' | 'Sinful' | 'TooLong';
 
 type WaitingScreenMessage = {
@@ -74,12 +78,19 @@ type GameIncomingMessageState = {
 	WaitingScreen: WaitingScreenMessage;
 };
 
-type Image = {
-	Internet: {
-		url: string;
-		alt: string;
-	};
-};
+type Image =
+	| {
+			Base64: {
+				data: string;
+				alt: string;
+			};
+	  }
+	| {
+			Clam: {
+				id: string;
+				alt: string;
+			};
+	  };
 
 export type Media = {
 	Image: Image;
@@ -213,7 +224,7 @@ export type MultipleChoiceAnswer = {
 
 export type MultipleChoiceSlide = {
 	title: string;
-	media: Media | null;
+	media: Media | null | undefined;
 	introduce_question: number;
 	time_limit: number;
 	points_awarded: number;
@@ -235,19 +246,66 @@ export type ExportedFuiz = {
 	last_edited: number;
 };
 
-export function get_backend_config(config: FuizConfig) {
+export async function get_backend_media(
+	media: Media | undefined | null
+): Promise<Media | undefined> {
+	if (!media) {
+		return undefined;
+	}
+	if ('Base64' in media.Image) {
+		const image_res = await bring(media.Image.Base64.data);
+
+		if (image_res === undefined) {
+			return undefined;
+		}
+
+		const blob = await image_res.blob();
+
+		const form_data = new FormData();
+
+		form_data.append('image', blob);
+
+		const res = await bring(PUBLIC_CORKBOARD_URL + '/upload', {
+			method: 'PUT',
+			mode: 'cors',
+			credentials: 'include',
+			body: form_data
+		});
+
+		const v = await res?.json();
+
+		if (v === undefined) {
+			return undefined;
+		}
+
+		return {
+			Image: {
+				Clam: {
+					id: v,
+					alt: media.Image.Base64.alt
+				}
+			}
+		};
+	} else {
+		return media;
+	}
+}
+
+export async function get_backend_config(config: FuizConfig) {
 	return {
 		title: config.title,
-		slides: config.slides.map((slide) => ({
-			MultipleChoice: {
-				title: slide.MultipleChoice.title,
-				media: slide.MultipleChoice.media,
-				introduce_question: slide.MultipleChoice.introduce_question * 1000,
-				time_limit: slide.MultipleChoice.time_limit * 1000,
-				points_awarded: slide.MultipleChoice.points_awarded,
-				answers: slide.MultipleChoice.answers
-			}
-		}))
+		slides: await Promise.all(
+			config.slides.map(async (slide) => ({
+				MultipleChoice: {
+					title: slide.MultipleChoice.title,
+					media: await get_backend_media(slide.MultipleChoice.media),
+					introduce_question: slide.MultipleChoice.introduce_question * 1000,
+					time_limit: slide.MultipleChoice.time_limit * 1000,
+					points_awarded: slide.MultipleChoice.points_awarded,
+					answers: slide.MultipleChoice.answers
+				}
+			}))
+		)
 	};
 }
 
@@ -270,17 +328,16 @@ export async function play_local(id: number) {
 				'Content-Type': 'application/json'
 			},
 			credentials: 'include',
-			body: JSON.stringify(get_backend_config(config.config))
+			body: JSON.stringify(await get_backend_config(config.config))
 		});
 
 		if (res === undefined) {
-			// return reset('Inaccessible Server');
 			return;
 		}
 
-		// if (!res.ok) {
-		// 	return reset('Malformed JSON');
-		// }
+		if (!res.ok) {
+			return;
+		}
 
 		goto(base + '/host?code=' + (await res.text()));
 	}

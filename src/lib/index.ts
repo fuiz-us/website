@@ -266,7 +266,7 @@ export async function get_backend_media(
 		form_data.append('image', blob);
 
 		const res = await bring(PUBLIC_CORKBOARD_URL + '/upload', {
-			method: 'PUT',
+			method: 'POST',
 			mode: 'cors',
 			credentials: 'include',
 			body: form_data

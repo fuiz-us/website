@@ -268,7 +268,6 @@ export async function get_backend_media(
 		const res = await bring(PUBLIC_CORKBOARD_URL + '/upload', {
 			method: 'POST',
 			mode: 'cors',
-			credentials: 'include',
 			body: form_data
 		});
 

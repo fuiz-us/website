@@ -130,11 +130,7 @@
 			if (status !== 'error') {
 				const res = await bring(PUBLIC_BACKEND_URL + '/alive/' + code, {
 					method: 'GET',
-					mode: 'cors',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					credentials: 'include'
+					mode: 'cors'
 				});
 				if (res === undefined) {
 					status = 'error';

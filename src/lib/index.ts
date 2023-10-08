@@ -86,7 +86,7 @@ type Image =
 			};
 	  }
 	| {
-			Clam: {
+			Corkboard: {
 				id: string;
 				alt: string;
 			};
@@ -280,7 +280,7 @@ export async function get_backend_media(
 
 		return {
 			Image: {
-				Clam: {
+				Corkboard: {
 					id: v,
 					alt: media.Image.Base64.alt
 				}

@@ -40,7 +40,7 @@
 		style:background-repeat="no-repeat"
 		style:background-size="3em"
 		style:background-position="center"
-		src={PUBLIC_CORKBOARD_URL + '/get/' + media.Image.Clam.id}
-		alt={media.Image.Clam.alt}
+		src={PUBLIC_CORKBOARD_URL + '/get/' + media.Image.Corkboard.id}
+		alt={media.Image.Corkboard.alt}
 	/>
 {/if}

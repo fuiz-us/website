@@ -7,10 +7,11 @@
 	export let questionTotalCount: number;
 	export let gameId: string;
 	export let questionText: string;
+	export let volume_on: boolean;
 </script>
 
 <div style:box-shadow="0 2px 2px #00000040">
-	<Topbar on:next {questionIndex} {questionTotalCount} {gameId} show_skip={true} />
+	<Topbar bind:volume_on on:next {questionIndex} {questionTotalCount} {gameId} show_skip={true} />
 </div>
 <NiceBackground>
 	<div

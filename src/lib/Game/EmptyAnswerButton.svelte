@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { buttonColors, buttonSymbols } from '$lib';
+	import Icon from '$lib/Icon.svelte';
 	import FancyButton from '../FancyButton.svelte';
 
 	export let index: number;
@@ -18,15 +19,13 @@
 			style:align-items="center"
 			style:justify-content="center"
 		>
-			<img
-				src={buttonSymbols.at(index)?.at(0)}
-				alt={buttonSymbols.at(index)?.at(1)}
-				style:height="128px"
-				style:width="128px"
-				style:max-height="75%"
-				style:max-width="75%"
-				style:filter="invert(1)"
-			/>
+			<div style:height="128px" style:width="128px" style:max-height="75%" style:max-width="75%">
+				<Icon
+					src={buttonSymbols.at(index)?.at(0) ?? ''}
+					alt={buttonSymbols.at(index)?.at(1) ?? ''}
+					size="100%"
+				/>
+			</div>
 		</div>
 	</FancyButton>
 </div>

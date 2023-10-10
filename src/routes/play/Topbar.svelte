@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { palette_light } from '$lib';
+	import Icon from '$lib/Icon.svelte';
 	import score_image from '$lib/assets/score.svg';
 
 	export let name: string;
@@ -37,7 +38,7 @@
 			<div style:font-family="Poppins">
 				{score}
 			</div>
-			<img src={score_image} alt="points" width="48px" height="48pxpx" />
+			<Icon src={score_image} alt="points" size="48px" />
 		</div>
 	{/if}
 </div>

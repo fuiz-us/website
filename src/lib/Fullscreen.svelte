@@ -2,6 +2,7 @@
 	import fullscreenEnter from '$lib/assets/fullscreen_enter.svg';
 	import fullscreenExit from '$lib/assets/fullscreen_exit.svg';
 	import { onMount } from 'svelte';
+	import Icon from './Icon.svelte';
 
 	let fullscreen = false;
 
@@ -34,20 +35,8 @@
 	style:cursor="pointer"
 >
 	{#if fullscreen}
-		<img
-			src={fullscreenExit}
-			alt="Exit fullscreen"
-			height="32px"
-			width="32px"
-			style:height="100%"
-		/>
+		<Icon src={fullscreenExit} alt="Exit Fullscreen" size="32px" />
 	{:else}
-		<img
-			src={fullscreenEnter}
-			alt="Enter fullscreen"
-			height="32px"
-			width="32px"
-			style:height="100%"
-		/>
+		<Icon src={fullscreenEnter} alt="Enter Fullscreen" size="32px" />
 	{/if}
 </button>

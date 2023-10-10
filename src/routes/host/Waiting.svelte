@@ -3,15 +3,20 @@
 	import { palette_light } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Fullscreen from '$lib/Fullscreen.svelte';
+	import bee3 from '$lib/assets/bee3.mp3';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import PlayersList from '$lib/Game/PlayersList.svelte';
+	import volume_up from '$lib/assets/volume_up.svg';
+	import volume_off from '$lib/assets/volume_off.svg';
 	import QrCode from '$lib/Game/QRCode.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import IconButton from '$lib/IconButton.svelte';
 
 	export let code: string;
 	export let players: string[];
 	export let exact_count: number;
 	export let truncated: boolean;
+	export let volume_on: boolean;
 	let codeTitle = 'Copy to Clipboard';
 
 	$: actualUrl = PUBLIC_PLAY_URL + '/play?code=' + code;
@@ -22,6 +27,17 @@
 		navigator.clipboard.writeText(actualUrl);
 		codeTitle = 'Copied!';
 	}
+
+	const audio = new Audio(bee3);
+	audio.loop = true;
+	$: audio.volume = volume_on ? 1.0 : 0.0;
+
+	onMount(() => {
+		audio.play();
+		return () => {
+			audio.pause();
+		};
+	});
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">
@@ -65,7 +81,14 @@
 					<QrCode url={actualUrl} />
 				</div>
 			</div>
-			<div style:margin-bottom="auto" style:height="32px" style:width="32px">
+
+			<div style:margin-bottom="auto" style:display="flex" style:gap="5px">
+				<IconButton
+					src={volume_on ? volume_up : volume_off}
+					alt={volume_on ? 'Mute Music' : 'Turn on Music'}
+					size="32px"
+					on:click={() => (volume_on = !volume_on)}
+				/>
 				<Fullscreen />
 			</div>
 		</div>

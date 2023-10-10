@@ -14,7 +14,8 @@
 	style:flex="1"
 	style:display="flex"
 	style:flex-direction="column"
-	style:padding="20px"
+	style:gap="5px"
+	style:padding="20px 10px 10px"
 	style:align-items="center"
 	style:background="#00000008"
 	style:justify-content="space-between"
@@ -22,7 +23,7 @@
 	<div
 		class="focus-within"
 		style:max-width="30ch"
-		style:font-size="xxx-large"
+		style:font-size="clamp(1.25em,8vw,2em)"
 		style:box-shadow="0 0 4px #000000C0"
 		style:background="white"
 		style:max-height="200px"
@@ -33,14 +34,14 @@
 	<div
 		style:display="flex"
 		style:width="100%"
-		style:gap="10px"
+		style:gap="5px"
 		style:align-items="center"
 		style:justify-content="space-between"
 	>
 		<div
 			class="focus-within"
 			bind:this={numberboxElement}
-			style:font-size="xxx-large"
+			style:font-size="clamp(1.25em,6vw,2em)"
 			style:height="2.5em"
 			style:width="2.5em"
 			style:border-radius="100%"

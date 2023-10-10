@@ -7,6 +7,7 @@
 	import { goto } from '$app/navigation';
 	import Footer from '$lib/Footer.svelte';
 	import { base } from '$app/paths';
+	import Icon from '$lib/Icon.svelte';
 </script>
 
 <NiceBackground>
@@ -67,14 +68,7 @@
 								style:min-width="8ch"
 								style:padding="10px"
 							>
-								<img
-									src={paint}
-									alt="paint"
-									style:height="2em"
-									style:aspect-ratio="1/1"
-									style:display="flex"
-									style:filter="invert(1)"
-								/>
+								<Icon src={paint} alt="paint" size="2em" />
 								<div style:font-family="Poppins">Create</div>
 							</div>
 						</FancyButton>
@@ -93,14 +87,7 @@
 								style:min-width="8ch"
 								style:padding="10px"
 							>
-								<img
-									src={game}
-									alt="game"
-									style:height="2em"
-									style:aspect-ratio="1/1"
-									style:display="flex"
-									style:filter="invert(1)"
-								/>
+								<Icon size="2em" src={game} alt="game" />
 								<div style:font-family="Poppins">Play</div>
 							</div>
 						</FancyButton>

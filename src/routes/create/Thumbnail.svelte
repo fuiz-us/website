@@ -4,6 +4,7 @@
 	import delete_slide from '$lib/assets/delete.svg';
 	import content_copy from '$lib/assets/content_copy.svg';
 	import { createEventDispatcher } from 'svelte';
+	import Icon from '$lib/Icon.svelte';
 
 	export let slide: Slide;
 	export let index: number;
@@ -34,17 +35,18 @@
 				on:click={() => dispatch('delete')}
 				style="apperance:none;padding:0;border:0;background:none;cursor:pointer;"
 			>
-				<img src={delete_slide} alt="delete slide" height="24" width="24" style:display="flex" />
+				<Icon src={delete_slide} alt="delete slide" size="24px" />
 			</button>
 			<button
 				on:click={() => dispatch('duplicate')}
 				style="apperance:none;padding:0;border:0;background:none;cursor:pointer;"
 			>
-				<img src={content_copy} alt="duplicate" height="24" width="24" style:display="flex" />
+				<Icon src={content_copy} alt="duplicate" size="24px" />
 			</button>
 		</div>
 	</div>
 	<button
+		class="thumb"
 		style:flex="1"
 		style:padding="0"
 		style:appearance="none"
@@ -61,3 +63,11 @@
 		{/if}
 	</button>
 </div>
+
+<style>
+	@media only screen and (max-width: 600px) {
+		.thumb {
+			width: 150px;
+		}
+	}
+</style>

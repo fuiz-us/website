@@ -12,6 +12,7 @@
 		text: string;
 	}[];
 	export let crossed: number[];
+	export let volume_on: boolean;
 	export let user_votes: number[];
 
 	$: crossed_statements = all_statements
@@ -33,7 +34,7 @@
 
 <NiceBackground>
 	<div style:box-shadow="0 2px 2px #00000040">
-		<Topbar on:next {questionIndex} {questionTotalCount} {gameId} show_skip={true} />
+		<Topbar bind:volume_on on:next {questionIndex} {questionTotalCount} {gameId} show_skip={true} />
 	</div>
 	<div
 		style:max-width="50ch"

@@ -3,6 +3,7 @@
 	import wrong from '$lib/assets/wrong.svg';
 	import factual from '$lib/assets/correct.svg';
 	import FancyButton from '../FancyButton.svelte';
+	import Icon from '$lib/Icon.svelte';
 
 	export let index: number;
 	export let answerText: string;
@@ -17,12 +18,10 @@
 	>
 		<div style:height="100%" style:width="100%" style:display="flex" style:align-items="center">
 			<div style:display="flex" style:padding="6px">
-				<img
-					src={buttonSymbols.at(index)?.at(0)}
-					alt={buttonSymbols.at(index)?.at(1)}
-					height="36px"
-					width="36px"
-					style:filter="invert(1)"
+				<Icon
+					src={buttonSymbols.at(index)?.at(0) ?? ''}
+					alt={buttonSymbols.at(index)?.at(1) ?? ''}
+					size="36px"
 				/>
 			</div>
 			<div
@@ -37,11 +36,11 @@
 			</div>
 			{#if correct === false}
 				<div style:display="flex" style:padding="6px">
-					<img src={wrong} alt="Wrong" height="36px" width="36px" style:filter="invert(1)" />
+					<Icon src={wrong} alt="Wrong" size="36px" />
 				</div>
 			{:else if correct === true}
 				<div style:display="flex" style:padding="6px">
-					<img src={factual} alt="Correct" height="36px" width="36px" style:filter="invert(1)" />
+					<Icon src={factual} alt="Correct" size="36px" />
 				</div>
 			{/if}
 		</div>

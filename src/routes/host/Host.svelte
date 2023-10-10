@@ -16,6 +16,8 @@
 
 	let socket: WebSocket;
 
+	let volume_on = true;
+
 	let status: 'loading' | 'open' | 'error' = 'loading';
 
 	let errorMessage = '';
@@ -151,6 +153,7 @@
 			players={msg.Game.WaitingScreen.players}
 			exact_count={msg.Game.WaitingScreen.exact_count}
 			truncated={msg.Game.WaitingScreen.truncated}
+			bind:volume_on
 		/>
 	{:else if 'MultipleChoice' in msg}
 		{#if 'QuestionAnnouncment' in msg.MultipleChoice}
@@ -160,6 +163,7 @@
 				questionTotalCount={msg.MultipleChoice.QuestionAnnouncment.count}
 				gameId={code}
 				questionText={msg.MultipleChoice.QuestionAnnouncment.question}
+				bind:volume_on
 			/>
 		{:else if 'AnswersAnnouncement' in msg.MultipleChoice}
 			<QuestionAnswers
@@ -172,6 +176,7 @@
 				timeLeft={timer}
 				answeredCount={msg.MultipleChoice.AnswersAnnouncement.answered_count || 0}
 				media={msg.MultipleChoice.AnswersAnnouncement.media}
+				bind:volume_on
 			/>
 		{:else if 'AnswersResults' in msg.MultipleChoice}
 			<QuestionStatistics
@@ -188,6 +193,7 @@
 					count: ar.count,
 					correct: ar.correct
 				}))}
+				bind:volume_on
 			/>
 		{:else if 'Leaderboard' in msg.MultipleChoice}
 			<Leaderboard
@@ -198,6 +204,7 @@
 				results={msg.MultipleChoice.Leaderboard.points}
 				final={(msg.MultipleChoice.Leaderboard.index || 0) + 1 ===
 					(msg.MultipleChoice.Leaderboard.count || 1)}
+				bind:volume_on
 			/>
 		{/if}
 	{:else if 'Bingo' in msg}
@@ -209,6 +216,7 @@
 				all_statements={msg.Bingo.List.all_statements}
 				user_votes={msg.Bingo.List.user_votes}
 				gameId={code}
+				bind:volume_on
 				on:index={(e) => index(e.detail)}
 			/>
 		{:else if 'Leaderboard' in msg.Bingo}
@@ -218,6 +226,7 @@
 				winners={msg.Bingo.Leaderboard.winners}
 				gameId={code}
 				on:next={next}
+				bind:volume_on
 			/>
 		{/if}
 	{/if}

@@ -4,6 +4,7 @@
 	import delete_answer from '$lib/assets/delete.svg';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Textbox from '$lib/Textbox.svelte';
+	import Icon from '$lib/Icon.svelte';
 
 	export let answer: MultipleChoiceAnswer;
 	export let index: number;
@@ -15,14 +16,16 @@
 	active={false}
 >
 	<div
-		style:font-size="xx-large"
+		style:font-size="max(1.25em,min(2em,5vw))"
 		style:display="flex"
 		style:align-items="center"
 		style:padding="5px 10px"
 		style:gap="10px"
 		style:color="white"
 	>
-		<Checkbox bind:value={answer.correct} color={buttonColors.at(index)?.[0]} />
+		<div style:height="1.5em" style:display="flex">
+			<Checkbox bind:value={answer.correct} color={buttonColors.at(index)?.[0]} />
+		</div>
 		<Textbox
 			bind:value={answer.content.Text}
 			placeholder="Answer Text"
@@ -36,18 +39,13 @@
 			style:aspect-ratio="1/1"
 			style:appearance="none"
 			style:border="none"
+			style:padding="0"
 			style:background="none"
 			style:cursor="pointer"
+			style:color="inherit"
 			on:click
 		>
-			<img
-				height="100%"
-				width="100%"
-				style:display="flex"
-				src={delete_answer}
-				style:filter="invert(1)"
-				alt="delete answer"
-			/>
+			<Icon size="100%" src={delete_answer} alt="delete anaswer" />
 		</button>
 	</div>
 </FancyButton>

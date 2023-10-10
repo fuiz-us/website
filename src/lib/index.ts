@@ -13,7 +13,8 @@ export const buttonColors = [
 	['#DA5C00', '#a84600']
 ] as const;
 
-export const palette_light = '#fffbf5';
+export const palette_light = '#FFFBF5';
+export const palette_dark = '#241F31';
 
 export const medal_colors = ['#FFD700', '#C0C0C0', '#CD7F32'] as const;
 

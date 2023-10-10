@@ -23,7 +23,7 @@
 		{questionText}
 	</div>
 	{#if show_next}
-		<div style:font-size="xxx-large">
+		<div style:font-size="clamp(1.25em,5vw,2em)">
 			<FancyButton on:click={() => dispatch('next')}>
 				<div style:padding="0 10px">Next</div>
 			</FancyButton>

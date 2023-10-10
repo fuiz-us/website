@@ -2,6 +2,7 @@
 	import { palette_light } from '$lib';
 	import { createEventDispatcher } from 'svelte';
 	import vote from '$lib/assets/vote.svg';
+	import Icon from '$lib/Icon.svelte';
 
 	export let user_votes: number;
 	export let text: string;
@@ -27,7 +28,7 @@
 		{text}
 	</div>
 	<div style:display="flex" style:align-items="center" style:gap="5px">
-		<img src={vote} alt="vote" style:height="1em" style:width="1em" style:filter="invert(1)" />
+		<Icon src={vote} alt="vote" size="1em" />
 		<div>
 			{user_votes}
 		</div>

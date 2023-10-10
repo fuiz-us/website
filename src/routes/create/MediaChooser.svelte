@@ -4,6 +4,7 @@
 	import add_photo from '$lib/assets/add_photo.svg';
 	import Textbox from '$lib/Textbox.svelte';
 	import MediaDisplay from '$lib/MediaDisplay.svelte';
+	import Icon from '$lib/Icon.svelte';
 
 	export let media: Media | null | undefined;
 
@@ -39,7 +40,7 @@
 </script>
 
 {#if !media}
-	<div style:flex="1" style:display="flex" style:justify-content="center">
+	<div style:flex="1" style:padding="10px" style:display="flex" style:justify-content="center">
 		<input
 			style:display="none"
 			type="file"
@@ -72,8 +73,8 @@
 			}}
 		>
 			<div
-				style:height="300px"
-				style:width="300px"
+				style:height="min(15em, 60vw)"
+				style:width="min(15em, 60vw)"
 				style:background={drag_over ? buttonColors[0][0] : 'white'}
 				style:border="2px dashed {drag_over ? '#fff' : '#00000040'}"
 				style:border-radius="5px"
@@ -93,21 +94,10 @@
 					style:align-items="center"
 					style:cursor="pointer"
 					style:justify-content="center"
+					style:color={drag_over ? palette_light : '#888'}
 				>
-					<img
-						src={add_photo}
-						alt="add"
-						style:height="64px"
-						style:width="64px"
-						style:filter={drag_over ? 'invert(1)' : 'invert(0.5)'}
-					/>
-					<div
-						style:font-size="x-large"
-						style:font-weight="bold"
-						style:color={drag_over ? palette_light : '#888'}
-					>
-						Open Image
-					</div>
+					<Icon size="64px" src={add_photo} alt="add" />
+					<div style:font-size="x-large" style:font-weight="bold">Open Image</div>
 				</label>
 				<div
 					style:font-size="large"
@@ -126,19 +116,19 @@
 			style:flex-direction="column"
 			style:background="white"
 			style:flex="1"
-			style:font-size="x-large"
-			style:gap="20px"
-			style:padding="10px"
+			style:font-size="clamp(1.25em, 3vw, 1.5em)"
+			style:gap="5px"
+			style:padding="5px"
 			style:box-sizing="border-box"
 			style:box-shadow="0 0 4px #000000C0"
-			style:max-width="50ch"
+			style:max-width="40ch"
 			style:margin="auto"
 		>
-			<div style:display="flex">
+			<div style:display="flex" style:align-items="center">
 				<div
 					style:flex="1"
 					style:text-align="center"
-					style:font-size="xx-large"
+					style:font-size="clamp(1.25em, 5vw, 1.5em)"
 					style:font-weight="bold"
 				>
 					Local Image
@@ -146,8 +136,7 @@
 				<button
 					style:font="inherit"
 					style:display="flex"
-					style:height="1.5em"
-					style:aspect-ratio="1/1"
+					style:padding="5px"
 					style:appearance="none"
 					style:border="none"
 					style:background="none"
@@ -156,26 +145,22 @@
 						media = null;
 					}}
 				>
-					<img
-						height="100%"
-						width="100%"
-						style:display="flex"
-						src={delete_image}
-						alt="delete answer"
-					/>
+					<Icon size="1.25em" src={delete_image} alt="delete image" />
 				</button>
 			</div>
-			<div style:display="flex" style:gap="10px">
+			<div class="switched" style:align-items="stretch" style:display="flex" style:gap="10px">
 				<div
 					style:flex="1"
-					style:min-width="200px"
+					style:width="100%"
+					style:max-width="300px"
+					style:min-width="150px"
 					style:position="relative"
 					style:height="300px"
 					style:overflow="auto"
 				>
 					<MediaDisplay {media} />
 				</div>
-				<div style:display="flex" style:flex-direction="column" style:gap="10px">
+				<div style:display="flex" style:flex-direction="column" style:gap="5px">
 					<div>Image Alt:</div>
 					<div
 						style:flex="1"
@@ -199,5 +184,11 @@
 <style>
 	.focus-within:focus-within {
 		outline: 2px solid blueviolet;
+	}
+
+	@media only screen and (max-width: 600px) {
+		.switched {
+			flex-direction: column;
+		}
 	}
 </style>

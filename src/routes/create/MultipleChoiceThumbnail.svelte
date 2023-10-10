@@ -9,14 +9,16 @@
 <div
 	style:display="flex"
 	style:gap="5px"
+	style:height="100px"
+	style:overflow="hidden"
 	style:flex-direction="column"
 	style:justify-content="space-between"
-	style:height="100%"
 	style:background={palette_light}
 >
 	<div
 		style:background={palette_light}
 		style:padding="5px 5px"
+		style:box-sizing="border-box"
 		style:box-shadow="0 2px 2px #00000040"
 		style:text-align="center"
 		style:white-space="nowrap"
@@ -26,7 +28,7 @@
 	<VerticalSplit>
 		<svelte:fragment slot="top">
 			{#if slide.media}
-				<div style:height="100px">
+				<div style:height="50px">
 					<MediaContainer media={slide.media} />
 				</div>
 			{/if}

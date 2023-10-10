@@ -13,10 +13,11 @@
 	export let questionText: string;
 	export let answers: { text: string; count: number; correct: boolean }[];
 	export let timeLeft: number | undefined = undefined;
+	export let volume_on: boolean;
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">
-	<Topbar {questionIndex} {questionTotalCount} {gameId} />
+	<Topbar bind:volume_on {questionIndex} {questionTotalCount} {gameId} />
 	<QuestionText on:next {questionText} show_next={true} />
 	<div style:flex="1">
 		<NiceBackground>

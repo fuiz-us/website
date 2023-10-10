@@ -8,6 +8,7 @@
 	export let questionIndex: number;
 	export let questionTotalCount: number;
 	export let gameId: string;
+	export let volume_on: boolean;
 
 	export let winners: string[];
 
@@ -15,7 +16,7 @@
 </script>
 
 <NiceBackground>
-	<Topbar {questionIndex} {questionTotalCount} {gameId} />
+	<Topbar bind:volume_on {questionIndex} {questionTotalCount} {gameId} />
 	<div
 		style:background={palette_light}
 		style:display="flex"

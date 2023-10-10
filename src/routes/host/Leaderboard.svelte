@@ -10,12 +10,13 @@
 	export let gameId: string;
 	export let results: [string, number][];
 	export let final: boolean;
+	export let volume_on: boolean;
 
 	const dispatch = createEventDispatcher();
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">
-	<Topbar {questionIndex} {questionTotalCount} {gameId} />
+	<Topbar bind:volume_on {questionIndex} {questionTotalCount} {gameId} />
 	<div
 		style:background={palette_light}
 		style:display="flex"

@@ -3,6 +3,7 @@
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 	import medal from '$lib/assets/medal.svg';
+	import Icon from '$lib/Icon.svelte';
 
 	export let name: string;
 	export let score: number;
@@ -43,13 +44,9 @@
 								style:font-family="Poppins"
 								style:box-sizing="border-box"
 							>
-								<img
-									src={medal}
-									alt="medal"
-									width="200px"
-									style:aspect-ratio="1/1"
-									style:filter="invert(1) drop-shadow(0 2px 2px rgb(0 0 0 / 0.25))"
-								/>
+								<div style:filter="drop-shadow(0 2px 2px rgb(0 0 0 / 0.25))">
+									<Icon size="200px" src={medal} alt="medal" />
+								</div>
 								<div style:text-shadow="0 2px 2px rgb(0 0 0 / 0.25)">
 									{#if position === 0}
 										1st

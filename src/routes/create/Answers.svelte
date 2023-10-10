@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { buttonColors, type MultipleChoiceAnswer } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
+	import Icon from '$lib/Icon.svelte';
 	import variables from '$lib/assets/variables.svg';
 	import Answer from './Answer.svelte';
 
@@ -8,12 +9,11 @@
 </script>
 
 <div
+	id="grid"
 	style:display="grid"
-	style:grid-template-columns="1fr 1fr"
-	style:grid-template-rows="repeat({Math.ceil(answers.length / 2 + 1)}, 1fr)"
+	style="--count:{answers.length}"
 	style:gap="5px"
 	style:width="100%"
-	style:padding="5px"
 >
 	{#each answers as answer, index}
 		<Answer
@@ -42,7 +42,7 @@
 			<div
 				style:height="100%"
 				style:text-align="center"
-				style:font-size="xx-large"
+				style:font-size="clamp(1.25em,5vw,2em)"
 				style:display="flex"
 				style:align-items="center"
 				style:justify-content="center"
@@ -50,16 +50,23 @@
 				style:gap="5px"
 				style:box-sizing="border-box"
 			>
-				<img
-					src={variables}
-					style:height="1.25em"
-					style:width="1.25em"
-					alt="add"
-					style:display="flex"
-					style:filter="invert(1)"
-				/>
+				<Icon size="1.25em" src={variables} alt="add" />
 				<div>Add Answer</div>
 			</div>
 		</FancyButton>
 	</div>
 </div>
+
+<style>
+	#grid {
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: repeat(calc(var(--count) / 2 + 1), 1fr);
+	}
+
+	@media only screen and (max-width: 600px) {
+		#grid {
+			grid-template-columns: 1fr;
+			grid-template-rows: repeat(calc(var(--count) + 1), 1fr);
+		}
+	}
+</style>

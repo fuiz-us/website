@@ -10,6 +10,7 @@
 	import IconButton from '$lib/IconButton.svelte';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
+	import Icon from '$lib/Icon.svelte';
 
 	export let creations: {
 		id: number;
@@ -20,7 +21,17 @@
 
 	$: sorted_creations = creations.sort((a, b) => b.last_edited - a.last_edited);
 
-	const options = { year: 'numeric', month: 'long', day: 'numeric' } as const;
+	const same_year = { month: 'short', day: 'numeric' } as const;
+	const diff_year = { year: 'numeric', month: 'numeric', day: 'numeric' } as const;
+
+	function dateToString(date: Date): string {
+		let currentDate = new Date();
+		if (currentDate.getFullYear() == date.getFullYear()) {
+			return date.toLocaleDateString(undefined, same_year);
+		} else {
+			return date.toLocaleDateString(undefined, diff_year);
+		}
+	}
 
 	function update_localstorage() {
 		localStorage.setItem('creations', JSON.stringify(creations.map((c) => c.id)));
@@ -79,13 +90,7 @@
 							style:padding="0.15em 0.25em"
 							style:justify-content="center"
 						>
-							<img
-								src={add}
-								alt="add a new one"
-								style:width="1em"
-								style:height="1em"
-								style:filter="invert(1)"
-							/>
+							<Icon size="1em" src={add} alt="add a new one" />
 							<div>Start Blank</div>
 						</div>
 					</FancyButton>
@@ -111,14 +116,19 @@
 								style:align-items="center"
 								style:border-radius="5px"
 							>
-								<IconButton src={play_fuiz} alt="play this fuiz" on:click={() => play_local(id)} />
+								<IconButton
+									size="1.4em"
+									src={play_fuiz}
+									alt="play this fuiz"
+									on:click={() => play_local(id)}
+								/>
 								<a
 									href="?id={id}"
 									style:padding="8px 10px"
 									style:display="flex"
 									style:color="inherit"
 									style:text-decoration="inherit"
-									style:gap="1em"
+									style:gap="5px"
 									style:flex="1"
 								>
 									<div
@@ -130,13 +140,14 @@
 										{title}
 									</div>
 									<div style:opacity="0.7">
-										{new Date(last_edited).toLocaleDateString(undefined, options)}
+										{dateToString(new Date(last_edited))}
 									</div>
 									<div style:flex="1" style:text-align="end">
 										{slides_count} slides
 									</div>
 								</a>
 								<IconButton
+									size="1.4em"
 									src={delete_fuiz}
 									alt="delete this fuiz"
 									on:click={() => {

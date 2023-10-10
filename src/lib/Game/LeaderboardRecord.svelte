@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { medal_colors } from '$lib';
+	import Icon from '$lib/Icon.svelte';
 	import medal from '$lib/assets/medal.svg';
 	export let name: string;
 	export let score: number;
@@ -7,7 +8,7 @@
 	export let final: boolean;
 </script>
 
-<div style:display="flex" style:align-items="center" style:gap="10px">
+<div style:display="flex" style:align-items="center" style:gap="10px" style:color="white">
 	{#if final}
 		<div style:height="100%" style:aspect-ratio="1/1">
 			{#if index < 3}
@@ -22,13 +23,9 @@
 					style:padding="12px"
 					style:box-sizing="border-box"
 				>
-					<img
-						src={medal}
-						alt="medal"
-						height="100%"
-						width="100%"
-						style:filter="invert(1) drop-shadow(0 2px 2px rgb(0 0 0 / 0.25))"
-					/>
+					<div style:filter="drop-shadow(0 2px 2px rgb(0 0 0 / 0.25))">
+						<Icon src={medal} alt="medal" size="100%" />
+					</div>
 				</div>
 			{/if}
 		</div>
@@ -41,7 +38,6 @@
 		style:box-sizing="border-box"
 		style:display="flex"
 		style:justify-content="space-between"
-		style:color="white"
 	>
 		<div>{name}</div>
 		<div>{score}</div>

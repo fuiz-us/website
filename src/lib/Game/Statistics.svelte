@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { buttonColors, buttonSymbols } from '$lib';
+	import { buttonColors, buttonSymbols, palette_light } from '$lib';
+	import Icon from '$lib/Icon.svelte';
 
 	export let statistics: { count: number; correct: boolean }[] = [];
 
@@ -26,15 +27,14 @@
 				style:display="flex"
 				style:justify-content="center"
 				style:border-radius="5px"
+				style:color={palette_light}
 				style:padding="6px 18px"
 				style:background={buttonColors.at(index)?.at(0)}
 			>
-				<img
-					src={buttonSymbols.at(index)?.at(0)}
-					alt={buttonSymbols.at(index)?.at(1)}
-					height="36px"
-					width="36px"
-					style:filter="invert(1)"
+				<Icon
+					src={buttonSymbols.at(index)?.at(0) ?? ''}
+					alt={buttonSymbols.at(index)?.at(1) ?? ''}
+					size="36px"
 				/>
 			</div>
 			<div style:display="flex" style:flex-direction="column-reverse" style:height="100%">

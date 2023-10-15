@@ -2,6 +2,7 @@
 	import { buttonColors, palette_light, type Media } from '$lib';
 	import delete_image from '$lib/assets/delete.svg';
 	import add_photo from '$lib/assets/add_photo.svg';
+	import hearing from '$lib/assets/hearing.svg';
 	import Textbox from '$lib/Textbox.svelte';
 	import MediaDisplay from '$lib/MediaDisplay.svelte';
 	import Icon from '$lib/Icon.svelte';
@@ -117,8 +118,9 @@
 			style:background="white"
 			style:flex="1"
 			style:font-size="clamp(1.25em, 3vw, 1.5em)"
-			style:gap="5px"
-			style:padding="5px"
+			style:border-radius="5px"
+			style:gap="10px"
+			style:padding="10px"
 			style:box-sizing="border-box"
 			style:box-shadow="0 0 4px #000000C0"
 			style:max-width="40ch"
@@ -148,31 +150,41 @@
 					<Icon size="1.25em" src={delete_image} alt="delete image" />
 				</button>
 			</div>
-			<div class="switched" style:align-items="stretch" style:display="flex" style:gap="10px">
+			<div
+				style:flex-direction="column"
+				style:align-items="stretch"
+				style:display="flex"
+				style:gap="10px"
+			>
 				<div
-					style:flex="1"
 					style:width="100%"
-					style:max-width="300px"
+					style:height="100%"
+					style:max-width="400px"
 					style:min-width="150px"
 					style:position="relative"
-					style:height="300px"
+					style:max-height="400px"
+					style:display="flex"
+					style:flex-direction="column"
 					style:overflow="auto"
+					style:margin="auto"
 				>
 					<MediaDisplay {media} />
 				</div>
-				<div style:display="flex" style:flex-direction="column" style:gap="5px">
-					<div>Image Alt:</div>
+				<div style:display="flex" style:align-items="center" style:gap="10px">
+					<Icon size="1.25em" src={hearing} alt="Image Alt" />
 					<div
 						style:flex="1"
 						class="focus-within"
 						style:overflow="auto"
 						style:border="1px solid #00000040"
 						style:max-height="400px"
+						style:border-radius="5px"
 					>
 						<Textbox
 							bind:value={media.Image.Base64.alt}
-							placeholder="a clear description of the image"
+							placeholder="a clear description for the visually impaired"
 							textAlign="start"
+							padding="5px 10px"
 						/>
 					</div>
 				</div>
@@ -184,11 +196,5 @@
 <style>
 	.focus-within:focus-within {
 		outline: 2px solid blueviolet;
-	}
-
-	@media only screen and (max-width: 600px) {
-		.switched {
-			flex-direction: column;
-		}
 	}
 </style>

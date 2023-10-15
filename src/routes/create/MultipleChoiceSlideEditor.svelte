@@ -27,6 +27,7 @@
 		style:box-shadow="0 0 4px #000000C0"
 		style:background="white"
 		style:max-height="200px"
+		style:border-radius="5px"
 		style:overflow="auto"
 	>
 		<Textbox bind:value={slide.title} placeholder="Question Title" />

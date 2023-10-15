@@ -5,6 +5,7 @@
 	export let placeholder: string;
 	export let textAlign = 'center';
 	export let lightText = false;
+	export let padding = '5px';
 
 	$: placeholderColor = lightText ? '#FFFFFF80' : '#00000080';
 
@@ -28,7 +29,7 @@
 	style:display="flex"
 	style:font="inherit"
 	style:width="100%"
-	style:padding="5px"
+	style:padding
 	style:text-align={textAlign}
 	{placeholder}
 	style:box-sizing="border-box"

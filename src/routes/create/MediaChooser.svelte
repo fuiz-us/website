@@ -177,7 +177,7 @@
 						class="focus-within"
 						style:overflow="auto"
 						style:border="1px solid #00000040"
-						style:max-height="400px"
+						style:max-height="200px"
 						style:border-radius="5px"
 					>
 						<Textbox

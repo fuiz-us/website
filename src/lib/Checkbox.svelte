@@ -8,6 +8,10 @@
 	export let color: string | undefined = undefined;
 </script>
 
+<svelte:head>
+	<link rel="preload" as="image" href={factual} />
+</svelte:head>
+
 <button
 	style:height="100%"
 	style:aspect-ratio="1/1"

@@ -21,7 +21,7 @@
 >
 	<div>Made with 💔 in MIT.</div>
 	<a
-	    href="https://accesibility.mit.edu/"
+	    href="https://accessibility.mit.edu/"
 	    style:text-decoration="none"
 		style:background={palette_dark + '40'}
 		style:color={palette_dark}

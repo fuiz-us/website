@@ -30,7 +30,7 @@
 		style:display="inline-flex"
 		style:align-items="center"
 	>
-        Accesibility
+        Accessibility
 	</a>
 	<a
 		style:text-decoration="none"

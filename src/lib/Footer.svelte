@@ -21,6 +21,18 @@
 >
 	<div>Made with 💔 in MIT.</div>
 	<a
+	    href="https://accesibility.mit.edu/"
+	    style:text-decoration="none"
+		style:background={palette_dark + '40'}
+		style:color={palette_dark}
+		style:padding="5px 10px"
+		style:border-radius="5px"
+		style:display="inline-flex"
+		style:align-items="center"
+	>
+        Accesibility
+	</a>
+	<a
 		style:text-decoration="none"
 		style:background={palette_dark + '40'}
 		style:color={palette_dark}

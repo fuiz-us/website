@@ -23,19 +23,19 @@
 		>
 			<div
 				style:display="flex"
+				style:padding="20px 0"
 				style:flex-direction="column"
 				style:align-items="center"
 				style:justify-content="end"
-				style:gap="20px"
-				style:flex="1"
+				style:gap="10px"
 			>
-				<a href="{base}/" style:height="100px" style:overflow="hidden">
+				<a href="{base}/" style:height="60px" style:overflow="hidden">
 					<Logo />
 				</a>
 				<div
 					style:text-align="center"
 					style:font-family="Poppins"
-					style:font-size="xx-large"
+					style:font-size="x-large"
 					style:margin-bottom="40px"
 				>
 					Host live quizzes freely
@@ -46,7 +46,7 @@
 				style:display="flex"
 				style:flex-direction="column"
 				style:align-items="center"
-				style:justify-content="start"
+				style:justify-content="center"
 			>
 				<div
 					style:display="flex"

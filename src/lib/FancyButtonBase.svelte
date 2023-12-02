@@ -28,7 +28,9 @@
 		<div
 			class="front"
 			style:background={disabled ? '#737373' : backgroundColor}
+			style:border="2px solid {backgroundDeepColor}"
 			style:border-radius="5px"
+			style:box-sizing="border-box"
 			style:color={foregroundColor}
 			style:width="100%"
 			style:height="100%"

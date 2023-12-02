@@ -2,7 +2,7 @@
 	import type { Media } from '$lib';
 	import MediaDisplay from './MediaDisplay.svelte';
 
-	export let media: Media | null;
+	export let media: Media | undefined;
 	export let align = 'center';
 </script>
 

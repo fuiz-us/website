@@ -59,10 +59,6 @@ type WaitingScreenMessage = {
 	truncated: boolean;
 };
 
-type ServerGameIncomingMessage = {
-	WaitingScreen: WaitingScreenMessage;
-};
-
 type GameIncomingMessage =
 	| {
 			WaitingScreen: WaitingScreenMessage;
@@ -97,126 +93,14 @@ export type Media = {
 	Image: Image;
 };
 
-type TextOrMedia = {
+export type TextOrMedia = {
 	Text: string;
 };
 
-type AnswerResult = {
+export type AnswerResult = {
 	correct: boolean;
 	count: number;
 };
-
-type BingoIncomingMessage =
-	| {
-			List: {
-				index: number;
-				count: number;
-				all_statements: {
-					id: number;
-					text: string;
-				}[];
-				assigned_statement: number[];
-				crossed: number[];
-				user_votes: number[];
-			};
-	  }
-	| {
-			Cross: {
-				crossed: number[];
-			};
-	  }
-	| {
-			Votes: {
-				user_votes: number[];
-			};
-	  }
-	| {
-			Leaderboard: {
-				index: number;
-				count: number;
-				winners: string[];
-			};
-	  };
-
-type MultipleChoiceIncomingMessage =
-	| {
-			QuestionAnnouncment: {
-				index: number;
-				count: number;
-				question: string;
-				media: Media | null;
-				duration: number;
-			};
-	  }
-	| {
-			AnswersAnnouncement: {
-				index?: number;
-				count?: number;
-				question?: string;
-				media: Media | null;
-				answers: Array<TextOrMedia>;
-				answered_count?: number;
-				duration: number;
-			};
-	  }
-	| {
-			AnswersCount: number;
-	  }
-	| {
-			AnswersResults: {
-				index?: number;
-				count?: number;
-				question?: string;
-				answers?: Array<TextOrMedia>;
-				results: Array<AnswerResult>;
-			};
-	  }
-	| {
-			Leaderboard: {
-				index?: number;
-				count?: number;
-				points: Array<[string, number]>;
-			};
-	  };
-
-export type ServerIncomingMessage =
-	| {
-			Game: ServerGameIncomingMessage;
-	  }
-	| {
-			MultipleChoice: MultipleChoiceIncomingMessage;
-	  }
-	| {
-			Bingo: BingoIncomingMessage;
-	  };
-
-export type IncomingMessage =
-	| {
-			Game: GameIncomingMessage;
-	  }
-	| {
-			MultipleChoice: MultipleChoiceIncomingMessage;
-	  }
-	| {
-			Bingo: BingoIncomingMessage;
-	  };
-
-export type IncomingMessageState =
-	| {
-			Game: GameIncomingMessageState;
-	  }
-	| {
-			WaitingForOthers: {
-				count?: number;
-				index?: number;
-			};
-	  }
-	| {
-			MultipleChoice: MultipleChoiceIncomingMessage;
-	  }
-	| {
-			Bingo: BingoIncomingMessage;
-	  };
 
 export type MultipleChoiceAnswer = {
 	correct: boolean;

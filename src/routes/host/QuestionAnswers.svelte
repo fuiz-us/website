@@ -18,7 +18,7 @@
 	export let answers: string[];
 	export let timeLeft: number;
 	export let answeredCount: number;
-	export let media: Media | null;
+	export let media: Media | undefined;
 	export let volume_on: boolean;
 
 	const audio = new Audio(think);

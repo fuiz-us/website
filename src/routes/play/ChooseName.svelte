@@ -8,9 +8,9 @@
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import { createEventDispatcher } from 'svelte';
 
-	let button = "I'm Ready!";
-	let loading = false;
-	let disabled = false;
+	export let sending: boolean;
+
+	$: button = sending ? 'Loading' : "I'm Ready!";
 	let placeholder = 'Nickname';
 	export let errorMessage = '';
 	let name = '';
@@ -19,15 +19,7 @@
 		setName: string;
 	}>();
 
-	export function reset() {
-		disabled = false;
-		loading = false;
-		button = "I'm Ready!";
-	}
-
 	async function submit() {
-		disabled = true;
-		loading = true;
 		button = 'Loading';
 
 		dispatch('setName', name);
@@ -47,16 +39,16 @@
 				<Logo />
 			</a>
 			<ErrorMessage {errorMessage} />
-			<input type="text" {placeholder} required {disabled} bind:value={name} />
+			<input type="text" {placeholder} required disabled={sending} bind:value={name} />
 			<div style:margin="5px 0" style:width="100%">
-				<FancyButton bind:disabled>
+				<FancyButton disabled={sending}>
 					<div
 						style:display="flex"
 						style:align-items="center"
 						style:justify-content="center"
 						style:font-family="Poppins"
 					>
-						{#if loading}
+						{#if sending}
 							<div style:height="1em" style:aspect-ratio="1/1" style:margin="0 5px">
 								<LoadingCircle />
 							</div>

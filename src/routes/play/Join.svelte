@@ -31,26 +31,33 @@
 		style:font-size="x-large"
 	>
 		<form on:submit|preventDefault={submit}>
-			<a href="{base}/" style:height="100px" style:margin="10px 0 40px" style:overflow="hidden">
+			<a href="{base}/" style:height="65px" style:margin="10px 0 40px" style:overflow="hidden">
 				<Logo />
 			</a>
-			<input type="text" {placeholder} required {disabled} bind:value={gameCode} />
-			<div style:margin="5px 0" style:width="100%">
-				<FancyButton bind:disabled>
-					<div
-						style:display="flex"
-						style:align-items="center"
-						style:justify-content="center"
-						style:font-family="Poppins"
-					>
-						{#if loading}
-							<div style:height="1em" style:aspect-ratio="1/1" style:margin="0 5px">
-								<LoadingCircle />
-							</div>
-						{/if}
-						{button}
-					</div>
-				</FancyButton>
+			<div
+				style:flex="1"
+				style:display="flex"
+				style:flex-direction="column"
+				style:justify-content="center"
+			>
+				<input type="text" {placeholder} required {disabled} bind:value={gameCode} />
+				<div style:margin="5px 0" style:width="100%">
+					<FancyButton bind:disabled>
+						<div
+							style:display="flex"
+							style:align-items="center"
+							style:justify-content="center"
+							style:font-family="Poppins"
+						>
+							{#if loading}
+								<div style:height="1em" style:aspect-ratio="1/1" style:margin="0 5px">
+									<LoadingCircle />
+								</div>
+							{/if}
+							{button}
+						</div>
+					</FancyButton>
+				</div>
 			</div>
 		</form>
 		<Footer />

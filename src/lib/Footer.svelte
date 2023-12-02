@@ -2,6 +2,7 @@
 	import { base } from '$app/paths';
 	import { palette_dark } from '$lib';
 	import warning from '$lib/assets/warning.svg';
+	import balance from '$lib/assets/balance.svg';
 	import Icon from './Icon.svelte';
 </script>
 
@@ -37,6 +38,7 @@
 		style:background={palette_dark + '40'}
 		style:color={palette_dark}
 		style:padding="5px 10px"
+		style:gap="5px"
 		style:border-radius="5px"
 		href="{base}/credits"
 		style:display="inline-flex"
@@ -44,5 +46,19 @@
 	>
 		<Icon src={warning} alt="Not stable yet" size="1em" />
 		<div>Version 0.2</div>
+	</a>
+	<a
+		style:text-decoration="none"
+		style:background={palette_dark + '40'}
+		style:color={palette_dark}
+		style:padding="5px 10px"
+		style:gap="5px"
+		style:border-radius="5px"
+		href="https://www.gnu.org/licenses/agpl-3.0.txt"
+		style:display="inline-flex"
+		style:align-items="center"
+	>
+		<Icon src={balance} alt="free and open source" size="1em" />
+		<div>GNU AGPLv3</div>
 	</a>
 </div>

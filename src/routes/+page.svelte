@@ -23,13 +23,13 @@
 		>
 			<div
 				style:display="flex"
-				style:padding="20px 0"
+				style:padding="10px 0"
 				style:flex-direction="column"
 				style:align-items="center"
 				style:justify-content="end"
 				style:gap="10px"
 			>
-				<a href="{base}/" style:height="60px" style:overflow="hidden">
+				<a href="{base}/" style:height="65px" style:overflow="hidden">
 					<Logo />
 				</a>
 				<div

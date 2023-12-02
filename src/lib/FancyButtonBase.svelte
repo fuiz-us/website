@@ -20,7 +20,7 @@
 >
 	<div
 		style:background={disabled ? '#636363' : backgroundDeepColor}
-		style:border-radius="5px"
+		style:border-radius="10px"
 		style:transform="translateY(0)"
 		style:width="100%"
 		style:height="100%"
@@ -29,7 +29,7 @@
 			class="front"
 			style:background={disabled ? '#737373' : backgroundColor}
 			style:border="2px solid {backgroundDeepColor}"
-			style:border-radius="5px"
+			style:border-radius="10px"
 			style:box-sizing="border-box"
 			style:color={foregroundColor}
 			style:width="100%"

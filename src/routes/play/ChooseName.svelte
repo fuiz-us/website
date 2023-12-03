@@ -40,7 +40,14 @@
 				<Logo />
 			</a>
 			<ErrorMessage {errorMessage} />
-			<Textfield id="name" {placeholder} required={true} disabled={sending} bind:value={name} />
+			<Textfield
+				id="name"
+				{placeholder}
+				autocomplete="nickname"
+				required={true}
+				disabled={sending}
+				bind:value={name}
+			/>
 			<div style:margin="5px 0" style:width="100%">
 				<FancyButton disabled={sending}>
 					<div

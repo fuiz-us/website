@@ -5,10 +5,19 @@
 	export let disabled: boolean;
 	export let value: string;
 	export let text_transform = '';
+	export let autocomplete = 'off';
 </script>
 
 <div style:position="relative">
-	<input {id} type="text" style:text-transform={text_transform} {required} {disabled} bind:value />
+	<input
+		{id}
+		{autocomplete}
+		type="text"
+		style:text-transform={text_transform}
+		{required}
+		{disabled}
+		bind:value
+	/>
 	<label for={id}>{placeholder}</label>
 </div>
 

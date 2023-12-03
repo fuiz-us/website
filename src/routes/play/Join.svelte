@@ -70,6 +70,7 @@
 					{placeholder}
 					required={true}
 					disabled={sending}
+					autocomplete="nickname"
 					bind:value={gameCode}
 					text_transform="uppercase"
 				/>

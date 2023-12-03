@@ -4,11 +4,10 @@
 	export let required: boolean;
 	export let disabled: boolean;
 	export let value: string;
-	export let text_transform = '';
 </script>
 
 <div style:position="relative">
-	<input {id} type="text" style:text-transform={text_transform} {required} {disabled} bind:value />
+	<textarea {id} {required} {disabled} bind:value />
 	<label for={id}>{placeholder}</label>
 </div>
 
@@ -28,23 +27,36 @@
 		border-radius: 5px 5px 0 0;
 		top: 50%;
 		transform: translateY(-50%);
-		line-height: 10px;
+		line-height: 1em;
 		transform-origin: top;
 		transition: all 100ms linear;
 	}
 
-	input:is(:valid, :focus, :disabled) + label {
+	textarea:where(:valid, :focus, :disabled) + label {
 		top: 0;
 		scale: 0.75;
 		background: var(--palette-light);
 		transform: translateY(-50%);
 	}
 
-	input:focus + label {
+	textarea:focus + label {
 		color: var(--accent-color);
 	}
 
-	input {
+	textarea {
+		border: 1px solid #a9a8aa;
+		border-radius: 5px;
+		width: 100%;
+		box-sizing: border-box;
+		font: inherit;
+		box-sizing: border-box;
+		text-align: center;
+		padding: 8px 5px;
+		font-weight: bold;
+		resize: none;
+	}
+
+	textarea {
 		background: none;
 		border: 2px solid #a9a8aa;
 		border-radius: 10px;
@@ -58,7 +70,7 @@
 		transition: border-color 100ms linear;
 	}
 
-	input:focus {
+	textarea:focus {
 		outline: none;
 		border-color: var(--accent-color);
 	}

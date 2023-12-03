@@ -9,6 +9,7 @@
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
+	import Textarea from '$lib/Textarea.svelte';
 
 	let button = 'Create';
 	let loading = false;
@@ -64,7 +65,7 @@
 				<Logo />
 			</a>
 			<ErrorMessage {errorMessage} />
-			<textarea {placeholder} required {disabled} bind:value={fuizConfig} />
+			<Textarea id="config" {placeholder} required={true} {disabled} bind:value={fuizConfig} />
 			<div style:margin="5px 0" style:width="100%">
 				<FancyButton bind:disabled>
 					<div
@@ -98,19 +99,5 @@
 		box-sizing: content-box;
 		width: 300px;
 		max-width: 300px;
-	}
-
-	textarea {
-		border: 1px solid #a9a8aa;
-		border-radius: 5px;
-		width: 100%;
-		box-sizing: border-box;
-		font: inherit;
-		margin: 5px 0;
-		box-sizing: border-box;
-		text-align: center;
-		padding: 6.5px 5px;
-		font-weight: bold;
-		resize: none;
 	}
 </style>

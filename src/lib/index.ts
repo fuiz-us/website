@@ -51,30 +51,6 @@ export function is_not_null<T>(a: T | null): a is T {
 	return a !== null;
 }
 
-type NamesError = 'Used' | 'Assigned' | 'Empty' | 'Sinful' | 'TooLong';
-
-type WaitingScreenMessage = {
-	exact_count: number;
-	players: string[];
-	truncated: boolean;
-};
-
-type GameIncomingMessage =
-	| {
-			WaitingScreen: WaitingScreenMessage;
-	  }
-	| {
-			NameAssign: string;
-	  }
-	| {
-			NameError: NamesError;
-	  }
-	| 'NameChoose';
-
-type GameIncomingMessageState = {
-	WaitingScreen: WaitingScreenMessage;
-};
-
 type Image =
 	| {
 			Base64: {

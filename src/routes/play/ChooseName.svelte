@@ -6,6 +6,7 @@
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
+	import Textfield from '$lib/Textfield.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let sending: boolean;
@@ -39,7 +40,7 @@
 				<Logo />
 			</a>
 			<ErrorMessage {errorMessage} />
-			<input type="text" {placeholder} required disabled={sending} bind:value={name} />
+			<Textfield id="name" {placeholder} required={true} disabled={sending} bind:value={name} />
 			<div style:margin="5px 0" style:width="100%">
 				<FancyButton disabled={sending}>
 					<div
@@ -73,19 +74,5 @@
 		box-sizing: content-box;
 		width: 300px;
 		max-width: 300px;
-	}
-
-	input[type='text'] {
-		border: 1px solid #a9a8aa;
-		border-radius: 5px;
-		width: 100%;
-		box-sizing: border-box;
-		font: inherit;
-		margin: 5px 0;
-		box-sizing: border-box;
-		text-align: center;
-		padding: 6.5px 5px;
-		font-weight: bold;
-		resize: none;
 	}
 </style>

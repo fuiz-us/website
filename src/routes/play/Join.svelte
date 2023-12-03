@@ -6,6 +6,7 @@
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
+	import Textfield from '$lib/Textfield.svelte';
 
 	let button = 'Join';
 	let loading = false;
@@ -18,7 +19,7 @@
 		loading = true;
 		button = 'Loading';
 
-		goto('?code=' + gameCode);
+		goto('?code=' + gameCode.toUpperCase());
 	}
 </script>
 
@@ -40,7 +41,14 @@
 				style:flex-direction="column"
 				style:justify-content="center"
 			>
-				<input type="text" {placeholder} required {disabled} bind:value={gameCode} />
+				<Textfield
+					id="code"
+					{placeholder}
+					required={true}
+					{disabled}
+					bind:value={gameCode}
+					text_transform="uppercase"
+				/>
 				<div style:margin="5px 0" style:width="100%">
 					<FancyButton bind:disabled>
 						<div
@@ -75,19 +83,5 @@
 		box-sizing: content-box;
 		width: 300px;
 		max-width: 300px;
-	}
-
-	input[type='text'] {
-		border: 1px solid #a9a8aa;
-		border-radius: 5px;
-		width: 100%;
-		box-sizing: border-box;
-		font: inherit;
-		margin: 5px 0;
-		box-sizing: border-box;
-		text-align: center;
-		padding: 6.5px 5px;
-		font-weight: bold;
-		resize: none;
 	}
 </style>

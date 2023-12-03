@@ -15,6 +15,7 @@
 	style:width="100%"
 	style:height="100%"
 	style:font="inherit"
+	style:outline="none"
 	disabled={disabled || !active}
 	on:click
 >
@@ -42,7 +43,7 @@
 
 <style>
 	button .front {
-		transform: translateY(-5px);
+		transform: translateY(-4px);
 		transition: transform 150ms;
 	}
 
@@ -50,7 +51,7 @@
 		transform: translateY(0px);
 	}
 
-	button:hover .front {
+	button:where(:hover, :focus) .front {
 		transform: translateY(-7px);
 	}
 </style>

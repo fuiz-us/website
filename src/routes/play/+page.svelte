@@ -5,7 +5,7 @@
 
 	$: code = $page.url.searchParams.get('code');
 
-	const title = 'Join my game';
+	const title = 'Join a Game';
 	const description = 'Join a current game and enter the game code';
 </script>
 

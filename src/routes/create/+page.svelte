@@ -97,7 +97,7 @@
 
 	$: get_status(id_param);
 
-	const title = 'Create your own fuiz';
+	const title = 'Create Your Own Fuiz';
 	const description = 'Create your own fuiz with beautiful images to play it with others';
 </script>
 

@@ -8,7 +8,16 @@
 	import Footer from '$lib/Footer.svelte';
 	import { base } from '$app/paths';
 	import Icon from '$lib/Icon.svelte';
+
+	const title = 'Fuiz | Host Live Quizzes Freely';
+	const description = 'A free online platform for host and playing live quizzes';
 </script>
+
+<svelte:head>
+	<title>{title}</title>
+	<meta name="description" content={description} />
+	<meta property="og:description" content={description} />
+</svelte:head>
 
 <NiceBackground>
 	<div style:display="flex" style:flex-direction="column" style:height="100%">

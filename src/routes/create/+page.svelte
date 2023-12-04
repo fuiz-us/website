@@ -97,8 +97,15 @@
 
 	$: get_status(id_param);
 
-	$: console.log(status);
+	const title = 'Create your own fuiz';
+	const description = 'Create your own fuiz with beautiful images to play it with others';
 </script>
+
+<svelte:head>
+	<title>{title}</title>
+	<meta name="description" content={description} />
+	<meta property="og:description" content={description} />
+</svelte:head>
 
 {#if status === 'loading'}
 	<Loading />

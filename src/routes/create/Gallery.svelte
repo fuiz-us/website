@@ -19,6 +19,8 @@
 		slides_count: number;
 	}[];
 
+	export let db: IDBDatabase;
+
 	$: sorted_creations = creations.sort((a, b) => b.last_edited - a.last_edited);
 
 	const same_year = { month: 'short', day: 'numeric' } as const;
@@ -33,35 +35,43 @@
 		}
 	}
 
-	function update_localstorage() {
-		localStorage.setItem('creations', JSON.stringify(creations.map((c) => c.id)));
-	}
-
 	function add_slide() {
-		let id = Date.now();
-
 		let new_slide: ExportedFuiz = {
-			last_edited: id,
+			last_edited: Date.now(),
 			config: {
 				title: 'Untitled',
 				slides: []
 			}
 		};
 
-		localStorage.setItem(id.toString(), JSON.stringify(new_slide));
+		const creationsStore = db.transaction(['creations'], 'readwrite').objectStore('creations');
 
-		creations.push({
-			id,
-			last_edited: new_slide.last_edited,
-			title: new_slide.config.title,
-			slides_count: new_slide.config.slides.length
+		const request = creationsStore.put(new_slide);
+
+		request.addEventListener('success', () => {
+			const id = request.result;
+
+			creations.push({
+				id: parseInt(id.toString()),
+				last_edited: new_slide.last_edited,
+				title: new_slide.config.title,
+				slides_count: new_slide.config.slides.length
+			});
+
+			creations = creations;
+
+			goto('?id=' + id.toString());
 		});
+	}
 
-		creations = creations;
+	function delete_slide(id: number) {
+		const creationsStore = db.transaction(['creations'], 'readwrite').objectStore('creations');
 
-		update_localstorage();
+		const request = creationsStore.delete(id);
 
-		goto('?id=' + id.toString());
+		request.addEventListener('success', () => {
+			creations = creations.filter((c) => c.id != id);
+		});
 	}
 </script>
 
@@ -120,7 +130,7 @@
 									size="1.4em"
 									src={play_fuiz}
 									alt="play this fuiz"
-									on:click={() => play_local(id)}
+									on:click={() => play_local(id, db)}
 								/>
 								<a
 									href="?id={id}"
@@ -151,9 +161,7 @@
 									src={delete_fuiz}
 									alt="delete this fuiz"
 									on:click={() => {
-										creations = creations.filter((c) => c.id != id);
-										localStorage.removeItem(id.toString());
-										update_localstorage();
+										delete_slide(id);
 									}}
 								/>
 							</div>

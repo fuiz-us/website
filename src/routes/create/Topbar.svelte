@@ -7,6 +7,7 @@
 
 	export let title: string;
 	export let id: number;
+	export let db: IDBDatabase;
 </script>
 
 <div
@@ -32,7 +33,7 @@
 		</div>
 	</div>
 	<div>
-		<FancyButton on:click={() => play_local(id)}>
+		<FancyButton on:click={() => play_local(id, db)}>
 			<div style:font-family="Poppins" style:padding="5px 10px" style:font-size="min(1.5em, 5vw)">
 				Play
 			</div>

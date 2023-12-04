@@ -169,17 +169,23 @@ export async function get_backend_config(config: FuizConfig) {
 	};
 }
 
-export function get_slide(id: number): ExportedFuiz | undefined {
-	const config = localStorage.getItem(id.toString());
-	if (config !== null) {
-		return JSON.parse(config);
-	} else {
-		return undefined;
-	}
+export async function get_slide(id: number, db: IDBDatabase): Promise<ExportedFuiz | undefined> {
+	return await new Promise((resolve) => {
+		const creationsStore = db.transaction(['creations'], 'readwrite').objectStore('creations');
+		const transaction = creationsStore.get(id);
+
+		transaction.addEventListener('success', () => {
+			resolve(transaction.result);
+		});
+
+		transaction.addEventListener('error', () => {
+			resolve(undefined);
+		});
+	});
 }
 
-export async function play_local(id: number) {
-	const config = get_slide(id);
+export async function play_local(id: number, db: IDBDatabase) {
+	const config = await get_slide(id, db);
 	if (config !== undefined) {
 		const res = await bring(PUBLIC_BACKEND_URL + '/add', {
 			method: 'POST',

@@ -20,19 +20,6 @@
 	style:justify-content="center"
 	style:flex-wrap="wrap"
 >
-	<div>Made with 💔 in MIT.</div>
-	<a
-		href="https://accessibility.mit.edu/"
-		style:text-decoration="none"
-		style:background={palette_dark + '40'}
-		style:color={palette_dark}
-		style:padding="5px 10px"
-		style:border-radius="5px"
-		style:display="inline-flex"
-		style:align-items="center"
-	>
-		Accessibility
-	</a>
 	<a
 		style:text-decoration="none"
 		style:background={palette_dark + '40'}
@@ -54,7 +41,7 @@
 		style:padding="5px 10px"
 		style:gap="5px"
 		style:border-radius="5px"
-		href="https://www.gnu.org/licenses/agpl-3.0.txt"
+		href="https://gitlab.com/opencode-mit/fuiz-website"
 		style:display="inline-flex"
 		style:align-items="center"
 	>

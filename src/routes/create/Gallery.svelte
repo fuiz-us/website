@@ -120,6 +120,7 @@
 					<div
 						style:display="grid"
 						style:grid-template-columns="repeat(auto-fit, minmax(200px, 1fr))"
+						style:grid-auto-rows="1fr"
 						style:grid-gap="10px"
 					>
 						{#each sorted_creations as { id, title, last_edited, slides_count, media }}
@@ -127,6 +128,7 @@
 								class="entry"
 								style:background="var(--accent-color)"
 								style:display="flex"
+								style:aspect-ratio="6 / 5"
 								style:border-radius="5px"
 								style:position="relative"
 								style:overflow="hidden"
@@ -145,7 +147,8 @@
 									style:border="2px solid var(--border-color)"
 								>
 									<div
-										style:height="100px"
+										style:width="100%"
+										style:flex="1"
 										style:border-bottom="2px solid var(--border-color)"
 										style:position="relative"
 									>
@@ -212,7 +215,6 @@
 		--border-color: #a0a0a0;
 
 		transition: margin-right 150ms ease-out;
-
 		outline: none;
 		background: var(--palette-light);
 	}

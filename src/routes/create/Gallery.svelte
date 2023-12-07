@@ -100,7 +100,7 @@
 			</div>
 			<div style:flex="1" style:margin="0 10px">
 				<div
-					style:max-width="70ch"
+					style:max-width="100ch"
 					style:padding="15px"
 					style:box-sizing="border-box"
 					style:margin="20px auto"
@@ -128,10 +128,13 @@
 								class="entry"
 								style:background="var(--accent-color)"
 								style:display="flex"
+								style:max-height="300px"
 								style:aspect-ratio="6 / 5"
 								style:border-radius="5px"
 								style:position="relative"
 								style:overflow="hidden"
+								style:left="50%"
+								style:transform="translateX(-50%)"
 							>
 								<a
 									style:flex="1"

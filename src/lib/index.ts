@@ -85,7 +85,7 @@ export type MultipleChoiceAnswer = {
 
 export type MultipleChoiceSlide = {
 	title: string;
-	media: Media | null | undefined;
+	media: Media | undefined;
 	introduce_question: number;
 	time_limit: number;
 	points_awarded: number;

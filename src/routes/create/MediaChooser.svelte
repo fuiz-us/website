@@ -168,7 +168,7 @@
 					style:overflow="auto"
 					style:margin="auto"
 				>
-					<MediaDisplay {media} />
+					<MediaDisplay {media} fit="contain" />
 				</div>
 				<div style:display="flex" style:align-items="center" style:gap="10px">
 					<Icon size="1.25em" src={hearing} alt="Image Alt" />

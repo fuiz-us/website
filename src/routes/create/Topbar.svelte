@@ -18,7 +18,7 @@
 	style:z-index="1"
 	style:align-items="center"
 >
-	<a href="{base}/create/" style:height="35px" style:margin="0 5px" style:overflow="hidden">
+	<a href="{base}/create/" style:height="65px" style:margin="0 5px" style:overflow="hidden">
 		<Logo />
 	</a>
 	<div style:flex="1" style:display="flex" style:justify-content="center">

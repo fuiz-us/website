@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Footer from '$lib/Footer.svelte';
+	import Header from '$lib/Header.svelte';
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
-	import Logo from '$lib/Logo.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Textfield from '$lib/Textfield.svelte';
 	import { createEventDispatcher } from 'svelte';
@@ -35,10 +34,8 @@
 		style:align-items="center"
 		style:font-size="x-large"
 	>
+		<Header />
 		<form on:submit|preventDefault={submit}>
-			<a href="{base}/" style:height="100px" style:margin="10px 0 40px" style:overflow="hidden">
-				<Logo />
-			</a>
 			<ErrorMessage {errorMessage} />
 			<Textfield
 				id="name"

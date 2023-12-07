@@ -4,11 +4,11 @@
 
 	export let media: Media | undefined;
 	export let align = 'center';
+	export let fit = 'contain';
 </script>
 
 <div
 	style:max-height="100%"
-	style:padding-top="5px"
 	style:display="flex"
 	style:justify-content={align}
 	style:max-width="100%"
@@ -16,6 +16,6 @@
 	style:inset="0"
 >
 	{#if media}
-		<MediaDisplay {media} />
+		<MediaDisplay {media} {fit} />
 	{/if}
 </div>

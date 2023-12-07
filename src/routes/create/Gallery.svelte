@@ -1,22 +1,23 @@
 <script lang="ts">
-	import { palette_light, type ExportedFuiz, play_local } from '$lib';
+	import { palette_light, type ExportedFuiz, play_local, type Media } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Footer from '$lib/Footer.svelte';
-	import Logo from '$lib/Logo.svelte';
 	import delete_fuiz from '$lib/assets/delete.svg';
-	import play_fuiz from '$lib/assets/play.svg';
+	import present from '$lib/assets/present.svg';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import add from '$lib/assets/add.svg';
 	import IconButton from '$lib/IconButton.svelte';
 	import { goto } from '$app/navigation';
-	import { base } from '$app/paths';
 	import Icon from '$lib/Icon.svelte';
+	import Header from '$lib/Header.svelte';
+	import MediaContainer from '$lib/MediaContainer.svelte';
 
 	export let creations: {
 		id: number;
 		title: string;
 		last_edited: number;
 		slides_count: number;
+		media?: Media;
 	}[];
 
 	export let db: IDBDatabase;
@@ -78,16 +79,7 @@
 <div>
 	<NiceBackground>
 		<div style:min-height="100vh" style:display="flex" style:flex-direction="column">
-			<div
-				style:display="flex"
-				style:padding="10px"
-				style:margin-bottom="20px"
-				style:justify-content="center"
-			>
-				<a href="{base}/" style:height="65px" style:overflow="hidden">
-					<Logo />
-				</a>
-			</div>
+			<Header />
 			<div style:display="flex" style:justify-content="center">
 				<div>
 					<FancyButton on:click={add_slide}>
@@ -108,62 +100,103 @@
 			</div>
 			<div style:flex="1" style:margin="0 10px">
 				<div
-					style:max-width="50ch"
-					style:padding="10px 10px"
+					style:max-width="70ch"
+					style:padding="15px"
 					style:box-sizing="border-box"
 					style:margin="20px auto"
-					style:font-size="x-large"
 					style:background={palette_light + 'E0'}
-					style:border="1px solid #00000080"
-					style:border-radius="5px"
+					style:border="2px solid #00000080"
+					style:border-radius="10px"
 				>
-					<h2 style:margin="5px 0 10px" style:border-bottom="1px solid #00000080">Local Fuizzes</h2>
-					<div style:display="flex" style:flex-direction="column">
-						{#each sorted_creations as { id, title, last_edited, slides_count }}
+					<h2
+						style:font-family="Poppins"
+						style:font-size="xx-large"
+						style:line-height="1"
+						style:margin="0 0 15px"
+						style:border-bottom="1px solid #00000080"
+					>
+						Recent Fuizzes
+					</h2>
+					<div
+						style:display="grid"
+						style:grid-template-columns="repeat(auto-fit, minmax(200px, 1fr))"
+						style:grid-gap="10px"
+					>
+						{#each sorted_creations as { id, title, last_edited, slides_count, media }}
 							<div
 								class="entry"
+								style:background="var(--accent-color)"
 								style:display="flex"
-								style:align-items="center"
 								style:border-radius="5px"
+								style:position="relative"
+								style:overflow="hidden"
 							>
-								<IconButton
-									size="1.4em"
-									src={play_fuiz}
-									alt="play this fuiz"
-									on:click={() => play_local(id, db)}
-								/>
 								<a
+									style:flex="1"
 									href="?id={id}"
-									style:padding="8px 10px"
-									style:display="flex"
+									style:z-index="1"
+									class="main"
 									style:color="inherit"
 									style:text-decoration="inherit"
-									style:gap="5px"
-									style:flex="1"
+									style:display="flex"
+									style:flex-direction="column"
+									style:border-radius="5px"
+									style:overflow="hidden"
+									style:border="2px solid var(--border-color)"
 								>
 									<div
-										style:flex="1"
-										style:font-weight="bold"
-										style:max-width="20ch"
-										style:word-wrap="anywhere"
+										style:height="100px"
+										style:border-bottom="2px solid var(--border-color)"
+										style:position="relative"
 									>
-										{title}
+										<MediaContainer {media} fit="cover" />
 									</div>
-									<div style:opacity="0.7">
-										{dateToString(new Date(last_edited))}
-									</div>
-									<div style:flex="1" style:text-align="end">
-										{slides_count} slides
+									<div style:padding="8px 10px" style:font-size="20px">
+										<div style:display="flex" style:align-items="center" style:gap="5px">
+											<div style:flex="1" style:word-wrap="anywhere">
+												{title}
+											</div>
+										</div>
+										<div style:display="flex" style:align-items="center">
+											<div style:display="flex" style:gap="5px" style:flex="1" style:opacity="0.7">
+												<div>
+													{dateToString(new Date(last_edited))}
+												</div>
+												<div>•</div>
+												<div style:flex="1" style:text-align="start">
+													{slides_count} slides
+												</div>
+											</div>
+										</div>
 									</div>
 								</a>
-								<IconButton
-									size="1.4em"
-									src={delete_fuiz}
-									alt="delete this fuiz"
-									on:click={() => {
-										delete_slide(id);
-									}}
-								/>
+								<div
+									class="panel"
+									style:position="absolute"
+									style:right="0"
+									style:height="100%"
+									style:z-index="0"
+									style:display="flex"
+									style:flex-direction="column"
+									style:padding="5px"
+									style:gap="5px"
+									style:color="var(--palette-light)"
+								>
+									<IconButton
+										size="24px"
+										src={present}
+										alt="Host This Fuiz"
+										on:click={() => play_local(id, db)}
+									/>
+									<IconButton
+										size="24px"
+										src={delete_fuiz}
+										alt="Delete This Fuiz"
+										on:click={() => {
+											delete_slide(id);
+										}}
+									/>
+								</div>
 							</div>
 						{/each}
 					</div>
@@ -175,7 +208,29 @@
 </div>
 
 <style>
-	.entry:hover {
-		background: #00000040;
+	.entry .main {
+		--border-color: #a0a0a0;
+
+		transition: margin-right 150ms ease-out;
+
+		outline: none;
+		background: var(--palette-light);
+	}
+
+	.entry:where(:focus-within, :hover) .main {
+		&:where(:focus, :hover) {
+			background: linear-gradient(#00000020, #00000020), var(--palette-light);
+		}
+
+		--border-color: var(--accent-color);
+		margin-right: 34px;
+	}
+
+	@media (hover: none) {
+		.entry .main {
+			--border-color: var(--accent-color);
+			outline: none;
+			margin-right: 34px;
+		}
 	}
 </style>

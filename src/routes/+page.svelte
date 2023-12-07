@@ -1,6 +1,5 @@
 <script lang="ts">
 	import FancyButton from '$lib/FancyButton.svelte';
-	import Logo from '$lib/Logo.svelte';
 	import paint from '$lib/assets/paint.svg';
 	import game from '$lib/assets/game.svg';
 	import NiceBackground from '$lib/NiceBackground.svelte';
@@ -8,6 +7,7 @@
 	import Footer from '$lib/Footer.svelte';
 	import { base } from '$app/paths';
 	import Icon from '$lib/Icon.svelte';
+	import Header from '$lib/Header.svelte';
 
 	const title = 'Fuiz | Host Live Quizzes Freely';
 	const description = 'A free online platform for host and playing live quizzes';
@@ -30,26 +30,7 @@
 			style:padding="0 10px"
 			style:gap="10px"
 		>
-			<div
-				style:display="flex"
-				style:padding="10px 0"
-				style:flex-direction="column"
-				style:align-items="center"
-				style:justify-content="end"
-				style:gap="10px"
-			>
-				<a href="{base}/" style:height="65px" style:overflow="hidden">
-					<Logo />
-				</a>
-				<div
-					style:text-align="center"
-					style:font-family="Poppins"
-					style:font-size="x-large"
-					style:margin-bottom="40px"
-				>
-					Host live quizzes freely
-				</div>
-			</div>
+			<Header />
 			<div
 				style:flex="1"
 				style:display="flex"

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { palette_dark } from '$lib';
-	import warning from '$lib/assets/warning.svg';
+	import diversity from '$lib/assets/diversity.svg';
 	import balance from '$lib/assets/balance.svg';
 	import Icon from './Icon.svelte';
 </script>
@@ -31,8 +31,8 @@
 		style:display="inline-flex"
 		style:align-items="center"
 	>
-		<Icon src={warning} alt="Not stable yet" size="1em" />
-		<div>Version 0.2</div>
+		<Icon src={diversity} alt="Made by community" size="1em" />
+		<div>Community Made</div>
 	</a>
 	<a
 		style:text-decoration="none"

@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { base } from '$app/paths';
 	import { PUBLIC_BACKEND_URL } from '$env/static/public';
 	import { bring } from '$lib';
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Footer from '$lib/Footer.svelte';
+	import Header from '$lib/Header.svelte';
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
-	import Logo from '$lib/Logo.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Textfield from '$lib/Textfield.svelte';
 
@@ -49,10 +48,8 @@
 		style:align-items="center"
 		style:font-size="x-large"
 	>
+		<Header />
 		<form on:submit|preventDefault={submit}>
-			<a href="{base}/" style:height="65px" style:margin="10px 0 40px" style:overflow="hidden">
-				<Logo />
-			</a>
 			<div
 				style:flex="1"
 				style:display="flex"

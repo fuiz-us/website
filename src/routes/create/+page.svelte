@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { ExportedFuiz, FuizConfig } from '$lib';
+	import type { ExportedFuiz, FuizConfig, Media } from '$lib';
 	import Editor from './Editor.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import ErrorPage from '$lib/ErrorPage.svelte';
@@ -71,6 +71,7 @@
 					title: string;
 					last_edited: number;
 					slides_count: number;
+					media?: Media;
 				}[] = [];
 
 				creationsTransaction.addEventListener('success', () => {
@@ -81,7 +82,11 @@
 							id: parseInt(cursor.key.toString()),
 							last_edited: value.last_edited,
 							title: value.config.title,
-							slides_count: value.config.slides.length
+							slides_count: value.config.slides.length,
+							media: value.config.slides.reduce<Media | undefined>(
+								(p, c) => p || c.MultipleChoice.media,
+								undefined
+							)
 						});
 						cursor.continue();
 					} else {

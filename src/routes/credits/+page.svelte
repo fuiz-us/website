@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { base } from '$app/paths';
-	import Logo from '$lib/Logo.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import computer from '$lib/assets/computer.svg';
 	import brush from '$lib/assets/brush.svg';
 	import music from '$lib/assets/album.svg';
 	import Footer from '$lib/Footer.svelte';
-	import Message from '$lib/Message.svelte';
 	import { palette_dark } from '$lib';
+	import AnchorMessage from '$lib/AnchorMessage.svelte';
+	import Header from '$lib/Header.svelte';
 </script>
 
 <NiceBackground>
@@ -18,9 +17,7 @@
 		style:align-items="center"
 		style:font-size="x-large"
 	>
-		<a href="{base}/" style:height="100px" style:margin="10px 0 40px" style:overflow="hidden">
-			<Logo />
-		</a>
+		<Header />
 		<div
 			style:flex="1"
 			style:display="flex"
@@ -32,31 +29,36 @@
 			style:font-size="clamp(1em,4vw,1.25em)"
 			style:margin="10px"
 		>
-			<Message
+			<AnchorMessage
+				href="https://adhami.me"
 				image={{ src: computer, alt: 'Developer' }}
 				background="#23456740"
 				color={palette_dark}
 				message="Khaleel Al-Adhami"
 			/>
-			<Message
+			<AnchorMessage
+				href="https://barish.me/about/"
 				image={{ src: computer, alt: 'Developer' }}
 				background="#23456740"
 				color={palette_dark}
 				message="Abutalib Namazov"
 			/>
-			<Message
+			<AnchorMessage
+				href="https://bragefuglseth.dev/"
 				image={{ src: brush, alt: 'Designer' }}
 				background="#23456740"
 				color={palette_dark}
 				message="Brage Fuglseth"
 			/>
-			<Message
+			<AnchorMessage
+				href="https://incompetech.com/wordpress/"
 				image={{ src: music, alt: 'Music' }}
 				background="#23456740"
 				color={palette_dark}
 				message={'"Thinking Music" Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License. http://creativecommons.org/licenses/by/4.0/'}
 			/>
-			<Message
+			<AnchorMessage
+				href="https://www.youtube.com/watch?v=_h47TNIKJYo&pp=ygUHIGJlZS4gMw%3D%3D"
 				image={{ src: music, alt: 'Music' }}
 				background="#23456740"
 				color={palette_dark}

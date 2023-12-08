@@ -37,7 +37,7 @@
 				message="Khaleel Al-Adhami"
 			/>
 			<AnchorMessage
-				href="https://barish.me/about/"
+				href="https://barish.me/"
 				image={{ src: computer, alt: 'Developer' }}
 				background="#23456740"
 				color={palette_dark}

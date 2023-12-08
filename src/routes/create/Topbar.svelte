@@ -31,7 +31,7 @@
 			style:gap="10px"
 			style:justify-content="center"
 			style:font-size="24px"
-			style:min-width="5ch"
+			style:min-width="10ch"
 		>
 			<Textfield
 				bind:value={title}

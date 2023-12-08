@@ -41,7 +41,7 @@
 				image={{ src: computer, alt: 'Developer' }}
 				background="#23456740"
 				color={palette_dark}
-				message="Abutalib Namazov"
+				message="Abutalib (Barish) Namazov"
 			/>
 			<AnchorMessage
 				href="https://bragefuglseth.dev/"

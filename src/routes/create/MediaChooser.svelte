@@ -118,7 +118,7 @@
 			style:border="2px solid #00000040"
 			style:flex="1"
 			style:font-size="24px"
-			style:border-radius="5px"
+			style:border-radius="10px"
 			style:gap="10px"
 			style:padding="10px"
 			style:box-sizing="border-box"

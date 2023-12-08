@@ -59,7 +59,6 @@
 
 <div
 	id="sidebar"
-	style:background="#eee"
 	style:padding="10px"
 	style:display="flex"
 	style:flex-direction="column"

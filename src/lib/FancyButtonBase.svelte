@@ -1,12 +1,17 @@
 <script lang="ts">
+	import type { Action } from 'svelte/action';
+
 	export let foregroundColor: string;
 	export let backgroundColor: string;
 	export let backgroundDeepColor: string;
 	export let disabled = false;
 	export let active = true;
+	export let action: Action;
 </script>
 
 <button
+	use:action
+	on:select
 	style:display="flex"
 	style:background="none"
 	style:border="none"

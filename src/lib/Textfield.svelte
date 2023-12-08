@@ -16,6 +16,7 @@
 		style:text-transform={text_transform}
 		{required}
 		{disabled}
+		placeholder=""
 		bind:value
 	/>
 	<label for={id}>{placeholder}</label>
@@ -42,7 +43,7 @@
 		transition: all 100ms linear;
 	}
 
-	input:is(:valid, :focus, :disabled) + label {
+	input:is(:not(:placeholder-shown), :focus, :active) + label {
 		top: 0;
 		scale: 0.75;
 		background: var(--palette-light);

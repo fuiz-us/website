@@ -1,13 +1,35 @@
 <script lang="ts">
+	import { afterUpdate, beforeUpdate } from 'svelte';
+
 	export let id: string;
 	export let placeholder: string;
 	export let required: boolean;
 	export let disabled: boolean;
 	export let value: string;
+	export let max_height = '4em';
+
+	let editableElement: HTMLTextAreaElement;
+
+	beforeUpdate(async () => {
+		value = value.replaceAll('\n', '').replaceAll('\r', '');
+	});
+
+	afterUpdate(async () => {
+		editableElement.style.height = '0';
+		editableElement.style.height = (editableElement.scrollHeight + 4).toString() + 'px';
+	});
 </script>
 
 <div style:position="relative">
-	<textarea {id} {required} {disabled} bind:value />
+	<textarea
+		style:max-height={max_height}
+		bind:this={editableElement}
+		{id}
+		{required}
+		{disabled}
+		bind:value
+		placeholder=""
+	/>
 	<label for={id}>{placeholder}</label>
 </div>
 
@@ -32,10 +54,10 @@
 		transition: all 100ms linear;
 	}
 
-	textarea:where(:valid, :focus, :disabled) + label {
+	textarea:where(:not(:placeholder-shown), :focus, :active) + label {
 		top: 0;
 		scale: 0.75;
-		background: var(--palette-light);
+		background: var(--background-color);
 		transform: translateY(-50%);
 	}
 

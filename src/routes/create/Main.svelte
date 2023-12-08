@@ -10,7 +10,14 @@
 	$: active_slide = config.slides.at(selected_slide_index);
 </script>
 
-<div id="editor" style:display="flex" style:flex="1" style:align-items="stretch">
+<div
+	id="editor"
+	style:display="flex"
+	style:flex="1"
+	style:align-items="stretch"
+	style:--background-color="color-mix(in srgb, var(--palette-light) 100%, #000000 5%)"
+	style:background="var(--background-color)"
+>
 	<Sidebar bind:slides={config.slides} bind:selected_slide_index />
 	<div style:height="100%" style:flex="1" style:display="flex" style:flex-direction="column">
 		<SlideEditor bind:slide={active_slide} />

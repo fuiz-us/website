@@ -3,9 +3,9 @@
 	import delete_image from '$lib/assets/delete.svg';
 	import add_photo from '$lib/assets/add_photo.svg';
 	import hearing from '$lib/assets/hearing.svg';
-	import Textbox from '$lib/Textbox.svelte';
 	import MediaDisplay from '$lib/MediaDisplay.svelte';
 	import Icon from '$lib/Icon.svelte';
+	import Textarea from '$lib/Textarea.svelte';
 
 	export let media: Media | null | undefined;
 
@@ -74,11 +74,11 @@
 			}}
 		>
 			<div
-				style:height="min(15em, 60vw)"
-				style:width="min(15em, 60vw)"
-				style:background={drag_over ? buttonColors[0][0] : 'white'}
+				style:aspect-ratio="1"
+				style:width="25ch"
+				style:background={drag_over ? buttonColors[0][0] : 'transparent'}
 				style:border="2px dashed {drag_over ? '#fff' : '#00000040'}"
-				style:border-radius="5px"
+				style:border-radius="10px"
 				style:padding="10px"
 				style:box-sizing="border-box"
 				style:display="flex"
@@ -115,26 +115,18 @@
 		<div
 			style:display="flex"
 			style:flex-direction="column"
-			style:background="white"
+			style:border="2px solid #00000040"
 			style:flex="1"
-			style:font-size="clamp(1.25em, 3vw, 1.5em)"
+			style:font-size="24px"
 			style:border-radius="5px"
 			style:gap="10px"
 			style:padding="10px"
 			style:box-sizing="border-box"
-			style:box-shadow="0 0 4px #000000C0"
 			style:max-width="40ch"
 			style:margin="auto"
 		>
 			<div style:display="flex" style:align-items="center">
-				<div
-					style:flex="1"
-					style:text-align="center"
-					style:font-size="clamp(1.25em, 5vw, 1.5em)"
-					style:font-weight="bold"
-				>
-					Local Image
-				</div>
+				<div style:flex="1" style:text-align="center" style:font-family="Poppins">Local Image</div>
 				<button
 					style:font="inherit"
 					style:display="flex"
@@ -160,7 +152,7 @@
 					style:width="100%"
 					style:height="100%"
 					style:max-width="400px"
-					style:min-width="150px"
+					style:min-width="250px"
 					style:position="relative"
 					style:max-height="400px"
 					style:display="flex"
@@ -171,20 +163,15 @@
 					<MediaDisplay {media} fit="contain" />
 				</div>
 				<div style:display="flex" style:align-items="center" style:gap="10px">
-					<Icon size="1.25em" src={hearing} alt="Image Alt" />
-					<div
-						style:flex="1"
-						class="focus-within"
-						style:overflow="auto"
-						style:border="1px solid #00000040"
-						style:max-height="200px"
-						style:border-radius="5px"
-					>
-						<Textbox
+					<Icon size="40px" src={hearing} alt="Image Alt" />
+					<div style:flex="1">
+						<Textarea
+							id="alt"
+							required={false}
+							disabled={false}
+							max_height="200px"
 							bind:value={media.Image.Base64.alt}
-							placeholder="a clear description for the visually impaired"
-							textAlign="start"
-							padding="5px 10px"
+							placeholder="Alt Text"
 						/>
 					</div>
 				</div>
@@ -192,9 +179,3 @@
 		</div>
 	{/if}
 {/if}
-
-<style>
-	.focus-within:focus-within {
-		outline: 2px solid blueviolet;
-	}
-</style>

@@ -15,6 +15,7 @@
 	type="number"
 	{min}
 	{max}
+	inputmode="numeric"
 	bind:value
 	style:display="flex"
 	style:font="inherit"

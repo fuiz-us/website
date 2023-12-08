@@ -20,7 +20,12 @@
 	}
 </script>
 
-<div style:height="100%" style:display="flex" style:flex-direction="column">
+<div
+	style:height="100%"
+	style:background="var(--background-color)"
+	style:display="flex"
+	style:flex-direction="column"
+>
 	<Topbar bind:title={config.title} bind:id {db} />
 	<Main bind:config />
 </div>

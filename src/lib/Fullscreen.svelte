@@ -2,7 +2,6 @@
 	import fullscreenEnter from '$lib/assets/fullscreen_enter.svg';
 	import fullscreenExit from '$lib/assets/fullscreen_exit.svg';
 	import { onMount } from 'svelte';
-	import Icon from './Icon.svelte';
 	import IconButton from './IconButton.svelte';
 
 	let fullscreen = false;

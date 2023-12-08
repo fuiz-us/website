@@ -9,6 +9,7 @@
 	import IconButton from '$lib/IconButton.svelte';
 	import { goto } from '$app/navigation';
 	import Icon from '$lib/Icon.svelte';
+	import ghost from '$lib/assets/ghost.svg';
 	import Header from '$lib/Header.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 
@@ -117,95 +118,113 @@
 					>
 						Recent Fuizzes
 					</h2>
-					<div
-						style:display="grid"
-						style:grid-template-columns="repeat(auto-fit, minmax(200px, 1fr))"
-						style:grid-auto-rows="1fr"
-						style:grid-gap="10px"
-					>
-						{#each sorted_creations as { id, title, last_edited, slides_count, media }}
-							<div
-								class="entry"
-								style:background="var(--accent-color)"
-								style:display="flex"
-								style:max-height="300px"
-								style:aspect-ratio="6 / 5"
-								style:border-radius="5px"
-								style:position="relative"
-								style:overflow="hidden"
-								style:left="50%"
-								style:transform="translateX(-50%)"
-							>
-								<a
-									style:flex="1"
-									href="?id={id}"
-									style:z-index="1"
-									class="main"
-									style:color="inherit"
-									style:text-decoration="inherit"
-									style:display="flex"
-									style:flex-direction="column"
-									style:border-radius="5px"
-									style:overflow="hidden"
-									style:border="2px solid var(--border-color)"
-								>
-									<div
-										style:width="100%"
-										style:flex="1"
-										style:border-bottom="2px solid var(--border-color)"
-										style:position="relative"
-									>
-										<MediaContainer {media} fit="cover" />
-									</div>
-									<div style:padding="8px 10px" style:font-size="20px">
-										<div style:display="flex" style:align-items="center" style:gap="5px">
-											<div style:flex="1" style:word-wrap="anywhere">
-												{title}
-											</div>
-										</div>
-										<div style:display="flex" style:align-items="center">
-											<div style:display="flex" style:gap="5px" style:flex="1" style:opacity="0.7">
-												<div>
-													{dateToString(new Date(last_edited))}
-												</div>
-												<div>•</div>
-												<div style:flex="1" style:text-align="start">
-													{slides_count} slides
-												</div>
-											</div>
-										</div>
-									</div>
-								</a>
+					{#if sorted_creations.length}
+						<div
+							style:display="grid"
+							style:grid-template-columns="repeat(auto-fit, minmax(200px, 1fr))"
+							style:grid-auto-rows="1fr"
+							style:grid-gap="10px"
+						>
+							{#each sorted_creations as { id, title, last_edited, slides_count, media }}
 								<div
-									class="panel"
-									style:position="absolute"
-									style:right="0"
-									style:height="100%"
-									style:z-index="0"
+									class="entry"
+									style:background="var(--accent-color)"
 									style:display="flex"
-									style:flex-direction="column"
-									style:padding="5px"
-									style:gap="5px"
-									style:color="var(--palette-light)"
+									style:max-height="300px"
+									style:aspect-ratio="6 / 5"
+									style:border-radius="5px"
+									style:position="relative"
+									style:overflow="hidden"
+									style:left="50%"
+									style:transform="translateX(-50%)"
 								>
-									<IconButton
-										size="24px"
-										src={present}
-										alt="Host This Fuiz"
-										on:click={() => play_local(id, db)}
-									/>
-									<IconButton
-										size="24px"
-										src={delete_fuiz}
-										alt="Delete This Fuiz"
-										on:click={() => {
-											delete_slide(id);
-										}}
-									/>
+									<a
+										style:flex="1"
+										href="?id={id}"
+										style:z-index="1"
+										class="main"
+										style:color="inherit"
+										style:text-decoration="inherit"
+										style:display="flex"
+										style:flex-direction="column"
+										style:border-radius="5px"
+										style:overflow="hidden"
+										style:border="2px solid var(--border-color)"
+									>
+										<div
+											style:width="100%"
+											style:flex="1"
+											style:border-bottom="2px solid var(--border-color)"
+											style:position="relative"
+										>
+											<MediaContainer {media} fit="cover" />
+										</div>
+										<div style:padding="8px 10px" style:font-size="20px">
+											<div style:display="flex" style:align-items="center" style:gap="5px">
+												<div style:flex="1" style:word-wrap="anywhere">
+													{title}
+												</div>
+											</div>
+											<div style:display="flex" style:align-items="center">
+												<div
+													style:display="flex"
+													style:gap="5px"
+													style:flex="1"
+													style:opacity="0.7"
+												>
+													<div>
+														{dateToString(new Date(last_edited))}
+													</div>
+													<div>•</div>
+													<div style:flex="1" style:text-align="start">
+														{slides_count} slides
+													</div>
+												</div>
+											</div>
+										</div>
+									</a>
+									<div
+										class="panel"
+										style:position="absolute"
+										style:right="0"
+										style:height="100%"
+										style:z-index="0"
+										style:display="flex"
+										style:flex-direction="column"
+										style:padding="5px"
+										style:gap="5px"
+										style:color="var(--palette-light)"
+									>
+										<IconButton
+											size="24px"
+											src={present}
+											alt="Host This Fuiz"
+											on:click={() => play_local(id, db)}
+										/>
+										<IconButton
+											size="24px"
+											src={delete_fuiz}
+											alt="Delete This Fuiz"
+											on:click={() => {
+												delete_slide(id);
+											}}
+										/>
+									</div>
 								</div>
-							</div>
-						{/each}
-					</div>
+							{/each}
+						</div>
+					{:else}
+						<div
+							style:display="flex"
+							style:flex-direction="column"
+							style:align-items="center"
+							style:font-size="xx-large"
+							style:opacity="0.3"
+						>
+							<Icon src={ghost} size="min(20vh, 60vw)" alt="Nothing Here" />
+							Nothing
+						</div>
+					{/if}
 				</div>
 			</div>
 			<Footer />

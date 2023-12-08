@@ -21,7 +21,7 @@
 </script>
 
 <div
-	style:height="100%"
+	style:min-height="100dvh"
 	style:background="var(--background-color)"
 	style:display="flex"
 	style:flex-direction="column"

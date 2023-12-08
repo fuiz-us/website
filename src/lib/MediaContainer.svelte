@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Media } from '$lib';
 	import MediaDisplay from './MediaDisplay.svelte';
+	import MediaFallback from './MediaFallback.svelte';
 
 	export let media: Media | undefined;
 	export let align = 'center';
@@ -17,5 +18,7 @@
 >
 	{#if media}
 		<MediaDisplay {media} {fit} />
+	{:else}
+		<MediaFallback />
 	{/if}
 </div>

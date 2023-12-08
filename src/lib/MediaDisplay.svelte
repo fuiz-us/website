@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Media } from '$lib';
-	import image from '$lib/assets/image.svg';
 	import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
+	import MediaFallback from './MediaFallback.svelte';
 
 	export let media: Media;
 	export let fit: string;
@@ -18,16 +18,7 @@
 			src={media.Image.Base64.data}
 		/>
 	{:else}
-		<div
-			style:height="100%"
-			style:width="100%"
-			style:display="flex"
-			style:align-items="center"
-			style:justify-content="center"
-			style:background="#DDD"
-		>
-			<img src={image} alt="fallback" style:display="flex" style:height="3em" style:width="3em" />
-		</div>
+		<MediaFallback />
 	{/if}
 {:else}
 	<img

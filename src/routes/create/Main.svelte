@@ -19,7 +19,7 @@
 	style:background="var(--background-color)"
 >
 	<Sidebar bind:slides={config.slides} bind:selected_slide_index />
-	<div style:height="100%" style:flex="1" style:display="flex" style:flex-direction="column">
+	<div style:flex="1" style:display="flex" style:flex-direction="column">
 		<SlideEditor bind:slide={active_slide} />
 	</div>
 </div>

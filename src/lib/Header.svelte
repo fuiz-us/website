@@ -10,6 +10,6 @@
 	style:margin-bottom="10px"
 >
 	<a href="{base}/" style:height="60px" style:overflow="hidden">
-		<Logo />
+		<Logo height={60} width={150} />
 	</a>
 </div>

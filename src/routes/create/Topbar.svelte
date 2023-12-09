@@ -21,7 +21,7 @@
 	style:justify-content="center"
 >
 	<a href="{base}/create/" style:height="65px" style:margin="0 5px" style:overflow="hidden">
-		<Logo />
+		<Logo height={65} width={162} />
 	</a>
 	<div style:flex="1" style:display="flex" style:gap="10px">
 		<div

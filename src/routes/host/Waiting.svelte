@@ -128,6 +128,7 @@
 					style:display="flex"
 					style:justify-content="center"
 					style:flex-wrap="wrap"
+					style:min-height="40vh"
 					style:max-width="50ch"
 					style:padding="10px"
 					style:gap="10px"

@@ -2,31 +2,30 @@
 	export let players: string[];
 	export let exact_count: number;
 	export let truncated: boolean;
-	let hide = true;
 </script>
 
-{#each players.slice(0, hide ? 50 : undefined) as player}
+{#each players as player}
 	<div
-		style:padding="5px 10px"
+		style:padding="0.15em 0.4em"
 		style:background="#000000C0"
-		style:border-radius="5px"
+		style:border-radius="10px"
 		style:color="white"
+		style:word-break="break-all"
 	>
 		{player}
 	</div>
 {/each}
-{#if truncated || (players.length > 50 && hide)}
-	<button
-		on:click={() => (hide = false)}
+{#if truncated}
+	<div
 		style:font="inherit"
 		style:appearance="none"
 		style:border="none"
 		style:cursor="pointer"
-		style:padding="5px 10px"
+		style:padding="0.5em 1em"
 		style:background="#000000C0"
 		style:border-radius="5px"
 		style:color="white"
 	>
-		{exact_count - 50} more...
-	</button>
+		{players.length - exact_count} more...
+	</div>
 {/if}

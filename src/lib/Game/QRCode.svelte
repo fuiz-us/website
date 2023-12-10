@@ -1,64 +1,77 @@
 <script lang="ts">
 	import { toDataURL } from 'qrcode';
 	import LoadingCircle from '../LoadingCircle.svelte';
+	import { createDialog } from 'svelte-headlessui';
 
-	let expandQR = false;
 	export let url: string;
+	export let small_size: string;
 
 	$: image = toDataURL(url);
+
+	const dialog = createDialog({});
 </script>
 
 {#await image}
 	<div
-		style:height="172px"
-		style:width="172px"
+		style:height={small_size}
+		style:width={small_size}
 		style:display="flex"
 		style:justify-content="center"
 		style:align-items="center"
+		style:border-radius="5px"
 	>
 		<div style:height="64px" style:width="64px">
 			<LoadingCircle borderWidth={8} color="black" />
 		</div>
 	</div>
 {:then url}
-	{#if !expandQR}
-		<button
-			on:click={() => (expandQR = true)}
-			style:appearance="none"
-			style:border="none"
-			style:padding="0"
+	<button
+		on:click={dialog.open}
+		style:appearance="none"
+		style:border="none"
+		style:background="none"
+		style:padding="0"
+		style:display="flex"
+		style:cursor="pointer"
+	>
+		<img
+			src={url}
+			height={small_size}
+			width={small_size}
+			alt="QR code to the game"
+			style:image-rendering="pixelated"
+			style:border-radius="5px"
+		/>
+	</button>
+	{#if $dialog.expanded}
+		<div
+			style:position="fixed"
+			style:z-index="1"
+			style:inset="0"
+			style:background="#000000A0"
 			style:display="flex"
-			style:cursor="pointer"
+			style:height="100%"
+			style:width="100%"
 		>
-			<img
-				src={url}
-				height="172px"
-				width="172px"
-				alt="QR code to the game"
-				style:image-rendering="crisp-edges"
-			/>
-		</button>
-	{:else}
-		<div style:position="absolute" style:z-index="1" style:inset="0">
-			<button
-				on:click|self={() => (expandQR = false)}
-				style:appearance="none"
-				style:background="#000000A0"
-				style:display="flex"
-				style:height="100%"
-				style:width="100%"
-				style:padding="0"
-				style:border="none"
-			>
-				<img
-					src={url}
-					style:margin="auto"
-					height="700px"
-					width="700px"
-					alt="QR code to the game"
-					style:image-rendering="crisp-edges"
-				/>
-			</button>
+			<div style:margin="auto" use:dialog.modal>
+				<button
+					on:click={dialog.close}
+					style:appearance="none"
+					style:border="none"
+					style:background="none"
+					style:padding="0"
+				>
+					<img
+						src={url}
+						style:margin="auto"
+						height="700px"
+						width="700px"
+						alt="QR code to the game"
+						style:image-rendering="pixelated"
+						style:border-radius="5px"
+					/>
+				</button>
+			</div>
 		</div>
 	{/if}
 {/await}

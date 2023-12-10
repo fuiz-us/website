@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import { palette_dark } from '$lib';
 	import diversity from '$lib/assets/diversity.svg';
 	import balance from '$lib/assets/balance.svg';
@@ -27,7 +26,7 @@
 		style:padding="5px 10px"
 		style:gap="5px"
 		style:border-radius="5px"
-		href="{base}/credits"
+		href="/credits"
 		style:display="inline-flex"
 		style:align-items="center"
 	>

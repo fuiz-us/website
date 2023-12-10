@@ -5,6 +5,7 @@
 	import Loading from '$lib/Loading.svelte';
 	import ErrorPage from '$lib/ErrorPage.svelte';
 	import Gallery from './Gallery.svelte';
+	import { PUBLIC_PLAY_URL } from '$env/static/public';
 
 	$: id_param = $page.url.searchParams.get('id');
 
@@ -110,6 +111,7 @@
 	<title>{title}</title>
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
+	<link rel="canonical" href="{PUBLIC_PLAY_URL}/create" />
 </svelte:head>
 
 {#if status === 'loading'}

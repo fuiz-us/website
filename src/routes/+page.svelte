@@ -5,9 +5,9 @@
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import { goto } from '$app/navigation';
 	import Footer from '$lib/Footer.svelte';
-	import { base } from '$app/paths';
 	import Icon from '$lib/Icon.svelte';
 	import Header from '$lib/Header.svelte';
+	import { PUBLIC_PLAY_URL } from '$env/static/public';
 
 	const title = 'Fuiz | Host Live Quizzes Freely';
 	const description = 'A free online platform for host and playing live quizzes';
@@ -17,6 +17,7 @@
 	<title>{title}</title>
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
+	<link rel="canonical" href={PUBLIC_PLAY_URL} />
 </svelte:head>
 
 <NiceBackground>
@@ -47,7 +48,7 @@
 					<div>
 						<FancyButton
 							on:click={() => {
-								goto(base + '/create');
+								goto('/create');
 							}}
 						>
 							<div
@@ -66,7 +67,7 @@
 					<div>
 						<FancyButton
 							on:click={() => {
-								goto(base + '/play');
+								goto('/play');
 							}}
 						>
 							<div

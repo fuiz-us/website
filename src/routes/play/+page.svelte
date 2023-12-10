@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+	import { PUBLIC_PLAY_URL } from '$env/static/public';
 	import Join from './Join.svelte';
 	import Play from './Play.svelte';
 
@@ -13,6 +14,7 @@
 	<title>{title}</title>
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
+	<link rel="canonical" href="{PUBLIC_PLAY_URL}/play" />
 </svelte:head>
 
 {#if code !== null}

@@ -7,7 +7,18 @@
 	import { palette_dark } from '$lib';
 	import AnchorMessage from '$lib/AnchorMessage.svelte';
 	import Header from '$lib/Header.svelte';
+	import { PUBLIC_PLAY_URL } from '$env/static/public';
+
+	const title = 'Fuiz is Community Made';
+	const description = 'Fuiz is made by members of our community and volunteers around the world.';
 </script>
+
+<svelte:head>
+	<title>{title}</title>
+	<meta name="description" content={description} />
+	<meta property="og:description" content={description} />
+	<link rel="canonical" href="{PUBLIC_PLAY_URL}/credits" />
+</svelte:head>
 
 <NiceBackground>
 	<div

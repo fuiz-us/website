@@ -4,7 +4,6 @@ import spade from '$lib/assets/cards-spade.svg';
 import diamond from '$lib/assets/cards-diamond.svg';
 import { PUBLIC_BACKEND_URL, PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import { goto } from '$app/navigation';
-import { base } from '$app/paths';
 
 export const buttonColors = [
 	['#D4131B', '#a40e13'],
@@ -205,6 +204,6 @@ export async function play_local(id: number, db: IDBDatabase) {
 			return;
 		}
 
-		goto(base + '/host?code=' + (await res.text()));
+		goto('/host?code=' + (await res.text()));
 	}
 }

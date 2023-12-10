@@ -1,5 +1,4 @@
 <script>
-	import { base } from '$app/paths';
 	import Logo from './Logo.svelte';
 </script>
 
@@ -9,7 +8,7 @@
 	style:justify-content="center"
 	style:margin-bottom="10px"
 >
-	<a href="{base}/" style:height="60px" style:overflow="hidden">
+	<a href="/" style:height="60px" style:overflow="hidden">
 		<Logo height={60} width={150} />
 	</a>
 </div>

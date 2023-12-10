@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import { play_local } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Logo from '$lib/Logo.svelte';
@@ -20,7 +19,7 @@
 	style:align-items="center"
 	style:justify-content="center"
 >
-	<a href="{base}/create/" style:height="65px" style:margin="0 5px" style:overflow="hidden">
+	<a href="/create" style:height="65px" style:margin="0 5px" style:overflow="hidden">
 		<Logo height={65} width={162} />
 	</a>
 	<div style:flex="1" style:display="flex" style:gap="10px">

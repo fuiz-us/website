@@ -6,6 +6,7 @@
 	export let media: Media | undefined;
 	export let align = 'center';
 	export let fit = 'contain';
+	export let showFallback = true;
 </script>
 
 <div
@@ -18,7 +19,7 @@
 >
 	{#if media}
 		<MediaDisplay {media} {fit} />
-	{:else}
+	{:else if showFallback}
 		<MediaFallback />
 	{/if}
 </div>

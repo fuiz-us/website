@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { palette_light } from '$lib';
-	import FancyButton from '$lib/FancyButton.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
-	import { createEventDispatcher } from 'svelte';
 	import Topbar from './Topbar.svelte';
+	import TextBar from '$lib/Game/TextBar.svelte';
 
 	export let questionIndex: number;
 	export let questionTotalCount: number;
@@ -11,30 +10,11 @@
 	export let volume_on: boolean;
 
 	export let winners: string[];
-
-	const dispatch = createEventDispatcher();
 </script>
 
 <NiceBackground>
 	<Topbar bind:volume_on {questionIndex} {questionTotalCount} {gameId} />
-	<div
-		style:background={palette_light}
-		style:display="flex"
-		style:align-items="center"
-		style:justify-content="center"
-		style:font-size="xxx-large"
-		style:font-weight="bold"
-		style:padding="20px 15px"
-		style:box-shadow="0 2px 2px #00000040"
-		style:text-align="center"
-	>
-		<div style:flex="1">Winners</div>
-		<div>
-			<FancyButton on:click={() => dispatch('next')}>
-				<div style:padding="0 10px">Next</div>
-			</FancyButton>
-		</div>
-	</div>
+	<TextBar on:next text="Winners" show_next={true} />
 	<div
 		style:display="flex"
 		style:flex-direction="column"

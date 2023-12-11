@@ -27,5 +27,5 @@
 	on:click={toggle}
 	src={fullscreen ? fullscreenExit : fullscreenEnter}
 	alt={fullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
-	size="32px"
+	size="24px"
 />

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import NiceBackground from '$lib/NiceBackground.svelte';
-	import QuestionText from '$lib/Game/QuestionText.svelte';
 	import Topbar from './Topbar.svelte';
+	import TextBar from '$lib/Game/TextBar.svelte';
 
 	export let name: string;
 	export let score: number;
@@ -18,6 +18,6 @@
 		style:flex-direction="column"
 		style:justify-content="center"
 	>
-		<QuestionText {questionText} topShadow={true} />
+		<TextBar text={questionText} topShadow={true} />
 	</div>
 </NiceBackground>

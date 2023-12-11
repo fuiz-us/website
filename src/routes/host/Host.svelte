@@ -166,6 +166,7 @@
 	let volume_on = true;
 
 	let timer = 0;
+	let initialTimer = 0;
 
 	const UPDATE_DURATION = 100;
 
@@ -224,6 +225,7 @@
 						}
 					};
 					timer = duration;
+					initialTimer = duration;
 				} else if ('AnswersAnnouncement' in mc) {
 					let {
 						index = previous_index,
@@ -246,6 +248,7 @@
 						}
 					};
 					timer = duration;
+					initialTimer = duration;
 				} else if ('AnswersCount' in mc) {
 					current_state = {
 						...(current_state || { index: previous_index, count: previous_count }),
@@ -402,6 +405,7 @@
 			questionTotalCount={current_state.count}
 			results={current_state.Slide.Leaderboard.points}
 			final={current_state.index + 1 === current_state.count}
+			exact_count={current_state.Slide.Leaderboard.exact_count}
 			bind:volume_on
 		/>
 	{:else if 'MultipleChoice' in current_state.Slide}
@@ -423,6 +427,7 @@
 				questionText={current_state.Slide.question || ''}
 				answers={(current_state.Slide.answers || []).map((answer_content) => answer_content.Text)}
 				timeLeft={timer}
+				timeStarted={initialTimer}
 				answeredCount={current_state.Slide.answered_count || 0}
 				media={current_state.Slide.media}
 				bind:volume_on

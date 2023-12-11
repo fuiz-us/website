@@ -4,12 +4,12 @@
 	import Answers from '$lib/Game/Answers.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
-	import QuestionText from '$lib/Game/QuestionText.svelte';
 	import TimeLeft from '$lib/Game/TimeLeft.svelte';
 	import VerticalSplit from '$lib/VerticalSplit.svelte';
 	import Topbar from './Topbar.svelte';
 	import type { Media } from '$lib';
 	import { onMount } from 'svelte';
+	import TextBar from '$lib/Game/TextBar.svelte';
 
 	export let questionIndex: number;
 	export let questionTotalCount: number;
@@ -17,6 +17,7 @@
 	export let questionText: string;
 	export let answers: string[];
 	export let timeLeft: number;
+	export let timeStarted: number;
 	export let answeredCount: number;
 	export let media: Media | undefined;
 	export let volume_on: boolean;
@@ -35,13 +36,13 @@
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">
 	<Topbar bind:volume_on on:next {questionIndex} {questionTotalCount} {gameId} show_skip={true} />
-	<QuestionText {questionText} fontSize="48px" />
-	<div style:flex="1">
+	<TextBar text={questionText} />
+	<div style:flex="1" style:min-height="30vh">
 		<NiceBackground>
 			<VerticalSplit>
 				<svelte:fragment slot="top">
-					<TimeLeft {timeLeft} />
-					<MediaContainer {media} />
+					<TimeLeft {timeLeft} {timeStarted} />
+					<MediaContainer {media} showFallback={false} />
 					<AnsweredCount {answeredCount} />
 				</svelte:fragment>
 				<svelte:fragment slot="bottom">

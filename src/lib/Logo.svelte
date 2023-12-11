@@ -13,7 +13,6 @@
 		alt="a deck of cards representing fuiz logo and the word fuiz"
 		style:margin-right="auto"
 		style:display="flex"
-		style:height="100%"
 		style:width="auto"
 	/>
 </div>

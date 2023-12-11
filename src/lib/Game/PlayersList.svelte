@@ -10,7 +10,7 @@
 		style:background="#000000C0"
 		style:border-radius="10px"
 		style:color="white"
-		style:word-break="break-all"
+		style:word-break="break-word"
 	>
 		{player}
 	</div>

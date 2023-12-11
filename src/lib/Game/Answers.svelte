@@ -6,8 +6,7 @@
 
 <div
 	style:display="grid"
-	style:grid-template-columns="1fr 1fr"
-	style:grid-template-rows="repeat({Math.ceil(answers.length / 2)}, 1fr)"
+	style:--count={Math.ceil(answers.length / 2)}
 	style:gap="5px"
 	style:padding="5px"
 >
@@ -15,3 +14,17 @@
 		<TextAnswerButton {index} answerText={answer.text} correct={answer.correct} />
 	{/each}
 </div>
+
+<style>
+	div {
+		grid-template-columns: 1fr 1fr;
+		grid-template-rows: repeat(var(--count), 1fr);
+	}
+
+	@media (max-width: 600px) {
+		div {
+			grid-template-columns: 1fr;
+			grid-template-rows: repeat(auto-fill, 1fr);
+		}
+	}
+</style>

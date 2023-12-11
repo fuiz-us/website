@@ -117,7 +117,7 @@
 					<IconButton
 						src={volume_on ? volume_up : volume_off}
 						alt={volume_on ? 'Mute Music' : 'Turn on Music'}
-						size="32px"
+						size="24px"
 						on:click={() => (volume_on = !volume_on)}
 					/>
 					<Fullscreen />
@@ -127,9 +127,10 @@
 					style:margin="auto"
 					style:display="flex"
 					style:justify-content="center"
+					style:align-items="center"
 					style:flex-wrap="wrap"
-					style:min-height="40vh"
 					style:max-width="50ch"
+					style:min-height="40vh"
 					style:padding="10px"
 					style:gap="10px"
 					style:overflow="auto"

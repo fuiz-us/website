@@ -17,20 +17,20 @@
 		backgroundDeepColor={buttonColors.at(index)?.at(1)}
 	>
 		<div style:height="100%" style:width="100%" style:display="flex" style:align-items="center">
-			<div style:display="flex" style:padding="6px">
+			<div id="icon" style:display="flex">
 				<Icon
 					src={buttonSymbols.at(index)?.at(0) ?? ''}
 					alt={buttonSymbols.at(index)?.at(1) ?? ''}
-					size="36px"
+					size="var(--size)"
 				/>
 			</div>
 			<div
+				id="text"
 				style:height="100%"
 				style:flex="1"
 				style:display="flex"
 				style:justify-content="center"
 				style:align-items="center"
-				style:font-size="xxx-large"
 			>
 				{answerText}
 			</div>
@@ -46,3 +46,25 @@
 		</div>
 	</FancyButton>
 </div>
+
+<style>
+	#text {
+		font-size: 48px;
+	}
+
+	#icon {
+		--size: 32px;
+		padding: 6px;
+	}
+
+	@media (max-width: 600px) {
+		#text {
+			font-size: 26px;
+		}
+
+		#icon {
+			--size: 24px;
+			padding: 4px;
+		}
+	}
+</style>

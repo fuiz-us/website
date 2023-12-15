@@ -2,6 +2,8 @@
 	export let src: string;
 	export let alt: string;
 	export let size: string;
+
+	$: url_string = `url("${src}")`;
 </script>
 
 <div
@@ -12,7 +14,7 @@
 	style:-webkit-mask-size="cover"
 	style:color="inherit"
 	style:background="currentColor"
-	style:mask-image='url("{src}")'
-	style:-webkit-mask-image='url("{src}")'
+	style:mask-image={url_string}
+	style:-webkit-mask-image={url_string}
 	title={alt}
 />

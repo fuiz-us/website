@@ -12,7 +12,7 @@
 	style:-webkit-mask-size="cover"
 	style:color="inherit"
 	style:background="currentColor"
-	style:mask-image="url({src})"
-	style:-webkit-mask-image="url({src})"
+	style:mask-image='url("{src}")'
+	style:-webkit-mask-image='url("{src}")'
 	title={alt}
 />

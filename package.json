@@ -13,8 +13,7 @@
 		"postbuild": "npx svelte-sitemap --ignore host --out-dir .svelte-kit/cloudflare --domain https://fuiz.us"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/adapter-static": "^3.0.0",
+		"@sveltejs/adapter-cloudflare": "^3.0.1",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/qrcode": "^1.5.1",

@@ -10,7 +10,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"postbuild": "npx svelte-sitemap --ignore host --out-dir public --domain https://fuiz.us"
+		"postbuild": "npx svelte-sitemap --ignore host --out-dir .svelte-kit/cloudflare --domain https://fuiz.us"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",

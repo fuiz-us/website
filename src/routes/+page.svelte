@@ -48,6 +48,9 @@
 			<img
 				src={example}
 				alt="Fuiz features include being open source, having beautiful design, being leightweight, and being privacy friendly"
+				style:height="auto"
+				style:width="100%"
+				style:aspect-ratio="30/21"
 			/>
 		</div>
 	</section>

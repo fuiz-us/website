@@ -48,6 +48,7 @@
 				class="img"
 				src="./example.png"
 				alt="Fuiz features include being open source, having beautiful design, being leightweight, and being privacy friendly"
+				sizes="min(3000px, 90vw)"
 			/>
 		</div>
 	</section>

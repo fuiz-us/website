@@ -80,7 +80,9 @@
 <div>
 	<NiceBackground>
 		<div style:min-height="100vh" style:display="flex" style:flex-direction="column">
-			<Header />
+			<header style:margin="5px 0">
+				<Header />
+			</header>
 			<div style:display="flex" style:justify-content="center">
 				<div>
 					<FancyButton on:click={add_slide}>

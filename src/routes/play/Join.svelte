@@ -48,7 +48,9 @@
 		style:align-items="center"
 		style:font-size="x-large"
 	>
-		<Header />
+		<header style:margin="5px 0">
+			<Header />
+		</header>
 		<form on:submit|preventDefault={submit}>
 			<div
 				style:flex="1"

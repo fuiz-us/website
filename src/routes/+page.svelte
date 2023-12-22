@@ -1,7 +1,6 @@
 <script lang="ts">
 	import paint from '$lib/assets/paint.svg';
 	import game from '$lib/assets/game.svg';
-	import example from '$lib/assets/example.png';
 
 	import Icon from '$lib/Icon.svelte';
 	import Header from '$lib/Header.svelte';
@@ -45,12 +44,10 @@
 	<section>
 		<div>
 			<h2>Fun, Interactive, Engaging. Create with Fuiz.</h2>
-			<img
-				src={example}
+			<enhanced:img
+				class="img"
+				src="./example.png"
 				alt="Fuiz features include being open source, having beautiful design, being leightweight, and being privacy friendly"
-				style:height="auto"
-				style:width="100%"
-				style:aspect-ratio="30/21"
 			/>
 		</div>
 	</section>
@@ -146,8 +143,9 @@
 		margin: 0 0 0.5em;
 	}
 
-	img {
+	.img {
 		max-width: 100%;
+		height: auto;
 		border-radius: 5px;
 		box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
 	}

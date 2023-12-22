@@ -6,7 +6,6 @@
 	import ErrorPage from '$lib/ErrorPage.svelte';
 	import Gallery from './Gallery.svelte';
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
-	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 
 	$: id_param = $page.url.searchParams.get('id');

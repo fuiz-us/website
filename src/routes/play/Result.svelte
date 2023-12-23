@@ -19,14 +19,9 @@
 				style:justify-content="center"
 				style:align-items="center"
 			>
-				<div
-					style:display="flex"
-					style:flex-direction="column"
-					style:align-items="center"
-					style:font-size="xx-large"
-				>
+				<div style:display="flex" style:flex-direction="column" style:align-items="center">
 					<img
-						width="200px"
+						style:width="10em"
 						src={correct ? correct_penguin : wrong_penguin}
 						alt={correct ? 'penguin holding a checkmark' : 'penguin holding a crossmark'}
 					/>

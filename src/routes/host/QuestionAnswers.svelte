@@ -5,11 +5,11 @@
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import TimeLeft from '$lib/Game/TimeLeft.svelte';
-	import VerticalSplit from '$lib/VerticalSplit.svelte';
+	import VerticalTripleSplit from '$lib/VerticalTripleSplit.svelte';
 	import Topbar from './Topbar.svelte';
 	import type { Media } from '$lib';
-	import { onMount } from 'svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
+	import Audio from '$lib/Audio.svelte';
 
 	export let questionIndex: number;
 	export let questionTotalCount: number;
@@ -22,28 +22,42 @@
 	export let media: Media | undefined;
 	export let volume_on: boolean;
 
-	const audio = new Audio(think);
-	audio.loop = true;
-	$: audio.volume = volume_on ? 1.0 : 0.0;
-
-	onMount(() => {
-		audio.play();
-		return () => {
-			audio.pause();
-		};
-	});
+	let fullscreenElement;
 </script>
 
-<div style:height="100%" style:display="flex" style:flex-direction="column">
-	<Topbar bind:volume_on on:next {questionIndex} {questionTotalCount} {gameId} show_skip={true} />
+<Audio audioUrl={think} volumeOn={volume_on} />
+<div
+	bind:this={fullscreenElement}
+	style:height="100%"
+	style:display="flex"
+	style:flex-direction="column"
+>
+	<Topbar
+		bind:volume_on
+		on:next
+		{questionIndex}
+		{fullscreenElement}
+		{questionTotalCount}
+		{gameId}
+		show_skip={true}
+	/>
 	<TextBar text={questionText} />
-	<div style:flex="1" style:min-height="30vh">
+	<div style:flex="1">
 		<NiceBackground>
-			<VerticalSplit>
+			<VerticalTripleSplit>
 				<svelte:fragment slot="top">
-					<TimeLeft {timeLeft} {timeStarted} />
+					<div
+						style:display="flex"
+						style:justify-content="space-between"
+						style:z-index="1"
+						style:padding="0.4em"
+					>
+						<TimeLeft {timeLeft} {timeStarted} />
+						<AnsweredCount {answeredCount} />
+					</div>
+				</svelte:fragment>
+				<svelte:fragment slot="center">
 					<MediaContainer {media} showFallback={false} />
-					<AnsweredCount {answeredCount} />
 				</svelte:fragment>
 				<svelte:fragment slot="bottom">
 					<Answers
@@ -52,7 +66,7 @@
 						})}
 					/>
 				</svelte:fragment>
-			</VerticalSplit>
+			</VerticalTripleSplit>
 		</NiceBackground>
 	</div>
 </div>

@@ -8,16 +8,16 @@
 	export let questionText: string;
 </script>
 
-<div style:box-shadow="0 2px 2px #00000040">
+<div style:display="flex" style:flex-direction="column" style:height="100%">
 	<Topbar {name} {score} />
+	<NiceBackground>
+		<div
+			style:height="100%"
+			style:display="flex"
+			style:flex-direction="column"
+			style:justify-content="center"
+		>
+			<TextBar text={questionText} topShadow={true} />
+		</div>
+	</NiceBackground>
 </div>
-<NiceBackground>
-	<div
-		style:height="100%"
-		style:display="flex"
-		style:flex-direction="column"
-		style:justify-content="center"
-	>
-		<TextBar text={questionText} topShadow={true} />
-	</div>
-</NiceBackground>

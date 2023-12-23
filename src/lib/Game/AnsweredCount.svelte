@@ -7,21 +7,17 @@
 </script>
 
 <div
-	style:position="absolute"
-	style:margin="10px"
-	style:top="0"
-	style:right="0"
 	style:z-index="1"
-	style:padding="5px 20px"
+	style:padding="0.2em 0.6em"
 	style:display="flex"
-	style:gap="10px"
+	style:gap="0.3em"
 	style:align-items="center"
 	style:background="var(--background-color)"
-	style:border="3px solid {palette_dark}"
+	style:border="0.15em solid {palette_dark}"
 	style:border-radius="200px"
 >
-	<Icon src={assignmentTurned} alt="people who answered" size="40px" />
-	<div style:font-size="36px" style:font-family="Poppins">
+	<Icon src={assignmentTurned} alt="people who answered" size="1.2em" />
+	<div style:font-size="1em" style:font-family="Poppins">
 		{answeredCount}
 	</div>
 </div>

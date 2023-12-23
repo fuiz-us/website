@@ -6,7 +6,7 @@
 	export let url: string;
 	export let small_size: string;
 
-	$: image = toDataURL(url);
+	$: image = toDataURL(url, { scale: 1 });
 
 	const dialog = createDialog({});
 </script>
@@ -18,7 +18,7 @@
 		style:display="flex"
 		style:justify-content="center"
 		style:align-items="center"
-		style:border-radius="5px"
+		style:border-radius="0.2em"
 	>
 		<div style:height="64px" style:width="64px">
 			<LoadingCircle borderWidth={8} color="black" />
@@ -27,6 +27,7 @@
 {:then url}
 	<button
 		on:click={dialog.open}
+		style:font="inherit"
 		style:appearance="none"
 		style:border="none"
 		style:background="none"
@@ -36,11 +37,11 @@
 	>
 		<img
 			src={url}
-			height={small_size}
-			width={small_size}
+			style:height={small_size}
+			style:width={small_size}
 			alt="QR code to the game"
 			style:image-rendering="pixelated"
-			style:border-radius="5px"
+			style:border-radius="0.2em"
 		/>
 	</button>
 	{#if $dialog.expanded}
@@ -58,14 +59,18 @@
 					on:click={dialog.close}
 					style:appearance="none"
 					style:border="none"
+					style:font="inherit"
+					style:box-sizing="border-box"
 					style:background="none"
 					style:padding="0"
 				>
 					<img
 						src={url}
 						style:margin="auto"
-						height="700px"
-						width="700px"
+						style:height="80vmin"
+						style:width="auto"
+						style:aspect-ratio="1"
+						style:max-height="700px"
 						alt="QR code to the game"
 						style:image-rendering="pixelated"
 						style:border-radius="5px"

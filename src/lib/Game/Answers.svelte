@@ -4,27 +4,25 @@
 	export let answers: { text: string; correct: boolean | undefined }[];
 </script>
 
-<div
-	style:display="grid"
-	style:--count={Math.ceil(answers.length / 2)}
-	style:gap="5px"
-	style:padding="5px"
->
-	{#each answers as answer, index}
-		<TextAnswerButton {index} answerText={answer.text} correct={answer.correct} />
-	{/each}
+<div id="container">
+	<div id="inner" style:display="grid" style:gap="0.2em" style:padding="0.2em">
+		{#each answers as answer, index}
+			<TextAnswerButton {index} answerText={answer.text} correct={answer.correct} />
+		{/each}
+	</div>
 </div>
 
 <style>
-	div {
+	#container {
+		container-type: inline-size;
+	}
+	#inner {
 		grid-template-columns: 1fr 1fr;
-		grid-template-rows: repeat(var(--count), 1fr);
 	}
 
-	@media (max-width: 600px) {
-		div {
+	@container (width <= 40ch) {
+		#inner {
 			grid-template-columns: 1fr;
-			grid-template-rows: repeat(auto-fill, 1fr);
 		}
 	}
 </style>

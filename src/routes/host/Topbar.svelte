@@ -16,6 +16,7 @@
 	export let questionTotalCount: number;
 	export let gameId: string;
 	export let volume_on: boolean;
+	export let fullscreenElement: HTMLElement | undefined = undefined;
 
 	export let show_skip = false;
 
@@ -27,9 +28,11 @@
 <div
 	style:display="flex"
 	style:background={palette_light}
-	style:padding="5px 10px"
+	style:padding="0.2em"
+	style:line-height="1em"
 	style:align-items="center"
 	style:gap="10px"
+	style:row-gap="20px"
 	style:justify-content="center"
 	style:flex-wrap="wrap"
 >
@@ -38,10 +41,11 @@
 		style:cursor="pointer"
 		style:appearance="none"
 		style:display="flex"
-		style:padding="5px 8px"
+		style:padding="0.2em 0.4em"
 		style:gap="2px"
 		style:align-items="center"
 		style:line-height="1em"
+		style:font-size="inherit"
 		style:font-family="Poppins"
 		style:background={palette_dark}
 		style:color={palette_light}
@@ -86,7 +90,6 @@
 					style:flex-wrap="wrap"
 					style:justify-content="space-between"
 					style:gap="20px"
-					style:font-size="24px"
 					style:width="30ch"
 					style:max-width="80vw"
 				>
@@ -111,10 +114,9 @@
 	{/if}
 	<div
 		style:display="flex"
-		style:padding="5px 8px"
+		style:padding="0.2em 0.4em"
 		style:gap="2px"
 		style:align-items="center"
-		style:line-height="1em"
 		style:font-family="Poppins"
 	>
 		<div style:font-family="Poppins">
@@ -122,7 +124,7 @@
 		</div>
 	</div>
 	<div
-		style:flex="1"
+		style:flex="100"
 		style:justify-content="center"
 		style:display="flex"
 		style:gap="1ch"
@@ -134,27 +136,23 @@
 			{gameId}
 		</div>
 	</div>
-	<div style:display="flex" style:align-items="center" style:gap="4px">
+	<div
+		style:flex="1"
+		style:display="flex"
+		style:justify-content="space-between"
+		style:align-items="center"
+		style:gap="0.2em"
+		style:padding="0.2em"
+	>
 		{#if show_skip}
-			<button
-				on:click={() => dispatch('next')}
-				style:height="24px"
-				style:width="24px"
-				style:padding="0"
-				style:background="none"
-				style:appearance="none"
-				style:border="none"
-				style:cursor="pointer"
-			>
-				<Icon src={skip} alt="skip" size="24px" />
-			</button>
+			<IconButton src={skip} alt="Skip this slide" size="1em" on:click={() => dispatch('next')} />
 		{/if}
 		<IconButton
 			src={volume_on ? volume_up : volume_off}
 			alt={volume_on ? 'Mute Music' : 'Turn on Music'}
-			size="24px"
+			size="1em"
 			on:click={() => (volume_on = !volume_on)}
 		/>
-		<Fullscreen />
+		<Fullscreen {fullscreenElement} />
 	</div>
 </div>

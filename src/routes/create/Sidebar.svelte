@@ -59,10 +59,10 @@
 
 <div
 	id="sidebar"
-	style:padding="10px"
+	style:padding="0.4em"
 	style:display="flex"
 	style:flex-direction="column"
-	style:gap="10px"
+	style:gap="0.4em"
 >
 	<div
 		class="switched"
@@ -70,7 +70,7 @@
 		style:display="flex"
 		style:align-items="stretch"
 		style:justify-content="space-between"
-		style:gap="10px"
+		style:gap="0.4em"
 		style:box-sizing="border-box"
 	>
 		<div style:flex="1" style:flex-direction="column" style:box-sizing="border-box">
@@ -82,7 +82,7 @@
 				style:width="0"
 				style:min-height="100%"
 				style:min-width="100%"
-				style:gap="5px"
+				style:gap="0.2em"
 				style:overflow="auto"
 				on:consider={handleConsider}
 				on:finalize={handleFinalize}
@@ -90,7 +90,7 @@
 				{#each slides as slide, index (slide.id)}
 					<div
 						id="slide_{index}"
-						style:padding="10px"
+						style:padding="0.4em"
 						style:box-sizing="border-box"
 						style:height="fit-content"
 						animate:flip={{ duration: 300 }}
@@ -138,15 +138,14 @@
 				}}
 			>
 				<div
-					style:padding="5px 10px"
+					style:padding="0.2em 0.4em"
 					style:height="100%"
 					style:box-sizing="border-box"
-					style:font-size="x-large"
 					style:display="flex"
 					style:align-items="center"
 					style:justify-content="center"
 					style:color={palette_light}
-					style:gap="5px"
+					style:gap="0.2em"
 				>
 					<Icon size="1em" src={add_slide} alt="add slide" />
 					<div class="would-be-hidden">Add Slide</div>
@@ -155,53 +154,50 @@
 		</div>
 	</div>
 	<div id="controls" style:justify-content="center" style:align-items="center" style:gap="5px">
-		<div style:background="#00000020" style:border-radius="5px">
+		<div style:background="#00000020" style:border-radius="0.2em">
 			<IconButton
 				src={first}
 				alt="Go to First Page"
-				size="2em"
-				padding="5px"
+				size="1.2em"
+				padding="0.2em"
 				on:click={() => changeSelected(0)}
 			/>
 		</div>
-		<div style:background="#00000020" style:border-radius="5px">
+		<div style:background="#00000020" style:border-radius="0.2em">
 			<IconButton
 				src={left}
 				alt="Go to Left"
-				size="2em"
-				padding="5px"
+				size="1.2em"
+				padding="0.2em"
 				on:click={() => changeSelected(selected_slide_index - 1)}
 			/>
 		</div>
-		<div style:background="#00000020" style:border-radius="5px">
+		<div style:background="#00000020" style:border-radius="0.2em">
 			<div
-				style:height="2em"
+				style:height="1.2em"
 				style:aspect-ratio="1/1"
-				style:padding="5px"
-				style:display="flex"
-				style:align-items="center"
-				style:justify-content="center"
+				style:padding="0.2em"
+				style:text-align="center"
+				style:font-weight="bold"
 			>
-				<div style:font-size="1.25em" style:font-weight="bold">
-					{selected_slide_index + 1}
-				</div>
+				{selected_slide_index + 1}
 			</div>
 		</div>
-		<div style:background="#00000020" style:border-radius="5px">
+		<div style:background="#00000020" style:border-radius="0.2em">
 			<IconButton
 				src={right}
 				alt="Go Right"
-				size="2em"
-				padding="5px"
+				size="1.2em"
+				padding="0.2em"
 				on:click={() => changeSelected(selected_slide_index + 1)}
 			/>
 		</div>
-		<div style:background="#00000020" style:border-radius="5px">
+		<div style:background="#00000020" style:border-radius="0.2em">
 			<IconButton
 				src={last}
 				alt="Go to Last Page"
-				size="2em"
-				padding="5px"
+				size="1.2em"
+				padding="0.2em"
 				on:click={() => changeSelected(slides.length - 1)}
 			/>
 		</div>
@@ -210,7 +206,7 @@
 
 <style>
 	#sidebar {
-		width: 275px;
+		width: 8em;
 	}
 
 	.switched {
@@ -237,7 +233,7 @@
 		#sidebar {
 			width: unset;
 			height: unset;
-			border-top: 1px solid #00000020;
+			border-top: 0.15em solid #00000020;
 		}
 		.switched {
 			flex-direction: row;

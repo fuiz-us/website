@@ -40,7 +40,6 @@
 				style:max-width="50ch"
 				style:margin="auto"
 				style:padding="10px"
-				style:font-size="x-large"
 				style:box-sizing="border-box"
 			>
 				<BingoBoard
@@ -53,7 +52,7 @@
 				/>
 				{#if upvoted_uncrossed_statement !== undefined}
 					<div>
-						<h2 style:margin-bottom="4px">Most Upvoted</h2>
+						<h2 style:margin-bottom="4px" style:font-family="Poppins">Most Upvoted</h2>
 						<div style:display="flex" style:flex-direction="column" style:gap="5px">
 							<Uncrossed
 								user_votes={user_votes.at(upvoted_uncrossed_statement.id) ?? 0}
@@ -67,7 +66,7 @@
 
 				{#if filtered_uncrossed_statement.length}
 					<div>
-						<h2 style:margin-bottom="4px">Uncrossed</h2>
+						<h2 style:margin-bottom="4px" style:font-family="Poppins">Uncrossed</h2>
 						<div style:display="flex" style:flex-direction="column" style:gap="5px">
 							{#each filtered_uncrossed_statement as { id, text } (id)}
 								<Uncrossed user_votes={user_votes.at(id) ?? 0} {text} {id} on:index />
@@ -78,10 +77,10 @@
 
 				{#if crossed_statements.length}
 					<div>
-						<h2 style:margin-bottom="4px">Crossed</h2>
+						<h2 style:margin-bottom="4px" style:font-family="Poppins">Crossed</h2>
 						<div style:display="flex" style:flex-direction="column" style:gap="5px">
 							{#each crossed_statements as { id, text } (id)}
-								<Crossed user_votes={user_votes.at(id) ?? 0} {text} />
+								<Crossed {text} />
 							{/each}
 						</div>
 					</div>

@@ -80,7 +80,7 @@
 <div>
 	<NiceBackground>
 		<div style:min-height="100vh" style:display="flex" style:flex-direction="column">
-			<header style:margin="5px 0">
+			<header style:margin="0.2em 0">
 				<Header />
 			</header>
 			<div style:display="flex" style:justify-content="center">
@@ -89,52 +89,50 @@
 						<div
 							style:display="flex"
 							style:align-items="center"
-							style:font-size="xx-large"
-							style:font-weight="bolder"
+							style:font-family="Poppins"
 							style:gap="0.5em"
 							style:padding="0.15em 0.25em"
 							style:justify-content="center"
 						>
-							<Icon size="1em" src={add} alt="add a new one" />
+							<Icon size="1.25em" src={add} alt="add a new one" />
 							<div>Start Blank</div>
 						</div>
 					</FancyButton>
 				</div>
 			</div>
-			<div style:flex="1" style:margin="0 10px">
+			<div style:flex="1" style:margin="0 0.4em">
 				<div
-					style:max-width="100ch"
-					style:padding="15px"
+					style:max-width="60ch"
+					style:padding="0.5em"
 					style:box-sizing="border-box"
-					style:margin="20px auto"
+					style:margin="1em auto"
 					style:background={palette_light + 'E0'}
-					style:border="2px solid #00000080"
-					style:border-radius="10px"
+					style:border="0.1em solid #00000080"
+					style:border-radius="0.7em"
 				>
 					<h2
 						style:font-family="Poppins"
-						style:font-size="xx-large"
 						style:line-height="1"
-						style:margin="0 0 15px"
-						style:border-bottom="1px solid #00000080"
+						style:margin="0 0 0.2em"
+						style:border-bottom="0.05em solid #00000080"
 					>
 						Recent Fuizzes
 					</h2>
 					{#if sorted_creations.length}
 						<div
 							style:display="grid"
-							style:grid-template-columns="repeat(auto-fit, minmax(200px, 1fr))"
+							style:grid-template-columns="repeat(auto-fit, minmax(15ch, 1fr))"
 							style:grid-auto-rows="1fr"
-							style:grid-gap="10px"
+							style:grid-gap="0.4em"
 						>
 							{#each sorted_creations as { id, title, last_edited, slides_count, media }}
 								<div
 									class="entry"
-									style:background="var(--accent-color)"
 									style:display="flex"
-									style:max-height="300px"
+									style:max-height="20ch"
 									style:aspect-ratio="6 / 5"
-									style:border-radius="5px"
+									style:border="0.15em solid var(--border-color)"
+									style:border-radius="0.7em"
 									style:position="relative"
 									style:overflow="hidden"
 									style:left="50%"
@@ -149,20 +147,19 @@
 										style:text-decoration="inherit"
 										style:display="flex"
 										style:flex-direction="column"
-										style:border-radius="5px"
+										style:border-radius="0.6em"
 										style:overflow="hidden"
-										style:border="2px solid var(--border-color)"
 									>
 										<div
 											style:width="100%"
 											style:flex="1"
-											style:border-bottom="2px solid var(--border-color)"
+											style:border-bottom="0.15em solid var(--border-color)"
 											style:position="relative"
 										>
 											<MediaContainer {media} fit="cover" />
 										</div>
-										<div style:padding="8px 10px" style:font-size="20px">
-											<div style:display="flex" style:align-items="center" style:gap="5px">
+										<div style:padding="0.3em 0.4em" style:font-size="0.75em">
+											<div style:display="flex" style:align-items="center" style:gap="0.2em">
 												<div style:flex="1" style:word-wrap="anywhere">
 													{title}
 												</div>
@@ -170,7 +167,7 @@
 											<div style:display="flex" style:align-items="center">
 												<div
 													style:display="flex"
-													style:gap="5px"
+													style:gap="0.25em"
 													style:flex="1"
 													style:opacity="0.7"
 												>
@@ -193,18 +190,18 @@
 										style:z-index="0"
 										style:display="flex"
 										style:flex-direction="column"
-										style:padding="5px"
-										style:gap="5px"
+										style:padding="0.2em"
+										style:gap="0.2em"
 										style:color="var(--palette-light)"
 									>
 										<IconButton
-											size="24px"
+											size="1em"
 											src={present}
 											alt="Host This Fuiz"
 											on:click={() => play_local(id, db)}
 										/>
 										<IconButton
-											size="24px"
+											size="1em"
 											src={delete_fuiz}
 											alt="Delete This Fuiz"
 											on:click={() => {
@@ -220,7 +217,6 @@
 							style:display="flex"
 							style:flex-direction="column"
 							style:align-items="center"
-							style:font-size="xx-large"
 							style:opacity="0.3"
 						>
 							<Icon src={ghost} size="min(20vh, 60vw)" alt="Nothing Here" />
@@ -235,28 +231,38 @@
 </div>
 
 <style>
-	.entry .main {
+	.entry {
 		--border-color: #a0a0a0;
+		background: var(--border-color);
 
-		transition: margin-right 150ms ease-out;
-		outline: none;
-		background: var(--palette-light);
-	}
-
-	.entry:where(:focus-within, :hover) .main {
-		&:where(:focus, :hover) {
-			background: linear-gradient(#00000020, #00000020), var(--palette-light);
+		& .main {
+			transition: margin-right 150ms ease-out;
+			outline: none;
+			background: var(--palette-light);
 		}
 
-		--border-color: var(--accent-color);
-		margin-right: 34px;
+		&:where(:focus-within, :hover) {
+			background: var(--accent-color);
+			--border-color: var(--accent-color);
+
+			& .main {
+				margin-right: 1.5em;
+
+				&:where(:focus, :hover) {
+					background: linear-gradient(#00000020, #00000020), var(--palette-light);
+				}
+			}
+		}
 	}
 
 	@media (hover: none) {
-		.entry .main {
+		.entry {
 			--border-color: var(--accent-color);
+		}
+
+		.entry .main {
 			outline: none;
-			margin-right: 34px;
+			margin-right: 1.5em;
 		}
 	}
 </style>

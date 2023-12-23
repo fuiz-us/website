@@ -14,38 +14,32 @@
 	style:flex="1"
 	style:display="flex"
 	style:flex-direction="column"
-	style:gap="5px"
-	style:padding="20px 10px 10px"
+	style:gap="0.2em"
+	style:padding="0.6em 0.4em 0.4em"
 	style:align-items="center"
 	style:justify-content="space-between"
 >
-	<div
-		style:max-width="35ch"
-		style:width="100%"
-		style:font-size="24px"
-		style:padding-top="0.5em"
-		style:overflow="auto"
-	>
+	<div style:max-width="25ch" style:width="100%" style:padding-top="0.5em" style:overflow="auto">
 		<Textarea
 			bind:value={slide.title}
 			placeholder="Question Title"
 			id="question_title"
 			required={false}
 			disabled={false}
-			max_height="150px"
+			max_height="4em"
 		/>
 	</div>
 	<div
 		style:display="flex"
 		style:width="100%"
 		style:flex-wrap="wrap-reverse"
-		style:gap="5px"
+		style:gap="0.2em"
 		style:align-items="center"
 		style:justify-content="center"
 	>
-		<div style:font-size="24px">
+		<div>
 			<SelectTime options={[5, 10, 30, 60, 120, 240]} bind:selected={slide.time_limit}>
-				<Icon src={timer} size="24px" alt="Time Limit" />
+				<Icon src={timer} size="1em" alt="Time Limit" />
 			</SelectTime>
 		</div>
 		<MediaChooser bind:media={slide.media} />

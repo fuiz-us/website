@@ -1,19 +1,25 @@
 <script lang="ts">
-	import { palette_light } from '$lib';
-
 	export let text: string;
 </script>
 
-<div
-	style:display="flex"
-	style:justify-content="space-between"
-	style:padding="10px"
-	style:background={'#000000c0'}
-	style:color={palette_light}
-	style:border-radius="5px"
-	style:font-size="x-large"
->
-	<div style:flex="1" style:text-decoration="line-through">
-		{text}
-	</div>
+<div>
+	{text}
 </div>
+
+<style>
+	div {
+		font-weight: bold;
+		background: repeating-linear-gradient(
+				-45deg,
+				transparent,
+				transparent 0.5em,
+				color-mix(in srgb, currentColor 20%, transparent) 0.5em,
+				color-mix(in srgb, currentColor 20%, transparent) 0.6em
+			),
+			var(--background-color);
+		border: 0.15em solid currentColor;
+		padding: 0.15em 0.4em;
+		border-radius: 0.6em;
+		text-align: center;
+	}
+</style>

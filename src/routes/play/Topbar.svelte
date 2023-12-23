@@ -9,16 +9,15 @@
 
 <div
 	style:display="flex"
-	style:box-shadow="0 2px 2px #00000040"
+	style:border-bottom="0.15em solid"
 	style:background={palette_light}
-	style:padding="5px 10px"
-	style:font-size="xx-large"
+	style:padding="0.2em 0.4em"
 	style:align-items="center"
 	style:box-sizing="border-box"
 >
 	<div
 		style:display="flex"
-		style:padding="5px 15px"
+		style:padding="0.2em"
 		style:font-family="Poppins"
 		style:overflow-wrap="anywhere"
 		style:box-sizing="border-box"
@@ -31,7 +30,7 @@
 			style:font-weight="bold"
 			style:display="flex"
 			style:gap="3px"
-			style:padding="5px 15px"
+			style:padding="0.2em"
 			style:box-sizing="border-box"
 			style:align-items="center"
 		>

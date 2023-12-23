@@ -4,9 +4,11 @@
 
 	import Icon from '$lib/Icon.svelte';
 	import Header from '$lib/Header.svelte';
+	import blackLogo from '$lib/assets/black_logo.svg';
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
 	import FancyAnchorButton from '$lib/FancyAnchorButton.svelte';
 	import Anchor from '$lib/Anchor.svelte';
+	import QuestionAnswers from './host/QuestionAnswers.svelte';
 
 	const title = 'Fuiz | Host Live Quizzes Freely';
 	const description = 'A free online platform for host and playing live quizzes';
@@ -26,7 +28,7 @@
 			<div>
 				<FancyAnchorButton href="/create">
 					<div class="a">
-						<Icon src={paint} alt="paint" size="40px" />
+						<Icon src={paint} alt="paint" size="1.2em" />
 						<div>Create</div>
 					</div>
 				</FancyAnchorButton>
@@ -34,7 +36,7 @@
 			<div>
 				<FancyAnchorButton href="/play">
 					<div class="a">
-						<Icon size="40px" src={game} alt="game" />
+						<Icon size="1.2em" src={game} alt="game" />
 						<div>Play</div>
 					</div>
 				</FancyAnchorButton>
@@ -43,13 +45,30 @@
 	</header>
 	<section>
 		<div>
-			<h2>Fun, Interactive, Engaging. Create with Fuiz.</h2>
-			<enhanced:img
-				class="img"
-				src="./example.png"
-				alt="Fuiz features include being open source, having beautiful design, being leightweight, and being privacy friendly"
-				sizes="min(3000px, 90vw)"
-			/>
+			<h2>Fun, Interactive, Engaging.<br />Create with Fuiz.</h2>
+			<div class="slide-container">
+				<div class="slide">
+					<QuestionAnswers
+						questionIndex={0}
+						questionText="What are Fuiz features?"
+						gameId="21345"
+						questionTotalCount={1}
+						timeLeft={15000}
+						timeStarted={30000}
+						answers={['Open Source', 'Beautiful Design', 'Lightweight', 'Privacy Friendly']}
+						answeredCount={0}
+						volume_on={false}
+						media={{
+							Image: {
+								Url: {
+									url: blackLogo,
+									alt: 'Fuiz logo in all black'
+								}
+							}
+						}}
+					/>
+				</div>
+			</div>
 		</div>
 	</section>
 	<section>
@@ -92,21 +111,21 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 1em;
+		padding: 0.3em 0.6em;
 
 		@media (max-width: 600px) {
 			flex-direction: column;
 			align-items: stretch;
 		}
 
-		gap: 1em;
+		gap: 0.3em;
 	}
 
 	nav {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		gap: 1em;
+		gap: 0.3em;
 	}
 
 	nav > div {
@@ -118,18 +137,16 @@
 		font-family: 'Poppins';
 		align-items: center;
 		justify-content: center;
-		gap: 5px;
-		font-size: 28px;
-		padding: 5px;
+		gap: 0.2em;
+		padding: 0.2em;
 	}
 
 	section {
-		& div {
+		& > div {
 			max-width: 45ch;
 			margin: auto;
 		}
 
-		font-size: 32px;
 		text-align: center;
 
 		padding: 1em;
@@ -144,11 +161,17 @@
 		margin: 0 0 0.5em;
 	}
 
-	.img {
-		max-width: 100%;
-		height: auto;
-		border-radius: 5px;
-		box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+	.slide-container {
+		border: 0.15em solid;
+		border-radius: 0.9em;
+		overflow: hidden;
+	}
+
+	.slide {
+		position: relative;
+		font-size: min(1em, 3vw);
+		aspect-ratio: 90 / 72;
+		z-index: 1;
 	}
 
 	section:nth-of-type(even) {

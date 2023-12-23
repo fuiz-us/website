@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { palette_light } from '$lib';
 	import { createEventDispatcher } from 'svelte';
 	import vote from '$lib/assets/vote.svg';
 	import Icon from '$lib/Icon.svelte';
@@ -14,14 +13,13 @@
 <button
 	on:click={() => dispatch('index', id)}
 	style:appearance="none"
-	style:border="none"
 	style:display="flex"
+	style:font="inherit"
 	style:justify-content="space-between"
-	style:padding="10px"
-	style:background={'#000000c0'}
-	style:color={palette_light}
-	style:border-radius="5px"
-	style:font-size="x-large"
+	style:background="var(--background-color)"
+	style:border="0.15em solid currentcolor"
+	style:padding="0.15em 0.4em"
+	style:border-radius="0.6em"
 	style:cursor="pointer"
 >
 	<div style:flex="1">

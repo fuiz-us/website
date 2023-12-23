@@ -9,8 +9,8 @@
 <div>
 	<FancyButton
 		on:click
-		backgroundColor={buttonColors.at(index)?.at(0)}
-		backgroundDeepColor={buttonColors.at(index)?.at(1)}
+		backgroundColor={buttonColors.at(index % buttonColors.length)?.at(0)}
+		backgroundDeepColor={buttonColors.at(index % buttonColors.length)?.at(1)}
 	>
 		<div
 			style:height="100%"
@@ -19,10 +19,16 @@
 			style:align-items="center"
 			style:justify-content="center"
 		>
-			<div style:height="128px" style:width="128px" style:max-height="75%" style:max-width="75%">
+			<div
+				style:width="100%"
+				style:height="auto"
+				style:aspect-ratio="1"
+				style:max-height="65%"
+				style:max-width="65%"
+			>
 				<Icon
-					src={buttonSymbols.at(index)?.at(0) ?? ''}
-					alt={buttonSymbols.at(index)?.at(1) ?? ''}
+					src={buttonSymbols.at(index % buttonColors.length)?.at(0) ?? ''}
+					alt={buttonSymbols.at(index % buttonColors.length)?.at(1) ?? ''}
 					size="100%"
 				/>
 			</div>

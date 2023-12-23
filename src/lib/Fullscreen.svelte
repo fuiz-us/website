@@ -5,6 +5,7 @@
 	import IconButton from './IconButton.svelte';
 
 	let fullscreen = false;
+	export let fullscreenElement: HTMLElement | undefined = undefined;
 
 	onMount(() => {
 		document.addEventListener('fullscreenchange', () => {
@@ -18,7 +19,7 @@
 		if (fullscreen) {
 			await document.exitFullscreen();
 		} else {
-			await document.documentElement.requestFullscreen();
+			await (fullscreenElement || document.documentElement).requestFullscreen();
 		}
 	}
 </script>
@@ -27,5 +28,5 @@
 	on:click={toggle}
 	src={fullscreen ? fullscreenExit : fullscreenEnter}
 	alt={fullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
-	size="24px"
+	size="1em"
 />

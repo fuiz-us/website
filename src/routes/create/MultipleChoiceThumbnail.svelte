@@ -8,8 +8,8 @@
 
 <div
 	style:display="flex"
-	style:gap="5px"
-	style:height="100px"
+	style:gap="0.2em"
+	style:height="4em"
 	style:overflow="hidden"
 	style:flex-direction="column"
 	style:justify-content="space-between"
@@ -17,10 +17,11 @@
 >
 	<div
 		style:background={palette_light}
-		style:padding="5px 5px"
+		style:padding="0.2em"
 		style:box-sizing="border-box"
 		style:box-shadow="0 2px 2px #00000040"
 		style:text-align="center"
+		style:font-size="0.6em"
 		style:white-space="nowrap"
 	>
 		{slide.title ? slide.title : 'Question Title'}
@@ -37,15 +38,14 @@
 			<div
 				style:display="grid"
 				style:grid-template-columns="1fr 1fr"
-				style:grid-template-rows="repeat({Math.ceil(slide.answers.length / 2)}, 1fr)"
-				style:gap="5px"
-				style:padding="5px"
+				style:gap="0.2em"
+				style:padding="0.2em"
 			>
 				{#each slide.answers.keys() as i}
 					<div
-						style:background={buttonColors.at(i)?.[0] ?? buttonColors[0][0]}
-						style:height="1.25em"
-						style:border-radius="2px"
+						style:background={buttonColors.at(i % buttonColors.length)?.[0]}
+						style:height="0.5em"
+						style:border-radius="0.7em"
 					/>
 				{/each}
 			</div>

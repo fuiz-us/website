@@ -30,53 +30,64 @@
 			(s) => upvoted_uncrossed_statement === undefined || s.id != upvoted_uncrossed_statement.id
 		)
 		.sort((a, b) => a.id - b.id);
+
+	let fullscreenElement;
 </script>
 
-<NiceBackground>
-	<div style:box-shadow="0 2px 2px #00000040">
-		<Topbar bind:volume_on on:next {questionIndex} {questionTotalCount} {gameId} show_skip={true} />
-	</div>
-	<div
-		style:max-width="50ch"
-		style:margin="auto"
-		style:padding="10px"
-		style:font-size="x-large"
-		style:box-sizing="border-box"
-	>
-		{#if upvoted_uncrossed_statement !== undefined}
-			<div>
-				<h2 style:margin-bottom="4px">Most Upvoted</h2>
-				<div style:display="flex" style:flex-direction="column" style:gap="5px">
-					<Uncrossed
-						user_votes={user_votes.at(upvoted_uncrossed_statement.id) ?? 0}
-						text={upvoted_uncrossed_statement.text}
-						id={upvoted_uncrossed_statement.id}
-						on:index
-					/>
+<div style:height="100%" bind:this={fullscreenElement}>
+	<NiceBackground>
+		<div style:border-bottom="0.15em solid">
+			<Topbar
+				bind:volume_on
+				on:next
+				{fullscreenElement}
+				{questionIndex}
+				{questionTotalCount}
+				{gameId}
+				show_skip={true}
+			/>
+		</div>
+		<div
+			style:max-width="50ch"
+			style:margin="auto"
+			style:padding="0.4em"
+			style:box-sizing="border-box"
+		>
+			{#if upvoted_uncrossed_statement !== undefined}
+				<div>
+					<h2 style:margin-bottom="0.2em" style:font-family="Poppins">Most Upvoted</h2>
+					<div style:display="flex" style:flex-direction="column">
+						<Uncrossed
+							user_votes={user_votes.at(upvoted_uncrossed_statement.id) ?? 0}
+							text={upvoted_uncrossed_statement.text}
+							id={upvoted_uncrossed_statement.id}
+							on:index
+						/>
+					</div>
 				</div>
-			</div>
-		{/if}
+			{/if}
 
-		{#if filtered_uncrossed_statement.length}
-			<div>
-				<h2 style:margin-bottom="4px">Uncrossed</h2>
-				<div style:display="flex" style:flex-direction="column" style:gap="5px">
-					{#each filtered_uncrossed_statement as { id, text } (id)}
-						<Uncrossed user_votes={user_votes.at(id) ?? 0} {text} {id} on:index />
-					{/each}
+			{#if filtered_uncrossed_statement.length}
+				<div>
+					<h2 style:margin-bottom="0.2em" style:font-family="Poppins">Uncrossed</h2>
+					<div style:display="flex" style:flex-direction="column" style:gap="0.2em">
+						{#each filtered_uncrossed_statement as { id, text } (id)}
+							<Uncrossed user_votes={user_votes.at(id) ?? 0} {text} {id} on:index />
+						{/each}
+					</div>
 				</div>
-			</div>
-		{/if}
+			{/if}
 
-		{#if crossed_statements.length}
-			<div>
-				<h2 style:margin-bottom="4px">Crossed</h2>
-				<div style:display="flex" style:flex-direction="column" style:gap="5px">
-					{#each crossed_statements as { id, text } (id)}
-						<Crossed {text} />
-					{/each}
+			{#if crossed_statements.length}
+				<div>
+					<h2 style:margin-bottom="0.2em" style:font-family="Poppins">Crossed</h2>
+					<div style:display="flex" style:flex-direction="column" style:gap="0.2em">
+						{#each crossed_statements as { id, text } (id)}
+							<Crossed {text} />
+						{/each}
+					</div>
 				</div>
-			</div>
-		{/if}
-	</div>
-</NiceBackground>
+			{/if}
+		</div>
+	</NiceBackground>
+</div>

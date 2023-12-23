@@ -75,16 +75,16 @@
 		>
 			<div
 				style:aspect-ratio="1"
-				style:width="25ch"
+				style:width="15ch"
 				style:background={drag_over ? buttonColors[0][0] : 'transparent'}
-				style:border="2px dashed {drag_over ? '#fff' : '#00000040'}"
-				style:border-radius="10px"
-				style:padding="10px"
+				style:border="0.1em dashed {drag_over ? '#fff' : '#00000040'}"
+				style:border-radius="0.7em"
+				style:padding="0.4em"
 				style:box-sizing="border-box"
 				style:display="flex"
 				style:flex-direction="column"
 				style:align-items="center"
-				style:gap="10px"
+				style:gap="0.4em"
 				style:transition="background 200ms"
 			>
 				<label
@@ -97,11 +97,11 @@
 					style:justify-content="center"
 					style:color={drag_over ? palette_light : '#888'}
 				>
-					<Icon size="64px" src={add_photo} alt="add" />
-					<div style:font-size="x-large" style:font-weight="bold">Open Image</div>
+					<Icon size="2em" src={add_photo} alt="add" />
+					<div style:font-weight="bold">Open Image</div>
 				</label>
 				<div
-					style:font-size="large"
+					style:font-size="0.7em"
 					style:font-weight="bold"
 					style:color={drag_over ? palette_light : '#888'}
 				>
@@ -115,12 +115,11 @@
 		<div
 			style:display="flex"
 			style:flex-direction="column"
-			style:border="2px solid #00000040"
+			style:border="0.15em solid #00000040"
 			style:flex="1"
-			style:font-size="24px"
-			style:border-radius="10px"
-			style:gap="10px"
-			style:padding="10px"
+			style:border-radius="0.7em"
+			style:gap="0.4em"
+			style:padding="0.3em"
 			style:box-sizing="border-box"
 			style:max-width="40ch"
 			style:margin="auto"
@@ -130,7 +129,7 @@
 				<button
 					style:font="inherit"
 					style:display="flex"
-					style:padding="5px"
+					style:padding="0.2em"
 					style:appearance="none"
 					style:border="none"
 					style:background="none"
@@ -146,15 +145,15 @@
 				style:flex-direction="column"
 				style:align-items="stretch"
 				style:display="flex"
-				style:gap="10px"
+				style:gap="0.4em"
 			>
 				<div
 					style:width="100%"
 					style:height="100%"
-					style:max-width="400px"
-					style:min-width="250px"
+					style:max-width="10em"
+					style:min-width="5em"
 					style:position="relative"
-					style:max-height="400px"
+					style:max-height="10em"
 					style:display="flex"
 					style:flex-direction="column"
 					style:overflow="auto"
@@ -163,13 +162,13 @@
 					<MediaDisplay {media} fit="contain" />
 				</div>
 				<div style:display="flex" style:align-items="center" style:gap="10px">
-					<Icon size="40px" src={hearing} alt="Image Alt" />
+					<Icon size="1.2em" src={hearing} alt="Image Alt" />
 					<div style:flex="1">
 						<Textarea
 							id="alt"
 							required={false}
 							disabled={false}
-							max_height="200px"
+							max_height="5em"
 							bind:value={media.Image.Base64.alt}
 							placeholder="Alt Text"
 						/>

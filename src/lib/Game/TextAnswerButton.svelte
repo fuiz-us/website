@@ -17,11 +17,11 @@
 		backgroundDeepColor={buttonColors.at(index)?.at(1)}
 	>
 		<div style:height="100%" style:width="100%" style:display="flex" style:align-items="center">
-			<div id="icon" style:display="flex">
+			<div id="icon" style:display="flex" style:padding="0.2em">
 				<Icon
 					src={buttonSymbols.at(index)?.at(0) ?? ''}
 					alt={buttonSymbols.at(index)?.at(1) ?? ''}
-					size="var(--size)"
+					size="1em"
 				/>
 			</div>
 			<div
@@ -35,36 +35,14 @@
 				{answerText}
 			</div>
 			{#if correct === false}
-				<div style:display="flex" style:padding="6px">
-					<Icon src={wrong} alt="Wrong" size="36px" />
+				<div style:display="flex" style:padding="0.2em">
+					<Icon src={wrong} alt="Wrong" size="1em" />
 				</div>
 			{:else if correct === true}
-				<div style:display="flex" style:padding="6px">
-					<Icon src={factual} alt="Correct" size="36px" />
+				<div style:display="flex" style:padding="0.2em">
+					<Icon src={factual} alt="Correct" size="1em" />
 				</div>
 			{/if}
 		</div>
 	</FancyButton>
 </div>
-
-<style>
-	#text {
-		font-size: 48px;
-	}
-
-	#icon {
-		--size: 32px;
-		padding: 6px;
-	}
-
-	@media (max-width: 600px) {
-		#text {
-			font-size: 26px;
-		}
-
-		#icon {
-			--size: 24px;
-			padding: 4px;
-		}
-	}
-</style>

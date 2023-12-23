@@ -15,12 +15,19 @@
 	export let timeLeft: number | undefined = undefined;
 	export let timeStarted: number | undefined = undefined;
 	export let volume_on: boolean;
+
+	let fullscreenElement;
 </script>
 
-<div style:height="100%" style:display="flex" style:flex-direction="column">
-	<Topbar bind:volume_on {questionIndex} {questionTotalCount} {gameId} />
+<div
+	bind:this={fullscreenElement}
+	style:height="100%"
+	style:display="flex"
+	style:flex-direction="column"
+>
+	<Topbar bind:volume_on {questionIndex} {fullscreenElement} {questionTotalCount} {gameId} />
 	<TextBar on:next text={questionText} show_next={true} />
-	<div style:flex="1" style:min-height="30vh">
+	<div style:flex="1">
 		<NiceBackground>
 			<VerticalSplit>
 				<svelte:fragment slot="top">

@@ -8,18 +8,37 @@
 	export let gameId: string;
 	export let questionText: string;
 	export let volume_on: boolean;
+
+	let fullscreenElement;
 </script>
 
-<div style:box-shadow="0 2px 2px #00000040">
-	<Topbar bind:volume_on on:next {questionIndex} {questionTotalCount} {gameId} show_skip={true} />
-</div>
-<NiceBackground>
-	<div
-		style:height="100%"
-		style:display="flex"
-		style:flex-direction="column"
-		style:justify-content="center"
-	>
-		<TextBar text={questionText} topShadow={true} />
+<div
+	style:height="100%"
+	bind:this={fullscreenElement}
+	style:display="flex"
+	style:flex-direction="column"
+>
+	<div style:border-bottom="0.15em solid currentcolor">
+		<Topbar
+			bind:volume_on
+			on:next
+			{fullscreenElement}
+			{questionIndex}
+			{questionTotalCount}
+			{gameId}
+			show_skip={true}
+		/>
 	</div>
-</NiceBackground>
+	<div style:flex="1">
+		<NiceBackground>
+			<div
+				style:height="100%"
+				style:display="flex"
+				style:flex-direction="column"
+				style:justify-content="center"
+			>
+				<TextBar text={questionText} topShadow={true} />
+			</div>
+		</NiceBackground>
+	</div>
+</div>

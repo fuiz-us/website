@@ -11,8 +11,8 @@
 		style:background-color={palette_light}
 		style:inset="0"
 		style:position="absolute"
-		style:z-index="-1"
 		style:overflow="hidden"
+		style:z-index="-1"
 	>
 		<div style:height="100%" style:width="100%">
 			<div style:display="flex" style:flex-wrap="wrap" style:opacity="20%" style:height="100%">

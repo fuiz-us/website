@@ -17,13 +17,8 @@
 				style:justify-content="center"
 				style:align-items="center"
 			>
-				<div
-					style:display="flex"
-					style:flex-direction="column"
-					style:align-items="center"
-					style:font-size="xx-large"
-				>
-					<img width="200px" src={answered_penguin} alt="two penguins holding answers" />
+				<div style:display="flex" style:flex-direction="column" style:align-items="center">
+					<img style:width="10em" src={answered_penguin} alt="two penguins holding answers" />
 					<div style:font-weight="bold" style:max-width="10ch" style:text-align="center">
 						Waiting for other players
 					</div>

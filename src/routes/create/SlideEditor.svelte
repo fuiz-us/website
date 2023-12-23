@@ -15,7 +15,7 @@
 		style:align-items="center"
 		style:justify-content="center"
 		style:text-align="center"
-		style:font-size="xxx-large"
+		style:font-size="2em"
 		style:opacity="0.4"
 	>
 		<Icon src={ghost} size="min(30vh, 60vw)" alt="Nothing Here" />

@@ -8,13 +8,7 @@
 	export let answers: MultipleChoiceAnswer[];
 </script>
 
-<div
-	id="grid"
-	style:display="grid"
-	style="--count:{answers.length}"
-	style:gap="5px"
-	style:width="100%"
->
+<div id="grid" style:display="grid" style:gap="0.2em" style:width="100%">
 	{#each answers as answer, index}
 		<Answer
 			bind:answer
@@ -27,8 +21,8 @@
 	{/each}
 	<div style:grid-column="1/ -1">
 		<FancyButton
-			backgroundColor={buttonColors.at(answers.length)?.[0]}
-			backgroundDeepColor={buttonColors.at(answers.length)?.[1]}
+			backgroundColor={buttonColors.at(answers.length % buttonColors.length)?.[0]}
+			backgroundDeepColor={buttonColors.at(answers.length % buttonColors.length)?.[1]}
 			on:click={() => {
 				answers.push({
 					correct: false,
@@ -42,12 +36,11 @@
 			<div
 				style:height="100%"
 				style:text-align="center"
-				style:font-size="clamp(1.25em,5vw,2em)"
 				style:display="flex"
 				style:align-items="center"
 				style:justify-content="center"
-				style:padding="5px 15px"
-				style:gap="5px"
+				style:padding="0.2em 0.6em"
+				style:gap="0.2em"
 				style:box-sizing="border-box"
 			>
 				<Icon size="1.25em" src={variables} alt="add" />
@@ -60,13 +53,11 @@
 <style>
 	#grid {
 		grid-template-columns: 1fr 1fr;
-		grid-template-rows: repeat(calc(var(--count) / 2 + 1), 1fr);
 	}
 
 	@media only screen and (max-width: 600px) {
 		#grid {
 			grid-template-columns: 1fr;
-			grid-template-rows: repeat(calc(var(--count) + 1), 1fr);
 		}
 	}
 </style>

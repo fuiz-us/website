@@ -4,7 +4,7 @@
 	import delete_slide from '$lib/assets/delete.svg';
 	import content_copy from '$lib/assets/content_copy.svg';
 	import { createEventDispatcher } from 'svelte';
-	import Icon from '$lib/Icon.svelte';
+	import IconButton from '$lib/IconButton.svelte';
 
 	export let slide: Slide;
 	export let index: number;
@@ -17,32 +17,36 @@
 	}>();
 </script>
 
-<div style:display="flex" style:gap="10px" style:box-sizing="border-box">
+<div style:display="flex" style:gap="0.4em" style:box-sizing="border-box">
 	<div
 		style:display="flex"
 		style:justify-content="space-between"
 		style:flex-direction="column"
 		style:text-align="center"
 		style:align-items="center"
-		style:font-size="large"
-		style:gap="10px"
+		style:gap="0.4em"
 	>
 		<div>
 			{index + 1}
 		</div>
-		<div style:display="flex" style:flex-direction="column" style:gap="5px" style:padding="5px 0">
-			<button
+		<div
+			style:display="flex"
+			style:flex-direction="column"
+			style:gap="0.2em"
+			style:padding="0.2em 0"
+		>
+			<IconButton
 				on:click={() => dispatch('delete')}
-				style="apperance:none;padding:0;border:0;background:none;cursor:pointer;"
-			>
-				<Icon src={delete_slide} alt="delete slide" size="24px" />
-			</button>
-			<button
+				src={delete_slide}
+				alt="Delete Slide"
+				size="1em"
+			/>
+			<IconButton
 				on:click={() => dispatch('duplicate')}
-				style="apperance:none;padding:0;border:0;background:none;cursor:pointer;"
-			>
-				<Icon src={content_copy} alt="duplicate" size="24px" />
-			</button>
+				src={content_copy}
+				alt="Duplicate Slide"
+				size="1em"
+			/>
 		</div>
 	</div>
 	<button
@@ -53,7 +57,7 @@
 		style:background="none"
 		style:font="inherit"
 		style:border={selected ? '3px solid blue' : '3px solid darkgray'}
-		style:border-radius="5px"
+		style:border-radius="0.7em"
 		style:overflow="hidden"
 		style:cursor="pointer"
 		on:click={() => dispatch('select')}

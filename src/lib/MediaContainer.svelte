@@ -5,7 +5,7 @@
 
 	export let media: Media | undefined;
 	export let align = 'center';
-	export let fit = 'contain';
+	export let fit = 'scale-down';
 	export let showFallback = true;
 </script>
 
@@ -14,6 +14,7 @@
 	style:display="flex"
 	style:justify-content={align}
 	style:max-width="100%"
+	style:margin="auto"
 	style:position="absolute"
 	style:inset="0"
 >

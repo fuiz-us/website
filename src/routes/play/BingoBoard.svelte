@@ -15,11 +15,11 @@
 	style:display="grid"
 	style:grid-template-columns="repeat({columns}, 1fr)"
 	style:grid-template-rows="repeat({Math.ceil(len / columns)}, 1fr)"
-	style:gap="5px"
-	style:padding="5px"
-	style:background="#000000c0"
+	style:gap="0.15em"
+	style:padding="0.15em"
+	style:background="currentcolor"
 	style:text-align="center"
-	style:border-radius="5px"
+	style:border-radius="0.2em"
 >
 	{#each assigned_statements as { id, text, crossed } (id)}
 		{#if crossed}

@@ -26,7 +26,6 @@
 					style:gap="10px"
 					style:flex-direction="column"
 					style:align-items="center"
-					style:font-size="xx-large"
 				>
 					{#if position !== undefined}
 						{#if position < 3}
@@ -37,17 +36,16 @@
 								style:flex-direction="column"
 								style:align-items="center"
 								style:justify-content="center"
-								style:background={medal_colors[position]}
-								style:border-radius="5px"
-								style:padding="12px"
-								style:color="white"
+								style:background="currentcolor"
+								style:border-radius="0.7em"
+								style:padding="0.5em"
 								style:font-family="Poppins"
 								style:box-sizing="border-box"
 							>
-								<div style:filter="drop-shadow(0 2px 2px rgb(0 0 0 / 0.25))">
+								<div style:color={medal_colors[position]}>
 									<Icon size="200px" src={medal} alt="medal" />
 								</div>
-								<div style:text-shadow="0 2px 2px rgb(0 0 0 / 0.25)">
+								<div style:color={medal_colors[position]}>
 									{#if position === 0}
 										1st
 									{:else if position === 1}
@@ -67,7 +65,7 @@
 								style:display="flex"
 								style:flex-direction="column"
 								style:align-items="center"
-								style:font-size="112px"
+								style:font-size="3em"
 							>
 								#{position + 1}
 							</div>

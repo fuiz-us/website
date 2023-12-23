@@ -6,10 +6,11 @@
 
 {#each players as player}
 	<div
+		style:background="var(--background-color)"
+		style:border="0.15em solid currentcolor"
 		style:padding="0.15em 0.4em"
-		style:background="#000000C0"
-		style:border-radius="10px"
-		style:color="white"
+		style:border-radius="0.6em"
+		style:font-weight="bold"
 		style:word-break="break-word"
 	>
 		{player}
@@ -17,14 +18,12 @@
 {/each}
 {#if truncated}
 	<div
-		style:font="inherit"
-		style:appearance="none"
-		style:border="none"
-		style:cursor="pointer"
-		style:padding="0.5em 1em"
-		style:background="#000000C0"
-		style:border-radius="5px"
-		style:color="white"
+		style:background="var(--background-color)"
+		style:padding="0.5em 0.4em"
+		style:border="0.15em solid currentcolor"
+		style:border-radius="0.6em"
+		style:font-weight="bold"
+		style:word-break="break-word"
 	>
 		{players.length - exact_count} more...
 	</div>

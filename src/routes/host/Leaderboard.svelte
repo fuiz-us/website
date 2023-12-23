@@ -11,11 +11,18 @@
 	export let exact_count: number;
 	export let final: boolean;
 	export let volume_on: boolean;
+
+	let fullscreenElement;
 </script>
 
-<div style:height="100%" style:display="flex" style:flex-direction="column">
-	<Topbar bind:volume_on {questionIndex} {questionTotalCount} {gameId} />
-	<TextBar on:next text="Scores" show_next={true} />
+<div
+	bind:this={fullscreenElement}
+	style:height="100%"
+	style:display="flex"
+	style:flex-direction="column"
+>
+	<Topbar bind:volume_on {fullscreenElement} {questionIndex} {questionTotalCount} {gameId} />
+	<TextBar on:next text="Scores" show_next={true} heading={true} />
 	<div style:flex="1">
 		<NiceBackground>
 			<div

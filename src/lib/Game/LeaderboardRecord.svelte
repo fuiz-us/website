@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { medal_colors, palette_dark, palette_light } from '$lib';
+	import { medal_colors } from '$lib';
 	import Icon from '$lib/Icon.svelte';
 	import medal from '$lib/assets/medal.svg';
 	export let name: string;
@@ -8,7 +8,7 @@
 	export let final: boolean;
 </script>
 
-<div id="container" style:display="flex" style:align-items="center" style:gap="10px">
+<div id="container" style:display="flex" style:align-items="center" style:gap="0.2em">
 	{#if final}
 		<div style:height="100%" style:aspect-ratio="1/1">
 			{#if index < 3}
@@ -18,13 +18,13 @@
 					style:display="flex"
 					style:align-items="center"
 					style:justify-content="center"
-					style:color={palette_light}
-					style:background={medal_colors[index]}
-					style:border="2px solid {palette_dark}"
-					style:border-radius="10px"
+					style:background="currentcolor"
+					style:border="0.15em solid currentcolor"
+					style:font-weight="bold"
+					style:border-radius="0.6em"
 					style:box-sizing="border-box"
 				>
-					<div style:filter="drop-shadow(0 0 5px rgb(0 0 0 / 0.25))">
+					<div style:color={medal_colors[index]}>
 						<Icon src={medal} alt="medal" size="1.3em" />
 					</div>
 				</div>
@@ -33,11 +33,11 @@
 	{/if}
 	<div
 		style:width="100%"
-		style:background={palette_light}
-		style:color={palette_dark}
-		style:border="2px solid {palette_dark}"
-		style:border-radius="10px"
-		style:padding="0.3em 0.45em"
+		style:background="var(--background-color)"
+		style:border="0.15em solid currentcolor"
+		style:padding="0.15em 0.4em"
+		style:font-weight="bold"
+		style:border-radius="0.6em"
 		style:box-sizing="border-box"
 		style:display="flex"
 		style:justify-content="space-between"

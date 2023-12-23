@@ -25,11 +25,11 @@
 				<div
 					style:display="flex"
 					style:flex-direction="column"
+					style:padding="0.4em"
 					style:align-items="center"
-					style:font-size="xx-large"
 				>
 					<img
-						width="200px"
+						style:width="10em"
 						src={is_winner ? correct_penguin : wrong_penguin}
 						alt={is_winner ? 'penguin holding a checkmark' : 'penguin holding a crossmark'}
 					/>

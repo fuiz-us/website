@@ -5,42 +5,42 @@
 	export let timeLeft: number;
 	export let timeStarted: number;
 
-	const size = 40;
+	const size = '1.2em';
 </script>
 
 <div
 	id="container"
 	class={timeLeft <= 5000 ? 'flashing' : ''}
-	style:position="absolute"
-	style:margin="10px"
 	style:display="flex"
-	style:top="0"
-	style:padding="5px 20px"
-	style:gap="10px"
+	style:padding="0.2em 0.6em"
+	style:gap="0.3em"
 	style:align-items="center"
-	style:left="0"
 	style:font-family="Poppins"
-	style:font-size="36px"
-	style:z-index="1"
 	style:border-radius="200px"
 	style:overflow="hidden"
 >
-	<div
-		style:position="relative"
-		style:width="{size}px"
-		style:height="{size}px"
-		style:background="inherit"
-	>
+	<div style:position="relative" style:width={size} style:height={size} style:background="inherit">
 		<div style:position="absolute" style:height="100%" style:overflow="hidden">
-			<Icon src={hourglassFilled} alt="filled hourglass" size="{size}px" />
+			<Icon src={hourglassFilled} alt="filled hourglass" {size} />
 		</div>
 		<div
 			style:position="absolute"
-			style:height="{((timeStarted - timeLeft) / timeStarted) * 100}%"
+			style:height="{(-(timeStarted - timeLeft) / timeStarted) * 30 + 85}%"
 			style:overflow="hidden"
 			style:background="inherit"
 		>
-			<Icon src={hourglassEmpty} alt="empty hourglass" size="{size}px" />
+			<Icon src={hourglassEmpty} alt="empty hourglass" {size} />
+		</div>
+		<div style:position="absolute" style:height="50%" style:overflow="hidden">
+			<Icon src={hourglassFilled} alt="filled hourglass" {size} />
+		</div>
+		<div
+			style:position="absolute"
+			style:height="{((timeStarted - timeLeft) / timeStarted) * 30 + 15}%"
+			style:overflow="hidden"
+			style:background="inherit"
+		>
+			<Icon src={hourglassEmpty} alt="empty hourglass" {size} />
 		</div>
 	</div>
 	<div>
@@ -52,7 +52,7 @@
 	#container {
 		background: var(--palette-dark);
 		color: var(--palette-light);
-		border: 3px solid var(--palette-dark);
+		border: 0.15em solid var(--palette-dark);
 	}
 
 	#container.flashing {

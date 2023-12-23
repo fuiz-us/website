@@ -14,9 +14,8 @@
 	style:height="100%"
 	style:box-sizing="border-box"
 	style:grid-template-columns="1fr 1fr"
-	style:grid-template-rows="repeat({Math.ceil(answersCount / 2)}, 1fr)"
-	style:gap="5px"
-	style:padding="5px"
+	style:gap="0.2em"
+	style:padding="0.2em"
 >
 	{#each Array(answersCount).keys() as index}
 		<EmptyAnswerButton {index} on:click={() => dispatch('answer', index)} />

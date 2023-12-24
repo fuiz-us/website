@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="268"
+   height="108"
+   viewBox="0 0 268 108"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)"
+   sodipodi:docname="white_logo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#747474"
+     borderopacity="0.24705882"
+     inkscape:showpageshadow="false"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#ffffff"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="0.5"
+     inkscape:cx="-126"
+     inkscape:cy="353"
+     inkscape:current-layer="layer1"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       id="grid1"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="1"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="4"
+       dotted="false"
+       gridanglex="30"
+       gridanglez="30"
+       visible="false" />
+    <inkscape:page
+       x="0"
+       y="0"
+       width="268"
+       height="108"
+       id="page132"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path9"
+       style="color:#000000;fill:#241f31;stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+       d="M 35.5,0 C 32.409766,0 30,2.4097661 30,5.5 V 11.599609 77.5 c 0,0.386279 0.03745,0.76141 0.109375,1.123047 0.07193,0.361637 0.179306,0.708823 0.316406,1.039062 0.1371,0.33024 0.304483,0.64346 0.5,0.935547 0.195518,0.292087 0.418836,0.563367 0.666016,0.810547 0.24718,0.24718 0.51846,0.470498 0.810547,0.666016 0.292087,0.195517 0.605307,0.3629 0.935547,0.5 0.330239,0.1371 0.677425,0.244478 1.039062,0.316406 C 34.73859,82.962553 35.113721,83 35.5,83 h 48 C 86.590237,83 89,80.590234 89,77.5 V 5.5 C 89,2.4097661 86.590237,0 83.5,0 Z M 25,12.939453 17.078125,15.0625 c -2.984936,0.79981 -4.688484,3.751392 -3.888672,6.736328 L 14.769531,27.691406 25,65.876953 Z M 10.285156,30.28125 3.1796875,34.382812 C 0.50346618,35.92793 -0.37910083,39.220264 1.1660156,41.896484 L 23.988281,81.425781 Z m 20.308594,56.474609 1.230469,4.589844 c 0.799811,2.984947 3.751392,4.688471 6.736328,3.888672 L 65.5625,88 H 35.5 c -1.77283,0 -3.439285,-0.457961 -4.90625,-1.244141 z m 38.302734,5.527344 -29.042968,7.781247 c -1.714775,0.45948 -3.444045,0.44762 -5.066407,0.0664 l 2.378907,4.11914 c 1.545116,2.67623 4.83745,3.55879 7.513672,2.01367 z" />
+    <path
+       d="m 148.66665,27.938691 v 13.610661 h -21.49866 v 7.578663 h 15.46666 v 12.914661 h -15.46666 v 20.64799 H 110 V 27.938691 Z m 51.96803,11.135995 v 43.61598 h -17.16799 v -6.650663 q -2.01067,3.093332 -5.41333,5.026664 -3.32533,1.933332 -7.96533,1.933332 -7.50133,0 -11.75466,-5.026664 -4.176,-5.026664 -4.176,-13.61066 V 39.074686 h 17.09066 v 23.122656 q 0,3.093332 1.624,4.949331 1.70133,1.778666 4.48533,1.778666 2.86133,0 4.48533,-1.778666 1.624,-1.855999 1.624,-4.949331 V 39.074686 Z m 16.3947,-3.479998 q -4.48533,0 -7.19199,-2.397332 -2.70667,-2.397333 -2.70667,-6.031998 0,-3.711998 2.70667,-6.10933 2.70666,-2.474666 7.19199,-2.474666 4.408,0 7.11467,2.474666 2.70666,2.397332 2.70666,6.10933 0,3.634665 -2.70666,6.031998 -2.70667,2.397332 -7.11467,2.397332 z m 8.50667,3.479998 v 43.61598 h -17.168 v -43.61598 z m 24.20536,29.386653 h 18.17332 V 82.690666 H 230.94941 V 69.234672 L 247.57607,53.304013 H 231.18141 V 39.074686 H 267.1414 V 52.53068 Z"
+       id="text11"
+       style="font-weight:900;font-size:77.3333px;line-height:1.15;font-family:Poppins;-inkscape-font-specification:'Poppins Heavy';letter-spacing:0px;fill:#241f31;stroke-width:5;stroke-linecap:round;stroke-linejoin:round"
+       aria-label="Fuiz" />
+  </g>
+</svg>

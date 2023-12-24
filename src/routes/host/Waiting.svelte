@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { PUBLIC_DISPLAY_PLAY_URL, PUBLIC_PLAY_URL } from '$env/static/public';
-	import { palette_light } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Fullscreen from '$lib/Fullscreen.svelte';
 	import bee3 from '$lib/assets/bee3.mp3';
@@ -35,7 +34,7 @@
 <Audio audioUrl={bee3} volumeOn={volume_on} />
 <div id="container" bind:this={fullscreenElement} style:height="100%" style:display="flex">
 	<div
-		style:background={palette_light}
+		style:background="var(--background-color)"
 		style:box-shadow="0 2px 2px #00000040, 2px 0 2px #00000040"
 		style:display="flex"
 		style:flex-direction="column"
@@ -51,7 +50,7 @@
 			</div>
 		</div>
 		<div
-			style:background="#00000020"
+			style:background="color-mix(in srgb, currentColor 20%, transparent)"
 			style:display="flex"
 			style:flex-direction="column"
 			style:align-items="center"
@@ -63,6 +62,7 @@
 				on:click={copy_url_to_clipboard}
 				title={codeTitle}
 				style:font="inherit"
+				style:color="inherit"
 				style:appearance="none"
 				style:border="none"
 				style:background="none"

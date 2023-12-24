@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { palette_light, type MultipleChoiceSlide, buttonColors } from '$lib';
+	import { type MultipleChoiceSlide, buttonColors } from '$lib';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import VerticalSplit from '$lib/VerticalSplit.svelte';
 
@@ -13,10 +13,9 @@
 	style:overflow="hidden"
 	style:flex-direction="column"
 	style:justify-content="space-between"
-	style:background={palette_light}
+	style:background="var(--background-color)"
 >
 	<div
-		style:background={palette_light}
 		style:padding="0.2em"
 		style:box-sizing="border-box"
 		style:box-shadow="0 2px 2px #00000040"

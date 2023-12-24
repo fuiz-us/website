@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import FancyButton from '../FancyButton.svelte';
-	import { palette_light } from '$lib';
 	export let text: string;
 	export let topShadow = false;
 	export let show_next = false;
@@ -12,7 +11,7 @@
 </script>
 
 <div
-	style:background={palette_light}
+	style:background="var(--background-color)"
 	style:display="flex"
 	style:line-height="1.2"
 	style:align-items="center"

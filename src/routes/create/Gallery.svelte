@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { palette_light, type ExportedFuiz, play_local, type Media } from '$lib';
+	import { type ExportedFuiz, play_local, type Media } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import delete_fuiz from '$lib/assets/delete.svg';
@@ -90,7 +90,7 @@
 							style:display="flex"
 							style:align-items="center"
 							style:font-family="Poppins"
-							style:gap="0.5em"
+							style:gap="0.2em"
 							style:padding="0.15em 0.25em"
 							style:justify-content="center"
 						>
@@ -106,15 +106,15 @@
 					style:padding="0.5em"
 					style:box-sizing="border-box"
 					style:margin="1em auto"
-					style:background={palette_light + 'E0'}
-					style:border="0.1em solid #00000080"
+					style:background="color-mix(in srgb, currentColor 20%, transparent)"
+					style:border="0.1em solid color-mix(in srgb, currentColor 80%, transparent)"
 					style:border-radius="0.7em"
 				>
 					<h2
 						style:font-family="Poppins"
 						style:line-height="1"
 						style:margin="0 0 0.2em"
-						style:border-bottom="0.05em solid #00000080"
+						style:border-bottom="0.05em solid color-mix(in srgb, currentColor 80%, transparent)"
 					>
 						Recent Fuizzes
 					</h2>
@@ -192,7 +192,6 @@
 										style:flex-direction="column"
 										style:padding="0.2em"
 										style:gap="0.2em"
-										style:color="var(--palette-light)"
 									>
 										<IconButton
 											size="1em"
@@ -238,7 +237,7 @@
 		& .main {
 			transition: margin-right 150ms ease-out;
 			outline: none;
-			background: var(--palette-light);
+			background: var(--background-color);
 		}
 
 		&:where(:focus-within, :hover) {
@@ -249,7 +248,9 @@
 				margin-right: 1.5em;
 
 				&:where(:focus, :hover) {
-					background: linear-gradient(#00000020, #00000020), var(--palette-light);
+					--trans-color: color-mix(in srgb, currentColor 10%, transparent);
+					background: linear-gradient(var(--trans-color), var(--trans-color)),
+						var(--background-color);
 				}
 			}
 		}

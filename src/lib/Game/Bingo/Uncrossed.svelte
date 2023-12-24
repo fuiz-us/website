@@ -15,6 +15,7 @@
 	style:appearance="none"
 	style:display="flex"
 	style:font="inherit"
+	style:color="inherit"
 	style:justify-content="space-between"
 	style:background="var(--background-color)"
 	style:border="0.15em solid currentcolor"

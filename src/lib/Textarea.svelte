@@ -42,7 +42,7 @@
 
 	label {
 		text-align: center;
-		color: #5c5c5c;
+		color: color-mix(in srgb, currentColor 50%, transparent);
 		padding: 0 8px;
 		position: absolute;
 		pointer-events: none;
@@ -66,25 +66,13 @@
 	}
 
 	textarea {
-		border: 1px solid #a9a8aa;
-		border-radius: 5px;
-		width: 100%;
-		box-sizing: border-box;
-		font: inherit;
-		box-sizing: border-box;
-		text-align: center;
-		padding: 8px 5px;
-		font-weight: bold;
-		resize: none;
-	}
-
-	textarea {
 		background: none;
+		font: inherit;
+		font-weight: bold;
 		border: 2px solid #a9a8aa;
 		border-radius: 10px;
 		width: 100%;
-		box-sizing: border-box;
-		font: inherit;
+		color: inherit;
 		box-sizing: border-box;
 		text-align: center;
 		padding: 8px 5px;

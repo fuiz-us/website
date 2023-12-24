@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { palette_light, type Slide } from '$lib';
+	import { type Slide } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import { flip } from 'svelte/animate';
 	import left from '$lib/assets/left.svg';
@@ -144,7 +144,6 @@
 					style:display="flex"
 					style:align-items="center"
 					style:justify-content="center"
-					style:color={palette_light}
 					style:gap="0.2em"
 				>
 					<Icon size="1em" src={add_slide} alt="add slide" />

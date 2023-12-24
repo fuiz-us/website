@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { palette_light } from '$lib';
 	import { createEventDispatcher } from 'svelte';
 
 	export let assigned_statements: { id: number; text: string; crossed: boolean }[];
@@ -28,7 +27,7 @@
 				style:align-items="center"
 				style:justify-content="center"
 				style:text-decoration="line-through"
-				style:color={palette_light}
+				style:color="var(--background-color)"
 			>
 				{text}
 			</div>
@@ -36,9 +35,10 @@
 			<button
 				style:appearance="none"
 				style:border="none"
+				style:color="inherit"
 				style:font="inherit"
 				style:cursor="pointer"
-				style:background={palette_light}
+				style:background="var(--background-color)"
 				on:click={() => dispatch('index', id)}
 			>
 				{text}

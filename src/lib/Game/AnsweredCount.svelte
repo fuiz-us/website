@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { palette_dark } from '$lib';
 	import Icon from '$lib/Icon.svelte';
 	import assignmentTurned from '$lib/assets/answer_turned.svg';
 
@@ -13,7 +12,7 @@
 	style:gap="0.3em"
 	style:align-items="center"
 	style:background="var(--background-color)"
-	style:border="0.15em solid {palette_dark}"
+	style:border="0.15em solid"
 	style:border-radius="200px"
 >
 	<Icon src={assignmentTurned} alt="people who answered" size="1.2em" />

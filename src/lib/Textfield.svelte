@@ -31,7 +31,7 @@
 
 	label {
 		text-align: center;
-		color: #5c5c5c;
+		color: color-mix(in srgb, currentColor 50%, transparent);
 		padding: 0 8px;
 		position: absolute;
 		pointer-events: none;
@@ -46,7 +46,7 @@
 	input:is(:not(:placeholder-shown), :focus, :active) + label {
 		top: 0;
 		scale: 0.75;
-		background: var(--palette-light);
+		background: var(--background-color);
 		transform: translateY(-50%);
 	}
 
@@ -59,6 +59,7 @@
 		border: 2px solid #a9a8aa;
 		border-radius: 10px;
 		width: 100%;
+		color: inherit;
 		box-sizing: border-box;
 		font: inherit;
 		box-sizing: border-box;

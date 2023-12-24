@@ -50,9 +50,9 @@
 
 <style>
 	#container {
-		background: var(--palette-dark);
-		color: var(--palette-light);
-		border: 0.15em solid var(--palette-dark);
+		background: var(--color);
+		color: var(--background-color);
+		border: 0.15em solid var(--color);
 	}
 
 	#container.flashing {

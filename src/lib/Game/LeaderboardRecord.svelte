@@ -18,7 +18,7 @@
 					style:display="flex"
 					style:align-items="center"
 					style:justify-content="center"
-					style:background="currentcolor"
+					style:background="var(--palette-dark)"
 					style:border="0.15em solid currentcolor"
 					style:font-weight="bold"
 					style:border-radius="0.6em"

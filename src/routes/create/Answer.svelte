@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { buttonColors, palette_light, type MultipleChoiceAnswer } from '$lib';
+	import { buttonColors, type MultipleChoiceAnswer } from '$lib';
 	import Checkbox from '$lib/Checkbox.svelte';
 	import delete_answer from '$lib/assets/delete.svg';
 	import FancyButton from '$lib/FancyButton.svelte';
@@ -20,7 +20,7 @@
 		style:align-items="center"
 		style:padding="0.15em 0.3em"
 		style:gap="0.3em"
-		style:color={palette_light}
+		style:color="var(--palette-light)"
 	>
 		<div style:height="1.5em" style:display="flex">
 			<Checkbox bind:value={answer.correct} color={buttonColors.at(index)?.[0]} />

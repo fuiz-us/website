@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { palette_dark, palette_light } from '$lib';
 	import Fullscreen from '$lib/Fullscreen.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import icon from '$lib/assets/icon.svg';
@@ -27,7 +26,7 @@
 
 <div
 	style:display="flex"
-	style:background={palette_light}
+	style:background="var(--background-color)"
 	style:padding="0.2em"
 	style:line-height="1em"
 	style:align-items="center"
@@ -47,8 +46,8 @@
 		style:line-height="1em"
 		style:font-size="inherit"
 		style:font-family="Poppins"
-		style:background={palette_dark}
-		style:color={palette_light}
+		style:background="var(--color)"
+		style:color="var(--background-color)"
 		style:border="none"
 		style:border-radius="100px"
 	>
@@ -96,7 +95,7 @@
 					<div style:flex="1">
 						<FancyButton
 							on:click={exitDialog.close}
-							backgroundColor={palette_light}
+							backgroundColor="var(--background-color)"
 							backgroundDeepColor="#555"
 							foregroundColor="#555"
 						>

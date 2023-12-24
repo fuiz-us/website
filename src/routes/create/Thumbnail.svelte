@@ -56,6 +56,7 @@
 		style:appearance="none"
 		style:background="none"
 		style:font="inherit"
+		style:color="inherit"
 		style:border={selected ? '3px solid blue' : '3px solid darkgray'}
 		style:border-radius="0.7em"
 		style:overflow="hidden"

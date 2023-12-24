@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { palette_light } from '$lib';
 	import Icon from '$lib/Icon.svelte';
 	import score_image from '$lib/assets/score.svg';
 
@@ -10,7 +9,7 @@
 <div
 	style:display="flex"
 	style:border-bottom="0.15em solid"
-	style:background={palette_light}
+	style:background="var(--background-color)"
 	style:padding="0.2em 0.4em"
 	style:align-items="center"
 	style:box-sizing="border-box"

@@ -13,7 +13,7 @@
 				style:align-items="center"
 			>
 				<div style:height="40px" style:width="40px">
-					<LoadingCircle borderWidth={8} color={'#00000040'} />
+					<LoadingCircle borderWidth={8} />
 				</div>
 			</div>
 		</NiceBackground>

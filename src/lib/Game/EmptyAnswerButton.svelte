@@ -20,11 +20,12 @@
 			style:justify-content="center"
 		>
 			<div
-				style:width="100%"
-				style:height="auto"
 				style:aspect-ratio="1"
 				style:max-height="65%"
 				style:max-width="65%"
+				style:display="flex"
+				style:align-items="center"
+				style:height="100%"
 			>
 				<Icon
 					src={buttonSymbols.at(index % buttonColors.length)?.at(0) ?? ''}

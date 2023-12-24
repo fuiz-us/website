@@ -3,7 +3,6 @@
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
-	import { palette_dark, palette_light } from '$lib';
 	export let questionIndex: number;
 	export let questionTotalCount: number;
 	export let gameId: string;
@@ -50,11 +49,10 @@
 					>
 						<div
 							style:width="100%"
-							style:background={palette_light}
-							style:color={palette_dark}
-							style:border="2px solid {palette_dark}"
-							style:border-radius="10px"
-							style:padding="0.3em 0.45em"
+							style:background="var(--background-color)"
+							style:border="0.15em solid"
+							style:border-radius="0.6em"
+							style:padding="0.15em 0.4em"
 							style:box-sizing="border-box"
 							style:display="flex"
 							style:justify-content="center"

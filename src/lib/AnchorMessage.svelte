@@ -4,7 +4,7 @@
 	export let message: string;
 	export let image: { src: string; alt: string };
 	export let background: string;
-	export let color: string;
+	export let color = 'inherit';
 	export let href: string;
 </script>
 

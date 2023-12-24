@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { buttonColors, palette_light, type Media } from '$lib';
+	import { buttonColors, type Media } from '$lib';
 	import delete_image from '$lib/assets/delete.svg';
 	import add_photo from '$lib/assets/add_photo.svg';
 	import hearing from '$lib/assets/hearing.svg';
@@ -95,16 +95,12 @@
 					style:align-items="center"
 					style:cursor="pointer"
 					style:justify-content="center"
-					style:color={drag_over ? palette_light : '#888'}
+					style:color={drag_over ? '' : '#888'}
 				>
 					<Icon size="2em" src={add_photo} alt="add" />
 					<div style:font-weight="bold">Open Image</div>
 				</label>
-				<div
-					style:font-size="0.7em"
-					style:font-weight="bold"
-					style:color={drag_over ? palette_light : '#888'}
-				>
+				<div style:font-size="0.7em" style:font-weight="bold" style:color={drag_over ? '' : '#888'}>
 					or Drop it Here!
 				</div>
 			</div>

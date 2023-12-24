@@ -1,14 +1,13 @@
 <script>
 	export let borderWidth = 4;
-	export let color = 'white';
 </script>
 
-<div style:--border-width="{borderWidth}px" style:--color={color} />
+<div style:--border-width="{borderWidth}px" />
 
 <style>
 	div {
 		box-sizing: border-box;
-		border: var(--border-width) solid var(--color);
+		border: var(--border-width) solid;
 		border-radius: 50%;
 		border-top: var(--border-width) solid transparent;
 		width: 100%;

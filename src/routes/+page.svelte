@@ -1,10 +1,15 @@
 <script lang="ts">
+	import { theme, initTheme } from 'fractils';
+	import { onMount } from 'svelte';
+
+	onMount(() => initTheme());
 	import paint from '$lib/assets/paint.svg';
 	import game from '$lib/assets/game.svg';
 
 	import Icon from '$lib/Icon.svelte';
 	import Header from '$lib/Header.svelte';
-	import blackLogo from '$lib/assets/black_logo.svg';
+	import blackLogo from '$lib/assets/dark_logo.svg';
+	import whiteLogo from '$lib/assets/white_logo.svg';
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
 	import FancyAnchorButton from '$lib/FancyAnchorButton.svelte';
 	import Anchor from '$lib/Anchor.svelte';
@@ -61,7 +66,7 @@
 						media={{
 							Image: {
 								Url: {
-									url: blackLogo,
+									url: $theme === 'dark' ? whiteLogo : blackLogo,
 									alt: 'Fuiz logo in all black'
 								}
 							}

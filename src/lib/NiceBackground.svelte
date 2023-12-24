@@ -3,12 +3,11 @@
 	import club from '$lib/assets/cards-club.svg';
 	import spade from '$lib/assets/cards-spade.svg';
 	import diamond from '$lib/assets/cards-diamond.svg';
-	import { palette_light } from '$lib';
 </script>
 
 <div style:height="100%" style:position="relative">
 	<div
-		style:background-color={palette_light}
+		style:background-color="var(--background-color)"
 		style:inset="0"
 		style:position="absolute"
 		style:overflow="hidden"

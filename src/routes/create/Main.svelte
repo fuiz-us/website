@@ -15,7 +15,6 @@
 	style:display="flex"
 	style:flex="1"
 	style:align-items="stretch"
-	style:--background-color="color-mix(in srgb, var(--background-color) 100%, #000000 5%)"
 	style:background="var(--background-color)"
 >
 	<Sidebar bind:slides={config.slides} bind:selected_slide_index />

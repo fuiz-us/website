@@ -15,6 +15,7 @@
 	style:display="flex"
 	style:background="none"
 	style:border="none"
+	style:color="inherit"
 	style:box-sizing="border-box"
 	style:padding="0.3em 0 0 0"
 	style:width="100%"

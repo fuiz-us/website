@@ -96,8 +96,8 @@
 						<FancyButton
 							on:click={exitDialog.close}
 							backgroundColor="var(--background-color)"
-							backgroundDeepColor="#555"
-							foregroundColor="#555"
+							backgroundDeepColor="currentcolor"
+							foregroundColor="currentcolor"
 						>
 							<div style:padding="5px 10px" style:white-space="nowrap">Go Back</div>
 						</FancyButton>

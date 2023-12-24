@@ -77,31 +77,40 @@
 		</div>
 	</section>
 	<section>
-		<div>
-			<h2>Community Made, and Community Driven</h2>
-			<p>
-				We did not create Fuiz for profit. We believe in privacy-focused open source solutions to
-				provide a fairer education across the world.
-			</p>
+		<div class="split">
+			<div>
+				<h2>Community Made, and Community Driven</h2>
+				<p>
+					We did not create Fuiz for profit. We believe in privacy-focused open source solutions to
+					provide a fairer education across the world.
+				</p>
+			</div>
+			<Icon src="$lib/assets/diversity.svg" size="7em" alt="Community" />
 		</div>
 	</section>
 	<section>
-		<div>
-			<h2>Better Than The Rest</h2>
-			<p>
-				Fuiz provides a better experience because it is built to do so. Other platforms
-				intentionally offer worse experience to force you into buying overly expensive plans.
-			</p>
+		<div class="split">
+			<div>
+				<h2>People's Choice</h2>
+				<p>
+					Fuiz provides a better experience because it is built to do so. Other platforms
+					intentionally offer worse experience to force you into buying overly expensive plans.
+				</p>
+			</div>
+			<Icon src="$lib/assets/editor_choice.svg" size="7em" alt="Peoeple's Choice" />
 		</div>
 	</section>
 	<section>
-		<div>
-			<h2>Always Open Source</h2>
-			<p>
-				As per the AGPLv3 license, Fuiz will always be open source. You can modify and run the
-				<Anchor href="https://gitlab.com/opencode-mit">source code</Anchor>
-				as you please.
-			</p>
+		<div class="split">
+			<div>
+				<h2>Always Open Source</h2>
+				<p>
+					As per the AGPLv3 license, Fuiz will always be open source. You can modify and run the
+					<Anchor href="https://gitlab.com/opencode-mit">source code</Anchor>
+					as you please.
+				</p>
+			</div>
+			<Icon src="$lib/assets/code_blocks.svg" size="7em" alt="Peoeple's Choice" />
 		</div>
 	</section>
 </main>
@@ -163,7 +172,7 @@
 	}
 
 	p {
-		margin: 0 0 0.5em;
+		margin: 0;
 	}
 
 	.slide-container {
@@ -179,8 +188,14 @@
 		z-index: 1;
 	}
 
-	section:nth-of-type(even) {
-		background-color: var(--color);
-		color: var(--background-color);
+	.split {
+		& div:first-child {
+			flex: 1;
+		}
+		flex-wrap: wrap-reverse;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1em;
 	}
 </style>

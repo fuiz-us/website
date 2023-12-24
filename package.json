@@ -27,6 +27,7 @@
 		"svelte": "^4.0.5",
 		"svelte-check": "^3.4.3",
 		"svelte-dnd-action": "^0.9.30",
+		"svelte-preprocess-import-assets": "^1.1.0",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
 		"vite": "^5.0.0"

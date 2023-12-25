@@ -6,6 +6,7 @@
 	import MediaDisplay from '$lib/MediaDisplay.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import Textarea from '$lib/Textarea.svelte';
+	import IconButton from '$lib/IconButton.svelte';
 
 	export let media: Media | null | undefined;
 
@@ -122,20 +123,14 @@
 		>
 			<div style:display="flex" style:align-items="center">
 				<div style:flex="1" style:text-align="center" style:font-family="Poppins">Local Image</div>
-				<button
-					style:font="inherit"
-					style:display="flex"
-					style:padding="0.2em"
-					style:appearance="none"
-					style:border="none"
-					style:background="none"
-					style:cursor="pointer"
+				<IconButton
+					src={delete_image}
+					alt="Remove Image"
+					size="1.2em"
 					on:click={() => {
-						media = null;
+						media = undefined;
 					}}
-				>
-					<Icon size="1.25em" src={delete_image} alt="delete image" />
-				</button>
+				/>
 			</div>
 			<div
 				style:flex-direction="column"

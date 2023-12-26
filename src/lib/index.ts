@@ -195,7 +195,6 @@ export async function play_local(id: number, db: IDBDatabase) {
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			credentials: 'include',
 			body: JSON.stringify(await get_backend_config(config.config))
 		});
 
@@ -207,6 +206,10 @@ export async function play_local(id: number, db: IDBDatabase) {
 			return;
 		}
 
-		goto('/host?code=' + (await res.text()));
+		const { game_id, watcher_id } = await res.json();
+
+		localStorage.setItem(game_id + '_host', watcher_id);
+
+		goto('/host?code=' + game_id);
 	}
 }

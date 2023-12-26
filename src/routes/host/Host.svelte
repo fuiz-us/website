@@ -11,6 +11,7 @@
 	import ErrorPage from '$lib/ErrorPage.svelte';
 	import Bingo from './Bingo.svelte';
 	import Winners from './Winners.svelte';
+	import { browser } from '$app/environment';
 
 	type GameState = {
 		WaitingScreen: {
@@ -63,6 +64,9 @@
 		  };
 
 	type GameIncomingMessage =
+		| {
+				IdAssign: string;
+		  }
 		| {
 				WaitingScreen: {
 					exact_count: number;
@@ -176,6 +180,8 @@
 
 	export let code: string;
 
+	let watcher_id = (browser && localStorage.getItem(code + '_host')) || undefined;
+
 	onMount(() => {
 		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code);
 
@@ -201,6 +207,9 @@
 							Leaderboard: new_msg.Game.Leaderboard.leaderboard
 						}
 					};
+				} else if ('IdAssign' in new_msg.Game) {
+					watcher_id = new_msg.Game.IdAssign;
+					localStorage.setItem(code + '_host', watcher_id);
 				}
 			} else if ('MultipleChoice' in new_msg) {
 				let mc = new_msg.MultipleChoice;
@@ -362,6 +371,14 @@
 						};
 					}
 				}
+			}
+		});
+
+		socket.addEventListener('open', () => {
+			if (watcher_id === undefined) {
+				socket.send(JSON.stringify({ Ghost: 'DemandId' }));
+			} else {
+				socket.send(JSON.stringify({ Ghost: { ClaimId: watcher_id } }));
 			}
 		});
 

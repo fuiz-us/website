@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { ExportedFuiz, FuizConfig, Media } from '$lib';
+	import type { Creation, ExportedFuiz, FuizConfig, Media } from '$lib';
 	import Editor from './Editor.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import ErrorPage from '$lib/ErrorPage.svelte';
@@ -22,13 +22,7 @@
 				db: IDBDatabase;
 		  }
 		| {
-				creations: {
-					id: number;
-					lastEdited: number;
-					title: string;
-					slidesCount: number;
-					media?: Media;
-				}[];
+				creations: Creation[];
 				db: IDBDatabase;
 		  } = 'loading';
 
@@ -69,13 +63,7 @@
 			} else {
 				const creationsTransaction = creationsStore.openCursor();
 
-				const creations: {
-					id: number;
-					title: string;
-					lastEdited: number;
-					slidesCount: number;
-					media?: Media;
-				}[] = [];
+				const creations: Creation[] = [];
 
 				creationsTransaction.addEventListener('success', () => {
 					const cursor = creationsTransaction.result;

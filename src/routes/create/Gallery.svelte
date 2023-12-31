@@ -1,7 +1,7 @@
 <script lang="ts">
 	import GalleryCreation from './GalleryCreation.svelte';
 
-	import { type ExportedFuiz, playLocal, type Media } from '$lib';
+	import { type ExportedFuiz, playLocal, type Creation } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
@@ -11,20 +11,14 @@
 	import ghost from '$lib/assets/ghost.svg';
 	import Header from '$lib/Header.svelte';
 
-	export let creations: {
-		id: number;
-		title: string;
-		lastEdited: number;
-		slidesCount: number;
-		media?: Media;
-	}[];
+	export let creations: Creation[];
 
 	export let db: IDBDatabase;
 
-	$: sorted_creations = creations.sort((a, b) => b.lastEdited - a.lastEdited);
+	$: sortedCreations = creations.sort((a, b) => b.lastEdited - a.lastEdited);
 
 	function add_slide() {
-		let new_slide: ExportedFuiz = {
+		let newSlide: ExportedFuiz = {
 			lastEdited: Date.now(),
 			config: {
 				title: 'Untitled',
@@ -34,16 +28,16 @@
 
 		const creationsStore = db.transaction(['creations'], 'readwrite').objectStore('creations');
 
-		const request = creationsStore.put(new_slide);
+		const request = creationsStore.put(newSlide);
 
 		request.addEventListener('success', () => {
 			const id = request.result;
 
 			creations.push({
 				id: parseInt(id.toString()),
-				lastEdited: new_slide.lastEdited,
-				title: new_slide.config.title,
-				slidesCount: new_slide.config.slides.length
+				lastEdited: newSlide.lastEdited,
+				title: newSlide.config.title,
+				slidesCount: newSlide.config.slides.length
 			});
 
 			creations = creations;
@@ -104,14 +98,14 @@
 					>
 						Recent Fuizzes
 					</h2>
-					{#if sorted_creations.length}
+					{#if sortedCreations.length}
 						<div
 							style:display="grid"
 							style:grid-template-columns="repeat(auto-fit, minmax(15ch, 1fr))"
 							style:grid-auto-rows="1fr"
 							style:grid-gap="0.4em"
 						>
-							{#each sorted_creations as { id, title, lastEdited, slidesCount, media }}
+							{#each sortedCreations as { id, title, lastEdited, slidesCount, media }}
 								<GalleryCreation
 									{id}
 									{title}

@@ -128,6 +128,14 @@ export type ExportedFuiz = {
 	lastEdited: number;
 };
 
+export type Creation = {
+	id: number;
+	title: string;
+	lastEdited: number;
+	slidesCount: number;
+	media?: Media | undefined;
+};
+
 export async function get_backend_media(
 	media: Media | undefined | null
 ): Promise<Media | undefined> {

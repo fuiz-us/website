@@ -10,7 +10,7 @@
 	function get_exported(config: FuizConfig): ExportedFuiz {
 		return {
 			config,
-			last_edited: Date.now()
+			lastEdited: Date.now()
 		};
 	}
 

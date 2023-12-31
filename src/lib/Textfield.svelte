@@ -1,11 +1,15 @@
 <script lang="ts">
+	import Icon from './Icon.svelte';
+
 	export let id: string;
 	export let placeholder: string;
 	export let required: boolean;
 	export let disabled: boolean;
 	export let value: string;
-	export let text_transform = '';
+	export let textTransform = '';
 	export let autocomplete = 'off';
+	export let maxLength: number | undefined = undefined;
+	export let minLength: number | undefined = undefined;
 </script>
 
 <div style:position="relative">
@@ -13,13 +17,18 @@
 		{id}
 		{autocomplete}
 		type="text"
-		style:text-transform={text_transform}
+		style:text-transform={textTransform}
 		{required}
 		{disabled}
 		placeholder=""
 		bind:value
+		maxlength={maxLength}
+		minlength={minLength}
 	/>
 	<label for={id}>{placeholder}</label>
+	<div id="error">
+		<Icon src="$lib/assets/error.svg" alt="length is too short" size="1.2em" />
+	</div>
 </div>
 
 <style>
@@ -48,6 +57,25 @@
 		scale: 0.75;
 		background: var(--background-color);
 		transform: translateY(-50%);
+	}
+
+	#error {
+		display: none;
+	}
+
+	input:invalid {
+		padding-right: 1.8em;
+
+		& ~ #error {
+			color: var(--accent-color);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			bottom: 0;
+			top: 0;
+			right: 0.4em;
+		}
 	}
 
 	input:focus + label {

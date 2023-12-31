@@ -3,7 +3,7 @@
 	import vote from '$lib/assets/vote.svg';
 	import Icon from '$lib/Icon.svelte';
 
-	export let user_votes: number;
+	export let userVotes: number;
 	export let text: string;
 	export let id: number;
 
@@ -29,7 +29,7 @@
 	<div style:display="flex" style:align-items="center" style:gap="5px">
 		<Icon src={vote} alt="vote" size="1em" />
 		<div>
-			{user_votes}
+			{userVotes}
 		</div>
 	</div>
 </button>

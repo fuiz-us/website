@@ -4,7 +4,7 @@
 	import { createDialog } from 'svelte-headlessui';
 
 	export let url: string;
-	export let small_size: string;
+	export let smallSize: string;
 
 	$: image = toDataURL(url, { scale: 1 });
 
@@ -13,15 +13,15 @@
 
 {#await image}
 	<div
-		style:height={small_size}
-		style:width={small_size}
+		style:height={smallSize}
+		style:width={smallSize}
 		style:display="flex"
 		style:justify-content="center"
 		style:align-items="center"
 		style:border-radius="0.2em"
 	>
 		<div style:height="64px" style:width="64px">
-			<LoadingCircle borderWidth={8} color="black" />
+			<LoadingCircle borderWidth={8} />
 		</div>
 	</div>
 {:then url}
@@ -37,8 +37,8 @@
 	>
 		<img
 			src={url}
-			style:height={small_size}
-			style:width={small_size}
+			style:height={smallSize}
+			style:width={smallSize}
 			alt="QR code to the game"
 			style:image-rendering="pixelated"
 			style:border-radius="0.2em"

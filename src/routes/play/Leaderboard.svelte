@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { medal_colors } from '$lib';
+	import { medalColors } from '$lib';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 	import medal from '$lib/assets/medal.svg';
@@ -43,10 +43,10 @@
 								style:font-family="Poppins"
 								style:box-sizing="border-box"
 							>
-								<div style:color={medal_colors[position]}>
+								<div style:color={medalColors[position]}>
 									<Icon size="200px" src={medal} alt="medal" />
 								</div>
-								<div style:color={medal_colors[position]}>
+								<div style:color={medalColors[position]}>
 									{#if position === 0}
 										1st
 									{:else if position === 1}

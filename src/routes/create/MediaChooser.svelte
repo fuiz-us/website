@@ -10,7 +10,7 @@
 
 	export let media: Media | null | undefined;
 
-	let drag_over = false;
+	let dragOver = false;
 
 	function load_from_input() {
 		const target = document.querySelector('input[type=file]');
@@ -21,7 +21,7 @@
 	}
 
 	function load_file(file: File | undefined) {
-		drag_over = false;
+		dragOver = false;
 		if (file == undefined) {
 			media = undefined;
 			return;
@@ -53,21 +53,22 @@
 		/>
 		<button
 			style:appearance="none"
+			style:color="inherit"
 			style:border="none"
 			style:padding="none"
 			style:font="inherit"
 			style:background="none"
 			on:dragover|preventDefault={() => {
-				drag_over = true;
+				dragOver = true;
 			}}
 			on:dragenter={() => {
-				drag_over = true;
+				dragOver = true;
 			}}
 			on:dragleave={() => {
-				drag_over = false;
+				dragOver = false;
 			}}
 			on:drop|preventDefault={(e) => {
-				drag_over = false;
+				dragOver = false;
 				let files = e.dataTransfer?.files ?? undefined;
 				if (files && files.length > 0) {
 					load_file(e.dataTransfer?.files?.item(0) ?? undefined);
@@ -77,8 +78,8 @@
 			<div
 				style:aspect-ratio="1"
 				style:width="15ch"
-				style:background={drag_over ? buttonColors[0][0] : 'transparent'}
-				style:border="0.1em dashed {drag_over ? '#fff' : '#00000040'}"
+				style:background={dragOver ? buttonColors[0][0] : 'transparent'}
+				style:border="0.1em dashed {dragOver ? '#fff' : 'currentcolor'}"
 				style:border-radius="0.7em"
 				style:padding="0.4em"
 				style:box-sizing="border-box"
@@ -87,6 +88,7 @@
 				style:align-items="center"
 				style:gap="0.4em"
 				style:transition="background 200ms"
+				style:color={dragOver ? '' : 'color-mix(in srgb, currentColor 50%, transparent)'}
 			>
 				<label
 					for="image_input"
@@ -96,14 +98,11 @@
 					style:align-items="center"
 					style:cursor="pointer"
 					style:justify-content="center"
-					style:color={drag_over ? '' : '#888'}
 				>
 					<Icon size="2em" src={add_photo} alt="add" />
 					<div style:font-weight="bold">Open Image</div>
 				</label>
-				<div style:font-size="0.7em" style:font-weight="bold" style:color={drag_over ? '' : '#888'}>
-					or Drop it Here!
-				</div>
+				<div style:font-size="0.7em" style:font-weight="bold">or Drop it Here!</div>
 			</div>
 		</button>
 	</div>
@@ -159,7 +158,7 @@
 							id="alt"
 							required={false}
 							disabled={false}
-							max_height="5em"
+							maxHeight="5em"
 							bind:value={media.Image.Base64.alt}
 							placeholder="Alt Text"
 						/>

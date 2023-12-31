@@ -16,7 +16,7 @@
 	export let players: string[];
 	export let exact_count: number;
 	export let truncated: boolean;
-	export let volume_on: boolean;
+	export let volumeOn: boolean;
 	let codeTitle = 'Copy to Clipboard';
 
 	$: actualUrl = PUBLIC_PLAY_URL + '/play?code=' + code;
@@ -33,7 +33,7 @@
 	let fullscreenElement;
 </script>
 
-<Audio audioUrl={bee3} volumeOn={volume_on} />
+<Audio audioUrl={bee3} {volumeOn} />
 <div id="container" bind:this={fullscreenElement} style:height="100%" style:display="flex">
 	<div
 		style:background="var(--background-color)"
@@ -77,7 +77,7 @@
 					{code}
 				</div>
 			</button>
-			<QrCode url={actualUrl} small_size="9em" />
+			<QrCode url={actualUrl} smallSize="9em" />
 		</div>
 		<div
 			style:display="flex"
@@ -102,10 +102,10 @@
 			>
 				<div style:margin-left="auto" style:display="flex" style:gap="0.2em">
 					<IconButton
-						src={volume_on ? volume_up : volume_off}
-						alt={volume_on ? 'Mute Music' : 'Turn on Music'}
+						src={volumeOn ? volume_up : volume_off}
+						alt={volumeOn ? 'Mute Music' : 'Turn on Music'}
 						size="1em"
-						on:click={() => (volume_on = !volume_on)}
+						on:click={() => (volumeOn = !volumeOn)}
 					/>
 					<Fullscreen {fullscreenElement} />
 				</div>
@@ -127,7 +127,7 @@
 						style:padding="0.2em"
 						style:overflow="auto"
 					>
-						<PlayersList {players} {exact_count} {truncated} />
+						<PlayersList {players} exactCount={exact_count} {truncated} />
 					</div>
 				</div>
 			</div>

@@ -13,8 +13,8 @@
 
 	export let id: number,
 		title: string,
-		last_edited: number,
-		slides_count: number,
+		lastEdited: number,
+		slidesCount: number,
 		media: Media | undefined;
 
 	const same_year = { month: 'short', day: 'numeric' } as const;
@@ -38,7 +38,7 @@
 		<div class="info">
 			{title}
 			<div class="desc">
-				{dateToString(new Date(last_edited))} • {slides_count} slides
+				{dateToString(new Date(lastEdited))} • {slidesCount} slides
 			</div>
 		</div>
 	</a>

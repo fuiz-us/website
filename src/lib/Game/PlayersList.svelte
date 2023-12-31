@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let players: string[];
-	export let exact_count: number;
+	export let exactCount: number;
 	export let truncated: boolean;
 </script>
 
@@ -25,6 +25,6 @@
 		style:font-weight="bold"
 		style:word-break="break-word"
 	>
-		{players.length - exact_count} more...
+		{players.length - exactCount} more...
 	</div>
 {/if}

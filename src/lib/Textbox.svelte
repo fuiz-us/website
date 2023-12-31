@@ -7,6 +7,8 @@
 	export let lightText = false;
 	export let padding = '5px';
 
+	export let maxLength: number | undefined = undefined;
+
 	$: placeholderColor = lightText ? '#FFFFFF80' : '#00000080';
 
 	let editableElement: HTMLTextAreaElement;
@@ -41,6 +43,7 @@
 	style:height="100%"
 	style="--placeholderColor: {placeholderColor}"
 	rows="1"
+	maxlength={maxLength}
 />
 
 <style>

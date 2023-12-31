@@ -57,8 +57,8 @@
 		style:background="none"
 		style:font="inherit"
 		style:color="inherit"
-		style:border={selected ? '3px solid blue' : '3px solid darkgray'}
-		style:border-radius="0.7em"
+		style:border={selected ? '3px solid var(--accent-color)' : '3px solid darkgray'}
+		style:border-radius="0.5em"
 		style:overflow="hidden"
 		style:cursor="pointer"
 		on:click={() => dispatch('select')}

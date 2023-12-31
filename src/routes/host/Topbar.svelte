@@ -14,10 +14,10 @@
 	export let questionIndex: number;
 	export let questionTotalCount: number;
 	export let gameId: string;
-	export let volume_on: boolean;
+	export let volumeOn: boolean;
 	export let fullscreenElement: HTMLElement | undefined = undefined;
 
-	export let show_skip = false;
+	export let showSkip = false;
 
 	const exitDialog = createDialog({ label: 'End Fuiz?' });
 
@@ -145,14 +145,14 @@
 		style:gap="0.2em"
 		style:padding="0.2em"
 	>
-		{#if show_skip}
+		{#if showSkip}
 			<IconButton src={skip} alt="Skip this slide" size="1em" on:click={() => dispatch('next')} />
 		{/if}
 		<IconButton
-			src={volume_on ? volume_up : volume_off}
-			alt={volume_on ? 'Mute Music' : 'Turn on Music'}
+			src={volumeOn ? volume_up : volume_off}
+			alt={volumeOn ? 'Mute Music' : 'Turn on Music'}
 			size="1em"
-			on:click={() => (volume_on = !volume_on)}
+			on:click={() => (volumeOn = !volumeOn)}
 		/>
 		<Fullscreen {fullscreenElement} />
 	</div>

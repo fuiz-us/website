@@ -3,7 +3,7 @@
 	import FancyButton from '../FancyButton.svelte';
 	export let text: string;
 	export let topShadow = false;
-	export let show_next = false;
+	export let showNext = false;
 
 	const dispatch = createEventDispatcher<{ next: undefined }>();
 
@@ -31,7 +31,7 @@
 	>
 		{text}
 	</div>
-	{#if show_next}
+	{#if showNext}
 		<div style:font-size="1.2em" style:font-family="Poppins">
 			<FancyButton on:click={() => dispatch('next')}>
 				<div style:padding="0.2em 0.4em">Next</div>

@@ -20,12 +20,12 @@
 	export let timeStarted: number;
 	export let answeredCount: number;
 	export let media: Media | undefined;
-	export let volume_on: boolean;
+	export let volumeOn: boolean;
 
 	let fullscreenElement;
 </script>
 
-<Audio audioUrl={think} volumeOn={volume_on} />
+<Audio audioUrl={think} {volumeOn} />
 <div
 	bind:this={fullscreenElement}
 	style:height="100%"
@@ -33,13 +33,13 @@
 	style:flex-direction="column"
 >
 	<Topbar
-		bind:volume_on
+		bind:volumeOn
 		on:next
 		{questionIndex}
 		{fullscreenElement}
 		{questionTotalCount}
 		{gameId}
-		show_skip={true}
+		showSkip={true}
 	/>
 	<TextBar text={questionText} />
 	<div style:flex="1">

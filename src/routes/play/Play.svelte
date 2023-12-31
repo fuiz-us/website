@@ -174,7 +174,7 @@
 				Bingo: BingoIncomingMessage;
 		  };
 
-	let current_state: State | undefined = undefined;
+	let currentState: State | undefined = undefined;
 
 	let socket: WebSocket;
 
@@ -182,7 +182,7 @@
 
 	export let code: string;
 
-	let watcher_id = (browser && localStorage.getItem(code + '_play')) || undefined;
+	let watcherId = (browser && localStorage.getItem(code + '_play')) || undefined;
 
 	onMount(() => {
 		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code);
@@ -196,11 +196,11 @@
 				index: previous_index = 0,
 				count: previous_count = 1,
 				score: previous_score = 0
-			} = current_state && 'Slide' in current_state ? current_state : {};
+			} = currentState && 'Slide' in currentState ? currentState : {};
 
 			if ('Game' in new_msg) {
 				if (new_msg.Game === 'NameChoose') {
-					current_state = {
+					currentState = {
 						Game: {
 							NameChoose: {
 								sending: false,
@@ -209,7 +209,7 @@
 						}
 					};
 				} else if ('NameAssign' in new_msg.Game) {
-					current_state = undefined;
+					currentState = undefined;
 					setName = new_msg.Game.NameAssign;
 				} else if ('NameError' in new_msg.Game) {
 					let errorMessage = '';
@@ -224,7 +224,7 @@
 					} else if (new_msg.Game.NameError === 'TooLong') {
 						errorMessage = 'Nickname is too long';
 					}
-					current_state = {
+					currentState = {
 						Game: {
 							NameChoose: {
 								sending: false,
@@ -242,7 +242,7 @@
 						}
 					} = new_msg.Game.Score;
 
-					current_state = {
+					currentState = {
 						index,
 						count,
 						score: points,
@@ -255,7 +255,7 @@
 					};
 				} else if ('WaitingScreen' in new_msg.Game) {
 					let { exact_count } = new_msg.Game.WaitingScreen;
-					current_state = {
+					currentState = {
 						Game: {
 							WaitingScreen: {
 								exact_count
@@ -263,20 +263,20 @@
 						}
 					};
 				} else if ('IdAssign' in new_msg.Game) {
-					watcher_id = new_msg.Game.IdAssign;
-					localStorage.setItem(code + '_play', watcher_id);
+					watcherId = new_msg.Game.IdAssign;
+					localStorage.setItem(code + '_play', watcherId);
 				}
 			} else if ('MultipleChoice' in new_msg) {
 				let mc = new_msg.MultipleChoice;
 
 				let previous_state =
-					current_state && 'Slide' in current_state && 'MultipleChoice' in current_state.Slide
-						? current_state.Slide
+					currentState && 'Slide' in currentState && 'MultipleChoice' in currentState.Slide
+						? currentState.Slide
 						: undefined;
 
 				if ('QuestionAnnouncment' in mc) {
 					let { index, count, question, media } = mc.QuestionAnnouncment;
-					current_state = {
+					currentState = {
 						index,
 						count,
 						score: previous_score,
@@ -294,7 +294,7 @@
 						media = previous_state?.media,
 						answers
 					} = mc.AnswersAnnouncement;
-					current_state = {
+					currentState = {
 						index,
 						count,
 						score: previous_score,
@@ -314,7 +314,7 @@
 						answers = previous_state?.answers,
 						results
 					} = mc.AnswersResults;
-					current_state = {
+					currentState = {
 						index,
 						count,
 						score: previous_score,
@@ -332,14 +332,14 @@
 				let bingo = new_msg.Bingo;
 
 				let previous_state =
-					current_state && 'Slide' in current_state && 'Bingo' in current_state.Slide
-						? current_state.Slide
+					currentState && 'Slide' in currentState && 'Bingo' in currentState.Slide
+						? currentState.Slide
 						: undefined;
 
 				if ('List' in bingo) {
 					let { index, count, all_statements, assigned_statement, crossed, user_votes } =
 						bingo.List;
-					current_state = {
+					currentState = {
 						index,
 						count,
 						score: previous_score,
@@ -353,7 +353,7 @@
 					};
 				} else if ('Winners' in bingo) {
 					let { index = previous_index, count = previous_count, winners } = bingo.Winners;
-					current_state = {
+					currentState = {
 						index,
 						count,
 						score: previous_score,
@@ -364,7 +364,7 @@
 					};
 				} else if ('Cross' in bingo) {
 					let { crossed } = bingo.Cross;
-					current_state = {
+					currentState = {
 						index: previous_index,
 						count: previous_count,
 						score: previous_score,
@@ -376,7 +376,7 @@
 					};
 				} else if ('Votes' in bingo) {
 					let { user_votes } = bingo.Votes;
-					current_state = {
+					currentState = {
 						index: previous_index,
 						count: previous_count,
 						score: previous_score,
@@ -391,13 +391,13 @@
 		});
 
 		socket.addEventListener('close', async () => {
-			if (!(current_state && 'Error' in current_state)) {
+			if (!(currentState && 'Error' in currentState)) {
 				const res = await bring(PUBLIC_BACKEND_URL + '/alive/' + code, {
 					method: 'GET',
 					mode: 'cors'
 				});
 				if (res === undefined) {
-					current_state = {
+					currentState = {
 						Error: 'Connection Closed'
 					};
 				} else {
@@ -405,7 +405,7 @@
 					if (text === 'true') {
 						location.reload();
 					} else {
-						current_state = {
+						currentState = {
 							Error: 'Game Ended'
 						};
 					}
@@ -414,15 +414,15 @@
 		});
 
 		socket.addEventListener('open', () => {
-			if (watcher_id === undefined) {
+			if (watcherId === undefined) {
 				socket.send(JSON.stringify({ Ghost: 'DemandId' }));
 			} else {
-				socket.send(JSON.stringify({ Ghost: { ClaimId: watcher_id } }));
+				socket.send(JSON.stringify({ Ghost: { ClaimId: watcherId } }));
 			}
 		});
 
 		socket.addEventListener('error', () => {
-			current_state = {
+			currentState = {
 				Error: "Game Code doesn't exist"
 			};
 		});
@@ -431,7 +431,7 @@
 	$: name = setName || 'You';
 
 	function requestName(name: string) {
-		current_state = {
+		currentState = {
 			Game: {
 				NameChoose: {
 					sending: true,
@@ -443,11 +443,11 @@
 	}
 
 	function sendAnswer(index: number) {
-		if (current_state && 'Slide' in current_state && 'MultipleChoice' in current_state.Slide) {
-			current_state = {
-				...current_state,
+		if (currentState && 'Slide' in currentState && 'MultipleChoice' in currentState.Slide) {
+			currentState = {
+				...currentState,
 				Slide: {
-					...current_state.Slide,
+					...currentState.Slide,
 					answered: index
 				}
 			};
@@ -461,73 +461,66 @@
 	}
 </script>
 
-{#if current_state === undefined}
+{#if currentState === undefined}
 	<Loading />
-{:else if 'Error' in current_state}
-	<ErrorPage errorMessage={current_state.Error} />
-{:else if 'Game' in current_state}
-	{#if 'NameChoose' in current_state.Game}
-		<ChooseName
-			on:setName={(x) => requestName(x.detail)}
-			sending={current_state.Game.NameChoose.sending}
-			errorMessage={current_state.Game.NameChoose.error}
-		/>
-	{:else if 'WaitingScreen' in current_state.Game}
+{:else if 'Error' in currentState}
+	<ErrorPage errorMessage={currentState.Error} />
+{:else if 'Game' in currentState}
+	{@const game = currentState.Game}
+	{#if 'NameChoose' in game}
+		{@const { sending, error: errorMessage } = game.NameChoose}
+		<ChooseName on:setName={(x) => requestName(x.detail)} {sending} {errorMessage} />
+	{:else if 'WaitingScreen' in game}
 		<WaitingMobile {name} gameCode={code} />
 	{/if}
-{:else if 'Slide' in current_state}
-	{#if 'MultipleChoice' in current_state.Slide}
-		{#if current_state.Slide.MultipleChoice === 'QuestionAnnouncment'}
-			<Question
-				{name}
-				score={current_state.score}
-				questionText={current_state.Slide.question || ''}
-			/>
-		{:else if current_state.Slide.MultipleChoice === 'AnswersAnnouncement'}
-			{#if current_state.Slide.answered === undefined}
+{:else if 'Slide' in currentState}
+	{@const { Slide: slide, index, count, score } = currentState}
+	{#if 'MultipleChoice' in slide}
+		{@const { MultipleChoice: kind, question, answers, results, answered } = slide}
+		{#if kind === 'QuestionAnnouncment'}
+			<Question {name} {score} questionText={question || ''} />
+		{:else if kind === 'AnswersAnnouncement'}
+			{#if answered === undefined}
 				<Answers
 					on:answer={(e) => sendAnswer(e.detail)}
 					{name}
-					score={current_state.score}
-					answersCount={current_state.Slide.answers?.length || 0}
+					{score}
+					answersCount={answers?.length || 0}
 				/>
 			{:else}
-				<WaitingOthers {name} score={current_state.score} />
+				<WaitingOthers {name} {score} />
 			{/if}
-		{:else if current_state.Slide.MultipleChoice === 'AnswersResults'}
+		{:else if kind === 'AnswersResults'}
 			<Result
 				{name}
-				score={current_state.score}
-				correct={current_state.Slide.answered === undefined
-					? false
-					: current_state.Slide.results?.at(current_state.Slide.answered)?.correct || false}
+				{score}
+				correct={answered === undefined ? false : results?.at(answered)?.correct || false}
 			/>
 		{/if}
-	{:else if 'Score' in current_state.Slide}
-		<Leaderboard
-			{name}
-			score={current_state.Slide.Score.points}
-			position={current_state.Slide.Score.position}
-			final={current_state.index + 1 === current_state.count}
-		/>
-	{:else if 'Bingo' in current_state.Slide}
-		{#if current_state.Slide.Bingo === 'List'}
+	{:else if 'Score' in slide}
+		{@const { points, position } = slide.Score}
+		<Leaderboard {name} score={points} {position} final={index + 1 === count} />
+	{:else if 'Bingo' in slide}
+		{@const {
+			Bingo: kind,
+			all_statements: allStatements,
+			assigned_statement: assignedStatements,
+			crossed,
+			user_votes: userVotes,
+			winners
+		} = slide}
+		{#if kind === 'List'}
 			<Bingo
 				{name}
-				score={current_state.score}
-				crossed={current_state.Slide.crossed || []}
-				all_statements={current_state.Slide.all_statements || []}
-				user_votes={current_state.Slide.user_votes || []}
-				assigned_statements={current_state.Slide.assigned_statement || []}
+				{score}
+				crossed={crossed || []}
+				allStatements={allStatements || []}
+				userVotes={userVotes || []}
+				assignedStatements={assignedStatements || []}
 				on:index={(e) => sendVote(e.detail)}
 			/>
-		{:else if current_state.Slide.Bingo === 'Winners'}
-			<Winners
-				{name}
-				score={current_state.score}
-				winners={current_state.Slide.winners || []}
-				is_winner={current_state.Slide.winners?.includes(name) || false}
-			/>
+		{:else if kind === 'Winners'}
+			<Winners {name} {score} winners={winners || []} isWinner={winners?.includes(name) || false} />
 		{/if}
 	{/if}
 {/if}

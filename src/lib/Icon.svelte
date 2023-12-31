@@ -3,7 +3,7 @@
 	export let alt: string;
 	export let size: string;
 
-	$: url_string = `url("${src}")`;
+	$: urlString = `url("${src}")`;
 </script>
 
 <div
@@ -14,10 +14,10 @@
 	style:-webkit-mask-size="cover"
 	style:color="inherit"
 	style:background="currentColor"
-	style:mask-image={url_string}
+	style:mask-image={urlString}
 	style:mask-position="center"
 	style:mask-size="contain"
 	style:mask-repeat="no-repeat"
-	style:-webkit-mask-image={url_string}
+	style:-webkit-mask-image={urlString}
 	title={alt}
 />

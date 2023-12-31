@@ -1,7 +1,7 @@
 <script lang="ts">
 	import GalleryCreation from './GalleryCreation.svelte';
 
-	import { type ExportedFuiz, play_local, type Media } from '$lib';
+	import { type ExportedFuiz, playLocal, type Media } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
@@ -14,18 +14,18 @@
 	export let creations: {
 		id: number;
 		title: string;
-		last_edited: number;
-		slides_count: number;
+		lastEdited: number;
+		slidesCount: number;
 		media?: Media;
 	}[];
 
 	export let db: IDBDatabase;
 
-	$: sorted_creations = creations.sort((a, b) => b.last_edited - a.last_edited);
+	$: sorted_creations = creations.sort((a, b) => b.lastEdited - a.lastEdited);
 
 	function add_slide() {
 		let new_slide: ExportedFuiz = {
-			last_edited: Date.now(),
+			lastEdited: Date.now(),
 			config: {
 				title: 'Untitled',
 				slides: []
@@ -41,9 +41,9 @@
 
 			creations.push({
 				id: parseInt(id.toString()),
-				last_edited: new_slide.last_edited,
+				lastEdited: new_slide.lastEdited,
 				title: new_slide.config.title,
-				slides_count: new_slide.config.slides.length
+				slidesCount: new_slide.config.slides.length
 			});
 
 			creations = creations;
@@ -111,15 +111,15 @@
 							style:grid-auto-rows="1fr"
 							style:grid-gap="0.4em"
 						>
-							{#each sorted_creations as { id, title, last_edited, slides_count, media }}
+							{#each sorted_creations as { id, title, lastEdited, slidesCount, media }}
 								<GalleryCreation
 									{id}
 									{title}
-									{last_edited}
-									{slides_count}
+									{lastEdited}
+									{slidesCount}
 									{media}
 									on:delete={() => delete_slide(id)}
-									on:play={() => play_local(id, db)}
+									on:play={() => playLocal(id, db)}
 								/>
 							{/each}
 						</div>

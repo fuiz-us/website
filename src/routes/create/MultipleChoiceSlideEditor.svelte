@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MultipleChoiceSlide } from '$lib';
+	import { limits, type MultipleChoiceSlide } from '$lib';
 	import Icon from '$lib/Icon.svelte';
 	import SelectTime from '$lib/SelectTime.svelte';
 	import Textarea from '$lib/Textarea.svelte';
@@ -26,7 +26,8 @@
 			id="question_title"
 			required={false}
 			disabled={false}
-			max_height="4em"
+			maxHeight="4em"
+			maxLength={limits.fuiz.maxTitleLength}
 		/>
 	</div>
 	<div
@@ -38,7 +39,10 @@
 		style:justify-content="center"
 	>
 		<div>
-			<SelectTime options={[5, 10, 30, 60, 120, 240]} bind:selected={slide.time_limit}>
+			<SelectTime
+				options={[...limits.fuiz.multipleChoice.allowedTimeLimits]}
+				bind:selected={slide.time_limit}
+			>
 				<Icon src={timer} size="1em" alt="Time Limit" />
 			</SelectTime>
 		</div>

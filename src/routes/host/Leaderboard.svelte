@@ -7,9 +7,9 @@
 	export let questionTotalCount: number;
 	export let gameId: string;
 	export let results: [string, number][];
-	export let exact_count: number;
+	export let exactCount: number;
 	export let final: boolean;
-	export let volume_on: boolean;
+	export let volumeOn: boolean;
 
 	let fullscreenElement;
 </script>
@@ -20,8 +20,8 @@
 	style:display="flex"
 	style:flex-direction="column"
 >
-	<Topbar bind:volume_on {fullscreenElement} {questionIndex} {questionTotalCount} {gameId} />
-	<TextBar on:next text="Scores" show_next={true} heading={true} />
+	<Topbar bind:volumeOn {fullscreenElement} {questionIndex} {questionTotalCount} {gameId} />
+	<TextBar on:next text="Scores" showNext={true} heading={true} />
 	<div style:flex="1">
 		<NiceBackground>
 			<div
@@ -39,7 +39,7 @@
 				{#each results as [name, score], index}
 					<LeaderboardRecord {name} {score} {index} {final} />
 				{/each}
-				{#if exact_count > results.length}
+				{#if exactCount > results.length}
 					<div
 						id="container"
 						style:display="flex"
@@ -57,7 +57,7 @@
 							style:display="flex"
 							style:justify-content="center"
 						>
-							{exact_count - results.length} more...
+							{exactCount - results.length} more...
 						</div>
 					</div>
 				{/if}

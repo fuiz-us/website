@@ -14,7 +14,7 @@
 	export let answers: { text: string; count: number; correct: boolean }[];
 	export let timeLeft: number | undefined = undefined;
 	export let timeStarted: number | undefined = undefined;
-	export let volume_on: boolean;
+	export let volumeOn: boolean;
 
 	let fullscreenElement;
 </script>
@@ -25,8 +25,8 @@
 	style:display="flex"
 	style:flex-direction="column"
 >
-	<Topbar bind:volume_on {questionIndex} {fullscreenElement} {questionTotalCount} {gameId} />
-	<TextBar on:next text={questionText} show_next={true} />
+	<Topbar bind:volumeOn {questionIndex} {fullscreenElement} {questionTotalCount} {gameId} />
+	<TextBar on:next text={questionText} showNext={true} />
 	<div style:flex="1">
 		<NiceBackground>
 			<VerticalSplit>

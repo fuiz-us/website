@@ -12,7 +12,7 @@ export const buttonColors = [
 	['#DA5C00', '#a84600']
 ] as const;
 
-export const medal_colors = ['#FEDD1E', '#D0D0D0', '#D7995A'] as const;
+export const medalColors = ['#FEDD1E', '#D0D0D0', '#D7995A'] as const;
 
 export const buttonSymbols = [
 	[heart, 'heart'],
@@ -20,6 +20,24 @@ export const buttonSymbols = [
 	[spade, 'spade'],
 	[club, 'club']
 ] as const;
+
+// must be a subset of https://gitlab.com/opencode-mit/fuiz/-/raw/main/config.toml
+export const limits = {
+	fuiz: {
+		maxSlidesCount: 100,
+		maxTitleLength: 100,
+		maxPlayerCount: 1000,
+		multipleChoice: {
+			maxTitleLength: 100,
+			introduceQuestion: 3,
+			pointsAwarded: 1000,
+			allowedTimeLimits: [5, 10, 30, 60, 120, 240],
+			defaultTimeLimit: 30,
+			maxAnswerCount: 8
+		},
+		maxAnswerTextLength: 100
+	}
+} as const;
 
 export async function bring(
 	input: URL | RequestInfo,
@@ -39,11 +57,11 @@ export function zip<T, U>(a: Array<T>, b: Array<U>): Array<[T, U]> {
 	return b.map((v, i) => [a[i], v]);
 }
 
-export function is_not_undefined<T>(a?: T): a is T {
+export function isNotUndefined<T>(a?: T): a is T {
 	return a !== undefined;
 }
 
-export function is_not_null<T>(a: T | null): a is T {
+export function isNotNull<T>(a: T | null): a is T {
 	return a !== null;
 }
 
@@ -83,6 +101,7 @@ export type AnswerResult = {
 export type MultipleChoiceAnswer = {
 	correct: boolean;
 	content: TextOrMedia;
+	id: number;
 };
 
 export type MultipleChoiceSlide = {
@@ -106,7 +125,7 @@ export type FuizConfig = {
 
 export type ExportedFuiz = {
 	config: FuizConfig;
-	last_edited: number;
+	lastEdited: number;
 };
 
 export async function get_backend_media(
@@ -153,7 +172,7 @@ export async function get_backend_media(
 	}
 }
 
-export async function get_backend_config(config: FuizConfig) {
+export async function getBackendConfig(config: FuizConfig) {
 	return {
 		title: config.title,
 		slides: await Promise.all(
@@ -164,14 +183,17 @@ export async function get_backend_config(config: FuizConfig) {
 					introduce_question: slide.MultipleChoice.introduce_question * 1000,
 					time_limit: slide.MultipleChoice.time_limit * 1000,
 					points_awarded: slide.MultipleChoice.points_awarded,
-					answers: slide.MultipleChoice.answers
+					answers: slide.MultipleChoice.answers.map(({ content, correct }) => ({
+						content,
+						correct
+					}))
 				}
 			}))
 		)
 	};
 }
 
-export async function get_slide(id: number, db: IDBDatabase): Promise<ExportedFuiz | undefined> {
+export async function getSlide(id: number, db: IDBDatabase): Promise<ExportedFuiz | undefined> {
 	return await new Promise((resolve) => {
 		const creationsStore = db.transaction(['creations'], 'readwrite').objectStore('creations');
 		const transaction = creationsStore.get(id);
@@ -186,8 +208,8 @@ export async function get_slide(id: number, db: IDBDatabase): Promise<ExportedFu
 	});
 }
 
-export async function play_local(id: number, db: IDBDatabase) {
-	const config = await get_slide(id, db);
+export async function playLocal(id: number, db: IDBDatabase) {
+	const config = await getSlide(id, db);
 	if (config !== undefined) {
 		const res = await bring(PUBLIC_BACKEND_URL + '/add', {
 			method: 'POST',
@@ -195,7 +217,7 @@ export async function play_local(id: number, db: IDBDatabase) {
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(await get_backend_config(config.config))
+			body: JSON.stringify(await getBackendConfig(config.config))
 		});
 
 		if (res === undefined) {

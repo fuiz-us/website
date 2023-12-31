@@ -7,27 +7,27 @@
 	export let questionIndex: number;
 	export let questionTotalCount: number;
 	export let gameId: string;
-	export let all_statements: {
+	export let allStatements: {
 		id: number;
 		text: string;
 	}[];
 	export let crossed: number[];
-	export let volume_on: boolean;
-	export let user_votes: number[];
+	export let volumeOn: boolean;
+	export let userVotes: number[];
 
-	$: crossed_statements = all_statements
+	$: crossed_statements = allStatements
 		.filter((s) => crossed.includes(s.id))
 		.sort((a, b) => a.id - b.id);
 
-	$: uncrossed_statements = all_statements.filter((s) => !crossed.includes(s.id));
+	$: uncrossedStatements = allStatements.filter((s) => !crossed.includes(s.id));
 
-	$: upvoted_uncrossed_statement = uncrossed_statements
-		.sort((a, b) => user_votes[b.id] - user_votes[a.id])
+	$: mostUpvotedUncrossedStatement = uncrossedStatements
+		.sort((a, b) => userVotes[b.id] - userVotes[a.id])
 		.at(0);
 
-	$: filtered_uncrossed_statement = uncrossed_statements
+	$: filteredUncrossedStatement = uncrossedStatements
 		.filter(
-			(s) => upvoted_uncrossed_statement === undefined || s.id != upvoted_uncrossed_statement.id
+			(s) => mostUpvotedUncrossedStatement === undefined || s.id != mostUpvotedUncrossedStatement.id
 		)
 		.sort((a, b) => a.id - b.id);
 
@@ -38,13 +38,13 @@
 	<NiceBackground>
 		<div style:border-bottom="0.15em solid">
 			<Topbar
-				bind:volume_on
+				bind:volumeOn
 				on:next
 				{fullscreenElement}
 				{questionIndex}
 				{questionTotalCount}
 				{gameId}
-				show_skip={true}
+				showSkip={true}
 			/>
 		</div>
 		<div
@@ -53,26 +53,26 @@
 			style:padding="0.4em"
 			style:box-sizing="border-box"
 		>
-			{#if upvoted_uncrossed_statement !== undefined}
+			{#if mostUpvotedUncrossedStatement !== undefined}
 				<div>
 					<h2 style:margin-bottom="0.2em" style:font-family="Poppins">Most Upvoted</h2>
 					<div style:display="flex" style:flex-direction="column">
 						<Uncrossed
-							user_votes={user_votes.at(upvoted_uncrossed_statement.id) ?? 0}
-							text={upvoted_uncrossed_statement.text}
-							id={upvoted_uncrossed_statement.id}
+							userVotes={userVotes.at(mostUpvotedUncrossedStatement.id) ?? 0}
+							text={mostUpvotedUncrossedStatement.text}
+							id={mostUpvotedUncrossedStatement.id}
 							on:index
 						/>
 					</div>
 				</div>
 			{/if}
 
-			{#if filtered_uncrossed_statement.length}
+			{#if filteredUncrossedStatement.length}
 				<div>
 					<h2 style:margin-bottom="0.2em" style:font-family="Poppins">Uncrossed</h2>
 					<div style:display="flex" style:flex-direction="column" style:gap="0.2em">
-						{#each filtered_uncrossed_statement as { id, text } (id)}
-							<Uncrossed user_votes={user_votes.at(id) ?? 0} {text} {id} on:index />
+						{#each filteredUncrossedStatement as { id, text } (id)}
+							<Uncrossed userVotes={userVotes.at(id) ?? 0} {text} {id} on:index />
 						{/each}
 					</div>
 				</div>

@@ -6,7 +6,8 @@
 	export let required: boolean;
 	export let disabled: boolean;
 	export let value: string;
-	export let max_height = '4em';
+	export let maxHeight = '4em';
+	export let maxLength: number | undefined = undefined;
 
 	let editableElement: HTMLTextAreaElement;
 
@@ -22,13 +23,14 @@
 
 <div style:position="relative">
 	<textarea
-		style:max-height={max_height}
+		style:max-height={maxHeight}
 		bind:this={editableElement}
 		{id}
 		{required}
 		{disabled}
 		bind:value
 		placeholder=""
+		maxlength={maxLength}
 	/>
 	<label for={id}>{placeholder}</label>
 </div>

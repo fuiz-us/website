@@ -62,7 +62,7 @@
 						timeStarted={30000}
 						answers={['Open Source', 'Beautiful Design', 'Lightweight', 'Privacy Friendly']}
 						answeredCount={0}
-						volume_on={false}
+						volumeOn={false}
 						media={{
 							Image: {
 								Url: {

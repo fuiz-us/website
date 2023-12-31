@@ -70,7 +70,7 @@
 					required={true}
 					disabled={sending}
 					bind:value={gameCode}
-					text_transform="uppercase"
+					textTransform="uppercase"
 				/>
 				<div>
 					<FancyButton disabled={sending}>

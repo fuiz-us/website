@@ -6,7 +6,7 @@
 	export let questionIndex: number;
 	export let questionTotalCount: number;
 	export let gameId: string;
-	export let volume_on: boolean;
+	export let volumeOn: boolean;
 
 	export let winners: string[];
 
@@ -15,8 +15,8 @@
 
 <div style:height="100%" bind:this={fullscreenElement}>
 	<NiceBackground>
-		<Topbar bind:volume_on {fullscreenElement} {questionIndex} {questionTotalCount} {gameId} />
-		<TextBar on:next text="Winners" show_next={true} heading={true} />
+		<Topbar bind:volumeOn {fullscreenElement} {questionIndex} {questionTotalCount} {gameId} />
+		<TextBar on:next text="Winners" showNext={true} heading={true} />
 		<div
 			style:display="flex"
 			style:flex-direction="column"

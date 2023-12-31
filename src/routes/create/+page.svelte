@@ -24,14 +24,15 @@
 		| {
 				creations: {
 					id: number;
-					last_edited: number;
+					lastEdited: number;
 					title: string;
-					slides_count: number;
+					slidesCount: number;
+					media?: Media;
 				}[];
 				db: IDBDatabase;
 		  } = 'loading';
 
-	function get_status(id_param: string | null) {
+	function get_status(idParam: string | null) {
 		const request = indexedDB.open('FuizDB', 1);
 		request.addEventListener('upgradeneeded', () => {
 			const db = request.result;
@@ -42,8 +43,8 @@
 
 			const creationsStore = db.transaction(['creations'], 'readonly').objectStore('creations');
 
-			if (id_param) {
-				const id = parseInt(id_param);
+			if (idParam) {
+				const id = parseInt(idParam);
 
 				const creationsTransaction = creationsStore.get(id);
 
@@ -71,8 +72,8 @@
 				const creations: {
 					id: number;
 					title: string;
-					last_edited: number;
-					slides_count: number;
+					lastEdited: number;
+					slidesCount: number;
 					media?: Media;
 				}[] = [];
 
@@ -82,9 +83,9 @@
 						let value: ExportedFuiz = cursor.value;
 						creations.push({
 							id: parseInt(cursor.key.toString()),
-							last_edited: value.last_edited,
+							lastEdited: value.lastEdited,
 							title: value.config.title,
-							slides_count: value.config.slides.length,
+							slidesCount: value.config.slides.length,
 							media: value.config.slides.reduce<Media | undefined>(
 								(p, c) => p || c.MultipleChoice.media,
 								undefined

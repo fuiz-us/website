@@ -6,7 +6,7 @@
 
 	export let name: string;
 	export let score: number;
-	export let is_winner: boolean;
+	export let isWinner: boolean;
 	export let winners: string[];
 
 	const formatter = new Intl.ListFormat('en', { style: 'long', type: 'conjunction' });
@@ -30,11 +30,11 @@
 				>
 					<img
 						style:width="10em"
-						src={is_winner ? correct_penguin : wrong_penguin}
-						alt={is_winner ? 'penguin holding a checkmark' : 'penguin holding a crossmark'}
+						src={isWinner ? correct_penguin : wrong_penguin}
+						alt={isWinner ? 'penguin holding a checkmark' : 'penguin holding a crossmark'}
 					/>
 					<div style:font-weight="bold" style:max-width="20ch" style:text-align="center">
-						{#if is_winner}
+						{#if isWinner}
 							Congratulations! {formatter.format(['You'].concat(winners.filter((x) => x !== name)))}
 							won!
 						{:else}

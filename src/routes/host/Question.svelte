@@ -7,7 +7,7 @@
 	export let questionTotalCount: number;
 	export let gameId: string;
 	export let questionText: string;
-	export let volume_on: boolean;
+	export let volumeOn: boolean;
 
 	let fullscreenElement;
 </script>
@@ -20,13 +20,13 @@
 >
 	<div style:border-bottom="0.15em solid currentcolor">
 		<Topbar
-			bind:volume_on
+			bind:volumeOn
 			on:next
 			{fullscreenElement}
 			{questionIndex}
 			{questionTotalCount}
 			{gameId}
-			show_skip={true}
+			showSkip={true}
 		/>
 	</div>
 	<div style:flex="1">

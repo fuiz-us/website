@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { medal_colors } from '$lib';
+	import { medalColors } from '$lib';
 	import Icon from '$lib/Icon.svelte';
 	import medal from '$lib/assets/medal.svg';
 	export let name: string;
@@ -24,7 +24,7 @@
 					style:border-radius="0.6em"
 					style:box-sizing="border-box"
 				>
-					<div style:color={medal_colors[index]}>
+					<div style:color={medalColors[index]}>
 						<Icon src={medal} alt="medal" size="1.3em" />
 					</div>
 				</div>

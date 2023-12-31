@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Slide } from '$lib';
+	import { limits, type Slide } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import { flip } from 'svelte/animate';
 	import left from '$lib/assets/left.svg';
@@ -14,26 +14,25 @@
 	import { tick } from 'svelte';
 
 	export let slides: Slide[];
-	export let selected_slide_index: number;
+	export let selectedSlideIndex: number;
 
 	async function handleConsider(e: CustomEvent<DndEvent<Slide>>) {
-		const id = slides.at(selected_slide_index)?.id ?? 0;
-		console.log(slides);
+		const id = slides.at(selectedSlideIndex)?.id ?? 0;
 		slides = e.detail.items;
 		const new_index = e.detail.items.findIndex((s) => s.id == id);
-		selected_slide_index =
+		selectedSlideIndex =
 			new_index === -1
 				? e.detail.items.findIndex((s) => s.id.toString().startsWith('id'))
 				: new_index;
 	}
 
 	async function handleFinalize(e: CustomEvent<DndEvent<Slide>>) {
-		const id = slides.at(selected_slide_index)?.id ?? 0;
+		const id = slides.at(selectedSlideIndex)?.id ?? 0;
 
 		slides = e.detail.items;
 
 		if (id.toString().startsWith('id')) {
-			selected_slide_index = e.detail.items.findIndex(
+			selectedSlideIndex = e.detail.items.findIndex(
 				(s) => s.id.toString() == e.detail.info.id.toString()
 			);
 		}
@@ -41,17 +40,17 @@
 
 	let section: HTMLElement;
 
-	async function changeSelected(new_value: number) {
-		let clamped = Math.min(Math.max(0, new_value), slides.length - 1);
-		selected_slide_index = clamped;
+	async function changeSelected(newValue: number) {
+		let clamped = Math.min(Math.max(0, newValue), slides.length - 1);
+		selectedSlideIndex = clamped;
 		await tick();
 		let selected_slide = document.querySelector(`#slide_${clamped}`);
 		if (selected_slide) {
-			let selected_rect = selected_slide.getBoundingClientRect();
-			let parent_rect = section.getBoundingClientRect();
+			let selectedRect = selected_slide.getBoundingClientRect();
+			let parentRect = section.getBoundingClientRect();
 			section.scrollTo({
-				top: section.scrollTop + selected_rect.y - parent_rect.y,
-				left: section.scrollLeft + selected_rect.x - parent_rect.x
+				top: section.scrollTop + selectedRect.y - parentRect.y,
+				left: section.scrollLeft + selectedRect.x - parentRect.x
 			});
 		}
 	}
@@ -98,12 +97,12 @@
 						<Thumbnail
 							{slide}
 							{index}
-							selected={index === selected_slide_index}
+							selected={index === selectedSlideIndex}
 							on:select={() => changeSelected(index)}
 							on:delete={async () => {
 								slides.splice(index, 1);
-								if (index <= selected_slide_index) {
-									await changeSelected(selected_slide_index - 1);
+								if (index <= selectedSlideIndex) {
+									await changeSelected(selectedSlideIndex - 1);
 								}
 								slides = slides;
 							}}
@@ -112,7 +111,7 @@
 								same_slide.id = Date.now();
 								slides.splice(index + 1, 0, same_slide);
 								slides = slides;
-								await changeSelected(selected_slide_index + 1);
+								await changeSelected(selectedSlideIndex + 1);
 							}}
 						/>
 					</div>
@@ -121,14 +120,15 @@
 		</div>
 		<div>
 			<FancyButton
+				disabled={slides.length >= limits.fuiz.maxSlidesCount}
 				on:click={async () => {
 					slides.push({
 						MultipleChoice: {
 							title: '',
 							media: undefined,
-							introduce_question: 3,
-							time_limit: 30,
-							points_awarded: 1000,
+							introduce_question: limits.fuiz.multipleChoice.introduceQuestion,
+							time_limit: limits.fuiz.multipleChoice.defaultTimeLimit,
+							points_awarded: limits.fuiz.multipleChoice.pointsAwarded,
 							answers: []
 						},
 						id: Date.now()
@@ -152,8 +152,8 @@
 			</FancyButton>
 		</div>
 	</div>
-	<div id="controls" style:justify-content="center" style:align-items="center" style:gap="5px">
-		<div style:background="#00000020" style:border-radius="0.2em">
+	<div id="controls">
+		<div>
 			<IconButton
 				src={first}
 				alt="Go to First Page"
@@ -162,16 +162,16 @@
 				on:click={() => changeSelected(0)}
 			/>
 		</div>
-		<div style:background="#00000020" style:border-radius="0.2em">
+		<div>
 			<IconButton
 				src={left}
 				alt="Go to Left"
 				size="1.2em"
 				padding="0.2em"
-				on:click={() => changeSelected(selected_slide_index - 1)}
+				on:click={() => changeSelected(selectedSlideIndex - 1)}
 			/>
 		</div>
-		<div style:background="#00000020" style:border-radius="0.2em">
+		<div>
 			<div
 				style:height="1.2em"
 				style:aspect-ratio="1/1"
@@ -179,19 +179,19 @@
 				style:text-align="center"
 				style:font-weight="bold"
 			>
-				{selected_slide_index + 1}
+				{selectedSlideIndex + 1}
 			</div>
 		</div>
-		<div style:background="#00000020" style:border-radius="0.2em">
+		<div>
 			<IconButton
 				src={right}
 				alt="Go Right"
 				size="1.2em"
 				padding="0.2em"
-				on:click={() => changeSelected(selected_slide_index + 1)}
+				on:click={() => changeSelected(selectedSlideIndex + 1)}
 			/>
 		</div>
-		<div style:background="#00000020" style:border-radius="0.2em">
+		<div>
 			<IconButton
 				src={last}
 				alt="Go to Last Page"
@@ -214,6 +214,11 @@
 
 	#controls {
 		display: none;
+
+		& > div {
+			background: color-mix(in srgb, currentColor 20%, transparent);
+			border-radius: 0.2em;
+		}
 	}
 
 	section {
@@ -227,6 +232,9 @@
 
 		#controls {
 			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 0.2em;
 		}
 
 		#sidebar {
@@ -234,6 +242,7 @@
 			height: unset;
 			border-top: 0.15em solid #00000020;
 		}
+
 		.switched {
 			flex-direction: row;
 			width: unset;

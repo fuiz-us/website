@@ -163,11 +163,11 @@
 				Bingo: BingoIncomingMessage;
 		  };
 
-	let current_state: State | undefined = undefined;
+	let currentState: State | undefined = undefined;
 
 	let socket: WebSocket;
 
-	let volume_on = true;
+	let volumeOn = true;
 
 	let timer = 0;
 	let initialTimer = 0;
@@ -180,7 +180,7 @@
 
 	export let code: string;
 
-	let watcher_id = (browser && localStorage.getItem(code + '_host')) || undefined;
+	let watcherId = (browser && localStorage.getItem(code + '_host')) || undefined;
 
 	onMount(() => {
 		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code);
@@ -191,16 +191,16 @@
 
 			if ('Game' in new_msg) {
 				if ('WaitingScreen' in new_msg.Game) {
-					current_state = {
+					currentState = {
 						Game: {
 							WaitingScreen: new_msg.Game.WaitingScreen
 						}
 					};
 				} else if ('Leaderboard' in new_msg.Game) {
 					let { index: previous_index = 0, count: previous_count = 1 } =
-						current_state && 'Slide' in current_state ? current_state : {};
+						currentState && 'Slide' in currentState ? currentState : {};
 
-					current_state = {
+					currentState = {
 						index: new_msg.Game.Leaderboard.index || previous_index,
 						count: new_msg.Game.Leaderboard.count || previous_count,
 						Slide: {
@@ -208,23 +208,23 @@
 						}
 					};
 				} else if ('IdAssign' in new_msg.Game) {
-					watcher_id = new_msg.Game.IdAssign;
-					localStorage.setItem(code + '_host', watcher_id);
+					watcherId = new_msg.Game.IdAssign;
+					localStorage.setItem(code + '_host', watcherId);
 				}
 			} else if ('MultipleChoice' in new_msg) {
 				let mc = new_msg.MultipleChoice;
 
 				let previous_state =
-					current_state && 'Slide' in current_state && 'MultipleChoice' in current_state.Slide
-						? current_state.Slide
+					currentState && 'Slide' in currentState && 'MultipleChoice' in currentState.Slide
+						? currentState.Slide
 						: undefined;
 
 				let { index: previous_index = 0, count: previous_count = 1 } =
-					current_state && 'Slide' in current_state ? current_state : {};
+					currentState && 'Slide' in currentState ? currentState : {};
 
 				if ('QuestionAnnouncment' in mc) {
 					let { index, count, question, media, duration } = mc.QuestionAnnouncment;
-					current_state = {
+					currentState = {
 						index,
 						count,
 						Slide: {
@@ -245,7 +245,7 @@
 						answers,
 						answered_count
 					} = mc.AnswersAnnouncement;
-					current_state = {
+					currentState = {
 						index,
 						count,
 						Slide: {
@@ -259,8 +259,8 @@
 					timer = duration;
 					initialTimer = duration;
 				} else if ('AnswersCount' in mc) {
-					current_state = {
-						...(current_state || { index: previous_index, count: previous_count }),
+					currentState = {
+						...(currentState || { index: previous_index, count: previous_count }),
 						Slide: {
 							...previous_state,
 							MultipleChoice: 'AnswersAnnouncement',
@@ -276,7 +276,7 @@
 						answers = previous_state?.answers,
 						results
 					} = mc.AnswersResults;
-					current_state = {
+					currentState = {
 						index,
 						count,
 						Slide: {
@@ -292,12 +292,12 @@
 				let bingo = new_msg.Bingo;
 
 				let previous_state =
-					current_state && 'Slide' in current_state && 'Bingo' in current_state.Slide
-						? current_state.Slide
+					currentState && 'Slide' in currentState && 'Bingo' in currentState.Slide
+						? currentState.Slide
 						: undefined;
 
 				let { index: previous_index = 0, count: previous_count = 1 } =
-					current_state && 'Slide' in current_state ? current_state : {};
+					currentState && 'Slide' in currentState ? currentState : {};
 
 				if ('List' in bingo) {
 					let {
@@ -307,7 +307,7 @@
 						crossed,
 						user_votes
 					} = bingo.List;
-					current_state = {
+					currentState = {
 						index,
 						count,
 						Slide: {
@@ -319,8 +319,8 @@
 					};
 				} else if ('Cross' in bingo) {
 					let { crossed } = bingo.Cross;
-					current_state = {
-						...(current_state || { index: previous_index, count: previous_count }),
+					currentState = {
+						...(currentState || { index: previous_index, count: previous_count }),
 						Slide: {
 							...previous_state,
 							Bingo: 'List',
@@ -329,8 +329,8 @@
 					};
 				} else if ('Votes' in bingo) {
 					let { user_votes } = bingo.Votes;
-					current_state = {
-						...(current_state || { index: previous_index, count: previous_count }),
+					currentState = {
+						...(currentState || { index: previous_index, count: previous_count }),
 						Slide: {
 							...previous_state,
 							Bingo: 'List',
@@ -339,7 +339,7 @@
 					};
 				} else if ('Winners' in bingo) {
 					let { index = previous_index, count = previous_count, winners } = bingo.Winners;
-					current_state = {
+					currentState = {
 						index,
 						count,
 						Slide: {
@@ -352,13 +352,13 @@
 		});
 
 		socket.addEventListener('close', async () => {
-			if (!(current_state && 'Error' in current_state)) {
+			if (!(currentState && 'Error' in currentState)) {
 				const res = await bring(PUBLIC_BACKEND_URL + '/alive/' + code, {
 					method: 'GET',
 					mode: 'cors'
 				});
 				if (res === undefined) {
-					current_state = {
+					currentState = {
 						Error: 'Connection Closed'
 					};
 				} else {
@@ -366,7 +366,7 @@
 					if (text === 'true') {
 						location.reload();
 					} else {
-						current_state = {
+						currentState = {
 							Error: 'Game Ended'
 						};
 					}
@@ -375,15 +375,15 @@
 		});
 
 		socket.addEventListener('open', () => {
-			if (watcher_id === undefined) {
+			if (watcherId === undefined) {
 				socket.send(JSON.stringify({ Ghost: 'DemandId' }));
 			} else {
-				socket.send(JSON.stringify({ Ghost: { ClaimId: watcher_id } }));
+				socket.send(JSON.stringify({ Ghost: { ClaimId: watcherId } }));
 			}
 		});
 
 		socket.addEventListener('error', () => {
-			current_state = {
+			currentState = {
 				Error: "Game Code Doesn't Exist"
 			};
 		});
@@ -400,92 +400,100 @@
 	const HOST_NEXT = JSON.stringify({ Host: 'Next' });
 </script>
 
-{#if current_state === undefined}
+{#if currentState === undefined}
 	<Loading />
-{:else if 'Error' in current_state}
-	<ErrorPage errorMessage={current_state.Error} />
-{:else if 'Game' in current_state}
+{:else if 'Error' in currentState}
+	<ErrorPage errorMessage={currentState.Error} />
+{:else if 'Game' in currentState}
 	<Waiting
 		on:next={next}
 		{code}
-		players={current_state.Game.WaitingScreen.players}
-		exact_count={current_state.Game.WaitingScreen.exact_count}
-		truncated={current_state.Game.WaitingScreen.truncated}
-		bind:volume_on
+		players={currentState.Game.WaitingScreen.players}
+		exact_count={currentState.Game.WaitingScreen.exact_count}
+		truncated={currentState.Game.WaitingScreen.truncated}
+		bind:volumeOn
 	/>
-{:else if 'Slide' in current_state}
-	{#if 'Leaderboard' in current_state.Slide}
+{:else if 'Slide' in currentState}
+	{@const { Slide: slide, index, count } = currentState}
+	{#if 'Leaderboard' in slide}
 		<Leaderboard
 			on:next={next}
 			gameId={code}
-			questionIndex={current_state.index}
-			questionTotalCount={current_state.count}
-			results={current_state.Slide.Leaderboard.points}
-			final={current_state.index + 1 === current_state.count}
-			exact_count={current_state.Slide.Leaderboard.exact_count}
-			bind:volume_on
+			questionIndex={index}
+			questionTotalCount={count}
+			results={slide.Leaderboard.points}
+			final={index + 1 === count}
+			exactCount={slide.Leaderboard.exact_count}
+			bind:volumeOn
 		/>
-	{:else if 'MultipleChoice' in current_state.Slide}
-		{#if current_state.Slide.MultipleChoice === 'QuestionAnnouncment'}
+	{:else if 'MultipleChoice' in slide}
+		{@const {
+			MultipleChoice: kind,
+			question,
+			media,
+			answers,
+			answered_count: answeredCount,
+			results
+		} = slide}
+		{#if kind === 'QuestionAnnouncment'}
 			<Question
 				on:next={next}
-				questionIndex={current_state.index}
-				questionTotalCount={current_state.count}
+				questionIndex={index}
+				questionTotalCount={count}
 				gameId={code}
-				questionText={current_state.Slide.question || ''}
-				bind:volume_on
+				questionText={question || ''}
+				bind:volumeOn
 			/>
-		{:else if current_state.Slide.MultipleChoice === 'AnswersAnnouncement'}
+		{:else if kind === 'AnswersAnnouncement'}
 			<QuestionAnswers
 				on:next={next}
 				gameId={code}
-				questionIndex={current_state.index}
-				questionTotalCount={current_state.count}
-				questionText={current_state.Slide.question || ''}
-				answers={(current_state.Slide.answers || []).map((answer_content) => answer_content.Text)}
+				questionIndex={index}
+				questionTotalCount={count}
+				questionText={question || ''}
+				answers={(answers || []).map((answerContent) => answerContent.Text)}
 				timeLeft={timer}
 				timeStarted={initialTimer}
-				answeredCount={current_state.Slide.answered_count || 0}
-				media={current_state.Slide.media}
-				bind:volume_on
+				answeredCount={answeredCount || 0}
+				{media}
+				bind:volumeOn
 			/>
-		{:else if current_state.Slide.MultipleChoice === 'AnswersResults'}
+		{:else if kind === 'AnswersResults'}
 			<QuestionStatistics
 				on:next={next}
 				gameId={code}
-				questionIndex={current_state.index}
-				questionTotalCount={current_state.count}
-				questionText={current_state.Slide.question || ''}
-				answers={zip(current_state.Slide.answers || [], current_state.Slide.results || []).map(
-					([answer_content, answer_result]) => ({
-						text: answer_content.Text,
-						count: answer_result.count,
-						correct: answer_result.correct
-					})
-				)}
-				bind:volume_on
+				questionIndex={index}
+				questionTotalCount={count}
+				questionText={question || ''}
+				answers={zip(answers || [], results || []).map(([answerContent, answerResult]) => ({
+					text: answerContent.Text,
+					count: answerResult.count,
+					correct: answerResult.correct
+				}))}
+				bind:volumeOn
 			/>
 		{/if}
-	{:else if 'Bingo' in current_state}
-		{#if current_state.Bingo === 'List'}
+	{:else if 'Bingo' in slide}
+		{@const { all_statements: allStatements, crossed, user_votes: userVotes, winners } = slide}
+		{#if slide.Bingo === 'List'}
 			<Bingo
-				questionIndex={current_state.index}
-				questionTotalCount={current_state.count}
-				crossed={current_state.Slide.crossed || []}
-				all_statements={current_state.Slide.all_statements || []}
-				user_votes={current_state.Slide.user_votes || []}
+				questionIndex={index}
+				questionTotalCount={count}
+				crossed={crossed || []}
+				allStatements={allStatements || []}
+				userVotes={userVotes || []}
 				gameId={code}
-				bind:volume_on
+				bind:volumeOn
 				on:index={(e) => sendIndex(e.detail)}
 			/>
-		{:else if current_state.Bingo === 'Winners'}
+		{:else if slide.Bingo === 'Winners'}
 			<Winners
-				questionIndex={current_state.index}
-				questionTotalCount={current_state.count}
-				winners={current_state.Slide.winners || []}
+				questionIndex={index}
+				questionTotalCount={count}
+				winners={winners || []}
 				gameId={code}
 				on:next={next}
-				bind:volume_on
+				bind:volumeOn
 			/>
 		{/if}
 	{/if}

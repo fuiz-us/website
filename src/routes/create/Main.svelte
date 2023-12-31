@@ -5,9 +5,9 @@
 
 	export let config: FuizConfig;
 
-	let selected_slide_index = 0;
+	let selectedSlideIndex = 0;
 
-	$: active_slide = config.slides.at(selected_slide_index);
+	$: activeSlide = config.slides.at(selectedSlideIndex);
 </script>
 
 <div
@@ -17,9 +17,9 @@
 	style:align-items="stretch"
 	style:background="var(--background-color)"
 >
-	<Sidebar bind:slides={config.slides} bind:selected_slide_index />
+	<Sidebar bind:slides={config.slides} bind:selectedSlideIndex />
 	<div style:flex="1" style:display="flex" style:flex-direction="column">
-		<SlideEditor bind:slide={active_slide} />
+		<SlideEditor bind:slide={activeSlide} />
 	</div>
 </div>
 

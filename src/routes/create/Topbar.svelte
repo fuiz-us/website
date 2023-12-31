@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { play_local } from '$lib';
+	import { limits, playLocal } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import Textfield from '$lib/Textfield.svelte';
@@ -38,10 +38,11 @@
 				required={false}
 				id="title"
 				disabled={false}
+				maxLength={limits.fuiz.maxTitleLength}
 			/>
 		</div>
 		<div>
-			<FancyButton on:click={() => play_local(id, db)}>
+			<FancyButton on:click={() => playLocal(id, db)}>
 				<div style:font-family="Poppins" style:padding="0 10px" style:font-size="24px">Play</div>
 			</FancyButton>
 		</div>

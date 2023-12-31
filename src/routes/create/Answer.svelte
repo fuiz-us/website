@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { buttonColors, type MultipleChoiceAnswer } from '$lib';
+	import { buttonColors, limits, type TextOrMedia } from '$lib';
 	import Checkbox from '$lib/Checkbox.svelte';
-	import delete_answer from '$lib/assets/delete.svg';
+	import deleteAnswer from '$lib/assets/delete.svg';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Textbox from '$lib/Textbox.svelte';
 	import Icon from '$lib/Icon.svelte';
 
-	export let answer: MultipleChoiceAnswer;
+	export let correct: boolean;
+	export let content: TextOrMedia;
 	export let index: number;
 </script>
 
@@ -23,13 +24,14 @@
 		style:color="var(--palette-light)"
 	>
 		<div style:height="1.5em" style:display="flex">
-			<Checkbox bind:value={answer.correct} color={buttonColors.at(index)?.[0]} />
+			<Checkbox bind:value={correct} color={buttonColors.at(index % buttonColors.length)?.[0]} />
 		</div>
 		<Textbox
-			bind:value={answer.content.Text}
+			bind:value={content.Text}
 			placeholder="Answer Text"
 			textAlign="start"
 			lightText
+			maxLength={limits.fuiz.maxAnswerTextLength}
 		/>
 		<button
 			style:font="inherit"
@@ -44,7 +46,7 @@
 			style:color="inherit"
 			on:click
 		>
-			<Icon size="100%" src={delete_answer} alt="delete anaswer" />
+			<Icon size="100%" src={deleteAnswer} alt="delete anaswer" />
 		</button>
 	</div>
 </FancyButton>

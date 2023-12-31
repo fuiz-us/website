@@ -54,18 +54,6 @@
 </div>
 
 <style>
-	.panel {
-		position: absolute;
-		right: 0;
-		height: 100%;
-		z-index: 0;
-
-		display: flex;
-		flex-direction: column;
-		padding: 0.2em;
-		gap: 0.2em;
-	}
-
 	.entry {
 		--border-color: #a0a0a0;
 		background: var(--border-color);
@@ -114,6 +102,18 @@
 					opacity: 0.7;
 				}
 			}
+		}
+
+		& .panel {
+			position: absolute;
+			right: 0;
+			height: 100%;
+			z-index: 0;
+
+			display: flex;
+			flex-direction: column;
+			padding: 0.2em;
+			gap: 0.2em;
 		}
 
 		&:where(:focus-within, :hover) {

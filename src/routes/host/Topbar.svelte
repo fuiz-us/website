@@ -21,7 +21,9 @@
 
 	const exitDialog = createDialog({ label: 'End Fuiz?' });
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{
+		next: undefined;
+	}>();
 </script>
 
 <div

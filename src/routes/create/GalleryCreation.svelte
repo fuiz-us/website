@@ -1,0 +1,145 @@
+<script lang="ts">
+	import type { Media } from '$lib';
+	import delete_fuiz from '$lib/assets/delete.svg';
+	import present from '$lib/assets/present.svg';
+	import IconButton from '$lib/IconButton.svelte';
+	import MediaContainer from '$lib/MediaContainer.svelte';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher<{
+		delete: undefined;
+		play: undefined;
+	}>();
+
+	export let id: number,
+		title: string,
+		last_edited: number,
+		slides_count: number,
+		media: Media | undefined;
+
+	const same_year = { month: 'short', day: 'numeric' } as const;
+	const diff_year = { year: 'numeric', month: 'numeric', day: 'numeric' } as const;
+
+	function dateToString(date: Date): string {
+		let currentDate = new Date();
+		if (currentDate.getFullYear() == date.getFullYear()) {
+			return date.toLocaleDateString(undefined, same_year);
+		} else {
+			return date.toLocaleDateString(undefined, diff_year);
+		}
+	}
+</script>
+
+<div class="entry">
+	<a class="main" href="?id={id}">
+		<div class="media">
+			<MediaContainer {media} fit="cover" />
+		</div>
+		<div class="info">
+			{title}
+			<div class="desc">
+				{dateToString(new Date(last_edited))} • {slides_count} slides
+			</div>
+		</div>
+	</a>
+	<div class="panel">
+		<IconButton size="1em" src={present} alt="Host This Fuiz" on:click={() => dispatch('play')} />
+		<IconButton
+			size="1em"
+			src={delete_fuiz}
+			alt="Delete This Fuiz"
+			on:click={() => dispatch('delete')}
+		/>
+	</div>
+</div>
+
+<style>
+	.panel {
+		position: absolute;
+		right: 0;
+		height: 100%;
+		z-index: 0;
+
+		display: flex;
+		flex-direction: column;
+		padding: 0.2em;
+		gap: 0.2em;
+	}
+
+	.entry {
+		--border-color: #a0a0a0;
+		background: var(--border-color);
+
+		display: flex;
+		max-height: 20ch;
+		aspect-ratio: 6 / 5;
+		border: 0.15em solid var(--border-color);
+		border-radius: 0.7em;
+		position: relative;
+		overflow: hidden;
+		left: 50%;
+		transform: translateX(-50%);
+
+		transition: background 150ms ease-out, border 150ms ease-out;
+
+		& .main {
+			transition: margin-right 150ms ease-out, background 150ms ease-out;
+			outline: none;
+			background: var(--background-color);
+
+			flex: 1;
+			z-index: 1;
+			color: inherit;
+			text-decoration: inherit;
+			display: flex;
+			flex-direction: column;
+			border-radius: 0.6em;
+			overflow: hidden;
+
+			& .media {
+				width: 100%;
+				flex: 1;
+				border-bottom: 0.15em solid var(--border-color);
+
+				transition: border-color 150ms ease-out;
+				position: relative;
+			}
+
+			& .info {
+				padding: 0.3em 0.4em;
+				font-size: 0.75em;
+				word-wrap: break-word;
+
+				& .desc {
+					opacity: 0.7;
+				}
+			}
+		}
+
+		&:where(:focus-within, :hover) {
+			background: var(--accent-color);
+			--border-color: var(--accent-color);
+
+			& .main {
+				margin-right: 1.5em;
+
+				&:where(:focus, :hover) {
+					--trans-color: color-mix(in srgb, currentColor 10%, transparent);
+					background: linear-gradient(var(--trans-color), var(--trans-color)),
+						var(--background-color);
+				}
+			}
+		}
+	}
+
+	@media (hover: none) {
+		.entry {
+			--border-color: var(--accent-color);
+		}
+
+		.entry .main {
+			outline: none;
+			margin-right: 1.5em;
+		}
+	}
+</style>

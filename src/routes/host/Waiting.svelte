@@ -21,7 +21,9 @@
 
 	$: actualUrl = PUBLIC_PLAY_URL + '/play?code=' + code;
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{
+		next: undefined;
+	}>();
 
 	function copy_url_to_clipboard() {
 		navigator.clipboard.writeText(actualUrl);

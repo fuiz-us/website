@@ -5,7 +5,7 @@
 	export let topShadow = false;
 	export let show_next = false;
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ next: undefined }>();
 
 	export let heading = false;
 </script>

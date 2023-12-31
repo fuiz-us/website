@@ -1,17 +1,15 @@
 <script lang="ts">
+	import GalleryCreation from './GalleryCreation.svelte';
+
 	import { type ExportedFuiz, play_local, type Media } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Footer from '$lib/Footer.svelte';
-	import delete_fuiz from '$lib/assets/delete.svg';
-	import present from '$lib/assets/present.svg';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import add from '$lib/assets/add.svg';
-	import IconButton from '$lib/IconButton.svelte';
 	import { goto } from '$app/navigation';
 	import Icon from '$lib/Icon.svelte';
 	import ghost from '$lib/assets/ghost.svg';
 	import Header from '$lib/Header.svelte';
-	import MediaContainer from '$lib/MediaContainer.svelte';
 
 	export let creations: {
 		id: number;
@@ -24,18 +22,6 @@
 	export let db: IDBDatabase;
 
 	$: sorted_creations = creations.sort((a, b) => b.last_edited - a.last_edited);
-
-	const same_year = { month: 'short', day: 'numeric' } as const;
-	const diff_year = { year: 'numeric', month: 'numeric', day: 'numeric' } as const;
-
-	function dateToString(date: Date): string {
-		let currentDate = new Date();
-		if (currentDate.getFullYear() == date.getFullYear()) {
-			return date.toLocaleDateString(undefined, same_year);
-		} else {
-			return date.toLocaleDateString(undefined, diff_year);
-		}
-	}
 
 	function add_slide() {
 		let new_slide: ExportedFuiz = {
@@ -126,89 +112,15 @@
 							style:grid-gap="0.4em"
 						>
 							{#each sorted_creations as { id, title, last_edited, slides_count, media }}
-								<div
-									class="entry"
-									style:display="flex"
-									style:max-height="20ch"
-									style:aspect-ratio="6 / 5"
-									style:border="0.15em solid var(--border-color)"
-									style:border-radius="0.7em"
-									style:position="relative"
-									style:overflow="hidden"
-									style:left="50%"
-									style:transform="translateX(-50%)"
-								>
-									<a
-										style:flex="1"
-										href="?id={id}"
-										style:z-index="1"
-										class="main"
-										style:color="inherit"
-										style:text-decoration="inherit"
-										style:display="flex"
-										style:flex-direction="column"
-										style:border-radius="0.6em"
-										style:overflow="hidden"
-									>
-										<div
-											style:width="100%"
-											style:flex="1"
-											style:border-bottom="0.15em solid var(--border-color)"
-											style:position="relative"
-										>
-											<MediaContainer {media} fit="cover" />
-										</div>
-										<div style:padding="0.3em 0.4em" style:font-size="0.75em">
-											<div style:display="flex" style:align-items="center" style:gap="0.2em">
-												<div style:flex="1" style:word-wrap="anywhere">
-													{title}
-												</div>
-											</div>
-											<div style:display="flex" style:align-items="center">
-												<div
-													style:display="flex"
-													style:gap="0.25em"
-													style:flex="1"
-													style:opacity="0.7"
-												>
-													<div>
-														{dateToString(new Date(last_edited))}
-													</div>
-													<div>•</div>
-													<div style:flex="1" style:text-align="start">
-														{slides_count} slides
-													</div>
-												</div>
-											</div>
-										</div>
-									</a>
-									<div
-										class="panel"
-										style:position="absolute"
-										style:right="0"
-										style:height="100%"
-										style:z-index="0"
-										style:display="flex"
-										style:flex-direction="column"
-										style:padding="0.2em"
-										style:gap="0.2em"
-									>
-										<IconButton
-											size="1em"
-											src={present}
-											alt="Host This Fuiz"
-											on:click={() => play_local(id, db)}
-										/>
-										<IconButton
-											size="1em"
-											src={delete_fuiz}
-											alt="Delete This Fuiz"
-											on:click={() => {
-												delete_slide(id);
-											}}
-										/>
-									</div>
-								</div>
+								<GalleryCreation
+									{id}
+									{title}
+									{last_edited}
+									{slides_count}
+									{media}
+									on:delete={() => delete_slide(id)}
+									on:play={() => play_local(id, db)}
+								/>
 							{/each}
 						</div>
 					{:else}
@@ -228,42 +140,3 @@
 		</div>
 	</NiceBackground>
 </div>
-
-<style>
-	.entry {
-		--border-color: #a0a0a0;
-		background: var(--border-color);
-
-		& .main {
-			transition: margin-right 150ms ease-out;
-			outline: none;
-			background: var(--background-color);
-		}
-
-		&:where(:focus-within, :hover) {
-			background: var(--accent-color);
-			--border-color: var(--accent-color);
-
-			& .main {
-				margin-right: 1.5em;
-
-				&:where(:focus, :hover) {
-					--trans-color: color-mix(in srgb, currentColor 10%, transparent);
-					background: linear-gradient(var(--trans-color), var(--trans-color)),
-						var(--background-color);
-				}
-			}
-		}
-	}
-
-	@media (hover: none) {
-		.entry {
-			--border-color: var(--accent-color);
-		}
-
-		.entry .main {
-			outline: none;
-			margin-right: 1.5em;
-		}
-	}
-</style>

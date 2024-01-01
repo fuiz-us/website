@@ -27,7 +27,7 @@
 >
 	<div
 		style:background={disabled ? '#636363' : backgroundDeepColor}
-		style:transition="background 200ms linear"
+		style:transition="background 300ms linear"
 		style:border-radius="0.7em"
 		style:transform="translateY(0)"
 		style:width="100%"
@@ -37,7 +37,7 @@
 			class="front"
 			style:background={disabled ? '#737373' : backgroundColor}
 			style:border="0.1em solid {disabled ? '#636363' : backgroundDeepColor}"
-			style:transition="background 200ms linear, border-radius 200ms linear"
+			style:transition="background 300ms linear, border-color 300ms linear"
 			style:border-radius="0.7em"
 			style:box-sizing="border-box"
 			style:color={foregroundColor}

@@ -6,10 +6,10 @@ import { PUBLIC_BACKEND_URL, PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import { goto } from '$app/navigation';
 
 export const buttonColors = [
-	['#D4131B', '#a40e13'],
-	['#1B68C5', '#155099'],
-	['#1F8355', '#155b3a'],
-	['#DA5C00', '#a84600']
+	['hsl(358, 84%, 45%)', 'hsl(358, 84%, 35%)'],
+	['hsl(213, 76%, 44%)', 'hsl(213, 76%, 34%)'],
+	['hsl(152, 62%, 32%)', 'hsl(152, 63%, 22%)'],
+	['hsl(25, 100%, 43%)', 'hsl(25, 100%, 33%)']
 ] as const;
 
 export const medalColors = ['#FEDD1E', '#D0D0D0', '#D7995A'] as const;

@@ -6,13 +6,14 @@
 	import { scale } from 'svelte/transition';
 	import Answer from './Answer.svelte';
 	import { backOut } from 'svelte/easing';
+	import { flip } from 'svelte/animate';
 
 	export let answers: MultipleChoiceAnswer[];
 </script>
 
 <div id="grid" style:display="grid" style:gap="0.2em" style:width="100%">
 	{#each answers as { correct, content, id }, index (id)}
-		<div transition:scale={{ easing: backOut, duration: 300 }}>
+		<div transition:scale={{ easing: backOut, duration: 300 }} animate:flip={{ duration: 300 }}>
 			<Answer
 				bind:content
 				bind:correct

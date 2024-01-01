@@ -3,7 +3,7 @@
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Statistics from '$lib/Game/Statistics.svelte';
 	import TimeLeft from '$lib/Game/TimeLeft.svelte';
-	import VerticalSplit from '$lib/VerticalSplit.svelte';
+	import VerticalSplit from '$lib/Game/VerticalSplit.svelte';
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
 

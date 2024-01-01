@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { type MultipleChoiceSlide, buttonColors } from '$lib';
 	import MediaContainer from '$lib/MediaContainer.svelte';
-	import VerticalSplit from '$lib/VerticalSplit.svelte';
+	import VerticalSplit from '$lib/Game/VerticalSplit.svelte';
 
 	export let slide: MultipleChoiceSlide;
 </script>

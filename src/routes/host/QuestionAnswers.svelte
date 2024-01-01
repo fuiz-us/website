@@ -5,7 +5,7 @@
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import TimeLeft from '$lib/Game/TimeLeft.svelte';
-	import VerticalTripleSplit from '$lib/VerticalTripleSplit.svelte';
+	import VerticalTripleSplit from '$lib/Game/VerticalTripleSplit.svelte';
 	import Topbar from './Topbar.svelte';
 	import type { Media } from '$lib';
 	import TextBar from '$lib/Game/TextBar.svelte';

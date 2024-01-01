@@ -7,7 +7,7 @@
 	export let config: FuizConfig;
 	export let db: IDBDatabase;
 
-	function get_exported(config: FuizConfig): ExportedFuiz {
+	function getExported(config: FuizConfig): ExportedFuiz {
 		return {
 			config,
 			lastEdited: Date.now()
@@ -16,7 +16,7 @@
 
 	$: {
 		const creationsStore = db.transaction(['creations'], 'readwrite').objectStore('creations');
-		creationsStore.put(get_exported(config), id);
+		creationsStore.put(getExported(config), id);
 	}
 </script>
 
@@ -26,6 +26,6 @@
 	style:display="flex"
 	style:flex-direction="column"
 >
-	<Topbar bind:title={config.title} bind:id {db} />
+	<Topbar bind:title={config.title} bind:id />
 	<Main bind:config />
 </div>

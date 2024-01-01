@@ -34,7 +34,7 @@
 		style:align-items="center"
 		style:font-size="x-large"
 	>
-		<header style:margin="5px 0">
+		<header style:margin="0.5em 0">
 			<Header />
 		</header>
 		<form on:submit|preventDefault={submit}>
@@ -44,6 +44,7 @@
 				{placeholder}
 				autocomplete="nickname"
 				required={true}
+				showInvalid={false}
 				disabled={sending}
 				bind:value={name}
 			/>

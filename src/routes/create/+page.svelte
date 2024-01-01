@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { Creation, ExportedFuiz, FuizConfig, Media } from '$lib';
+	import { getAllCreations, type Creation, type FuizConfig, getCreation } from '$lib';
 	import Editor from './Editor.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import ErrorPage from '$lib/ErrorPage.svelte';
@@ -26,72 +26,27 @@
 				db: IDBDatabase;
 		  } = 'loading';
 
-	function get_status(idParam: string | null) {
-		const request = indexedDB.open('FuizDB', 1);
-		request.addEventListener('upgradeneeded', () => {
-			const db = request.result;
-			db.createObjectStore('creations', { autoIncrement: true });
-		});
-		request.addEventListener('success', () => {
-			const db = request.result;
-
-			const creationsStore = db.transaction(['creations'], 'readonly').objectStore('creations');
-
-			if (idParam) {
-				const id = parseInt(idParam);
-
-				const creationsTransaction = creationsStore.get(id);
-
-				creationsTransaction.addEventListener('success', () => {
-					const value: ExportedFuiz = creationsTransaction.result;
-
-					if (value) {
-						status = {
-							creation: {
-								id,
-								config: value.config
-							},
-							db
-						};
-					} else {
-						status = {
-							creation: 'failure',
-							db
-						};
-					}
-				});
-			} else {
-				const creationsTransaction = creationsStore.openCursor();
-
-				const creations: Creation[] = [];
-
-				creationsTransaction.addEventListener('success', () => {
-					const cursor = creationsTransaction.result;
-					if (cursor) {
-						let value: ExportedFuiz = cursor.value;
-						creations.push({
-							id: parseInt(cursor.key.toString()),
-							lastEdited: value.lastEdited,
-							title: value.config.title,
-							slidesCount: value.config.slides.length,
-							media: value.config.slides.reduce<Media | undefined>(
-								(p, c) => p || c.MultipleChoice.media,
-								undefined
-							)
-						});
-						cursor.continue();
-					} else {
-						status = {
-							creations,
-							db
-						};
-					}
-				});
-			}
-		});
+	async function getStatus(idParam: string | null) {
+		if (idParam) {
+			const id = parseInt(idParam);
+			const [config, db] = await getCreation(id);
+			status = {
+				creation: {
+					id,
+					config
+				},
+				db
+			};
+		} else {
+			const [creations, db] = await getAllCreations();
+			status = {
+				creations,
+				db
+			};
+		}
 	}
 
-	$: browser && get_status(id_param);
+	$: browser && getStatus(id_param);
 
 	const title = 'Create Your Own Fuiz';
 	const description = 'Create your own fuiz with beautiful images to play it with others';

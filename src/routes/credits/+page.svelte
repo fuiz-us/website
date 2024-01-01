@@ -26,7 +26,7 @@
 		style:flex-direction="column"
 		style:align-items="center"
 	>
-		<header style:margin="5px 0">
+		<header style:margin="0.5em 0">
 			<Header />
 		</header>
 		<div

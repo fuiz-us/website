@@ -1,7 +1,7 @@
 <script lang="ts">
 	import GalleryCreation from './GalleryCreation.svelte';
 
-	import { type ExportedFuiz, playLocal, type Creation } from '$lib';
+	import { type ExportedFuiz, type Creation } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
@@ -60,7 +60,7 @@
 <div>
 	<NiceBackground>
 		<div style:min-height="100vh" style:display="flex" style:flex-direction="column">
-			<header style:margin="0.2em 0">
+			<header style:margin="0.5em 0">
 				<Header />
 			</header>
 			<div style:display="flex" style:justify-content="center">
@@ -113,7 +113,7 @@
 									{slidesCount}
 									{media}
 									on:delete={() => delete_slide(id)}
-									on:play={() => playLocal(id, db)}
+									on:play={() => goto('/host?id=' + id)}
 								/>
 							{/each}
 						</div>

@@ -35,9 +35,8 @@
 	>
 		<div
 			class="front"
-			style:background={disabled ? '#737373' : backgroundColor}
+			style:background-color={disabled ? '#737373' : backgroundColor}
 			style:border="0.1em solid {disabled ? '#636363' : backgroundDeepColor}"
-			style:transition="background 300ms linear, border-color 300ms linear"
 			style:border-radius="0.7em"
 			style:box-sizing="border-box"
 			style:color={foregroundColor}
@@ -52,7 +51,7 @@
 <style>
 	button .front {
 		transform: translateY(-0.15em);
-		transition: transform 150ms;
+		transition: transform 150ms, background-color 300ms linear, border-color 300ms linear;
 	}
 
 	button:active:not(:disabled) .front {

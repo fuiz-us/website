@@ -48,7 +48,7 @@
 		style:align-items="center"
 		style:font-size="x-large"
 	>
-		<header style:margin="5px 0">
+		<header style:margin="0.5em 0">
 			<Header />
 		</header>
 		<form on:submit|preventDefault={submit}>
@@ -69,8 +69,10 @@
 					{placeholder}
 					required={true}
 					disabled={sending}
+					showInvalid={false}
 					bind:value={gameCode}
 					textTransform="uppercase"
+					inputmode="numeric"
 				/>
 				<div>
 					<FancyButton disabled={sending}>

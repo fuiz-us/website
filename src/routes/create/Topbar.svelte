@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { limits, playLocal } from '$lib';
+	import { goto } from '$app/navigation';
+	import { limits } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import Textfield from '$lib/Textfield.svelte';
 
 	export let title: string;
 	export let id: number;
-	export let db: IDBDatabase;
 </script>
 
 <div
@@ -42,7 +42,7 @@
 			/>
 		</div>
 		<div>
-			<FancyButton on:click={() => playLocal(id, db)}>
+			<FancyButton on:click={() => goto('/host?id=' + id)}>
 				<div style:font-family="Poppins" style:padding="0 10px" style:font-size="24px">Play</div>
 			</FancyButton>
 		</div>

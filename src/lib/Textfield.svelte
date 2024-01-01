@@ -10,10 +10,22 @@
 	export let autocomplete = 'off';
 	export let maxLength: number | undefined = undefined;
 	export let minLength: number | undefined = undefined;
+	export let showInvalid = true;
+	export let inputmode:
+		| 'text'
+		| 'search'
+		| 'none'
+		| 'tel'
+		| 'url'
+		| 'email'
+		| 'numeric'
+		| 'decimal'
+		| undefined = undefined;
 </script>
 
 <div style:position="relative">
 	<input
+		class={showInvalid ? 'show-invalid' : ''}
 		{id}
 		{autocomplete}
 		type="text"
@@ -24,6 +36,7 @@
 		bind:value
 		maxlength={maxLength}
 		minlength={minLength}
+		{inputmode}
 	/>
 	<label for={id}>{placeholder}</label>
 	<div id="error">
@@ -63,7 +76,7 @@
 		display: none;
 	}
 
-	input:invalid {
+	input.show-invalid:invalid {
 		padding-right: 1.8em;
 
 		& ~ #error {

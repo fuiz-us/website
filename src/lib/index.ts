@@ -136,9 +136,79 @@ export type Creation = {
 	media?: Media | undefined;
 };
 
-export async function get_backend_media(
-	media: Media | undefined | null
-): Promise<Media | undefined> {
+export type FuizOption = {
+	random_names: boolean;
+};
+
+export async function getAllCreations(): Promise<[Creation[], IDBDatabase]> {
+	return await new Promise((resolve, reject) => {
+		const request = indexedDB.open('FuizDB', 1);
+		request.addEventListener('upgradeneeded', () => {
+			const db = request.result;
+			db.createObjectStore('creations', { autoIncrement: true });
+		});
+		request.addEventListener('success', () => {
+			const db = request.result;
+
+			const creationsStore = db.transaction(['creations'], 'readonly').objectStore('creations');
+
+			const creationsTransaction = creationsStore.openCursor();
+
+			const creations: Creation[] = [];
+
+			creationsTransaction.addEventListener('success', () => {
+				const cursor = creationsTransaction.result;
+				if (cursor) {
+					const value: ExportedFuiz = cursor.value;
+					creations.push({
+						id: parseInt(cursor.key.toString()),
+						lastEdited: value.lastEdited,
+						title: value.config.title,
+						slidesCount: value.config.slides.length,
+						media: value.config.slides.reduce<Media | undefined>(
+							(p, c) => p || c.MultipleChoice.media,
+							undefined
+						)
+					});
+					cursor.continue();
+				} else {
+					resolve([creations, db]);
+				}
+			});
+		});
+		request.addEventListener('error', reject);
+	});
+}
+
+export async function getCreation(id: number): Promise<[FuizConfig, IDBDatabase]> {
+	return await new Promise((resolve, reject) => {
+		const request = indexedDB.open('FuizDB', 1);
+		request.addEventListener('upgradeneeded', () => {
+			const db = request.result;
+			db.createObjectStore('creations', { autoIncrement: true });
+		});
+		request.addEventListener('success', () => {
+			const db = request.result;
+
+			const creationsStore = db.transaction(['creations'], 'readonly').objectStore('creations');
+
+			const creationsTransaction = creationsStore.get(id);
+
+			creationsTransaction.addEventListener('success', () => {
+				const value: ExportedFuiz | undefined | null = creationsTransaction.result;
+
+				if (value) {
+					resolve([value.config, db]);
+				} else {
+					reject('creation was not found');
+				}
+			});
+		});
+		request.addEventListener('error', reject);
+	});
+}
+
+export async function getBackendMedia(media: Media | undefined | null): Promise<Media | undefined> {
 	if (!media) {
 		return undefined;
 	}
@@ -187,7 +257,7 @@ export async function getBackendConfig(config: FuizConfig) {
 			config.slides.map(async (slide) => ({
 				MultipleChoice: {
 					title: slide.MultipleChoice.title,
-					media: await get_backend_media(slide.MultipleChoice.media),
+					media: await getBackendMedia(slide.MultipleChoice.media),
 					introduce_question: slide.MultipleChoice.introduce_question * 1000,
 					time_limit: slide.MultipleChoice.time_limit * 1000,
 					points_awarded: slide.MultipleChoice.points_awarded,
@@ -216,30 +286,36 @@ export async function getSlide(id: number, db: IDBDatabase): Promise<ExportedFui
 	});
 }
 
-export async function playLocal(id: number, db: IDBDatabase) {
-	const config = await getSlide(id, db);
-	if (config !== undefined) {
-		const res = await bring(PUBLIC_BACKEND_URL + '/add', {
-			method: 'POST',
-			mode: 'cors',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(await getBackendConfig(config.config))
-		});
+export async function playJsonString(config: string): Promise<void | string> {
+	const res = await bring(PUBLIC_BACKEND_URL + '/add', {
+		method: 'POST',
+		mode: 'cors',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: config
+	});
 
-		if (res === undefined) {
-			return;
-		}
-
-		if (!res.ok) {
-			return;
-		}
-
-		const { game_id, watcher_id } = await res.json();
-
-		localStorage.setItem(game_id + '_host', watcher_id);
-
-		goto('/host?code=' + game_id);
+	if (res === undefined) {
+		return 'Inaccessible Server';
 	}
+
+	if (!res.ok) {
+		return await res.text();
+	}
+
+	const { game_id, watcher_id } = await res.json();
+
+	localStorage.setItem(game_id + '_host', watcher_id);
+
+	await goto('/host?code=' + game_id);
+}
+
+export async function playConfig(config: FuizConfig, options: FuizOption): Promise<void | string> {
+	return await playJsonString(
+		JSON.stringify({
+			config: await getBackendConfig(config),
+			options
+		})
+	);
 }

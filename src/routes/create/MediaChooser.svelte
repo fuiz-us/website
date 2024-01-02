@@ -47,7 +47,7 @@
 			style:display="none"
 			type="file"
 			name="image_input"
-			accept="image/png"
+			accept="image/png, image/jpeg"
 			id="image_input"
 			on:change={load_from_input}
 		/>

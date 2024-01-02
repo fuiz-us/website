@@ -9,6 +9,7 @@
 	const dispatch = createEventDispatcher<{
 		delete: undefined;
 		play: undefined;
+		download: undefined;
 	}>();
 
 	export let id: number,
@@ -50,6 +51,12 @@
 			alt="Delete This Fuiz"
 			on:click={() => dispatch('delete')}
 		/>
+		<IconButton
+			size="1em"
+			src="$lib/assets/download.svg"
+			alt="Download This Fuiz"
+			on:click={() => dispatch('download')}
+		/>
 	</div>
 </div>
 
@@ -59,7 +66,7 @@
 		background: var(--border-color);
 
 		display: flex;
-		max-height: 20ch;
+		max-height: 15ch;
 		aspect-ratio: 6 / 5;
 		border: 0.15em solid var(--border-color);
 		border-radius: 0.7em;

@@ -98,19 +98,30 @@ export type AnswerResult = {
 	count: number;
 };
 
-export type MultipleChoiceAnswer = {
+export type IdlessMultipleChoiceAnswer = {
 	correct: boolean;
 	content: TextOrMedia;
+};
+
+export type MultipleChoiceAnswer = IdlessMultipleChoiceAnswer & {
 	id: number;
 };
 
-export type MultipleChoiceSlide = {
+export type IdlessMultipleChoiceSlide = {
 	title: string;
 	media: Media | undefined;
 	introduce_question: number;
 	time_limit: number;
 	points_awarded: number;
+	answers: IdlessMultipleChoiceAnswer[];
+};
+
+export type MultipleChoiceSlide = IdlessMultipleChoiceSlide & {
 	answers: MultipleChoiceAnswer[];
+};
+
+export type IdlessSlide = {
+	MultipleChoice: IdlessMultipleChoiceSlide;
 };
 
 export type Slide = {
@@ -121,6 +132,11 @@ export type Slide = {
 export type FuizConfig = {
 	title: string;
 	slides: Slide[];
+};
+
+export type IdlessFuizConfig = {
+	title: string;
+	slides: IdlessSlide[];
 };
 
 export type ExportedFuiz = {
@@ -250,17 +266,67 @@ export async function getBackendMedia(media: Media | undefined | null): Promise<
 	}
 }
 
-export async function getBackendConfig(config: FuizConfig) {
+export function downloadJsonString(str: string, title: string) {
+	const file = new File([str], title, { type: 'application/json' });
+	const url = URL.createObjectURL(file);
+
+	const link = document.createElement('a');
+	link.style.display = 'none';
+	link.href = url;
+	link.download = file.name;
+	document.body.appendChild(link);
+	link.click();
+
+	document.body.removeChild(link);
+	window.URL.revokeObjectURL(url);
+}
+
+export function getLocalConfig(config: FuizConfig): IdlessFuizConfig {
+	return {
+		title: config.title,
+		slides: config.slides.map((slide) => ({
+			MultipleChoice: {
+				...slide.MultipleChoice,
+				introduce_question: slide.MultipleChoice.introduce_question * 1000,
+				time_limit: slide.MultipleChoice.time_limit * 1000,
+				answers: slide.MultipleChoice.answers.map(({ content, correct }) => ({
+					content,
+					correct
+				}))
+			}
+		}))
+	};
+}
+
+export function getConfigFromLocal(config: IdlessFuizConfig): FuizConfig {
+	return {
+		title: config.title,
+		slides: config.slides.map((slide) => ({
+			MultipleChoice: {
+				...slide.MultipleChoice,
+				introduce_question: slide.MultipleChoice.introduce_question / 1000,
+				time_limit: slide.MultipleChoice.time_limit / 1000,
+				answers: slide.MultipleChoice.answers.map(({ content, correct }, id) => ({
+					content,
+					correct,
+					id
+				}))
+			},
+			id: Date.now()
+		}))
+	};
+}
+
+export async function getBackendConfig(config: FuizConfig): Promise<IdlessFuizConfig> {
 	return {
 		title: config.title,
 		slides: await Promise.all(
 			config.slides.map(async (slide) => ({
 				MultipleChoice: {
-					title: slide.MultipleChoice.title,
+					...slide.MultipleChoice,
 					media: await getBackendMedia(slide.MultipleChoice.media),
 					introduce_question: slide.MultipleChoice.introduce_question * 1000,
 					time_limit: slide.MultipleChoice.time_limit * 1000,
-					points_awarded: slide.MultipleChoice.points_awarded,
 					answers: slide.MultipleChoice.answers.map(({ content, correct }) => ({
 						content,
 						correct

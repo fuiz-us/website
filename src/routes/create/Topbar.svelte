@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { limits } from '$lib';
+	import { downloadJsonString, getCreation, getLocalConfig, limits } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import Textfield from '$lib/Textfield.svelte';
@@ -22,7 +22,13 @@
 	<a href="/create" style:height="65px" style:margin="0 5px" style:overflow="hidden">
 		<Logo height={65} width={162} />
 	</a>
-	<div style:flex="1" style:display="flex" style:gap="10px">
+	<div
+		style:flex="1"
+		style:display="flex"
+		style:gap="10px"
+		style:flex-wrap="wrap"
+		style:justify-content="center"
+	>
 		<div
 			style:flex="1"
 			style:display="flex"
@@ -30,7 +36,7 @@
 			style:gap="10px"
 			style:justify-content="center"
 			style:font-size="24px"
-			style:min-width="10ch"
+			style:min-width="15ch"
 		>
 			<Textfield
 				bind:value={title}
@@ -40,6 +46,20 @@
 				disabled={false}
 				maxLength={limits.fuiz.maxTitleLength}
 			/>
+		</div>
+		<div>
+			<FancyButton
+				on:click={async () => {
+					const [creation] = await getCreation(id);
+					const configJson = await getLocalConfig(creation);
+
+					downloadJsonString(JSON.stringify(configJson), configJson.title);
+				}}
+			>
+				<div style:font-family="Poppins" style:padding="0 10px" style:font-size="24px">
+					Download
+				</div>
+			</FancyButton>
 		</div>
 		<div>
 			<FancyButton on:click={() => goto('/host?id=' + id)}>

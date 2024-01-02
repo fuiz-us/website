@@ -1,8 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { downloadJsonString, getCreation, getLocalConfig, limits } from '$lib';
+	import {
+		downloadJsonString as downloadTomlString,
+		getCreation,
+		getLocalConfig,
+		limits
+	} from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Logo from '$lib/Logo.svelte';
+	import * as TOML from '@ltd/j-toml';
 	import Textfield from '$lib/Textfield.svelte';
 
 	export let title: string;
@@ -53,7 +59,19 @@
 					const [creation] = await getCreation(id);
 					const configJson = await getLocalConfig(creation);
 
-					downloadJsonString(JSON.stringify(configJson), configJson.title);
+					let tomlified = TOML.stringify(
+						{
+							title: configJson.title,
+							slides: configJson.slides.map((slide) =>
+								TOML.Section({
+									MultipleChoice: TOML.Section(slide.MultipleChoice)
+								})
+							)
+						},
+						{ newline: '\n', newlineAround: 'section', integer: 1000000 }
+					);
+
+					downloadTomlString(tomlified, configJson.title);
 				}}
 			>
 				<div style:font-family="Poppins" style:padding="0 10px" style:font-size="24px">

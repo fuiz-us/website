@@ -36,6 +36,7 @@
 	"dependencies": {
 		"@fontsource/atkinson-hyperlegible": "^5.0.18",
 		"@fontsource/poppins": "^5.0.8",
+		"@ltd/j-toml": "^1.38.0",
 		"@sveltejs/enhanced-img": "^0.1.7",
 		"qrcode": "^1.5.3",
 		"svelte-headlessui": "^0.0.32"

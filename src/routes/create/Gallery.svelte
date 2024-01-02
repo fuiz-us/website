@@ -20,6 +20,7 @@
 	import Icon from '$lib/Icon.svelte';
 	import ghost from '$lib/assets/ghost.svg';
 	import Header from '$lib/Header.svelte';
+	import { parse } from '@ltd/j-toml';
 
 	export let creations: Creation[];
 
@@ -98,9 +99,13 @@
 					const reader = new FileReader();
 					reader.readAsText(file);
 					reader.addEventListener('load', () => {
-						let str = reader.result?.toString();
-						console.log(str);
-						resolve(str ? JSON.parse(str) : undefined);
+						const str = reader.result?.toString();
+						if (str) {
+							const detomlified = parse(str, { bigint: false }) as IdlessFuizConfig;
+							resolve(detomlified);
+						} else {
+							resolve(undefined);
+						}
 					});
 				});
 			})
@@ -172,7 +177,7 @@
 						style:display="none"
 						type="file"
 						id="config"
-						accept="application/json"
+						accept="application/toml, .toml"
 						name="config"
 						multiple
 						on:change={load_from_input}

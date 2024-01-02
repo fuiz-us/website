@@ -109,7 +109,7 @@ export type MultipleChoiceAnswer = IdlessMultipleChoiceAnswer & {
 
 export type IdlessMultipleChoiceSlide = {
 	title: string;
-	media: Media | undefined;
+	media?: Media;
 	introduce_question: number;
 	time_limit: number;
 	points_awarded: number;
@@ -267,7 +267,7 @@ export async function getBackendMedia(media: Media | undefined | null): Promise<
 }
 
 export function downloadJsonString(str: string, title: string) {
-	const file = new File([str], title, { type: 'application/json' });
+	const file = new File([str], title + '.toml', { type: 'application/toml', endings: 'native' });
 	const url = URL.createObjectURL(file);
 
 	const link = document.createElement('a');
@@ -286,7 +286,9 @@ export function getLocalConfig(config: FuizConfig): IdlessFuizConfig {
 		title: config.title,
 		slides: config.slides.map((slide) => ({
 			MultipleChoice: {
-				...slide.MultipleChoice,
+				title: slide.MultipleChoice.title,
+				points_awarded: slide.MultipleChoice.points_awarded,
+				...(slide.MultipleChoice.media && { media: slide.MultipleChoice.media }),
 				introduce_question: slide.MultipleChoice.introduce_question * 1000,
 				time_limit: slide.MultipleChoice.time_limit * 1000,
 				answers: slide.MultipleChoice.answers.map(({ content, correct }) => ({
@@ -301,7 +303,7 @@ export function getLocalConfig(config: FuizConfig): IdlessFuizConfig {
 export function getConfigFromLocal(config: IdlessFuizConfig): FuizConfig {
 	return {
 		title: config.title,
-		slides: config.slides.map((slide) => ({
+		slides: config.slides.map((slide, id) => ({
 			MultipleChoice: {
 				...slide.MultipleChoice,
 				introduce_question: slide.MultipleChoice.introduce_question / 1000,
@@ -312,7 +314,7 @@ export function getConfigFromLocal(config: IdlessFuizConfig): FuizConfig {
 					id
 				}))
 			},
-			id: Date.now()
+			id
 		}))
 	};
 }

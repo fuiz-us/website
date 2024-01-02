@@ -152,8 +152,9 @@ export type Creation = {
 	media?: Media | undefined;
 };
 
-export type FuizOption = {
+export type FuizOptions = {
 	random_names: boolean;
+	show_answers: boolean;
 };
 
 export async function getAllCreations(): Promise<[Creation[], IDBDatabase]> {
@@ -379,7 +380,7 @@ export async function playJsonString(config: string): Promise<void | string> {
 	await goto('/host?code=' + game_id);
 }
 
-export async function playConfig(config: FuizConfig, options: FuizOption): Promise<void | string> {
+export async function playConfig(config: FuizConfig, options: FuizOptions): Promise<void | string> {
 	return await playJsonString(
 		JSON.stringify({
 			config: await getBackendConfig(config),

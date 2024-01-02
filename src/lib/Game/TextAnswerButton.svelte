@@ -19,8 +19,8 @@
 		<div style:height="100%" style:width="100%" style:display="flex" style:align-items="center">
 			<div id="icon" style:display="flex" style:padding="0.2em">
 				<Icon
-					src={buttonSymbols.at(index)?.at(0) ?? ''}
-					alt={buttonSymbols.at(index)?.at(1) ?? ''}
+					src={buttonSymbols.at(index % buttonSymbols.length)?.at(0) ?? ''}
+					alt={buttonSymbols.at(index % buttonSymbols.length)?.at(1) ?? ''}
 					size="1em"
 				/>
 			</div>
@@ -31,6 +31,7 @@
 				style:display="flex"
 				style:justify-content="center"
 				style:align-items="center"
+				style:word-break="break-word"
 			>
 				{answerText}
 			</div>

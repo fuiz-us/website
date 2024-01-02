@@ -45,7 +45,7 @@
 					id: number;
 					text: string;
 				}[];
-				assigned_statement?: number[];
+				assigned_statements?: number[];
 				crossed?: number[];
 				user_votes?: number[];
 
@@ -97,6 +97,12 @@
 		  }
 		| {
 				NameError: NamesError;
+		  }
+		| {
+				Metainfo: {
+					score: number;
+					show_answers: boolean;
+				};
 		  };
 
 	type MultipleChoiceIncomingMessage =
@@ -140,7 +146,7 @@
 						id: number;
 						text: string;
 					}[];
-					assigned_statement: number[];
+					assigned_statements: number[];
 					crossed: number[];
 					user_votes: number[];
 				};
@@ -180,7 +186,11 @@
 
 	let setName: string | undefined = undefined;
 
+	let points: number | undefined = undefined;
+
 	export let code: string;
+
+	let showAnswers = false;
 
 	let watcherId = (browser && localStorage.getItem(code + '_play')) || undefined;
 
@@ -195,7 +205,7 @@
 			let {
 				index: previous_index = 0,
 				count: previous_count = 1,
-				score: previous_score = 0
+				score: previous_score = points || 0
 			} = currentState && 'Slide' in currentState ? currentState : {};
 
 			if ('Game' in new_msg) {
@@ -265,6 +275,10 @@
 				} else if ('IdAssign' in new_msg.Game) {
 					watcherId = new_msg.Game.IdAssign;
 					localStorage.setItem(code + '_play', watcherId);
+				} else if ('Metainfo' in new_msg.Game) {
+					let { score, show_answers } = new_msg.Game.Metainfo;
+					points = score;
+					showAnswers = show_answers;
 				}
 			} else if ('MultipleChoice' in new_msg) {
 				let mc = new_msg.MultipleChoice;
@@ -337,7 +351,7 @@
 						: undefined;
 
 				if ('List' in bingo) {
-					let { index, count, all_statements, assigned_statement, crossed, user_votes } =
+					let { index, count, all_statements, assigned_statements, crossed, user_votes } =
 						bingo.List;
 					currentState = {
 						index,
@@ -346,7 +360,7 @@
 						Slide: {
 							Bingo: 'List',
 							all_statements,
-							assigned_statement,
+							assigned_statements,
 							crossed,
 							user_votes
 						}
@@ -483,9 +497,11 @@
 			{#if answered === undefined}
 				<Answers
 					on:answer={(e) => sendAnswer(e.detail)}
+					questionText={question || ''}
 					{name}
 					{score}
-					answersCount={answers?.length || 0}
+					{showAnswers}
+					answers={answers || []}
 				/>
 			{:else}
 				<WaitingOthers {name} {score} />
@@ -504,7 +520,7 @@
 		{@const {
 			Bingo: kind,
 			all_statements: allStatements,
-			assigned_statement: assignedStatements,
+			assigned_statements: assignedStatements,
 			crossed,
 			user_votes: userVotes,
 			winners

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getCreation, playConfig } from '$lib';
+	import { getCreation, playConfig, type FuizConfig, type Slide } from '$lib';
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Loading from '$lib/Loading.svelte';
@@ -14,7 +14,53 @@
 
 	let errorMessage = '';
 
-	export let randomizedNames = false;
+	export let randomizedNames = false,
+		questionsOnPlayersDevices = false,
+		shuffleAnswers = false,
+		shuffleSlides = false;
+
+	// https://stackoverflow.com/a/2450976
+	function shuffleArray<T>(array: T[]): T[] {
+		let currentIndex = array.length,
+			randomIndex;
+
+		// While there remain elements to shuffle.
+		while (currentIndex > 0) {
+			// Pick a remaining element.
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex--;
+
+			// And swap it with the current element.
+			[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+		}
+
+		return array;
+	}
+
+	function conditionalShuffleAnswer(slide: Slide, shuffleAnswers: boolean): Slide {
+		return {
+			...slide,
+			MultipleChoice: {
+				...slide.MultipleChoice,
+				answers: shuffleAnswers
+					? shuffleArray(slide.MultipleChoice.answers)
+					: slide.MultipleChoice.answers
+			}
+		};
+	}
+
+	function shuffle(
+		config: FuizConfig,
+		shuffleSlides: boolean,
+		shuffleAnswers: boolean
+	): FuizConfig {
+		return {
+			...config,
+			slides: (shuffleSlides ? shuffleArray(config.slides) : config.slides).map((slide) =>
+				conditionalShuffleAnswer(slide, shuffleAnswers)
+			)
+		};
+	}
 
 	$: creation = getCreation(id);
 </script>
@@ -31,7 +77,10 @@
 				on:submit|preventDefault={() => {
 					errorMessage = '';
 					loading = true;
-					playConfig(config, { random_names: randomizedNames }).then((err) => {
+					playConfig(shuffle(config, shuffleSlides, shuffleAnswers), {
+						random_names: randomizedNames,
+						show_answers: questionsOnPlayersDevices
+					}).then((err) => {
 						loading = false;
 						if (err) {
 							errorMessage = err;
@@ -44,12 +93,20 @@
 					<div class="switch">
 						<Switch id="random" bind:checked={randomizedNames}>Use randomized names</Switch>
 					</div>
-					<!-- <hr />
+					<hr />
 					<div class="switch">
 						<Switch id="players" bind:checked={questionsOnPlayersDevices}>
 							Show question and answers on players' devices
 						</Switch>
-					</div> -->
+					</div>
+					<hr />
+					<div class="switch">
+						<Switch id="shuffle_slides" bind:checked={shuffleSlides}>Shuffle slides</Switch>
+					</div>
+					<hr />
+					<div class="switch">
+						<Switch id="shuffle_answers" bind:checked={shuffleAnswers}>Shuffle answers</Switch>
+					</div>
 				</div>
 				<ErrorMessage {errorMessage} />
 				<div>
@@ -92,11 +149,11 @@
 		padding: 0.5em;
 	}
 
-	/* hr {
+	hr {
 		width: 100%;
 		color: inherit;
 		margin: 0;
-	} */
+	}
 
 	h2 {
 		margin: 0;

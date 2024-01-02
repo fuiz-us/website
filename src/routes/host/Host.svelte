@@ -129,7 +129,7 @@
 						id: number;
 						text: string;
 					}[];
-					assigned_statement: number[];
+					assigned_statements: number[];
 					crossed: number[];
 					user_votes: number[];
 				};

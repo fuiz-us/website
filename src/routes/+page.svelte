@@ -54,15 +54,20 @@
 			<div class="slide-container">
 				<div class="slide">
 					<QuestionAnswers
-						questionIndex={0}
 						questionText="What are Fuiz features?"
-						gameId="21345"
-						questionTotalCount={1}
 						timeLeft={15000}
 						timeStarted={30000}
 						answers={['Open Source', 'Beautiful Design', 'Lightweight', 'Privacy Friendly']}
 						answeredCount={0}
-						volumeOn={false}
+						bindableGameInfo={{
+							volumeOn: false,
+							locked: false
+						}}
+						gameInfo={{
+							gameCode: '13213',
+							questionIndex: 0,
+							questionTotalCount: 1
+						}}
 						media={{
 							Image: {
 								Url: {

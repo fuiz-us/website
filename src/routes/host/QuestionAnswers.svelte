@@ -10,37 +10,29 @@
 	import type { Media } from '$lib';
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import Audio from '$lib/Audio.svelte';
+	import type { BindableGameInfo, SharedGameInfo } from './+page';
 
-	export let questionIndex: number;
-	export let questionTotalCount: number;
-	export let gameId: string;
+	export let bindableGameInfo: BindableGameInfo;
+	export let gameInfo: SharedGameInfo;
+
 	export let questionText: string;
 	export let answers: string[];
 	export let timeLeft: number;
 	export let timeStarted: number;
 	export let answeredCount: number;
 	export let media: Media | undefined;
-	export let volumeOn: boolean;
 
 	let fullscreenElement;
 </script>
 
-<Audio audioUrl={think} {volumeOn} />
+<Audio audioUrl={think} volumeOn={bindableGameInfo.volumeOn} />
 <div
 	bind:this={fullscreenElement}
 	style:height="100%"
 	style:display="flex"
 	style:flex-direction="column"
 >
-	<Topbar
-		bind:volumeOn
-		on:next
-		{questionIndex}
-		{fullscreenElement}
-		{questionTotalCount}
-		{gameId}
-		showSkip={true}
-	/>
+	<Topbar bind:bindableGameInfo {gameInfo} on:lock on:next {fullscreenElement} showSkip={true} />
 	<TextBar text={questionText} />
 	<div style:flex="1">
 		<NiceBackground>

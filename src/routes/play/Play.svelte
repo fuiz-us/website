@@ -99,7 +99,7 @@
 				NameError: NamesError;
 		  }
 		| {
-				Metainfo: {
+				PlayerMetainfo: {
 					score: number;
 					show_answers: boolean;
 				};
@@ -275,8 +275,8 @@
 				} else if ('IdAssign' in new_msg.Game) {
 					watcherId = new_msg.Game.IdAssign;
 					localStorage.setItem(code + '_play', watcherId);
-				} else if ('Metainfo' in new_msg.Game) {
-					let { score, show_answers } = new_msg.Game.Metainfo;
+				} else if ('PlayerMetainfo' in new_msg.Game) {
+					let { score, show_answers } = new_msg.Game.PlayerMetainfo;
 					points = score;
 					showAnswers = show_answers;
 				}

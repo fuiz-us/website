@@ -2,11 +2,10 @@
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
+	import type { BindableGameInfo, SharedGameInfo } from './+page';
 
-	export let questionIndex: number;
-	export let questionTotalCount: number;
-	export let gameId: string;
-	export let volumeOn: boolean;
+	export let bindableGameInfo: BindableGameInfo;
+	export let gameInfo: SharedGameInfo;
 
 	export let winners: string[];
 
@@ -15,7 +14,7 @@
 
 <div style:height="100%" bind:this={fullscreenElement}>
 	<NiceBackground>
-		<Topbar bind:volumeOn {fullscreenElement} {questionIndex} {questionTotalCount} {gameId} />
+		<Topbar bind:bindableGameInfo {gameInfo} {fullscreenElement} on:lock />
 		<TextBar on:next text="Winners" showNext={true} heading={true} />
 		<div
 			style:display="flex"

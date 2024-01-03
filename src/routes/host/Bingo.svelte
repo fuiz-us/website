@@ -2,17 +2,17 @@
 	import Crossed from '$lib/Game/Bingo/Crossed.svelte';
 	import Uncrossed from '$lib/Game/Bingo/Uncrossed.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
+	import type { BindableGameInfo, SharedGameInfo } from './+page';
 	import Topbar from './Topbar.svelte';
 
-	export let questionIndex: number;
-	export let questionTotalCount: number;
-	export let gameId: string;
+	export let bindableGameInfo: BindableGameInfo;
+	export let gameInfo: SharedGameInfo;
+
 	export let allStatements: {
 		id: number;
 		text: string;
 	}[];
 	export let crossed: number[];
-	export let volumeOn: boolean;
 	export let userVotes: number[];
 
 	$: crossed_statements = allStatements
@@ -38,12 +38,11 @@
 	<NiceBackground>
 		<div style:border-bottom="0.15em solid">
 			<Topbar
-				bind:volumeOn
-				on:next
+				bind:bindableGameInfo
+				{gameInfo}
 				{fullscreenElement}
-				{questionIndex}
-				{questionTotalCount}
-				{gameId}
+				on:next
+				on:lock
 				showSkip={true}
 			/>
 		</div>

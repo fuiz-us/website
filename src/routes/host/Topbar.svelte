@@ -4,25 +4,28 @@
 	import icon from '$lib/assets/icon.svg';
 	import volume_up from '$lib/assets/volume_up.svg';
 	import volume_off from '$lib/assets/volume_off.svg';
+	import unlocked from '$lib/assets/unlocked.svg';
+	import locked from '$lib/assets/locked.svg';
 	import IconButton from '$lib/IconButton.svelte';
 	import skip from '$lib/assets/skip.svg';
 	import { createEventDispatcher } from 'svelte';
 	import { createDialog } from 'svelte-headlessui';
 	import { goto } from '$app/navigation';
 	import FancyButton from '$lib/FancyButton.svelte';
+	import type { BindableGameInfo, SharedGameInfo } from './+page';
+	import StatedIconButton from '$lib/StatedIconButton.svelte';
 
-	export let questionIndex: number;
-	export let questionTotalCount: number;
-	export let gameId: string;
-	export let volumeOn: boolean;
+	export let bindableGameInfo: BindableGameInfo;
+	export let gameInfo: SharedGameInfo;
+
 	export let fullscreenElement: HTMLElement | undefined = undefined;
-
 	export let showSkip = false;
 
 	const exitDialog = createDialog({ label: 'End Fuiz?' });
 
 	const dispatch = createEventDispatcher<{
 		next: undefined;
+		lock: boolean;
 	}>();
 </script>
 
@@ -121,7 +124,7 @@
 		style:font-family="Poppins"
 	>
 		<div style:font-family="Poppins">
-			{questionIndex + 1} of {questionTotalCount}
+			{gameInfo.questionIndex + 1} of {gameInfo.questionTotalCount}
 		</div>
 	</div>
 	<div
@@ -134,7 +137,7 @@
 	>
 		Game ID:
 		<div style:font-family="Poppins" style:text-transform="uppercase">
-			{gameId}
+			{gameInfo.gameCode}
 		</div>
 	</div>
 	<div
@@ -148,11 +151,24 @@
 		{#if showSkip}
 			<IconButton src={skip} alt="Skip this slide" size="1em" on:click={() => dispatch('next')} />
 		{/if}
-		<IconButton
-			src={volumeOn ? volume_up : volume_off}
-			alt={volumeOn ? 'Mute Music' : 'Turn on Music'}
+		<StatedIconButton
+			icons={[
+				{ src: unlocked, alt: 'Lock Game' },
+				{ src: locked, alt: 'Unlock Game' }
+			]}
 			size="1em"
-			on:click={() => (volumeOn = !volumeOn)}
+			bind:state={bindableGameInfo.locked}
+			on:change={(e) => {
+				dispatch('lock', e.detail);
+			}}
+		/>
+		<StatedIconButton
+			icons={[
+				{ src: volume_off, alt: 'Turn on Music' },
+				{ src: volume_up, alt: 'Mute Music' }
+			]}
+			size="1em"
+			bind:state={bindableGameInfo.volumeOn}
 		/>
 		<Fullscreen {fullscreenElement} />
 	</div>

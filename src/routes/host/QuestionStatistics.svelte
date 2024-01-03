@@ -6,15 +6,15 @@
 	import VerticalSplit from '$lib/Game/VerticalSplit.svelte';
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
+	import type { BindableGameInfo, SharedGameInfo } from './+page';
 
-	export let questionIndex: number;
-	export let questionTotalCount: number;
-	export let gameId: string;
+	export let bindableGameInfo: BindableGameInfo;
+	export let gameInfo: SharedGameInfo;
+
 	export let questionText: string;
 	export let answers: { text: string; count: number; correct: boolean }[];
 	export let timeLeft: number | undefined = undefined;
 	export let timeStarted: number | undefined = undefined;
-	export let volumeOn: boolean;
 
 	let fullscreenElement;
 </script>
@@ -25,7 +25,7 @@
 	style:display="flex"
 	style:flex-direction="column"
 >
-	<Topbar bind:volumeOn {questionIndex} {fullscreenElement} {questionTotalCount} {gameId} />
+	<Topbar bind:bindableGameInfo {gameInfo} {fullscreenElement} on:lock />
 	<TextBar on:next text={questionText} showNext={true} />
 	<div style:flex="1">
 		<NiceBackground>

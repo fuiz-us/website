@@ -12,6 +12,7 @@
 	import Bingo from './Bingo.svelte';
 	import Winners from './Winners.svelte';
 	import { browser } from '$app/environment';
+	import type { BindableGameInfo } from './+page';
 
 	type GameState = {
 		WaitingScreen: {
@@ -82,6 +83,11 @@
 						exact_count: number;
 						points: [string, number][];
 					};
+				};
+		  }
+		| {
+				HostMetainfo: {
+					locked: boolean;
 				};
 		  };
 
@@ -167,8 +173,6 @@
 
 	let socket: WebSocket;
 
-	let volumeOn = true;
-
 	let timer = 0;
 	let initialTimer = 0;
 
@@ -181,6 +185,11 @@
 	export let code: string;
 
 	let watcherId = (browser && localStorage.getItem(code + '_host')) || undefined;
+
+	let bindableGameInfo: BindableGameInfo = {
+		volumeOn: true,
+		locked: false
+	};
 
 	onMount(() => {
 		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code);
@@ -210,6 +219,8 @@
 				} else if ('IdAssign' in new_msg.Game) {
 					watcherId = new_msg.Game.IdAssign;
 					localStorage.setItem(code + '_host', watcherId);
+				} else if ('HostMetainfo' in new_msg.Game) {
+					bindableGameInfo.locked = new_msg.Game.HostMetainfo.locked;
 				}
 			} else if ('MultipleChoice' in new_msg) {
 				let mc = new_msg.MultipleChoice;
@@ -397,6 +408,10 @@
 		socket.send(JSON.stringify({ Host: { Index: u } }));
 	}
 
+	function receiveLock(e: CustomEvent<boolean>) {
+		socket.send(JSON.stringify({ Host: { Lock: e.detail } }));
+	}
+
 	const HOST_NEXT = JSON.stringify({ Host: 'Next' });
 </script>
 
@@ -411,20 +426,25 @@
 		players={currentState.Game.WaitingScreen.players}
 		exact_count={currentState.Game.WaitingScreen.exact_count}
 		truncated={currentState.Game.WaitingScreen.truncated}
-		bind:volumeOn
+		bind:bindableGameInfo
+		on:lock={receiveLock}
 	/>
 {:else if 'Slide' in currentState}
 	{@const { Slide: slide, index, count } = currentState}
+	{@const gameInfo = {
+		gameCode: code,
+		questionIndex: index,
+		questionTotalCount: count
+	}}
 	{#if 'Leaderboard' in slide}
 		<Leaderboard
 			on:next={next}
-			gameId={code}
-			questionIndex={index}
-			questionTotalCount={count}
+			on:lock={receiveLock}
+			bind:bindableGameInfo
+			{gameInfo}
 			results={slide.Leaderboard.points}
 			final={index + 1 === count}
 			exactCount={slide.Leaderboard.exact_count}
-			bind:volumeOn
 		/>
 	{:else if 'MultipleChoice' in slide}
 		{@const {
@@ -438,62 +458,57 @@
 		{#if kind === 'QuestionAnnouncment'}
 			<Question
 				on:next={next}
-				questionIndex={index}
-				questionTotalCount={count}
-				gameId={code}
+				on:lock={receiveLock}
+				bind:bindableGameInfo
+				{gameInfo}
 				questionText={question || ''}
-				bind:volumeOn
 			/>
 		{:else if kind === 'AnswersAnnouncement'}
 			<QuestionAnswers
 				on:next={next}
-				gameId={code}
-				questionIndex={index}
-				questionTotalCount={count}
+				on:lock={receiveLock}
+				bind:bindableGameInfo
+				{gameInfo}
 				questionText={question || ''}
 				answers={(answers || []).map((answerContent) => answerContent.Text)}
 				timeLeft={timer}
 				timeStarted={initialTimer}
 				answeredCount={answeredCount || 0}
 				{media}
-				bind:volumeOn
 			/>
 		{:else if kind === 'AnswersResults'}
 			<QuestionStatistics
 				on:next={next}
-				gameId={code}
-				questionIndex={index}
-				questionTotalCount={count}
+				on:lock={receiveLock}
+				bind:bindableGameInfo
+				{gameInfo}
 				questionText={question || ''}
 				answers={zip(answers || [], results || []).map(([answerContent, answerResult]) => ({
 					text: answerContent.Text,
 					count: answerResult.count,
 					correct: answerResult.correct
 				}))}
-				bind:volumeOn
 			/>
 		{/if}
 	{:else if 'Bingo' in slide}
 		{@const { all_statements: allStatements, crossed, user_votes: userVotes, winners } = slide}
 		{#if slide.Bingo === 'List'}
 			<Bingo
-				questionIndex={index}
-				questionTotalCount={count}
+				on:lock={receiveLock}
+				bind:bindableGameInfo
+				{gameInfo}
 				crossed={crossed || []}
 				allStatements={allStatements || []}
 				userVotes={userVotes || []}
-				gameId={code}
-				bind:volumeOn
 				on:index={(e) => sendIndex(e.detail)}
 			/>
 		{:else if slide.Bingo === 'Winners'}
 			<Winners
-				questionIndex={index}
-				questionTotalCount={count}
+				on:lock={receiveLock}
+				bind:bindableGameInfo
+				{gameInfo}
 				winners={winners || []}
-				gameId={code}
 				on:next={next}
-				bind:volumeOn
 			/>
 		{/if}
 	{/if}

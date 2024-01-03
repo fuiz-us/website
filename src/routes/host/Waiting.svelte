@@ -8,21 +8,27 @@
 	import PlayersList from '$lib/Game/PlayersList.svelte';
 	import volume_up from '$lib/assets/volume_up.svg';
 	import volume_off from '$lib/assets/volume_off.svg';
+	import unlocked from '$lib/assets/unlocked.svg';
+	import locked from '$lib/assets/locked.svg';
 	import QrCode from '$lib/Game/QRCode.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import IconButton from '$lib/IconButton.svelte';
+	import type { BindableGameInfo } from './+page';
+	import StatedIconButton from '$lib/StatedIconButton.svelte';
 
 	export let code: string;
 	export let players: string[];
 	export let exact_count: number;
 	export let truncated: boolean;
-	export let volumeOn: boolean;
+
+	export let bindableGameInfo: BindableGameInfo;
+
 	let codeTitle = 'Copy to Clipboard';
 
 	$: actualUrl = PUBLIC_PLAY_URL + '/play?code=' + code;
 
 	const dispatch = createEventDispatcher<{
 		next: undefined;
+		lock: boolean;
 	}>();
 
 	function copy_url_to_clipboard() {
@@ -33,7 +39,7 @@
 	let fullscreenElement;
 </script>
 
-<Audio audioUrl={bee3} {volumeOn} />
+<Audio audioUrl={bee3} volumeOn={bindableGameInfo.volumeOn} />
 <div id="container" bind:this={fullscreenElement} style:height="100%" style:display="flex">
 	<div
 		style:background="var(--background-color)"
@@ -101,11 +107,24 @@
 				style:box-sizing="border-box"
 			>
 				<div style:margin-left="auto" style:display="flex" style:gap="0.2em">
-					<IconButton
-						src={volumeOn ? volume_up : volume_off}
-						alt={volumeOn ? 'Mute Music' : 'Turn on Music'}
+					<StatedIconButton
+						icons={[
+							{ src: unlocked, alt: 'Lock Game' },
+							{ src: locked, alt: 'Unlock Game' }
+						]}
 						size="1em"
-						on:click={() => (volumeOn = !volumeOn)}
+						bind:state={bindableGameInfo.locked}
+						on:change={(e) => {
+							dispatch('lock', e.detail);
+						}}
+					/>
+					<StatedIconButton
+						icons={[
+							{ src: volume_off, alt: 'Turn on Music' },
+							{ src: volume_up, alt: 'Mute Music' }
+						]}
+						size="1em"
+						bind:state={bindableGameInfo.volumeOn}
 					/>
 					<Fullscreen {fullscreenElement} />
 				</div>

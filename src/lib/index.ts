@@ -380,11 +380,18 @@ export async function playJsonString(config: string): Promise<void | string> {
 	await goto('/host?code=' + game_id);
 }
 
-export async function playConfig(config: FuizConfig, options: FuizOptions): Promise<void | string> {
+export async function playIdlessConfig(
+	config: IdlessFuizConfig,
+	options: FuizOptions
+): Promise<void | string> {
 	return await playJsonString(
 		JSON.stringify({
-			config: await getBackendConfig(config),
+			config,
 			options
 		})
 	);
+}
+
+export async function playConfig(config: FuizConfig, options: FuizOptions): Promise<void | string> {
+	return await playIdlessConfig(await getBackendConfig(config), options);
 }

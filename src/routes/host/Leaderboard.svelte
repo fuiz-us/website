@@ -3,14 +3,33 @@
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
-	import type { BindableGameInfo, SharedGameInfo } from './+page';
+	import type { BindableGameInfo, SharedGameInfo, TruncatedList } from './+page';
+	import { flip } from 'svelte/animate';
+	import { onMount } from 'svelte';
+	import { fly } from 'svelte/transition';
 
 	export let bindableGameInfo: BindableGameInfo;
 	export let gameInfo: SharedGameInfo;
 
-	export let results: [string, number][];
-	export let exactCount: number;
 	export let final: boolean;
+
+	export let prior: TruncatedList<[string, number]>;
+	export let current: TruncatedList<[string, number]>;
+
+	let displayed = {
+		exact_count: current.exact_count,
+		items: prior.items
+	};
+
+	let displayed_final = false;
+
+	const duration = 3000,
+		delay = 1000;
+
+	onMount(() => {
+		displayed = current;
+		displayed_final = final;
+	});
 
 	let fullscreenElement;
 </script>
@@ -29,7 +48,7 @@
 				style:height="100%"
 				style:margin="auto"
 				style:padding="10px"
-				style:font-size="xxx-large"
+				style:font-size="1.5em"
 				style:max-width="30ch"
 				style:display="flex"
 				style:justify-content="center"
@@ -37,10 +56,12 @@
 				style:flex-direction="column"
 				style:box-sizing="border-box"
 			>
-				{#each results as [name, score], index}
-					<LeaderboardRecord {name} {score} {index} {final} />
+				{#each displayed.items as [name, score], index (name)}
+					<div animate:flip={{ duration, delay }} transition:fly={{ duration, delay, y: '200%' }}>
+						<LeaderboardRecord {name} {score} {index} final={displayed_final} {duration} {delay} />
+					</div>
 				{/each}
-				{#if exactCount > results.length}
+				{#if displayed.exact_count > displayed.items.length}
 					<div
 						id="container"
 						style:display="flex"
@@ -58,7 +79,7 @@
 							style:display="flex"
 							style:justify-content="center"
 						>
-							{exactCount - results.length} more...
+							{displayed.exact_count - displayed.items.length} more...
 						</div>
 					</div>
 				{/if}

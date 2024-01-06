@@ -18,7 +18,6 @@
 	export let code: string;
 	export let players: string[];
 	export let exact_count: number;
-	export let truncated: boolean;
 
 	export let bindableGameInfo: BindableGameInfo;
 
@@ -146,7 +145,7 @@
 						style:padding="0.2em"
 						style:overflow="auto"
 					>
-						<PlayersList {players} exactCount={exact_count} {truncated} />
+						<PlayersList {players} exactCount={exact_count} />
 					</div>
 				</div>
 			</div>

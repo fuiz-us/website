@@ -1,10 +1,17 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Waiting from './Waiting.svelte';
 	import Question from './Question.svelte';
 	import QuestionAnswers from './QuestionAnswers.svelte';
 	import QuestionStatistics from './QuestionStatistics.svelte';
-	import { zip, bring, type Media, type TextOrMedia, type AnswerResult } from '$lib';
+	import {
+		zip,
+		bring,
+		type Media,
+		type TextOrMedia,
+		type AnswerResult,
+		type IdlessFuizConfig,
+		type FuizOptions
+	} from '$lib';
 	import Leaderboard from './Leaderboard.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import { PUBLIC_BACKEND_URL, PUBLIC_WS_URL } from '$env/static/public';
@@ -12,15 +19,21 @@
 	import Bingo from './Bingo.svelte';
 	import Winners from './Winners.svelte';
 	import { browser } from '$app/environment';
-	import type { BindableGameInfo } from './+page';
+	import type { BindableGameInfo, TruncatedList } from './+page';
+	import Summary from './Summary.svelte';
 
-	type GameState = {
-		WaitingScreen: {
-			exact_count: number;
-			players: string[];
-			truncated: boolean;
-		};
-	};
+	type GameState =
+		| {
+				WaitingScreen: TruncatedList<string>;
+		  }
+		| {
+				Summary: {
+					stats: [number, number][];
+					player_count: number;
+					config: IdlessFuizConfig;
+					options: FuizOptions;
+				};
+		  };
 
 	type SlideState =
 		| {
@@ -46,8 +59,8 @@
 		  }
 		| {
 				Leaderboard: {
-					exact_count: number;
-					points: [string, number][];
+					current: TruncatedList<[string, number]>;
+					prior: TruncatedList<[string, number]>;
 				};
 		  };
 
@@ -69,25 +82,33 @@
 				IdAssign: string;
 		  }
 		| {
-				WaitingScreen: {
-					exact_count: number;
-					players: string[];
-					truncated: boolean;
-				};
+				WaitingScreen: TruncatedList<string>;
 		  }
 		| {
 				Leaderboard: {
 					index?: number;
 					count?: number;
 					leaderboard: {
-						exact_count: number;
-						points: [string, number][];
+						current: TruncatedList<[string, number]>;
+						prior: TruncatedList<[string, number]>;
 					};
 				};
 		  }
 		| {
-				HostMetainfo: {
-					locked: boolean;
+				Metainfo: {
+					Host: {
+						locked: boolean;
+					};
+				};
+		  }
+		| {
+				Summary: {
+					Host: {
+						stats: [number, number][];
+						player_count: number;
+						config: IdlessFuizConfig;
+						options: FuizOptions;
+					};
 				};
 		  };
 
@@ -184,15 +205,24 @@
 
 	export let code: string;
 
-	let watcherId = (browser && localStorage.getItem(code + '_host')) || undefined;
+	let watcherId: string | undefined = undefined;
 
 	let bindableGameInfo: BindableGameInfo = {
 		volumeOn: true,
 		locked: false
 	};
 
-	onMount(() => {
+	let finished = false;
+
+	function connect_server(code: string) {
 		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code);
+		currentState = undefined;
+		bindableGameInfo = {
+			volumeOn: bindableGameInfo.volumeOn,
+			locked: false
+		};
+		finished = false;
+		watcherId = localStorage.getItem(code + '_host') || undefined;
 
 		// Listen for messages
 		socket.addEventListener('message', (event) => {
@@ -219,8 +249,16 @@
 				} else if ('IdAssign' in new_msg.Game) {
 					watcherId = new_msg.Game.IdAssign;
 					localStorage.setItem(code + '_host', watcherId);
-				} else if ('HostMetainfo' in new_msg.Game) {
-					bindableGameInfo.locked = new_msg.Game.HostMetainfo.locked;
+				} else if ('Metainfo' in new_msg.Game) {
+					bindableGameInfo.locked = new_msg.Game.Metainfo.Host.locked;
+				} else if ('Summary' in new_msg.Game) {
+					currentState = {
+						Game: {
+							Summary: new_msg.Game.Summary.Host
+						}
+					};
+					finished = true;
+					socket.close();
 				}
 			} else if ('MultipleChoice' in new_msg) {
 				let mc = new_msg.MultipleChoice;
@@ -363,7 +401,7 @@
 		});
 
 		socket.addEventListener('close', async () => {
-			if (!(currentState && 'Error' in currentState)) {
+			if (!(currentState && 'Error' in currentState) && !finished) {
 				const res = await bring(PUBLIC_BACKEND_URL + '/alive/' + code, {
 					method: 'GET',
 					mode: 'cors'
@@ -398,7 +436,9 @@
 				Error: "Game Code Doesn't Exist"
 			};
 		});
-	});
+	}
+
+	$: browser && connect_server(code);
 
 	function next() {
 		socket.send(HOST_NEXT);
@@ -420,15 +460,19 @@
 {:else if 'Error' in currentState}
 	<ErrorPage errorMessage={currentState.Error} />
 {:else if 'Game' in currentState}
-	<Waiting
-		on:next={next}
-		{code}
-		players={currentState.Game.WaitingScreen.players}
-		exact_count={currentState.Game.WaitingScreen.exact_count}
-		truncated={currentState.Game.WaitingScreen.truncated}
-		bind:bindableGameInfo
-		on:lock={receiveLock}
-	/>
+	{#if 'WaitingScreen' in currentState.Game}
+		<Waiting
+			on:next={next}
+			{code}
+			players={currentState.Game.WaitingScreen.items}
+			exact_count={currentState.Game.WaitingScreen.exact_count}
+			bind:bindableGameInfo
+			on:lock={receiveLock}
+		/>
+	{:else if 'Summary' in currentState.Game}
+		{@const { stats, player_count, config, options } = currentState.Game.Summary}
+		<Summary {stats} {player_count} {config} {options} />
+	{/if}
 {:else if 'Slide' in currentState}
 	{@const { Slide: slide, index, count } = currentState}
 	{@const gameInfo = {
@@ -442,9 +486,9 @@
 			on:lock={receiveLock}
 			bind:bindableGameInfo
 			{gameInfo}
-			results={slide.Leaderboard.points}
+			current={slide.Leaderboard.current}
+			prior={slide.Leaderboard.prior}
 			final={index + 1 === count}
-			exactCount={slide.Leaderboard.exact_count}
 		/>
 	{:else if 'MultipleChoice' in slide}
 		{@const {
@@ -460,7 +504,9 @@
 				on:next={next}
 				on:lock={receiveLock}
 				bind:bindableGameInfo
+				{media}
 				{gameInfo}
+				timeStarted={initialTimer}
 				questionText={question || ''}
 			/>
 		{:else if kind === 'AnswersAnnouncement'}

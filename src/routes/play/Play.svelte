@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { bring, type AnswerResult, type TextOrMedia, type Media } from '$lib';
+	import {
+		bring,
+		type AnswerResult,
+		type TextOrMedia,
+		type Media,
+		type IdlessFuizConfig
+	} from '$lib';
 	import { onMount } from 'svelte';
 	import ChooseName from './ChooseName.svelte';
 	import WaitingMobile from './WaitingMobile.svelte';
@@ -14,6 +20,7 @@
 	import Bingo from './Bingo.svelte';
 	import Winners from './Winners.svelte';
 	import { browser } from '$app/environment';
+	import Summary from './Summary.svelte';
 
 	type GameState =
 		| {
@@ -25,6 +32,16 @@
 				NameChoose: {
 					sending: boolean;
 					error: string;
+				};
+		  }
+		| {
+				Summary: {
+					score?: {
+						points: number;
+						position: number;
+					};
+					points: [number];
+					config: IdlessFuizConfig;
 				};
 		  };
 
@@ -99,9 +116,23 @@
 				NameError: NamesError;
 		  }
 		| {
-				PlayerMetainfo: {
-					score: number;
-					show_answers: boolean;
+				Metainfo: {
+					Player: {
+						score: number;
+						show_answers: boolean;
+					};
+				};
+		  }
+		| {
+				Summary: {
+					Player: {
+						score?: {
+							points: number;
+							position: number;
+						};
+						points: [number];
+						config: IdlessFuizConfig;
+					};
 				};
 		  };
 
@@ -190,6 +221,8 @@
 
 	export let code: string;
 
+	let finished = false;
+
 	let showAnswers = false;
 
 	let watcherId = (browser && localStorage.getItem(code + '_play')) || undefined;
@@ -275,10 +308,18 @@
 				} else if ('IdAssign' in new_msg.Game) {
 					watcherId = new_msg.Game.IdAssign;
 					localStorage.setItem(code + '_play', watcherId);
-				} else if ('PlayerMetainfo' in new_msg.Game) {
-					let { score, show_answers } = new_msg.Game.PlayerMetainfo;
+				} else if ('Metainfo' in new_msg.Game) {
+					let { score, show_answers } = new_msg.Game.Metainfo.Player;
 					points = score;
 					showAnswers = show_answers;
+				} else if ('Summary' in new_msg.Game) {
+					finished = true;
+					currentState = {
+						Game: {
+							Summary: new_msg.Game.Summary.Player
+						}
+					};
+					socket.close();
 				}
 			} else if ('MultipleChoice' in new_msg) {
 				let mc = new_msg.MultipleChoice;
@@ -405,7 +446,7 @@
 		});
 
 		socket.addEventListener('close', async () => {
-			if (!(currentState && 'Error' in currentState)) {
+			if (!(currentState && 'Error' in currentState) && !finished) {
 				const res = await bring(PUBLIC_BACKEND_URL + '/alive/' + code, {
 					method: 'GET',
 					mode: 'cors'
@@ -486,6 +527,9 @@
 		<ChooseName on:setName={(x) => requestName(x.detail)} {sending} {errorMessage} />
 	{:else if 'WaitingScreen' in game}
 		<WaitingMobile {name} gameCode={code} />
+	{:else if 'Summary' in game}
+		{@const { score, points, config } = game.Summary}
+		<Summary {score} {points} {config} />
 	{/if}
 {:else if 'Slide' in currentState}
 	{@const { Slide: slide, index, count, score } = currentState}

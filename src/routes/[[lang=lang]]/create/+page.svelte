@@ -9,6 +9,8 @@
 	import Gallery from './Gallery.svelte';
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
 	import { browser } from '$app/environment';
+	import { languageTag } from '$paraglide/runtime';
+	import { route } from '$lib/i18n-routing';
 
 	$: id_param = $page.url.searchParams.get('id');
 
@@ -58,7 +60,7 @@
 	<title>{title}</title>
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
-	<link rel="canonical" href="{PUBLIC_PLAY_URL}/create" />
+	<link rel="canonical" href="{PUBLIC_PLAY_URL}{route('/create', languageTag())}" />
 </svelte:head>
 
 {#if status === 'loading'}

@@ -16,6 +16,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { BindableGameInfo } from './+page';
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
+	import { languageTag } from '$paraglide/runtime';
+	import { route } from '$lib/i18n-routing';
 
 	export let code: string;
 	export let players: string[];
@@ -25,7 +27,7 @@
 
 	let codeTitle = m.copy_clipboard();
 
-	$: actualUrl = PUBLIC_PLAY_URL + '/play?code=' + code;
+	$: actualUrl = PUBLIC_PLAY_URL + route('/play?code=' + code, languageTag());
 
 	const dispatch = createEventDispatcher<{
 		next: undefined;
@@ -55,7 +57,7 @@
 		<div style:padding="0.4em">
 			<div>{m.join_at()}</div>
 			<div style:font-weight="bold">
-				{PUBLIC_DISPLAY_PLAY_URL}/play
+				{PUBLIC_DISPLAY_PLAY_URL}{route('/play', languageTag())}
 			</div>
 		</div>
 		<div

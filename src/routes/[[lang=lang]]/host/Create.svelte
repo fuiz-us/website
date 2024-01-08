@@ -10,6 +10,8 @@
 	import Loading from '$lib/Loading.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Textarea from '$lib/Textarea.svelte';
+	import { route } from '$lib/i18n-routing';
+	import { languageTag } from '$paraglide/runtime';
 
 	let loading = false;
 	let fuizConfig = '';
@@ -60,7 +62,7 @@
 					</ul>
 				{:else}
 					<div>
-						<FancyAnchorButton href="/create">
+						<FancyAnchorButton href={route('/host', languageTag())}>
 							<div class="create">{m.create()}</div>
 						</FancyAnchorButton>
 					</div>

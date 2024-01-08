@@ -15,6 +15,8 @@
 	import FancyAnchorButton from '$lib/FancyAnchorButton.svelte';
 	import Anchor from '$lib/Anchor.svelte';
 	import QuestionAnswers from './host/QuestionAnswers.svelte';
+	import { route } from '$lib/i18n-routing';
+	import { languageTag } from '$paraglide/runtime';
 
 	const title = m.main_title();
 	const description = m.main_desc();
@@ -24,7 +26,7 @@
 	<title>{title}</title>
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
-	<link rel="canonical" href={PUBLIC_PLAY_URL} />
+	<link rel="canonical" href={PUBLIC_PLAY_URL + route('/', languageTag())} />
 </svelte:head>
 
 <main>
@@ -32,7 +34,7 @@
 		<Header />
 		<nav>
 			<div>
-				<FancyAnchorButton href="/create">
+				<FancyAnchorButton href={route('/create', languageTag())}>
 					<div class="a">
 						<Icon src={paint} alt={m.create()} size="1.2em" />
 						<div>{m.create()}</div>
@@ -40,7 +42,7 @@
 				</FancyAnchorButton>
 			</div>
 			<div>
-				<FancyAnchorButton href="/play">
+				<FancyAnchorButton href={route('/play', languageTag())}>
 					<div class="a">
 						<Icon size="1.2em" src={game} alt={m.play()} />
 						<div>{m.play()}</div>

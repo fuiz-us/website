@@ -9,6 +9,8 @@
 	import AnchorMessage from '$lib/AnchorMessage.svelte';
 	import Header from '$lib/Header.svelte';
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
+	import { languageTag } from '$paraglide/runtime';
+	import { route } from '$lib/i18n-routing';
 
 	const title = m.credits_title();
 	const description = m.credits_desc();
@@ -18,7 +20,7 @@
 	<title>{title}</title>
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
-	<link rel="canonical" href="{PUBLIC_PLAY_URL}/credits" />
+	<link rel="canonical" href="{PUBLIC_PLAY_URL}{route('/credits', languageTag())}" />
 </svelte:head>
 
 <NiceBackground>

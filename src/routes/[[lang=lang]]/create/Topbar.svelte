@@ -12,6 +12,8 @@
 	import Logo from '$lib/Logo.svelte';
 	import * as TOML from '@ltd/j-toml';
 	import Textfield from '$lib/Textfield.svelte';
+	import { languageTag } from '$paraglide/runtime';
+	import { route } from '$lib/i18n-routing';
 
 	export let title: string;
 	export let id: number;
@@ -27,7 +29,12 @@
 	style:align-items="center"
 	style:justify-content="center"
 >
-	<a href="create" style:height="65px" style:margin="0 5px" style:overflow="hidden">
+	<a
+		href={route('/create', languageTag())}
+		style:height="65px"
+		style:margin="0 5px"
+		style:overflow="hidden"
+	>
 		<Logo height={65} width={162} />
 	</a>
 	<div

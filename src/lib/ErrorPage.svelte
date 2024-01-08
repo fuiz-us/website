@@ -15,7 +15,6 @@
 		style:display="flex"
 		style:flex-direction="column"
 		style:align-items="center"
-		style:font-size="x-large"
 	>
 		<header style:margin="5px 0">
 			<Header />
@@ -25,7 +24,6 @@
 			style:display="flex"
 			style:align-items="center"
 			style:max-width="40ch"
-			style:font-size="xx-large"
 			style:margin="10px"
 			transition:scale={{ delay: 500, duration: 150, easing: backOut }}
 		>

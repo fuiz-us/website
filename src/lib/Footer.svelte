@@ -5,6 +5,7 @@
 	import balance from '$lib/assets/balance.svg';
 	import Icon from './Icon.svelte';
 	import Anchor from './Anchor.svelte';
+	import LanguageSwitcher from './LanguageSwitcher.svelte';
 </script>
 
 <div
@@ -33,4 +34,5 @@
 			<div>GNU AGPLv3</div>
 		</div>
 	</Anchor>
+	<LanguageSwitcher up={true} />
 </div>

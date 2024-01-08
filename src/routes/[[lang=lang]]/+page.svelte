@@ -17,6 +17,7 @@
 	import QuestionAnswers from './host/QuestionAnswers.svelte';
 	import { route } from '$lib/i18n-routing';
 	import { languageTag } from '$paraglide/runtime';
+	import LanguageSwitcher from '$lib/LanguageSwitcher.svelte';
 
 	const title = m.main_title();
 	const description = m.main_desc();
@@ -49,6 +50,7 @@
 					</div>
 				</FancyAnchorButton>
 			</div>
+			<LanguageSwitcher />
 		</nav>
 	</header>
 	<section>

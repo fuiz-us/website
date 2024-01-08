@@ -16,6 +16,7 @@
 	import FancyButton from '$lib/FancyButton.svelte';
 	import type { BindableGameInfo, SharedGameInfo } from './+page';
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
+	import LanguageSwitcher from '$lib/LanguageSwitcher.svelte';
 
 	export let bindableGameInfo: BindableGameInfo;
 	export let gameInfo: SharedGameInfo;
@@ -167,6 +168,7 @@
 				dispatch('lock', e.detail);
 			}}
 		/>
+		<LanguageSwitcher />
 		<StatedIconButton
 			icons={[
 				{ src: volume_off, alt: m.turn_on_music() },

@@ -31,7 +31,6 @@
 		style:display="flex"
 		style:flex-direction="column"
 		style:align-items="center"
-		style:font-size="x-large"
 	>
 		<header style:margin="0.5em 0">
 			<Header />

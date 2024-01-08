@@ -140,5 +140,6 @@
 	"diamond": "diamante",
 	"spade": "pica",
 	"club": "trébol",
-	"length_too_short": "demasiado corto"
+	"length_too_short": "demasiado corto",
+	"language": "Idioma"
 }

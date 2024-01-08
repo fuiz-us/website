@@ -140,5 +140,6 @@
 	"diamond": "diamond",
 	"spade": "spade",
 	"club": "club",
-	"length_too_short": "length is too short"
+	"length_too_short": "length is too short",
+	"language": "Language"
 }

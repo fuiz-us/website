@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import { availableLanguageTags } from '$paraglide/runtime';
 	import { page } from '$app/stores';
 	import { route } from '$lib/i18n-routing';
@@ -16,7 +18,7 @@
 			dialog.open();
 		}}
 		src="$lib/assets/language.svg"
-		alt="Language"
+		alt={m.language()}
 		size="1em"
 	/>
 

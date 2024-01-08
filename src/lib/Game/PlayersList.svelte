@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import { backOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
@@ -28,6 +30,8 @@
 		style:font-weight="bold"
 		style:word-break="break-word"
 	>
-		{players.length - exactCount} more...
+		{m.more({
+			count: players.length - exactCount
+		})}
 	</div>
 {/if}

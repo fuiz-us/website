@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import fullscreenEnter from '$lib/assets/fullscreen_enter.svg';
 	import fullscreenExit from '$lib/assets/fullscreen_exit.svg';
 	import { onMount } from 'svelte';
@@ -27,6 +29,6 @@
 <IconButton
 	on:click={toggle}
 	src={fullscreen ? fullscreenExit : fullscreenEnter}
-	alt={fullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+	alt={fullscreen ? m.exit_fullscreen() : m.enter_fullscreen()}
 	size="1em"
 />

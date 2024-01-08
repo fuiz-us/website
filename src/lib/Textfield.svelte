@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import Icon from './Icon.svelte';
 
 	export let id: string;
@@ -40,7 +42,7 @@
 	/>
 	<label for={id}>{placeholder}</label>
 	<div id="error">
-		<Icon src="$lib/assets/error.svg" alt="length is too short" size="1.2em" />
+		<Icon src="$lib/assets/error.svg" alt={m.length_too_short()} size="1.2em" />
 	</div>
 </div>
 

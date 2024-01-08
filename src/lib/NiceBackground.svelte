@@ -1,4 +1,6 @@
 <script>
+	import * as m from '$paraglide/messages';
+
 	import heart from '$lib/assets/cards-heart.svg';
 	import club from '$lib/assets/cards-club.svg';
 	import spade from '$lib/assets/cards-spade.svg';
@@ -16,25 +18,25 @@
 		<div style:height="100%" style:width="100%">
 			<div style:display="flex" style:flex-wrap="wrap" style:opacity="20%" style:height="100%">
 				<div class="card-container" style:transform="scale(1) translate(0%, 0%) rotate(0.0625turn)">
-					<img src={heart} alt="heart" />
+					<img src={heart} alt={m.heart()} />
 				</div>
 				<div
 					class="card-container"
 					style:transform="scale(1) translate(0%, -25%) rotate(-0.0625turn)"
 				>
-					<img src={diamond} alt="diamond" />
+					<img src={diamond} alt={m.diamond()} />
 				</div>
 				<div
 					class="card-container"
 					style:transform="scale(1) translate(-25%, 12.5%) rotate(-0.0625turn)"
 				>
-					<img src={spade} alt="spade" />
+					<img src={spade} alt={m.spade()} />
 				</div>
 				<div
 					class="card-container"
 					style:transform="scale(1) translate(12.5%, -25%) rotate(0.0625turn)"
 				>
-					<img src={club} alt="club" />
+					<img src={club} alt={m.club()} />
 				</div>
 			</div>
 		</div>

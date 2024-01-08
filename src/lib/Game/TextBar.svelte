@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import { createEventDispatcher } from 'svelte';
 	import FancyButton from '../FancyButton.svelte';
 	export let text: string;
@@ -34,7 +36,7 @@
 	{#if showNext}
 		<div style:font-size="1.2em" style:font-family="Poppins">
 			<FancyButton on:click={() => dispatch('next')}>
-				<div style:padding="0.2em 0.4em">Next</div>
+				<div style:padding="0.2em 0.4em">{m.next()}</div>
 			</FancyButton>
 		</div>
 	{/if}

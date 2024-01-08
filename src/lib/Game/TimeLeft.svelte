@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import hourglassFilled from '$lib/assets/hourglass_filled.svg';
 	import hourglassEmpty from '$lib/assets/hourglass_empty.svg';
 	import Icon from '$lib/Icon.svelte';
@@ -21,7 +23,7 @@
 >
 	<div style:position="relative" style:width={size} style:height={size} style:background="inherit">
 		<div style:position="absolute" style:height="100%" style:overflow="hidden">
-			<Icon src={hourglassFilled} alt="filled hourglass" {size} />
+			<Icon src={hourglassFilled} alt={m.filled_hourglass()} {size} />
 		</div>
 		<div
 			style:position="absolute"
@@ -29,10 +31,10 @@
 			style:overflow="hidden"
 			style:background="inherit"
 		>
-			<Icon src={hourglassEmpty} alt="empty hourglass" {size} />
+			<Icon src={hourglassEmpty} alt={m.empty_hourglass()} {size} />
 		</div>
 		<div style:position="absolute" style:height="50%" style:overflow="hidden">
-			<Icon src={hourglassFilled} alt="filled hourglass" {size} />
+			<Icon src={hourglassFilled} alt={m.filled_hourglass()} {size} />
 		</div>
 		<div
 			style:position="absolute"
@@ -40,7 +42,7 @@
 			style:overflow="hidden"
 			style:background="inherit"
 		>
-			<Icon src={hourglassEmpty} alt="empty hourglass" {size} />
+			<Icon src={hourglassEmpty} alt={m.empty_hourglass()} {size} />
 		</div>
 	</div>
 	<div>

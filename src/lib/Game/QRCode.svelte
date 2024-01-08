@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import { toDataURL } from 'qrcode';
 	import LoadingCircle from '../LoadingCircle.svelte';
 	import { createDialog } from 'svelte-headlessui';
@@ -39,7 +41,7 @@
 			src={url}
 			style:height={smallSize}
 			style:width={smallSize}
-			alt="QR code to the game"
+			alt={m.qr_code()}
 			style:image-rendering="pixelated"
 			style:border-radius="0.2em"
 		/>
@@ -71,7 +73,7 @@
 						style:width="auto"
 						style:aspect-ratio="1"
 						style:max-height="700px"
-						alt="QR code to the game"
+						alt={m.qr_code()}
 						style:image-rendering="pixelated"
 						style:border-radius="5px"
 					/>

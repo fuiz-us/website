@@ -28,6 +28,10 @@ const config = {
 
 		paths: {
 			relative: false
+		},
+
+		alias: {
+			$paraglide: './src/paraglide'
 		}
 	}
 };

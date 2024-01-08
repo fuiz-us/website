@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import diversity from '$lib/assets/diversity.svg';
 	import balance from '$lib/assets/balance.svg';
 	import Icon from './Icon.svelte';
@@ -21,13 +23,13 @@
 >
 	<Anchor href="https://gitlab.com/opencode-mit/fuiz-website">
 		<div style:display="inline-flex" style:align-items="center" style:gap="0.2em">
-			<Icon src={diversity} alt="Made by community" size="1em" />
-			<div>Community Made</div>
+			<Icon src={diversity} alt={m.community()} size="1em" />
+			<div>{m.community()}</div>
 		</div>
 	</Anchor>
 	<Anchor href="https://gitlab.com/opencode-mit/fuiz-website">
 		<div style:display="inline-flex" style:align-items="center" style:gap="0.2em">
-			<Icon src={balance} alt="free and open source" size="1em" />
+			<Icon src={balance} alt={m.open_source()} size="1em" />
 			<div>GNU AGPLv3</div>
 		</div>
 	</Anchor>

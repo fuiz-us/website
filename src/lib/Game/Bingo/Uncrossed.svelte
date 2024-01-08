@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import { createEventDispatcher } from 'svelte';
 	import vote from '$lib/assets/vote.svg';
 	import Icon from '$lib/Icon.svelte';
@@ -27,7 +29,7 @@
 		{text}
 	</div>
 	<div style:display="flex" style:align-items="center" style:gap="5px">
-		<Icon src={vote} alt="vote" size="1em" />
+		<Icon src={vote} alt={m.vote()} size="1em" />
 		<div>
 			{userVotes}
 		</div>

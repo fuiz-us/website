@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import { buttonColors, buttonSymbols } from '$lib';
 	import wrong from '$lib/assets/wrong.svg';
 	import factual from '$lib/assets/correct.svg';
@@ -37,11 +39,11 @@
 			</div>
 			{#if correct === false}
 				<div style:display="flex" style:padding="0.2em">
-					<Icon src={wrong} alt="Wrong" size="1em" />
+					<Icon src={wrong} alt={m.wrong()} size="1em" />
 				</div>
 			{:else if correct === true}
 				<div style:display="flex" style:padding="0.2em">
-					<Icon src={factual} alt="Correct" size="1em" />
+					<Icon src={factual} alt={m.correct()} size="1em" />
 				</div>
 			{/if}
 		</div>

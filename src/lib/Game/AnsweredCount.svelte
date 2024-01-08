@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import Icon from '$lib/Icon.svelte';
 	import assignmentTurned from '$lib/assets/answer_turned.svg';
 
@@ -15,7 +17,7 @@
 	style:border="0.15em solid"
 	style:border-radius="200px"
 >
-	<Icon src={assignmentTurned} alt="people who answered" size="1.2em" />
+	<Icon src={assignmentTurned} alt={m.answered_count()} size="1.2em" />
 	<div style:font-size="1em" style:font-family="Poppins">
 		{answeredCount}
 	</div>

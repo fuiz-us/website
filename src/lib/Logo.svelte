@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import logo from '$lib/assets/logo.svg';
 	import logoDark from '$lib/assets/logo_dark.svg';
 	import { theme, initTheme } from 'fractils';
@@ -15,7 +17,7 @@
 		src={$theme === 'dark' ? logoDark : logo}
 		height="{height}px"
 		width="{width}px"
-		alt="a deck of cards representing fuiz logo and the word fuiz"
+		alt={m.logo_alt()}
 		style:margin-right="auto"
 		style:display="flex"
 		style:width="auto"

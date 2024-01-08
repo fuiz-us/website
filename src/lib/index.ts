@@ -1,3 +1,5 @@
+import * as m from '$paraglide/messages';
+
 import heart from '$lib/assets/cards-heart.svg';
 import club from '$lib/assets/cards-club.svg';
 import spade from '$lib/assets/cards-spade.svg';
@@ -15,10 +17,10 @@ export const buttonColors = [
 export const medalColors = ['#FEDD1E', '#D0D0D0', '#D7995A'] as const;
 
 export const buttonSymbols = [
-	[heart, 'heart'],
-	[diamond, 'diamond'],
-	[spade, 'spade'],
-	[club, 'club']
+	[heart, m.heart()],
+	[diamond, m.diamond()],
+	[spade, m.spade()],
+	[club, m.club()]
 ] as const;
 
 // must be a subset of https://gitlab.com/opencode-mit/fuiz/-/raw/main/config.toml
@@ -377,7 +379,7 @@ export async function playJsonString(config: string): Promise<void | string> {
 
 	localStorage.setItem(game_id + '_host', watcher_id);
 
-	await goto('/host?code=' + game_id);
+	await goto('host?code=' + game_id);
 }
 
 export async function playIdlessConfig(

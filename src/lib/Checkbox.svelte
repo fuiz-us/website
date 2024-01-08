@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import factual from '$lib/assets/correct.svg';
 	import wrong from '$lib/assets/wrong.svg';
 	import { backOut } from 'svelte/easing';
@@ -45,14 +47,14 @@
 				in:scale={{ easing: backOut, duration: duration, delay: duration }}
 				out:scale={{ easing: backOut, duration: duration }}
 			>
-				<Icon src={factual} alt="Marked as Correct" size="100%" />
+				<Icon src={factual} alt={m.marked_as_correct()} size="100%" />
 			</div>
 		{:else}
 			<div
 				in:scale={{ easing: backOut, duration: duration, delay: duration }}
 				out:scale={{ easing: backOut, duration: duration }}
 			>
-				<Icon src={wrong} alt="Marked as Wrong" size="100%" />
+				<Icon src={wrong} alt={m.marked_as_wrong()} size="100%" />
 			</div>
 		{/if}
 	</div>

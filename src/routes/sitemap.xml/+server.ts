@@ -14,12 +14,15 @@ export const GET: RequestHandler = async () => {
 		})
 	).text();
 
-	let res = new Response(text.replaceAll('https://www', 'http://www'), {
-		headers: {
-			'cache-control': 'max-age=0, s-maxage=3600',
-			'content-type': 'application/xml'
+	let res = new Response(
+		text.replace('https://www.s', 'http://www.s').replaceAll('https://www.g', 'http://www.g'),
+		{
+			headers: {
+				'cache-control': 'max-age=0, s-maxage=3600',
+				'content-type': 'text/xml'
+			}
 		}
-	});
+	);
 
 	return res;
 };

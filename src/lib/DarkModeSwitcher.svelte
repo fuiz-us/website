@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import { theme, applyTheme } from 'fractils';
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
 	import darkMode from '$lib/assets/dark_mode.svg';
@@ -11,8 +13,8 @@
 
 <StatedIconButton
 	icons={[
-		{ src: lightMode, alt: 'Switch to Dark Mode' },
-		{ src: darkMode, alt: 'Switch to Light Mode' }
+		{ src: lightMode, alt: m.switch_dark() },
+		{ src: darkMode, alt: m.switch_light() }
 	]}
 	bind:state
 	size="1em"

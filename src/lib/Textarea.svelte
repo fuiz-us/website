@@ -26,6 +26,7 @@
 		style:max-height={maxHeight}
 		bind:this={editableElement}
 		{id}
+		name={id}
 		{required}
 		{disabled}
 		bind:value

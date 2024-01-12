@@ -26,7 +26,7 @@
 		<ul use:dialog.modal style:--y={up ? 'calc(-100% - 1.25em)' : '0'}>
 			{#each availableLanguageTags as lang}
 				<li>
-					<a href={route($page.url.pathname, lang)} hreflang={lang}
+					<a href={route($page.url.pathname + $page.url.search, lang)} hreflang={lang}
 						>{new Intl.DisplayNames([lang], {
 							type: 'language'
 						}).of(lang)}</a

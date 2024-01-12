@@ -35,6 +35,6 @@
 			lightText
 			maxLength={limits.fuiz.maxAnswerTextLength}
 		/>
-		<IconButton src={deleteAnswer} alt={m.delete_answer()} size="1.25em" />
+		<IconButton src={deleteAnswer} alt={m.delete_answer()} size="1.25em" on:click />
 	</div>
 </FancyButton>

@@ -12,6 +12,7 @@
 		delete: undefined;
 		play: undefined;
 		download: undefined;
+		publish: undefined;
 	}>();
 
 	export let id: number,
@@ -60,6 +61,12 @@
 			src="$lib/assets/download.svg"
 			alt={m.download()}
 			on:click={() => dispatch('download')}
+		/>
+		<IconButton
+			size="1em"
+			src="$lib/assets/publish.svg"
+			alt="Publish"
+			on:click={() => dispatch('publish')}
 		/>
 	</div>
 </div>

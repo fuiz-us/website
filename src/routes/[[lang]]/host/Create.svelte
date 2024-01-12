@@ -62,7 +62,7 @@
 					</ul>
 				{:else}
 					<div>
-						<FancyAnchorButton href={route('/host', languageTag())}>
+						<FancyAnchorButton href={route('/create', languageTag())}>
 							<div class="create">{m.create()}</div>
 						</FancyAnchorButton>
 					</div>

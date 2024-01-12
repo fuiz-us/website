@@ -1,3 +1,5 @@
+import type { D1Database, R2Bucket } from '@cloudflare/workers-types';
+
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
@@ -5,7 +7,12 @@ declare global {
 		// interface Error {}
 		// interface Locals {}
 		// interface PageData {}
-		// interface Platform {}
+		interface Platform {
+			env: {
+				BUCKET: R2Bucket;
+				DATABASE: D1Database;
+			};
+		}
 	}
 }
 

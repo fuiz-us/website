@@ -3,14 +3,15 @@
 
 	import { goto } from '$app/navigation';
 	import {
-		downloadJsonString as downloadTomlString,
+		downloadTomlString,
 		getCreation,
 		getLocalConfig,
-		limits
+		limits,
+		stringifyToml,
+		tomlifyConfig
 	} from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Logo from '$lib/Logo.svelte';
-	import * as TOML from '@ltd/j-toml';
 	import Textfield from '$lib/Textfield.svelte';
 	import { languageTag } from '$paraglide/runtime';
 	import { route } from '$lib/i18n-routing';
@@ -68,19 +69,7 @@
 					const [creation] = await getCreation(id);
 					const configJson = await getLocalConfig(creation);
 
-					let tomlified = TOML.stringify(
-						{
-							title: configJson.title,
-							slides: configJson.slides.map((slide) =>
-								TOML.Section({
-									MultipleChoice: TOML.Section(slide.MultipleChoice)
-								})
-							)
-						},
-						{ newline: '\n', newlineAround: 'section', integer: 1000000 }
-					);
-
-					downloadTomlString(tomlified, configJson.title);
+					downloadTomlString(stringifyToml(tomlifyConfig(configJson)), configJson.title);
 				}}
 			>
 				<div style:font-family="Poppins" style:padding="0 10px" style:font-size="24px">

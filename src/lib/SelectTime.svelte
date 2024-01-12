@@ -5,6 +5,8 @@
 	export let options: string[] | number[];
 	export let selected: string | number;
 
+	export let map: (a: string) => string = (a) => a;
+
 	const listbox = createListbox({ label: 'Actions', selected });
 
 	function onSelect(e: Event) {
@@ -13,10 +15,10 @@
 </script>
 
 <FancyButton action={listbox.button} on:select={onSelect}>
-	<div style:display="flex" style:align-items="center" style:padding="5px">
+	<div style:display="flex" style:align-items="center" style:justify-content="center">
 		<slot />
-		<div style:padding="0 5px">
-			{$listbox.selected}
+		<div style:padding="0 5px" style:text-transform="capitalize">
+			{map($listbox.selected)}
 		</div>
 	</div>
 </FancyButton>
@@ -27,7 +29,9 @@
 			{#each options as value}
 				<li>
 					<FancyButton action={(n) => listbox.item(n, { value })}>
-						<div style:padding="0.25em 0.5em">{value}</div>
+						<div style:padding="0.25em 0.5em" style:text-transform="capitalize">
+							{map(value.toString())}
+						</div>
 					</FancyButton>
 				</li>
 			{/each}
@@ -54,7 +58,7 @@
 			padding: 10px;
 			display: grid;
 			grid-gap: 10px;
-			grid-template-columns: repeat(2, 1fr);
+			grid-template-columns: repeat(auto-fit, minmax(5em, 1fr));
 			width: min(80vw, 50vh);
 			flex-wrap: wrap;
 

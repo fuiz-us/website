@@ -12,6 +12,7 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20231218.0",
 		"@inlang/paraglide-js": "1.1.0",
 		"@inlang/paraglide-js-adapter-vite": "^1.2.0",
 		"@sveltejs/adapter-cloudflare": "^3.0.1",
@@ -33,7 +34,8 @@
 		"svelte-preprocess-import-assets": "^1.1.0",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
-		"vite": "^5.0.0"
+		"vite": "^5.0.0",
+		"wrangler": "^3.22.4"
 	},
 	"type": "module",
 	"dependencies": {

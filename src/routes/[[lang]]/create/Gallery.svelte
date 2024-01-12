@@ -9,11 +9,13 @@
 		type Creation,
 		getCreation,
 		getLocalConfig,
-		downloadJsonString,
+		downloadTomlString,
 		isNotUndefined,
 		type IdlessFuizConfig,
 		getConfigFromLocal,
-		type Media
+		type Media,
+		stringifyToml,
+		tomlifyConfig
 	} from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Footer from '$lib/Footer.svelte';
@@ -240,8 +242,9 @@
 										const [creation] = await getCreation(id);
 										const configJson = await getLocalConfig(creation);
 
-										downloadJsonString(JSON.stringify(configJson), configJson.title);
+										downloadTomlString(stringifyToml(tomlifyConfig(configJson)), configJson.title);
 									}}
+									on:publish={() => goto('publish?id=' + id)}
 								/>
 							{/each}
 							{#if $dialog.expanded}

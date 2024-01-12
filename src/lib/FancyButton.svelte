@@ -6,6 +6,7 @@
 	export let backgroundDeepColor: string | undefined = undefined;
 	export let disabled = false;
 	export let active = true;
+	export let type: 'button' | 'submit' | 'reset' | undefined = undefined;
 	export let action: Action | undefined = undefined;
 </script>
 
@@ -15,6 +16,7 @@
 			// do nothing
 		})}
 	on:select
+	{type}
 	foregroundColor={foregroundColor ?? '#FFFFFF'}
 	backgroundColor={backgroundColor ?? '#D4131B'}
 	backgroundDeepColor={backgroundDeepColor ?? '#A40E13'}

@@ -6,12 +6,14 @@
 	export let backgroundDeepColor: string;
 	export let disabled = false;
 	export let active = true;
+	export let type: 'button' | 'submit' | 'reset' | undefined = undefined;
 	export let action: Action;
 </script>
 
 <button
 	use:action
 	on:select
+	{type}
 	style:display="flex"
 	style:background="none"
 	style:border="none"

@@ -6,6 +6,7 @@ import spade from '$lib/assets/cards-spade.svg';
 import diamond from '$lib/assets/cards-diamond.svg';
 import { PUBLIC_BACKEND_URL, PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import { goto } from '$app/navigation';
+import { Section, stringify } from '@ltd/j-toml';
 
 export const buttonColors = [
 	['hsl(358, 84%, 45%)', 'hsl(358, 84%, 35%)'],
@@ -144,6 +145,10 @@ export type IdlessFuizConfig = {
 export type ExportedFuiz = {
 	config: FuizConfig;
 	lastEdited: number;
+	publish?: {
+		released_r2_key?: string;
+		pending_r2_key?: string;
+	};
 };
 
 export type Creation = {
@@ -158,6 +163,66 @@ export type FuizOptions = {
 	random_names: boolean;
 	show_answers: boolean;
 };
+
+export async function getThumbnail(
+	fuiz: IdlessFuizConfig
+): Promise<{ thumbnail: ArrayBuffer; alt: string } | undefined> {
+	return await fuiz.slides.reduce<Promise<{ thumbnail: ArrayBuffer; alt: string } | undefined>>(
+		async (m, s) => {
+			const prev = await m;
+			if (prev) return prev;
+			const media = s.MultipleChoice.media;
+			if (!media) return undefined;
+			if ('Corkboard' in media.Image) {
+				const thumbnail = await bring(
+					PUBLIC_CORKBOARD_URL + '/thumbnail/' + media.Image.Corkboard.id,
+					{
+						method: 'GET',
+						mode: 'cors'
+					}
+				);
+
+				if (!thumbnail) return undefined;
+
+				return { thumbnail: await thumbnail.arrayBuffer(), alt: media.Image.Corkboard.alt };
+			} else if ('Base64' in media.Image) {
+				const image_res = await bring(media.Image.Base64.data);
+
+				if (image_res === undefined) return undefined;
+
+				const blob = await image_res.blob();
+
+				const form_data = new FormData();
+
+				form_data.append('image', blob);
+
+				const res = await bring(PUBLIC_CORKBOARD_URL + '/upload', {
+					method: 'POST',
+					mode: 'cors',
+					body: form_data
+				});
+
+				const id = await res?.json();
+
+				if (!id) return undefined;
+
+				const thumbnail = await bring(PUBLIC_CORKBOARD_URL + '/thumbnail/' + id, {
+					method: 'GET',
+					mode: 'cors'
+				});
+
+				if (!thumbnail?.ok) {
+					return undefined;
+				}
+
+				return { thumbnail: await thumbnail.arrayBuffer(), alt: media.Image.Base64.alt };
+			} else {
+				return undefined;
+			}
+		},
+		(async () => undefined)()
+	);
+}
 
 export async function getAllCreations(): Promise<[Creation[], IDBDatabase]> {
 	return await new Promise((resolve, reject) => {
@@ -200,6 +265,11 @@ export async function getAllCreations(): Promise<[Creation[], IDBDatabase]> {
 }
 
 export async function getCreation(id: number): Promise<[FuizConfig, IDBDatabase]> {
+	const [fuiz, idb] = await getFullCreation(id);
+	return [fuiz.config, idb];
+}
+
+export async function getFullCreation(id: number): Promise<[ExportedFuiz, IDBDatabase]> {
 	return await new Promise((resolve, reject) => {
 		const request = indexedDB.open('FuizDB', 1);
 		request.addEventListener('upgradeneeded', () => {
@@ -217,7 +287,7 @@ export async function getCreation(id: number): Promise<[FuizConfig, IDBDatabase]
 				const value: ExportedFuiz | undefined | null = creationsTransaction.result;
 
 				if (value) {
-					resolve([value.config, db]);
+					resolve([value, db]);
 				} else {
 					reject('creation was not found');
 				}
@@ -269,7 +339,23 @@ export async function getBackendMedia(media: Media | undefined | null): Promise<
 	}
 }
 
-export function downloadJsonString(str: string, title: string) {
+export function tomlifyConfig(config: IdlessFuizConfig) {
+	return {
+		title: config.title,
+		slides: config.slides.map((slide) =>
+			Section({
+				MultipleChoice: Section(slide.MultipleChoice)
+			})
+		)
+	};
+}
+
+/* eslint-disable */
+export function stringifyToml(obj: any): string {
+	return stringify(obj, { newline: '\n', newlineAround: 'section', integer: 1000000 });
+}
+
+export function downloadTomlString(str: string, title: string) {
 	const file = new File([str], title + '.toml', { type: 'application/toml', endings: 'native' });
 	const url = URL.createObjectURL(file);
 

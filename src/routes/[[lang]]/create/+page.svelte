@@ -2,7 +2,7 @@
 	import * as m from '$paraglide/messages';
 
 	import { page } from '$app/stores';
-	import { getAllCreations, type Creation, type FuizConfig, getCreation } from '$lib';
+	import { getAllCreations, type Creation, type ExportedFuiz, getFullCreation } from '$lib';
 	import Editor from './Editor.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import ErrorPage from '$lib/ErrorPage.svelte';
@@ -21,7 +21,7 @@
 					| 'failure'
 					| {
 							id: number;
-							config: FuizConfig;
+							config: ExportedFuiz;
 					  };
 				db: IDBDatabase;
 		  }
@@ -33,7 +33,7 @@
 	async function getStatus(idParam: string | null) {
 		if (idParam) {
 			const id = parseInt(idParam);
-			const [config, db] = await getCreation(id);
+			const [config, db] = await getFullCreation(id);
 			status = {
 				creation: {
 					id,
@@ -70,5 +70,5 @@
 {:else if status.creation === 'failure'}
 	<ErrorPage errorMessage={m.missing_fuiz()} />
 {:else}
-	<Editor id={status.creation.id} bind:config={status.creation.config} db={status.db} />
+	<Editor id={status.creation.id} config={status.creation.config} db={status.db} />
 {/if}

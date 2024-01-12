@@ -29,6 +29,7 @@
 	<input
 		class={showInvalid ? 'show-invalid' : ''}
 		{id}
+		name={id}
 		{autocomplete}
 		type="text"
 		style:text-transform={textTransform}

@@ -1,12 +1,11 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
-	import { theme, initTheme } from 'fractils';
-	import { onMount } from 'svelte';
+	import { theme } from 'fractils';
 
-	onMount(() => initTheme());
 	import paint from '$lib/assets/paint.svg';
 	import game from '$lib/assets/game.svg';
 
+	import DarkModeSwitcher from '$lib/DarkModeSwitcher.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import Header from '$lib/Header.svelte';
 	import blackLogo from '$lib/assets/dark_logo.svg';
@@ -51,6 +50,7 @@
 				</FancyAnchorButton>
 			</div>
 			<LanguageSwitcher />
+			<DarkModeSwitcher />
 		</nav>
 	</header>
 	<section>

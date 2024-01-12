@@ -1,6 +1,8 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
+	import DarkModeSwitcher from '$lib/DarkModeSwitcher.svelte';
+
 	import diversity from '$lib/assets/diversity.svg';
 	import balance from '$lib/assets/balance.svg';
 	import Icon from './Icon.svelte';
@@ -35,4 +37,5 @@
 		</div>
 	</Anchor>
 	<LanguageSwitcher up={true} />
+	<DarkModeSwitcher />
 </div>

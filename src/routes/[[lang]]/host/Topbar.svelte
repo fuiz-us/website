@@ -17,6 +17,7 @@
 	import type { BindableGameInfo, SharedGameInfo } from './+page';
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
 	import LanguageSwitcher from '$lib/LanguageSwitcher.svelte';
+	import DarkModeSwitcher from '$lib/DarkModeSwitcher.svelte';
 
 	export let bindableGameInfo: BindableGameInfo;
 	export let gameInfo: SharedGameInfo;
@@ -169,6 +170,7 @@
 			}}
 		/>
 		<LanguageSwitcher />
+		<DarkModeSwitcher />
 		<StatedIconButton
 			icons={[
 				{ src: volume_off, alt: m.turn_on_music() },

@@ -84,6 +84,8 @@ export async function getThumbnail(
 
 				const id = await res?.json();
 
+				console.log('id', id);
+
 				if (!id) return undefined;
 
 				const thumbnail = await bring(PUBLIC_CORKBOARD_URL + '/thumbnail/' + id, {

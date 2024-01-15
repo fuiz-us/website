@@ -1,11 +1,11 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import type { IdlessFuizConfig } from '$lib';
 	import Footer from '$lib/Footer.svelte';
 	import Header from '$lib/Header.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
+	import type { IdlessFuizConfig } from '$lib/types';
 
 	export let score:
 		| {

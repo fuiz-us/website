@@ -7,10 +7,10 @@
 	import TimeLeft from '$lib/Game/TimeLeft.svelte';
 	import VerticalTripleSplit from '$lib/Game/VerticalTripleSplit.svelte';
 	import Topbar from './Topbar.svelte';
-	import type { Media } from '$lib';
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import Audio from '$lib/Audio.svelte';
 	import type { BindableGameInfo, SharedGameInfo } from './+page';
+	import type { Media } from '$lib/types';
 
 	export let bindableGameInfo: BindableGameInfo;
 	export let gameInfo: SharedGameInfo;

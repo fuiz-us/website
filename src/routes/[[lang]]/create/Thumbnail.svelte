@@ -1,12 +1,12 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import type { Slide } from '$lib';
 	import MultipleChoiceThumbnail from './MultipleChoiceThumbnail.svelte';
 	import delete_slide from '$lib/assets/delete.svg';
 	import content_copy from '$lib/assets/content_copy.svg';
 	import { createEventDispatcher } from 'svelte';
 	import IconButton from '$lib/IconButton.svelte';
+	import type { Slide } from '$lib/types';
 
 	export let slide: Slide;
 	export let index: number;

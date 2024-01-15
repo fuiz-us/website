@@ -1,9 +1,10 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import { type MultipleChoiceSlide, buttonColors } from '$lib';
+	import { buttonColors } from '$lib';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import VerticalSplit from '$lib/Game/VerticalSplit.svelte';
+	import type { MultipleChoiceSlide } from '$lib/types';
 
 	export let slide: MultipleChoiceSlide;
 </script>

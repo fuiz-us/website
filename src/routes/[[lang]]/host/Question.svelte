@@ -3,8 +3,8 @@
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import type { BindableGameInfo, SharedGameInfo } from './+page';
-	import type { Media } from '$lib';
 	import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
+	import type { Media } from '$lib/types';
 
 	export let bindableGameInfo: BindableGameInfo;
 	export let gameInfo: SharedGameInfo;

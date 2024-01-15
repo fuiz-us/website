@@ -1,10 +1,10 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import type { Slide } from '$lib';
 	import Icon from '$lib/Icon.svelte';
 	import ghost from '$lib/assets/ghost.svg';
 	import MultipleChoiceSlideEditor from './MultipleChoiceSlideEditor.svelte';
+	import type { Slide } from '$lib/types';
 
 	export let slide: Slide | undefined;
 </script>

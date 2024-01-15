@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import { limits, type Slide } from '$lib';
+	import { limits } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import { flip } from 'svelte/animate';
 	import left from '$lib/assets/left.svg';
@@ -14,6 +14,7 @@
 	import Icon from '$lib/Icon.svelte';
 	import IconButton from '$lib/IconButton.svelte';
 	import { tick } from 'svelte';
+	import type { Slide } from '$lib/types';
 
 	export let slides: Slide[];
 	export let selectedSlideIndex: number;

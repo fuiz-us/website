@@ -1,13 +1,14 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import { limits, type MultipleChoiceSlide } from '$lib';
+	import { limits } from '$lib';
 	import Icon from '$lib/Icon.svelte';
 	import SelectTime from '$lib/SelectTime.svelte';
 	import Textarea from '$lib/Textarea.svelte';
 	import timer from '$lib/assets/timer.svg';
 	import Answers from './Answers.svelte';
 	import MediaChooser from './MediaChooser.svelte';
+	import type { MultipleChoiceSlide } from '$lib/types';
 
 	export let slide: MultipleChoiceSlide;
 </script>

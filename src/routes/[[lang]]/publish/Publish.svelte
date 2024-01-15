@@ -1,13 +1,7 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import {
-		type Media,
-		type ExportedFuiz,
-		tomlifyConfig,
-		stringifyToml,
-		getLocalConfig
-	} from '$lib';
+	import { tomlifyConfig, stringifyToml, getLocalConfig } from '$lib';
 	import Textfield from '$lib/Textfield.svelte';
 	import TypicalPage from '$lib/TypicalPage.svelte';
 	import Tags from './Tags.svelte';
@@ -17,6 +11,7 @@
 	import FancyButton from '$lib/FancyButton.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import { deserialize } from '$app/forms';
+	import type { ExportedFuiz, Media } from '$lib/types';
 
 	export let creation: ExportedFuiz;
 	export let id: number;

@@ -5,15 +5,10 @@
 	import { createDialog } from 'svelte-headlessui';
 
 	import {
-		type ExportedFuiz,
-		type Creation,
 		getCreation,
 		getLocalConfig,
 		downloadTomlString,
-		isNotUndefined,
-		type IdlessFuizConfig,
 		getConfigFromLocal,
-		type Media,
 		stringifyToml,
 		tomlifyConfig
 	} from '$lib';
@@ -25,6 +20,8 @@
 	import ghost from '$lib/assets/ghost.svg';
 	import Header from '$lib/Header.svelte';
 	import { parse } from '@ltd/j-toml';
+	import type { Creation, ExportedFuiz, IdlessFuizConfig, Media } from '$lib/types';
+	import { isNotUndefined } from '$lib/util';
 
 	export let creations: Creation[];
 

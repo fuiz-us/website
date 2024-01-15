@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PublishedFuiz } from '$lib';
+	import type { PublishedFuiz } from '$lib/types';
 	import OnlinePublised from './OnlinePublised.svelte';
 
 	export let recentlyPublished: PublishedFuiz[], mostPlayed: PublishedFuiz[];

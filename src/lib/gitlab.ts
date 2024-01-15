@@ -1,6 +1,7 @@
 import { env } from '$env/dynamic/private';
 import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
-import { bring, type IdlessFuizConfig } from '$lib';
+import type { IdlessFuizConfig } from './types';
+import { bring } from './util';
 
 export async function createFileInGit(file_path: string, file_content: string): Promise<string> {
 	await fetch(
@@ -66,12 +67,12 @@ export async function getThumbnail(
 
 				return { thumbnail: await thumbnail.arrayBuffer(), alt: media.Image.Corkboard.alt };
 			} else if ('Base64' in media.Image) {
-				console.log("image is base64");
+				console.log('image is base64');
 
 				const image_res = await bring(media.Image.Base64.data);
 
-				console.log("we have image blob");
-				
+				console.log('we have image blob');
+
 				if (image_res === undefined) return undefined;
 
 				const blob = await image_res.blob();
@@ -80,7 +81,7 @@ export async function getThumbnail(
 
 				form_data.append('image', blob);
 
-				console.log("sending request to", PUBLIC_CORKBOARD_URL);
+				console.log('sending request to', PUBLIC_CORKBOARD_URL);
 
 				const res = await bring(PUBLIC_CORKBOARD_URL + '/upload', {
 					method: 'POST',

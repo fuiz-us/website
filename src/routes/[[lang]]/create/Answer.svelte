@@ -1,12 +1,13 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import { buttonColors, limits, type TextOrMedia } from '$lib';
+	import { buttonColors, limits } from '$lib';
 	import Checkbox from '$lib/Checkbox.svelte';
 	import deleteAnswer from '$lib/assets/delete.svg';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Textbox from '$lib/Textbox.svelte';
 	import IconButton from '$lib/IconButton.svelte';
+	import type { TextOrMedia } from '$lib/types';
 
 	export let correct: boolean;
 	export let content: TextOrMedia;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import { buttonColors, limits, type MultipleChoiceAnswer } from '$lib';
+	import { buttonColors, limits } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import variables from '$lib/assets/variables.svg';
@@ -9,6 +9,7 @@
 	import Answer from './Answer.svelte';
 	import { backOut } from 'svelte/easing';
 	import { flip } from 'svelte/animate';
+	import type { MultipleChoiceAnswer } from '$lib/types';
 
 	export let answers: MultipleChoiceAnswer[];
 </script>

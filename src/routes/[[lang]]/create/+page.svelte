@@ -2,7 +2,7 @@
 	import * as m from '$paraglide/messages';
 
 	import { page } from '$app/stores';
-	import { getAllCreations, type Creation, type ExportedFuiz, getFullCreation } from '$lib';
+	import { getAllCreations, getFullCreation } from '$lib';
 	import Editor from './Editor.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import ErrorPage from '$lib/ErrorPage.svelte';
@@ -11,6 +11,7 @@
 	import { browser } from '$app/environment';
 	import { languageTag } from '$paraglide/runtime';
 	import { route } from '$lib/i18n-routing';
+	import type { Creation, ExportedFuiz } from '$lib/types';
 
 	$: id_param = $page.url.searchParams.get('id');
 

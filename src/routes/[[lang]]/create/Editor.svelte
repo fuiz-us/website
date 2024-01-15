@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ExportedFuiz } from '$lib';
+	import type { ExportedFuiz } from '$lib/types';
 	import Main from './Main.svelte';
 	import Topbar from './Topbar.svelte';
 

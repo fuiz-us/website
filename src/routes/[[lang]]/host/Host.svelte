@@ -6,14 +6,12 @@
 	import QuestionAnswers from './QuestionAnswers.svelte';
 	import QuestionStatistics from './QuestionStatistics.svelte';
 	import {
-		zip,
-		bring,
 		type Media,
 		type TextOrMedia,
 		type AnswerResult,
 		type IdlessFuizConfig,
 		type FuizOptions
-	} from '$lib';
+	} from '$lib/types';
 	import Leaderboard from './Leaderboard.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import { PUBLIC_BACKEND_URL, PUBLIC_WS_URL } from '$env/static/public';
@@ -23,6 +21,7 @@
 	import { browser } from '$app/environment';
 	import type { BindableGameInfo, TruncatedList } from './+page';
 	import Summary from './Summary.svelte';
+	import { bring, zip } from '$lib/util';
 
 	type GameState =
 		| {

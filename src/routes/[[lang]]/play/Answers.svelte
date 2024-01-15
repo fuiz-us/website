@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { TextOrMedia } from '$lib';
 	import Answers from '$lib/Game/Answers.svelte';
 	import EmptyAnswers from '$lib/Game/EmptyAnswers.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
+	import type { TextOrMedia } from '$lib/types';
 	import Topbar from './Topbar.svelte';
 
 	export let questionText: string;

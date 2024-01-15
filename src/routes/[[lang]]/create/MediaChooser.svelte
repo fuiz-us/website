@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import { buttonColors, type Media } from '$lib';
+	import { buttonColors } from '$lib';
 	import delete_image from '$lib/assets/delete.svg';
 	import add_photo from '$lib/assets/add_photo.svg';
 	import hearing from '$lib/assets/hearing.svg';
@@ -9,6 +9,7 @@
 	import Icon from '$lib/Icon.svelte';
 	import Textarea from '$lib/Textarea.svelte';
 	import IconButton from '$lib/IconButton.svelte';
+	import type { Media } from '$lib/types';
 
 	export let media: Media | null | undefined;
 

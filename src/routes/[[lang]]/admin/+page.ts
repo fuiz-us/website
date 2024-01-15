@@ -1,4 +1,4 @@
-import type { IdlessFuizConfig } from '$lib';
+import type { IdlessFuizConfig } from '$lib/types';
 
 export type OnlineFuiz = {
 	author: string;

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { Media } from '$lib';
 	import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
 	import MediaFallback from './MediaFallback.svelte';
+	import type { Media } from './types';
 
 	export let media: Media;
 	export let fit: string;

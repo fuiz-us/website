@@ -1,13 +1,7 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import {
-		bring,
-		type AnswerResult,
-		type TextOrMedia,
-		type Media,
-		type IdlessFuizConfig
-	} from '$lib';
+	import type { AnswerResult, TextOrMedia, Media, IdlessFuizConfig } from '$lib/types';
 	import { onMount } from 'svelte';
 	import ChooseName from './ChooseName.svelte';
 	import WaitingMobile from './WaitingMobile.svelte';
@@ -23,6 +17,7 @@
 	import Winners from './Winners.svelte';
 	import { browser } from '$app/environment';
 	import Summary from './Summary.svelte';
+	import { bring } from '$lib/util';
 
 	type GameState =
 		| {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PublishedFuiz } from '$lib';
+	import type { PublishedFuiz } from '$lib/types';
 
 	export let data: PublishedFuiz;
 </script>

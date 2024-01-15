@@ -3,7 +3,6 @@
 
 	import { goto } from '$app/navigation';
 	import { PUBLIC_BACKEND_URL } from '$env/static/public';
-	import { bring } from '$lib';
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Footer from '$lib/Footer.svelte';
@@ -11,6 +10,7 @@
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Textfield from '$lib/Textfield.svelte';
+	import { bring } from '$lib/util';
 
 	let sending = false;
 	let gameCode = '';

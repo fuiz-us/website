@@ -1,12 +1,12 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import type { Media } from '$lib';
 	import delete_fuiz from '$lib/assets/delete.svg';
 	import present from '$lib/assets/slideshow.svg';
 	import IconButton from '$lib/IconButton.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import type { Media } from '$lib/types';
 
 	const dispatch = createEventDispatcher<{
 		delete: undefined;

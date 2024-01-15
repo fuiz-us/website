@@ -8,6 +8,17 @@ import { PUBLIC_BACKEND_URL, PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import { goto } from '$app/navigation';
 import { Section, stringify } from '@ltd/j-toml';
 import type { AvailableLanguageTag } from '$paraglide/runtime';
+import { bring } from './util';
+import type {
+	Creation,
+	ExportedFuiz,
+	FuizConfig,
+	FuizOptions,
+	IdlessFuizConfig,
+	Media,
+	PublishedFuiz,
+	PublishedFuizDB
+} from './types';
 
 export const buttonColors = [
 	['hsl(358, 84%, 45%)', 'hsl(358, 84%, 35%)'],
@@ -42,164 +53,6 @@ export const limits = {
 		maxAnswerTextLength: 100
 	}
 } as const;
-
-export async function bring(
-	input: URL | RequestInfo,
-	init?: RequestInit | undefined
-): Promise<Response | undefined> {
-	try {
-		return await fetch(input, init);
-	} catch (e) {
-		return undefined;
-	}
-}
-
-export function zip<T, U>(a: Array<T>, b: Array<U>): Array<[T, U]> {
-	if (a.length < b.length) {
-		return a.map((v, i) => [v, b[i]]);
-	}
-	return b.map((v, i) => [a[i], v]);
-}
-
-export function isNotUndefined<T>(a?: T): a is T {
-	return a !== undefined;
-}
-
-export function isNotNull<T>(a: T | null): a is T {
-	return a !== null;
-}
-
-type Image =
-	| {
-			Base64: {
-				data: string;
-				alt: string;
-			};
-	  }
-	| {
-			Corkboard: {
-				id: string;
-				alt: string;
-			};
-	  }
-	| {
-			Url: {
-				url: string;
-				alt: string;
-			};
-	  };
-
-export type Media = {
-	Image: Image;
-};
-
-export type TextOrMedia = {
-	Text: string;
-};
-
-export type AnswerResult = {
-	correct: boolean;
-	count: number;
-};
-
-export type IdlessMultipleChoiceAnswer = {
-	correct: boolean;
-	content: TextOrMedia;
-};
-
-export type MultipleChoiceAnswer = IdlessMultipleChoiceAnswer & {
-	id: number;
-};
-
-export type IdlessMultipleChoiceSlide = {
-	title: string;
-	media?: Media;
-	introduce_question: number;
-	time_limit: number;
-	points_awarded: number;
-	answers: IdlessMultipleChoiceAnswer[];
-};
-
-export type MultipleChoiceSlide = Modify<
-	IdlessMultipleChoiceSlide,
-	{
-		answers: MultipleChoiceAnswer[];
-	}
->;
-
-export type IdlessSlide = {
-	MultipleChoice: IdlessMultipleChoiceSlide;
-};
-
-export type Slide = {
-	MultipleChoice: MultipleChoiceSlide;
-	id: number;
-};
-
-export type FuizConfig = {
-	title: string;
-	slides: Slide[];
-};
-
-export type IdlessFuizConfig = {
-	title: string;
-	slides: IdlessSlide[];
-};
-
-export type ExportedFuiz = {
-	config: FuizConfig;
-	lastEdited: number;
-	publish?: {
-		released_r2_key?: string;
-		pending_r2_key?: string;
-	};
-};
-
-export type Creation = {
-	id: number;
-	title: string;
-	lastEdited: number;
-	slidesCount: number;
-	media?: Media | undefined;
-};
-
-export type FuizOptions = {
-	random_names: boolean;
-	show_answers: boolean;
-};
-
-export type PublishedFuizDB = {
-	id: number;
-	title: string;
-	author: string;
-	published: number;
-	public_url: string;
-	tags: string;
-	slides_count: number;
-	thumbnail: ArrayBuffer | null;
-	alt: string | null;
-	played_count: number;
-	last_updated: number;
-	language: string;
-};
-
-// https://gist.github.com/ackvf/de21847e78083034252961d550963579#file-global-d-ts-L154
-type Modify<T, R extends PartialAny<T>> = Omit<T, keyof R> & R;
-/* eslint-disable */
-type PartialAny<T> = {
-	[P in keyof T]?: any;
-};
-
-export type PublishedFuiz = Modify<
-	PublishedFuizDB,
-	{
-		thumbnail: string | null;
-		tags: string[];
-		published: Date;
-		last_updated: Date;
-		language: AvailableLanguageTag;
-	}
->;
 
 async function encode(array: ArrayBuffer): Promise<string> {
 	return new Promise((resolve) => {

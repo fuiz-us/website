@@ -1,4 +1,5 @@
-import { fixPublish, type PublishedFuiz, type PublishedFuizDB } from '$lib';
+import { fixPublish } from '$lib';
+import type { PublishedFuizDB } from '$lib/types';
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({ platform }) => {
@@ -6,7 +7,7 @@ export const load = (async ({ platform }) => {
 		await platform?.env.DATABASE.prepare('SELECT * FROM approved_submissions').all()
 	)?.results || []) as PublishedFuizDB[];
 
-	const published: PublishedFuiz[] = await Promise.all(allPublished.map(fixPublish));
+	const published = await Promise.all(allPublished.map(fixPublish));
 
 	return {
 		published

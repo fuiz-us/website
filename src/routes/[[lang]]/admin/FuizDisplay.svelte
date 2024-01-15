@@ -1,9 +1,9 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import type { Media } from '$lib';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import type { OnlineFuiz } from './+page';
+	import type { Media } from '$lib/types';
 
 	function altFromImage(media: Media): string {
 		if ('Base64' in media.Image) {

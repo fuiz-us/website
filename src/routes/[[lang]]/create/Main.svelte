@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { FuizConfig } from '$lib';
+	import type { FuizConfig } from '$lib/types';
 	import Sidebar from './Sidebar.svelte';
 	import SlideEditor from './SlideEditor.svelte';
 

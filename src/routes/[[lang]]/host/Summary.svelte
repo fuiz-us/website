@@ -1,12 +1,13 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import { type FuizOptions, type IdlessFuizConfig, playIdlessConfig } from '$lib';
+	import { playIdlessConfig } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import Header from '$lib/Header.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
+	import type { FuizOptions, IdlessFuizConfig } from '$lib/types';
 
 	export let stats: [number, number][],
 		player_count: number,

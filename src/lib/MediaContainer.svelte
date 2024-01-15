@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { Media } from '$lib';
 	import MediaDisplay from './MediaDisplay.svelte';
 	import MediaFallback from './MediaFallback.svelte';
+	import type { Media } from './types';
 
 	export let media: Media | undefined;
 	export let align = 'center';

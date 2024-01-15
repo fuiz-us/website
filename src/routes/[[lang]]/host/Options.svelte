@@ -1,12 +1,13 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import { getCreation, playConfig, type FuizConfig, type Slide } from '$lib';
+	import { getCreation, playConfig } from '$lib';
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import Switch from '$lib/Switch.svelte';
 	import TypicalPage from '$lib/TypicalPage.svelte';
+	import type { FuizConfig, Slide } from '$lib/types';
 
 	export let id: number;
 

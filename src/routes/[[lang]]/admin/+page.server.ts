@@ -1,10 +1,9 @@
 import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { getThumbnail } from '$lib';
 import type { R2ObjectBody } from '@cloudflare/workers-types';
 import { parse } from '@ltd/j-toml';
 import type { OnlineFuiz } from './+page';
-import { createFileInGit, updateFileInGit } from '$lib/gitlab';
+import { createFileInGit, getThumbnail, updateFileInGit } from '$lib/gitlab';
 
 export const load: PageServerLoad = async ({ request, platform }) => {
 	const email = request.headers.get('Cf-Access-Authenticated-User-Email');

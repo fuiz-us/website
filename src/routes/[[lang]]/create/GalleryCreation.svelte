@@ -3,7 +3,7 @@
 
 	import type { Media } from '$lib';
 	import delete_fuiz from '$lib/assets/delete.svg';
-	import present from '$lib/assets/present.svg';
+	import present from '$lib/assets/slideshow.svg';
 	import IconButton from '$lib/IconButton.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import { createEventDispatcher } from 'svelte';
@@ -127,6 +127,7 @@
 			right: 0;
 			height: 100%;
 			z-index: 0;
+			color: var(--palette-light);
 
 			display: flex;
 			flex-direction: column;

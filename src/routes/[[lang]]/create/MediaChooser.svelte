@@ -120,6 +120,7 @@
 			style:padding="0.3em"
 			style:box-sizing="border-box"
 			style:max-width="40ch"
+			style:min-width="15ch"
 			style:margin="auto"
 		>
 			<div style:display="flex" style:align-items="center">

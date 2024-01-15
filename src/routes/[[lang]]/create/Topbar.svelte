@@ -10,7 +10,7 @@
 		stringifyToml,
 		tomlifyConfig
 	} from '$lib';
-	import FancyButton from '$lib/FancyButton.svelte';
+	import IconButton from '$lib/IconButton.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import Textfield from '$lib/Textfield.svelte';
 	import { languageTag } from '$paraglide/runtime';
@@ -63,26 +63,30 @@
 				maxLength={limits.fuiz.maxTitleLength}
 			/>
 		</div>
-		<div>
-			<FancyButton
+		<div style:display="flex" style:align-items="center" style:gap="0.2em" style:padding="0.2em">
+			<IconButton
+				size="1em"
+				src="$lib/assets/publish.svg"
+				alt="Publish"
+				on:click={() => goto('publish?id=' + id)}
+			/>
+			<IconButton
+				size="1em"
+				src="$lib/assets/download.svg"
+				alt={m.download()}
 				on:click={async () => {
 					const [creation] = await getCreation(id);
 					const configJson = await getLocalConfig(creation);
 
 					downloadTomlString(stringifyToml(tomlifyConfig(configJson)), configJson.title);
 				}}
-			>
-				<div style:font-family="Poppins" style:padding="0 10px" style:font-size="24px">
-					{m.download()}
-				</div>
-			</FancyButton>
-		</div>
-		<div>
-			<FancyButton on:click={() => goto('host?id=' + id)}>
-				<div style:font-family="Poppins" style:padding="0 10px" style:font-size="24px">
-					{m.play()}
-				</div>
-			</FancyButton>
+			/>
+			<IconButton
+				size="1em"
+				src="$lib/assets/slideshow.svg"
+				alt={m.host()}
+				on:click={() => goto('host?id=' + id)}
+			/>
 		</div>
 	</div>
 </div>

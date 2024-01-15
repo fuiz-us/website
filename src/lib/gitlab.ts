@@ -76,6 +76,8 @@ export async function getThumbnail(
 
 				form_data.append('image', blob);
 
+				console.log("sending request to", PUBLIC_CORKBOARD_URL);
+
 				const res = await bring(PUBLIC_CORKBOARD_URL + '/upload', {
 					method: 'POST',
 					mode: 'cors',

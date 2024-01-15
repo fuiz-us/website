@@ -8,10 +8,8 @@
 		stringifyToml,
 		getLocalConfig
 	} from '$lib';
-	import NiceBackground from '$lib/NiceBackground.svelte';
-	import Header from '$lib/Header.svelte';
 	import Textfield from '$lib/Textfield.svelte';
-	import Footer from '$lib/Footer.svelte';
+	import TypicalPage from '$lib/TypicalPage.svelte';
 	import Tags from './Tags.svelte';
 	import SelectTime from '$lib/SelectTime.svelte';
 	import { availableLanguageTags, languageTag } from '$paraglide/runtime';
@@ -153,83 +151,70 @@
 	$: rememberStatus = memorize(requestStatus);
 </script>
 
-<NiceBackground>
-	<div
-		style:height="100%"
-		style:display="flex"
-		style:flex-direction="column"
-		style:align-items="center"
-		style:padding="0.5em"
-		style:box-sizing="border-box"
-	>
-		<header style:margin="0.5em 0">
-			<Header />
-		</header>
-		<section style:flex="1" style:max-width="20ch">
-			{#if !creation?.publish?.pending_r2_key}
-				<form
-					style:height="100%"
-					style:display="flex"
-					style:justify-content="center"
-					style:flex-direction="column"
-					style:gap="0.5em"
-					on:submit|preventDefault={publish}
-				>
-					{#await rememberStatus then res}
-						{#if res === 'approved' || creation?.publish?.released_r2_key}
-							<p>{m.request_approved()}</p>
-						{:else if res === 'denied'}
-							<p>
-								{m.request_denied({ reasonState: reasonState || m.unknown() })}
-							</p>
-						{/if}
-					{/await}
-					<div style:border="0.15em solid" style:border-radius="0.5em" style:overflow="hidden">
-						<div
-							style:aspect-ratio="3 / 2"
-							style:height="auto"
-							style:position="relative"
-							style:border-bottom="0.15em solid"
-						>
-							<MediaContainer {media} fit="cover" />
+<TypicalPage>
+	<section style:max-width="20ch" style:margin="auto">
+		{#if !creation?.publish?.pending_r2_key}
+			<form
+				style:height="100%"
+				style:display="flex"
+				style:justify-content="center"
+				style:flex-direction="column"
+				style:gap="0.5em"
+				on:submit|preventDefault={publish}
+			>
+				{#await rememberStatus then res}
+					{#if res === 'approved' || creation?.publish?.released_r2_key}
+						<p>{m.request_approved()}</p>
+					{:else if res === 'denied'}
+						<p>
+							{m.request_denied({ reasonState: reasonState || m.unknown() })}
+						</p>
+					{/if}
+				{/await}
+				<div style:border="0.15em solid" style:border-radius="0.5em" style:overflow="hidden">
+					<div
+						style:aspect-ratio="3 / 2"
+						style:height="auto"
+						style:position="relative"
+						style:border-bottom="0.15em solid"
+					>
+						<MediaContainer {media} fit="cover" />
+					</div>
+					<div style:padding="0.15em 0.3em" style:word-break="break-word">
+						{creation.config.title}
+					</div>
+				</div>
+				<Textfield
+					id="author"
+					placeholder={m.author()}
+					required
+					disabled={false}
+					showInvalid={false}
+					bind:value={author}
+				/>
+				<Tags bind:tags />
+				<div>
+					<SelectTime options={[...availableLanguageTags]} bind:selected={lang} {map}>
+						<Icon src="$lib/assets/language.svg" alt={m.language()} size="1em" />
+					</SelectTime>
+				</div>
+				<div>
+					<FancyButton
+						><div style:font-family="Poppins">
+							{#if creation.publish?.released_r2_key}
+								{m.request_update()}
+							{:else}
+								{m.request_publish()}
+							{/if}
 						</div>
-						<div style:padding="0.15em 0.3em" style:word-break="break-word">
-							{creation.config.title}
-						</div>
-					</div>
-					<Textfield
-						id="author"
-						placeholder={m.author()}
-						required
-						disabled={false}
-						showInvalid={false}
-						bind:value={author}
-					/>
-					<Tags bind:tags />
-					<div>
-						<SelectTime options={[...availableLanguageTags]} bind:selected={lang} {map}>
-							<Icon src="$lib/assets/language.svg" alt={m.language()} size="1em" />
-						</SelectTime>
-					</div>
-					<div>
-						<FancyButton
-							><div style:font-family="Poppins">
-								{#if creation.publish?.released_r2_key}
-									{m.request_update()}
-								{:else}
-									{m.request_publish()}
-								{/if}
-							</div>
-						</FancyButton>
-					</div>
-				</form>
-			{:else}
-				Request is pending
-			{/if}
-		</section>
-		<Footer />
-	</div>
-</NiceBackground>
+					</FancyButton>
+				</div>
+			</form>
+		{:else}
+			Request is pending
+		{/if}
+	</section>
+</TypicalPage>
 
 <style>
 	p {

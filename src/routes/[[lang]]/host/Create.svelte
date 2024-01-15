@@ -5,13 +5,11 @@
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import FancyAnchorButton from '$lib/FancyAnchorButton.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
-	import Footer from '$lib/Footer.svelte';
-	import Header from '$lib/Header.svelte';
 	import Loading from '$lib/Loading.svelte';
-	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Textarea from '$lib/Textarea.svelte';
 	import { route } from '$lib/i18n-routing';
 	import { languageTag } from '$paraglide/runtime';
+	import TypicalPage from '$lib/TypicalPage.svelte';
 
 	let loading = false;
 	let fuizConfig = '';
@@ -39,35 +37,25 @@
 	<Loading />
 {:then [creations]}
 	{@const sortedCreations = creations.sort((a, b) => -b.lastEdited - a.lastEdited)}
-	<NiceBackground>
-		<div
-			style:height="100%"
-			style:display="flex"
-			style:flex-direction="column"
-			style:align-items="center"
-		>
-			<header style:margin="0.5em 0">
-				<Header />
-			</header>
-			<section>
-				{#if creations.length > 0}
-					<h2>{m.choose_local()}</h2>
-					<ul id="creations-list">
-						{#each sortedCreations as { title, id, slidesCount }, index}
-							<li class="creation"><a href={'?id=' + id}>{title} · {slidesCount} slides</a></li>
-							{#if index + 1 != creations.length}
-								<hr />
-							{/if}
-						{/each}
-					</ul>
-				{:else}
-					<div>
-						<FancyAnchorButton href={route('/create', languageTag())}>
-							<div class="create">{m.create()}</div>
-						</FancyAnchorButton>
-					</div>
-				{/if}
-			</section>
+	<TypicalPage>
+		<div style:max-width="25ch" style:margin="auto">
+			{#if creations.length > 0}
+				<h2>{m.choose_local()}</h2>
+				<ul id="creations-list">
+					{#each sortedCreations as { title, id, slidesCount }, index}
+						<li class="creation"><a href={'?id=' + id}>{title} · {slidesCount} slides</a></li>
+						{#if index + 1 != creations.length}
+							<hr />
+						{/if}
+					{/each}
+				</ul>
+			{:else}
+				<div>
+					<FancyAnchorButton href={route('/create', languageTag())}>
+						<div class="create">{m.create()}</div>
+					</FancyAnchorButton>
+				</div>
+			{/if}
 
 			<form on:submit|preventDefault={submit}>
 				<h2>{m.or_paste_config()}</h2>
@@ -92,9 +80,8 @@
 					</FancyButton>
 				</div>
 			</form>
-			<Footer />
 		</div>
-	</NiceBackground>
+	</TypicalPage>
 {/await}
 
 <style>
@@ -105,18 +92,7 @@
 		align-items: center;
 		border-radius: 10px;
 		box-sizing: content-box;
-		max-width: 25ch;
-		padding: 0.5em;
-		width: 100%;
-	}
-
-	section {
-		flex: 1;
-		display: flex;
-		max-width: 25ch;
-		flex-direction: column;
-		justify-content: center;
-		padding: 0.5em;
+		margin-top: 3em;
 		width: 100%;
 	}
 

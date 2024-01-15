@@ -5,10 +5,8 @@
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Loading from '$lib/Loading.svelte';
-	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Switch from '$lib/Switch.svelte';
-	import Header from '$lib/Header.svelte';
-	import Footer from '$lib/Footer.svelte';
+	import TypicalPage from '$lib/TypicalPage.svelte';
 
 	export let id: number;
 
@@ -70,68 +68,54 @@
 {#await creation}
 	<Loading />
 {:then [config]}
-	<NiceBackground>
-		<div id="container">
-			<header style:margin="0.5em 0">
-				<Header />
-			</header>
-			<form
-				on:submit|preventDefault={() => {
-					errorMessage = '';
-					loading = true;
-					playConfig(shuffle(config, shuffleSlides, shuffleAnswers), {
-						random_names: randomizedNames,
-						show_answers: questionsOnPlayersDevices
-					}).then((err) => {
-						loading = false;
-						if (err) {
-							errorMessage = err;
-						}
-					});
-				}}
-			>
-				<h2>{m.options()}</h2>
-				<div id="options">
-					<div class="switch">
-						<Switch id="random" bind:checked={randomizedNames}>{m.randomized_names()}</Switch>
-					</div>
-					<hr />
-					<div class="switch">
-						<Switch id="players" bind:checked={questionsOnPlayersDevices}>
-							{m.questions_on_players_devices()}
-						</Switch>
-					</div>
-					<hr />
-					<div class="switch">
-						<Switch id="shuffle_slides" bind:checked={shuffleSlides}>{m.shuffle_slides()}</Switch>
-					</div>
-					<hr />
-					<div class="switch">
-						<Switch id="shuffle_answers" bind:checked={shuffleAnswers}>{m.shuffle_answers()}</Switch
-						>
-					</div>
+	<TypicalPage>
+		<form
+			on:submit|preventDefault={() => {
+				errorMessage = '';
+				loading = true;
+				playConfig(shuffle(config, shuffleSlides, shuffleAnswers), {
+					random_names: randomizedNames,
+					show_answers: questionsOnPlayersDevices
+				}).then((err) => {
+					loading = false;
+					if (err) {
+						errorMessage = err;
+					}
+				});
+			}}
+		>
+			<h2>{m.options()}</h2>
+			<div id="options">
+				<div class="switch">
+					<Switch id="random" bind:checked={randomizedNames}>{m.randomized_names()}</Switch>
 				</div>
-				<ErrorMessage {errorMessage} />
-				<div>
-					<FancyButton disabled={loading}>
-						<div id="button">{m.start()}</div>
-					</FancyButton>
+				<hr />
+				<div class="switch">
+					<Switch id="players" bind:checked={questionsOnPlayersDevices}>
+						{m.questions_on_players_devices()}
+					</Switch>
 				</div>
-			</form>
-			<Footer />
-		</div>
-	</NiceBackground>
+				<hr />
+				<div class="switch">
+					<Switch id="shuffle_slides" bind:checked={shuffleSlides}>{m.shuffle_slides()}</Switch>
+				</div>
+				<hr />
+				<div class="switch">
+					<Switch id="shuffle_answers" bind:checked={shuffleAnswers}>{m.shuffle_answers()}</Switch>
+				</div>
+			</div>
+			<ErrorMessage {errorMessage} />
+			<div>
+				<FancyButton disabled={loading}>
+					<div id="button">{m.start()}</div>
+				</FancyButton>
+			</div>
+		</form>
+	</TypicalPage>
 {/await}
 
 <style>
-	#container {
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-	}
-
 	form {
-		flex: 1;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

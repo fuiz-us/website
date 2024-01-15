@@ -1,36 +1,23 @@
 <script lang="ts">
 	import { scale } from 'svelte/transition';
-	import NiceBackground from './NiceBackground.svelte';
 	import ErrorMessage from './ErrorMessage.svelte';
 	import { backOut } from 'svelte/easing';
-	import Footer from './Footer.svelte';
-	import Header from './Header.svelte';
+	import TypicalPage from './TypicalPage.svelte';
 
 	export let errorMessage: string;
 </script>
 
-<NiceBackground>
+<TypicalPage>
 	<div
 		style:height="100%"
 		style:display="flex"
-		style:flex-direction="column"
 		style:align-items="center"
+		style:max-width="40ch"
+		style:margin="10px"
+		transition:scale={{ delay: 500, duration: 150, easing: backOut }}
 	>
-		<header style:margin="5px 0">
-			<Header />
-		</header>
-		<div
-			style:flex="1"
-			style:display="flex"
-			style:align-items="center"
-			style:max-width="40ch"
-			style:margin="10px"
-			transition:scale={{ delay: 500, duration: 150, easing: backOut }}
-		>
-			<div>
-				<ErrorMessage {errorMessage} />
-			</div>
+		<div>
+			<ErrorMessage {errorMessage} />
 		</div>
-		<Footer />
 	</div>
-</NiceBackground>
+</TypicalPage>

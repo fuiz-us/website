@@ -10,7 +10,8 @@ export const GET: RequestHandler = async () => {
 			lang: {
 				default: 'en',
 				alternates: ['es']
-			}
+			},
+			excludePatterns: ['.*\\[id\\].*']
 		})
 	).text();
 

@@ -66,8 +66,12 @@ export async function getThumbnail(
 
 				return { thumbnail: await thumbnail.arrayBuffer(), alt: media.Image.Corkboard.alt };
 			} else if ('Base64' in media.Image) {
+				console.log("image is base64");
+
 				const image_res = await bring(media.Image.Base64.data);
 
+				console.log("we have image blob");
+				
 				if (image_res === undefined) return undefined;
 
 				const blob = await image_res.blob();

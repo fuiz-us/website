@@ -1,10 +1,7 @@
 import { env } from '$env/dynamic/private';
 import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import type { IdlessFuizConfig } from './types';
-import { bring } from './util';
-
-import pkg from 'base64-blob';
-const { base64ToBlob } = pkg;
+import { bring, dataURIToBlob } from './util';
 
 export async function createFileInGit(file_path: string, file_content: string): Promise<string> {
 	await fetch(
@@ -70,7 +67,7 @@ export async function getThumbnail(
 
 				return { thumbnail: await thumbnail.arrayBuffer(), alt: media.Image.Corkboard.alt };
 			} else if ('Base64' in media.Image) {
-				const blob = await base64ToBlob(media.Image.Base64.data);
+				const blob = dataURIToBlob(media.Image.Base64.data);
 
 				const form_data = new FormData();
 

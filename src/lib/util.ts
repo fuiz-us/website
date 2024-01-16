@@ -2,12 +2,19 @@ export async function bring(
 	input: URL | RequestInfo,
 	init?: RequestInit | undefined
 ): Promise<Response | undefined> {
-	console.log(input);
 	try {
 		return await fetch(input, init);
 	} catch (e) {
 		return undefined;
 	}
+}
+
+export function dataURIToBlob(dataURI: string): Blob {
+	const [info, data] = dataURI.split(',');
+
+	const mimeString = info.split(';')[0].split(':')[1];
+
+	return new Blob([Buffer.from(data, 'base64')], { type: mimeString });
 }
 
 export function zip<T, U>(a: Array<T>, b: Array<U>): Array<[T, U]> {

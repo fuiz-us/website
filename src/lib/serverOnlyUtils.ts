@@ -1,6 +1,7 @@
 import { bring } from './util';
 import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
-import type { IdlessFuizConfig } from './types';
+import type { IdlessFuizConfig, PublishedFuiz, PublishedFuizDB } from './types';
+import type { AvailableLanguageTag } from '$paraglide/runtime';
 
 export function dataURIToBlob(dataURI: string): Blob {
 	const [info, data] = dataURI.split(',');
@@ -63,4 +64,23 @@ export async function getThumbnail(
 		},
 		(async () => undefined)()
 	);
+}
+
+export function encodeAsDataURL(array: ArrayBuffer): string {
+	let binary = '';
+	for (const byte of new Uint8Array(array)) {
+		binary += String.fromCharCode(byte);
+	}
+	return 'data:image/png;base64,' + btoa(binary);
+}
+
+export function fixPublish(p: PublishedFuizDB): PublishedFuiz {
+	return {
+		...p,
+		thumbnail: p.thumbnail ? encodeAsDataURL(p.thumbnail) : null,
+		tags: p.tags.split(' ~ '),
+		published: new Date(p.published),
+		last_updated: new Date(p.last_updated),
+		language: p.language as AvailableLanguageTag
+	};
 }

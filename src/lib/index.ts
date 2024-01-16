@@ -54,30 +54,6 @@ export const limits = {
 	}
 } as const;
 
-async function encode(array: ArrayBuffer): Promise<string> {
-	return new Promise((resolve) => {
-		const blob = new Blob([array]);
-		const reader = new FileReader();
-
-		reader.addEventListener('load', () => {
-			resolve(reader.result?.toString() || '');
-		});
-
-		reader.readAsDataURL(blob);
-	});
-}
-
-export async function fixPublish(p: PublishedFuizDB): Promise<PublishedFuiz> {
-	return {
-		...p,
-		thumbnail: p.thumbnail ? await encode(p.thumbnail) : null,
-		tags: p.tags.split(' ~ '),
-		published: new Date(p.published),
-		last_updated: new Date(p.last_updated),
-		language: p.language as AvailableLanguageTag
-	};
-}
-
 export async function getAllCreations(): Promise<[Creation[], IDBDatabase]> {
 	return await new Promise((resolve, reject) => {
 		const request = indexedDB.open('FuizDB', 1);

@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { fixPublish, type PublishedFuizDB } from '$lib';
+import { dataURIToBlob, encodeAsDataURL, fixPublish } from '$lib/serverOnlyUtils';
+import type { PublishedFuiz, PublishedFuizDB } from '$lib/types';
 
 export const load = (async ({ params, platform }) => {
 	const published =
@@ -12,7 +13,9 @@ export const load = (async ({ params, platform }) => {
 		error(404, 'fuiz was not found');
 	}
 
-	const fuiz = await fixPublish(published as PublishedFuizDB);
+	const fuiz = fixPublish(published as PublishedFuizDB);
 
-	return { fuiz };
+	return {
+		fuiz
+	};
 }) satisfies PageServerLoad;

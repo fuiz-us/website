@@ -22,11 +22,7 @@
 				</div>
 			</div>
 		</div>
-		<div>
-			<!-- {#each fuiz. as slide}
-				
-			{/each} -->
-		</div>
+		<div />
 	</div>
 </TypicalPage>
 

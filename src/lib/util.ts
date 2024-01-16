@@ -5,7 +5,6 @@ export async function bring(
 	try {
 		return await fetch(input, init);
 	} catch (e) {
-		console.log(e);
 		return undefined;
 	}
 }

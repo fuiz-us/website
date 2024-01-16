@@ -17,8 +17,6 @@ export const GET: RequestHandler = async ({ request, platform }) => {
 		.bind(email)
 		.first()) || { r2_key: undefined };
 
-	console.log('r2_key', r2_key);
-
 	if (!r2_key) error(400, 'not allowed');
 
 	const fuizBody = (await platform?.env.BUCKET.get(r2_key)) || undefined;

@@ -1,4 +1,3 @@
-import { Buffer } from 'node:buffer';
 import { bring } from './util';
 import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import type { IdlessFuizConfig } from './types';
@@ -8,7 +7,9 @@ export function dataURIToBlob(dataURI: string): Blob {
 
 	const mimeString = info.split(';')[0].split(':')[1];
 
-	return new Blob([Buffer.from(data, 'base64')], { type: mimeString });
+	return new Blob([Uint8Array.from(atob(data), (c) => c.charCodeAt(0))], {
+		type: mimeString
+	});
 }
 
 export async function getThumbnail(

@@ -5,7 +5,7 @@ export async function bring(
 	try {
 		return await fetch(input, init);
 	} catch (e) {
-		console.log(e);
+		console.log(JSON.stringify(e).slice(undefined, 1000));
 		return undefined;
 	}
 }

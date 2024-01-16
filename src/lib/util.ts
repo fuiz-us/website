@@ -2,13 +2,10 @@ export async function bring(
 	input: URL | RequestInfo,
 	init?: RequestInit | undefined
 ): Promise<Response | undefined> {
+	console.log(input);
 	try {
 		return await fetch(input, init);
 	} catch (e) {
-		let message = 'Unknown Error';
-		if (e instanceof Error) message = e.message;
-		// we'll proceed, but let's report it
-		console.log(message.slice(-1000));
 		return undefined;
 	}
 }

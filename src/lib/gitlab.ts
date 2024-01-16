@@ -3,6 +3,9 @@ import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import type { IdlessFuizConfig } from './types';
 import { bring } from './util';
 
+import pkg from 'base64-blob';
+const { base64ToBlob } = pkg;
+
 export async function createFileInGit(file_path: string, file_content: string): Promise<string> {
 	await fetch(
 		`https://gitlab.com/api/v4/projects/${
@@ -67,21 +70,11 @@ export async function getThumbnail(
 
 				return { thumbnail: await thumbnail.arrayBuffer(), alt: media.Image.Corkboard.alt };
 			} else if ('Base64' in media.Image) {
-				console.log('image is base64');
-
-				const image_res = await bring(media.Image.Base64.data);
-
-				console.log('we have image blob');
-
-				if (image_res === undefined) return undefined;
-
-				const blob = await image_res.blob();
+				const blob = await base64ToBlob(media.Image.Base64.data);
 
 				const form_data = new FormData();
 
 				form_data.append('image', blob);
-
-				console.log('sending request to', PUBLIC_CORKBOARD_URL);
 
 				const res = await bring(PUBLIC_CORKBOARD_URL + '/upload', {
 					method: 'POST',
@@ -90,8 +83,6 @@ export async function getThumbnail(
 				});
 
 				const id = await res?.json();
-
-				console.log('id', id);
 
 				if (!id) return undefined;
 

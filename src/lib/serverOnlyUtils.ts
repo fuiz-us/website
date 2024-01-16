@@ -25,8 +25,7 @@ export async function getThumbnail(
 				const thumbnail = await bring(
 					PUBLIC_CORKBOARD_URL + '/thumbnail/' + media.Image.Corkboard.id,
 					{
-						method: 'GET',
-						mode: 'cors'
+						method: 'GET'
 					}
 				);
 
@@ -50,8 +49,7 @@ export async function getThumbnail(
 				if (!id) return undefined;
 
 				const thumbnail = await bring(PUBLIC_CORKBOARD_URL + '/thumbnail/' + id, {
-					method: 'GET',
-					mode: 'cors'
+					method: 'GET'
 				});
 
 				if (!thumbnail?.ok) {

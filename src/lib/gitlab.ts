@@ -40,4 +40,6 @@ export async function updateFileInGit(file_path: string, file_content: string) {
 			})
 		}
 	);
+
+	return `${env.GITLAB_PUBLIC_LINK}/-/raw/main/${file_path}`;
 }

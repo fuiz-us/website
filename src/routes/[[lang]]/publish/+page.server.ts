@@ -57,6 +57,6 @@ export const actions: Actions = {
 			.bind(desired_id, id)
 			.run();
 
-		return { success: true };
+		return { r2_key: id };
 	}
 };

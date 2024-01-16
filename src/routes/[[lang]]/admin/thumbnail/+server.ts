@@ -1,8 +1,8 @@
 import { parse } from '@ltd/j-toml';
 import type { RequestHandler } from './$types';
 import type { OnlineFuiz } from '../+page';
-import { getThumbnail } from '$lib/gitlab';
 import { error } from '@sveltejs/kit';
+import { getThumbnail } from '$lib/serverOnlyUtils';
 
 export const GET: RequestHandler = async ({ request, platform }) => {
 	const email = request.headers.get('Cf-Access-Authenticated-User-Email');
@@ -16,6 +16,8 @@ export const GET: RequestHandler = async ({ request, platform }) => {
 	)
 		.bind(email)
 		.first()) || { r2_key: undefined };
+
+	console.log('r2_key', r2_key);
 
 	if (!r2_key) error(400, 'not allowed');
 

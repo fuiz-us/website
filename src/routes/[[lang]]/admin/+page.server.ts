@@ -3,7 +3,8 @@ import type { Actions, PageServerLoad } from './$types';
 import type { R2ObjectBody } from '@cloudflare/workers-types';
 import { parse } from '@ltd/j-toml';
 import type { OnlineFuiz } from './+page';
-import { createFileInGit, getThumbnail, updateFileInGit } from '$lib/gitlab';
+import { createFileInGit, updateFileInGit } from '$lib/gitlab';
+import { getThumbnail } from '$lib/serverOnlyUtils';
 
 export const load: PageServerLoad = async ({ request, platform }) => {
 	const email = request.headers.get('Cf-Access-Authenticated-User-Email');

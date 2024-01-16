@@ -9,14 +9,6 @@ export async function bring(
 	}
 }
 
-export function dataURIToBlob(dataURI: string): Blob {
-	const [info, data] = dataURI.split(',');
-
-	const mimeString = info.split(';')[0].split(':')[1];
-
-	return new Blob([Buffer.from(data, 'base64')], { type: mimeString });
-}
-
 export function zip<T, U>(a: Array<T>, b: Array<U>): Array<[T, U]> {
 	if (a.length < b.length) {
 		return a.map((v, i) => [v, b[i]]);

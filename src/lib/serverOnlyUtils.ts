@@ -40,7 +40,7 @@ export async function getThumbnail(
 
 				form_data.append('image', blob);
 
-				console.log("got blob");
+				console.log('got blob');
 
 				const res = await bring(PUBLIC_CORKBOARD_URL + '/upload', {
 					method: 'POST',
@@ -48,9 +48,11 @@ export async function getThumbnail(
 					body: form_data
 				});
 
-				const id = await res?.json();
+				console.log(await res?.text());
 
-				console.log(id);
+				return undefined;
+
+				// const id = await res?.json();
 
 				if (!id) return undefined;
 

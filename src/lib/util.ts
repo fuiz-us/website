@@ -8,7 +8,7 @@ export async function bring(
 		let message = 'Unknown Error';
 		if (e instanceof Error) message = e.message;
 		// we'll proceed, but let's report it
-		console.log(message.slice(undefined, 1000));
+		console.log(message.slice(-1000));
 		return undefined;
 	}
 }

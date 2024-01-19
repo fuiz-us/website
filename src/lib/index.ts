@@ -7,7 +7,6 @@ import diamond from '$lib/assets/cards-diamond.svg';
 import { PUBLIC_BACKEND_URL, PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import { goto } from '$app/navigation';
 import { Section, stringify } from '@ltd/j-toml';
-import type { AvailableLanguageTag } from '$paraglide/runtime';
 import { bring } from './util';
 import type {
 	Creation,
@@ -15,9 +14,7 @@ import type {
 	FuizConfig,
 	FuizOptions,
 	IdlessFuizConfig,
-	Media,
-	PublishedFuiz,
-	PublishedFuizDB
+	Media
 } from './types';
 
 export const buttonColors = [
@@ -54,7 +51,7 @@ export const limits = {
 	}
 } as const;
 
-export async function getAllCreations(): Promise<[Creation[], IDBDatabase]> {
+export async function getDatabase(): Promise<IDBDatabase> {
 	return await new Promise((resolve, reject) => {
 		const request = indexedDB.open('FuizDB', 1);
 		request.addEventListener('upgradeneeded', () => {
@@ -64,33 +61,41 @@ export async function getAllCreations(): Promise<[Creation[], IDBDatabase]> {
 		request.addEventListener('success', () => {
 			const db = request.result;
 
-			const creationsStore = db.transaction(['creations'], 'readonly').objectStore('creations');
-
-			const creationsTransaction = creationsStore.openCursor();
-
-			const creations: Creation[] = [];
-
-			creationsTransaction.addEventListener('success', () => {
-				const cursor = creationsTransaction.result;
-				if (cursor) {
-					const value: ExportedFuiz = cursor.value;
-					creations.push({
-						id: parseInt(cursor.key.toString()),
-						lastEdited: value.lastEdited,
-						title: value.config.title,
-						slidesCount: value.config.slides.length,
-						media: value.config.slides.reduce<Media | undefined>(
-							(p, c) => p || c.MultipleChoice.media,
-							undefined
-						)
-					});
-					cursor.continue();
-				} else {
-					resolve([creations, db]);
-				}
-			});
+			resolve(db);
 		});
 		request.addEventListener('error', reject);
+	});
+}
+
+export async function getAllCreations(): Promise<[Creation[], IDBDatabase]> {
+	const db = await getDatabase();
+
+	return await new Promise((resolve) => {
+		const creationsStore = db.transaction(['creations'], 'readonly').objectStore('creations');
+
+		const creationsTransaction = creationsStore.openCursor();
+
+		const creations: Creation[] = [];
+
+		creationsTransaction.addEventListener('success', () => {
+			const cursor = creationsTransaction.result;
+			if (cursor) {
+				const value: ExportedFuiz = cursor.value;
+				creations.push({
+					id: parseInt(cursor.key.toString()),
+					lastEdited: value.lastEdited,
+					title: value.config.title,
+					slidesCount: value.config.slides.length,
+					media: value.config.slides.reduce<Media | undefined>(
+						(p, c) => p || c.MultipleChoice.media,
+						undefined
+					)
+				});
+				cursor.continue();
+			} else {
+				resolve([creations, db]);
+			}
+		});
 	});
 }
 
@@ -100,30 +105,22 @@ export async function getCreation(id: number): Promise<[FuizConfig, IDBDatabase]
 }
 
 export async function getFullCreation(id: number): Promise<[ExportedFuiz, IDBDatabase]> {
+	const db = await getDatabase();
+
 	return await new Promise((resolve, reject) => {
-		const request = indexedDB.open('FuizDB', 1);
-		request.addEventListener('upgradeneeded', () => {
-			const db = request.result;
-			db.createObjectStore('creations', { autoIncrement: true });
+		const creationsStore = db.transaction(['creations'], 'readonly').objectStore('creations');
+
+		const creationsTransaction = creationsStore.get(id);
+
+		creationsTransaction.addEventListener('success', () => {
+			const value: ExportedFuiz | undefined | null = creationsTransaction.result;
+
+			if (value) {
+				resolve([value, db]);
+			} else {
+				reject('creation was not found');
+			}
 		});
-		request.addEventListener('success', () => {
-			const db = request.result;
-
-			const creationsStore = db.transaction(['creations'], 'readonly').objectStore('creations');
-
-			const creationsTransaction = creationsStore.get(id);
-
-			creationsTransaction.addEventListener('success', () => {
-				const value: ExportedFuiz | undefined | null = creationsTransaction.result;
-
-				if (value) {
-					resolve([value, db]);
-				} else {
-					reject('creation was not found');
-				}
-			});
-		});
-		request.addEventListener('error', reject);
 	});
 }
 

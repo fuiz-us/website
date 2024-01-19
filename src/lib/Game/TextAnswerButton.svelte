@@ -15,8 +15,8 @@
 <div style:opacity={correct === false ? '50%' : '100%'}>
 	<FancyButton
 		on:click
-		backgroundColor={buttonColors.at(index)?.at(0)}
-		backgroundDeepColor={buttonColors.at(index)?.at(1)}
+		backgroundColor={buttonColors.at(index % buttonColors.length)?.at(0)}
+		backgroundDeepColor={buttonColors.at(index % buttonColors.length)?.at(1)}
 	>
 		<div style:height="100%" style:width="100%" style:display="flex" style:align-items="center">
 			<div id="icon" style:display="flex" style:padding="0.2em">

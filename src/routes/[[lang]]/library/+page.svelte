@@ -7,5 +7,6 @@
 </script>
 
 <TypicalPage>
-	<Listing mostPlayed={data.published} recentlyPublished={data.published} />
+	{@const { mostPlayed, recentlyPublished } = data}
+	<Listing {mostPlayed} {recentlyPublished} />
 </TypicalPage>

@@ -13,10 +13,10 @@
 		style:display="flex"
 		style:align-items="center"
 		style:max-width="40ch"
-		style:margin="10px"
+		style:margin="auto"
 		transition:scale={{ delay: 500, duration: 150, easing: backOut }}
 	>
-		<div>
+		<div style:margin="auto">
 			<ErrorMessage {errorMessage} />
 		</div>
 	</div>

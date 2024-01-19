@@ -29,26 +29,26 @@
 				style:border-radius="0.7em"
 				style:color="var(--palette-light)"
 				style:padding="0.3em 0.8em"
-				style:background={buttonColors.at(index)?.at(0)}
-				style:border="0.15em solid {buttonColors.at(index)?.at(1)}"
+				style:background={buttonColors.at(index % buttonColors.length)?.at(0)}
+				style:border="0.15em solid {buttonColors.at(index % buttonColors.length)?.at(1)}"
 			>
 				<Icon
-					src={buttonSymbols.at(index)?.at(0) ?? ''}
-					alt={buttonSymbols.at(index)?.at(1) ?? ''}
+					src={buttonSymbols.at(index % buttonSymbols.length)?.at(0) ?? ''}
+					alt={buttonSymbols.at(index % buttonSymbols.length)?.at(1) ?? ''}
 					size="1em"
 				/>
 			</div>
 			<div style:display="flex" style:flex-direction="column-reverse" style:height="100%">
 				<div
-					style:background={buttonColors.at(index)?.at(0)}
-					style:border="0.15em solid {buttonColors.at(index)?.at(1)}"
+					style:background={buttonColors.at(index % buttonColors.length)?.at(0)}
+					style:border="0.15em solid {buttonColors.at(index % buttonColors.length)?.at(1)}"
 					style:border-radius="0.7em"
 					style:height="max(1em, calc((100% - 2em) * {maximum === 0 ? 0 : count / maximum}))"
 				/>
 				<div
 					style:display="flex"
 					style:justify-content="center"
-					style:color={buttonColors.at(index)?.at(0)}
+					style:color={buttonColors.at(index % buttonColors.length)?.at(0)}
 					style:font-family="Poppins"
 				>
 					{count}

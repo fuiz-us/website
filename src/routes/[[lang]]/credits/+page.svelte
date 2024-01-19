@@ -23,7 +23,7 @@
 
 <TypicalPage>
 	<div
-		style:flex="1"
+		style:height="100%"
 		style:display="flex"
 		style:flex-direction="column"
 		style:gap="5px"
@@ -31,7 +31,7 @@
 		style:align-items="center"
 		style:max-width="40ch"
 		style:font-size="clamp(1em,4vw,1.25em)"
-		style:margin="10px"
+		style:margin="auto"
 	>
 		<AnchorMessage
 			href="https://adhami.me"

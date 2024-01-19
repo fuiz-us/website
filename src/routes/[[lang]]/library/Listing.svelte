@@ -1,4 +1,7 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
+	import Icon from '$lib/Icon.svelte';
 	import type { PublishedFuiz } from '$lib/types';
 	import OnlinePublised from './OnlinePublised.svelte';
 
@@ -12,6 +15,16 @@
 			<a href="library/public/{fuiz.id}">
 				<OnlinePublised data={fuiz} />
 			</a>
+		{:else}
+			<div
+				style:display="flex"
+				style:flex-direction="column"
+				style:opacity="0.7"
+				style:align-items="center"
+			>
+				<Icon src="$lib/assets/ghost.svg" size="min(20vh, 60vw)" alt={m.nothing()} />
+				{m.nothing()}
+			</div>
 		{/each}
 	</div>
 </div>
@@ -22,6 +35,16 @@
 			<a href="library/public/{fuiz.id}">
 				<OnlinePublised data={fuiz} />
 			</a>
+		{:else}
+			<div
+				style:display="flex"
+				style:flex-direction="column"
+				style:opacity="0.7"
+				style:align-items="center"
+			>
+				<Icon src="$lib/assets/ghost.svg" size="min(20vh, 60vw)" alt={m.nothing()} />
+				{m.nothing()}
+			</div>
 		{/each}
 	</div>
 </div>

@@ -10,7 +10,8 @@
 		type TextOrMedia,
 		type AnswerResult,
 		type IdlessFuizConfig,
-		type FuizOptions
+		type FuizOptions,
+		type ServerPossiblyHidden
 	} from '$lib/types';
 	import Leaderboard from './Leaderboard.svelte';
 	import Loading from '$lib/Loading.svelte';
@@ -42,7 +43,7 @@
 
 				question?: string;
 				media?: Media;
-				answers?: TextOrMedia[];
+				answers?: (TextOrMedia | undefined)[];
 				answered_count?: number;
 				results?: AnswerResult[];
 		  }
@@ -84,6 +85,9 @@
 		  }
 		| {
 				WaitingScreen: TruncatedList<string>;
+		  }
+		| {
+				TeamDisplay: TruncatedList<string>;
 		  }
 		| {
 				Leaderboard: {
@@ -129,7 +133,7 @@
 					count?: number;
 					question?: string;
 					media?: Media;
-					answers: Array<TextOrMedia>;
+					answers: Array<ServerPossiblyHidden<TextOrMedia>>;
 					answered_count?: number;
 					duration: number;
 				};
@@ -143,7 +147,7 @@
 					count?: number;
 					question?: string;
 					media?: Media;
-					answers?: Array<TextOrMedia>;
+					answers: Array<TextOrMedia>;
 					results: Array<AnswerResult>;
 				};
 		  };
@@ -236,6 +240,12 @@
 							WaitingScreen: new_msg.Game.WaitingScreen
 						}
 					};
+				} else if ('TeamDisplay' in new_msg.Game) {
+					currentState = {
+						Game: {
+							WaitingScreen: new_msg.Game.TeamDisplay
+						}
+					};
 				} else if ('Leaderboard' in new_msg.Game) {
 					let { index: previous_index = 0, count: previous_count = 1 } =
 						currentState && 'Slide' in currentState ? currentState : {};
@@ -302,7 +312,10 @@
 							MultipleChoice: 'AnswersAnnouncement',
 							question,
 							media,
-							answers,
+							answers: answers.map((a) => {
+								if (a == 'Hidden') return undefined;
+								return a.Visible;
+							}),
 							answered_count
 						}
 					};
@@ -323,7 +336,7 @@
 						count = previous_count,
 						question = previous_state?.question,
 						media = previous_state?.media,
-						answers = previous_state?.answers,
+						answers,
 						results
 					} = mc.AnswersResults;
 					currentState = {
@@ -517,7 +530,7 @@
 				bind:bindableGameInfo
 				{gameInfo}
 				questionText={question || ''}
-				answers={(answers || []).map((answerContent) => answerContent.Text)}
+				answers={(answers || []).map((answerContent) => answerContent?.Text)}
 				timeLeft={timer}
 				timeStarted={initialTimer}
 				answeredCount={answeredCount || 0}
@@ -531,7 +544,7 @@
 				{gameInfo}
 				questionText={question || ''}
 				answers={zip(answers || [], results || []).map(([answerContent, answerResult]) => ({
-					text: answerContent.Text,
+					text: answerContent?.Text || '',
 					count: answerResult.count,
 					correct: answerResult.correct
 				}))}

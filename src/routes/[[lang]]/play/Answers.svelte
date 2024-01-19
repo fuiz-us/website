@@ -10,7 +10,7 @@
 	export let name: string;
 	export let score: number;
 	export let showAnswers: boolean;
-	export let answers: TextOrMedia[];
+	export let answers: (TextOrMedia | undefined)[];
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">
@@ -26,7 +26,10 @@
 				<EmptyAnswers answersCount={answers.length} on:answer />
 			{:else}
 				<div style:height="100%" style:font-size="1.5em">
-					<Answers answers={answers.map((t) => ({ text: t.Text, correct: undefined }))} on:answer />
+					<Answers
+						answers={answers.map((t) => ({ text: t?.Text || '?', correct: undefined }))}
+						on:answer
+					/>
 				</div>
 			{/if}
 		</NiceBackground>

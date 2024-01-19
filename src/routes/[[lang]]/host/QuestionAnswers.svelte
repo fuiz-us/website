@@ -16,7 +16,7 @@
 	export let gameInfo: SharedGameInfo;
 
 	export let questionText: string;
-	export let answers: string[];
+	export let answers: (string | undefined)[];
 	export let timeLeft: number;
 	export let timeStarted: number;
 	export let answeredCount: number;
@@ -54,6 +54,7 @@
 				<svelte:fragment slot="bottom">
 					<Answers
 						answers={answers.map((a) => {
+							if (a === undefined) return { text: '?', correct: undefined };
 							return { text: a, correct: undefined };
 						})}
 					/>

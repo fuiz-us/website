@@ -97,7 +97,15 @@ export type Creation = {
 export type FuizOptions = {
 	random_names: boolean;
 	show_answers: boolean;
+	no_leaderboard: boolean;
+	teams?: number;
 };
+
+export type ServerPossiblyHidden<T> =
+	| {
+			Visible: T;
+	  }
+	| 'Hidden';
 
 export type PublishedFuizDB = {
 	id: number;

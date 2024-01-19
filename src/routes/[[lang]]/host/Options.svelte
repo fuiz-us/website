@@ -8,6 +8,7 @@
 	import Switch from '$lib/Switch.svelte';
 	import TypicalPage from '$lib/TypicalPage.svelte';
 	import type { FuizConfig, Slide } from '$lib/types';
+	import Slider from '$lib/Slider.svelte';
 
 	export let id: number;
 
@@ -18,7 +19,10 @@
 	export let randomizedNames = false,
 		questionsOnPlayersDevices = false,
 		shuffleAnswers = false,
-		shuffleSlides = false;
+		shuffleSlides = false,
+		leaderboard = true,
+		teams = false,
+		teamSize = 4;
 
 	// https://stackoverflow.com/a/2450976
 	function shuffleArray<T>(array: T[]): T[] {
@@ -75,8 +79,10 @@
 				errorMessage = '';
 				loading = true;
 				playConfig(shuffle(config, shuffleSlides, shuffleAnswers), {
-					random_names: randomizedNames,
-					show_answers: questionsOnPlayersDevices
+					random_names: randomizedNames || teams,
+					show_answers: questionsOnPlayersDevices || teams,
+					no_leaderboard: !leaderboard,
+					teams: teams ? 4 : 0
 				}).then((err) => {
 					loading = false;
 					if (err) {
@@ -88,11 +94,25 @@
 			<h2>{m.options()}</h2>
 			<div id="options">
 				<div class="switch">
-					<Switch id="random" bind:checked={randomizedNames}>{m.randomized_names()}</Switch>
+					<Switch id="teams" bind:checked={teams}>Teams</Switch>
+				</div>
+				{#if teams}
+					<hr />
+					<Slider id="team_size" bind:value={teamSize} min={2} max={5}>Optimal team size</Slider>
+				{/if}
+				<hr />
+				<div class="switch">
+					<Switch id="random" bind:checked={randomizedNames} stuck={teams ? true : undefined}
+						>{m.randomized_names()}</Switch
+					>
 				</div>
 				<hr />
 				<div class="switch">
-					<Switch id="players" bind:checked={questionsOnPlayersDevices}>
+					<Switch
+						id="players"
+						bind:checked={questionsOnPlayersDevices}
+						stuck={teams ? true : undefined}
+					>
 						{m.questions_on_players_devices()}
 					</Switch>
 				</div>
@@ -103,6 +123,10 @@
 				<hr />
 				<div class="switch">
 					<Switch id="shuffle_answers" bind:checked={shuffleAnswers}>{m.shuffle_answers()}</Switch>
+				</div>
+				<hr />
+				<div class="switch">
+					<Switch id="leaderboard" bind:checked={leaderboard}>Leaderboard</Switch>
 				</div>
 			</div>
 			<ErrorMessage {errorMessage} />

@@ -1,7 +1,13 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import type { AnswerResult, TextOrMedia, Media, IdlessFuizConfig } from '$lib/types';
+	import type {
+		AnswerResult,
+		TextOrMedia,
+		Media,
+		IdlessFuizConfig,
+		ServerPossiblyHidden
+	} from '$lib/types';
 	import { onMount } from 'svelte';
 	import ChooseName from './ChooseName.svelte';
 	import WaitingMobile from './WaitingMobile.svelte';
@@ -48,7 +54,7 @@
 
 				question?: string;
 				media?: Media;
-				answers?: TextOrMedia[];
+				answers?: (TextOrMedia | undefined)[];
 				results?: AnswerResult[];
 				answered?: number;
 		  }
@@ -149,7 +155,7 @@
 					count?: number;
 					question?: string;
 					media?: Media;
-					answers: Array<TextOrMedia>;
+					answers: Array<ServerPossiblyHidden<TextOrMedia>>;
 					answered_count?: number;
 					duration: number;
 				};
@@ -160,7 +166,7 @@
 					count?: number;
 					question?: string;
 					media?: Media;
-					answers?: Array<TextOrMedia>;
+					answers: Array<TextOrMedia>;
 					results: Array<AnswerResult>;
 				};
 		  };
@@ -354,7 +360,10 @@
 							MultipleChoice: 'AnswersAnnouncement',
 							question,
 							media,
-							answers
+							answers: answers.map((a) => {
+								if (a === 'Hidden') return undefined;
+								return a.Visible;
+							})
 						}
 					};
 				} else if ('AnswersResults' in mc) {
@@ -363,7 +372,7 @@
 						count = previous_count,
 						question = previous_state?.question,
 						media = previous_state?.media,
-						answers = previous_state?.answers,
+						answers,
 						results
 					} = mc.AnswersResults;
 					currentState = {

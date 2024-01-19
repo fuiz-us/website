@@ -1,12 +1,26 @@
 <script lang="ts">
 	export let checked: boolean;
 	export let id: string;
+	export let stuck: boolean | undefined = undefined;
+
+	$: ((stuck: boolean | undefined) => {
+		if (stuck !== undefined) {
+			checked = stuck;
+		}
+	})(stuck);
 </script>
 
 <div id="group" data-checked={checked}>
+	<input {id} type="checkbox" role="switch" bind:checked disabled={stuck !== undefined} />
 	<label for={id}><slot /></label>
-	<input {id} type="checkbox" role="switch" bind:checked />
-	<button on:click={() => (checked = !checked)} type="button">
+	<button
+		on:click={() => {
+			if (stuck === undefined) {
+				checked = !checked;
+			}
+		}}
+		type="button"
+	>
 		<div id="knob-container">
 			<div id="start" />
 			<div id="middle">
@@ -36,6 +50,14 @@
 		display: none;
 	}
 
+	input:disabled + * + button {
+		--accent-color: color-mix(in srgb, currentColor 50%, transparent);
+	}
+
+	input:disabled + label {
+		opacity: 0.5;
+	}
+
 	button {
 		appearance: none;
 		background: none;
@@ -60,15 +82,19 @@
 		background-size: 0%;
 		flex: 1;
 		display: flex;
+		height: 100%;
 	}
 
 	#knob {
 		display: block;
 		position: absolute;
-		background: currentColor;
+		border: 0.15em solid;
+		box-sizing: border-box;
+		background: var(--palette-light);
 		height: 100%;
 		aspect-ratio: 1/1;
 		border-radius: 100%;
+		width: min-content;
 	}
 
 	#start {

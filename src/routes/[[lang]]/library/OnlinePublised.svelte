@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import type { PublishedFuiz } from '$lib/types';
 
 	export let data: PublishedFuiz;
@@ -13,7 +15,10 @@
 	<div class="info">
 		{data.title}
 		<div class="little">
-			{data.author} • played {data.played_count} times
+			{m.author_played_times({
+				author: data.author,
+				times: data.played_count
+			})}
 		</div>
 	</div>
 </div>

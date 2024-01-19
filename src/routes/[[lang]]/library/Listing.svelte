@@ -9,7 +9,7 @@
 </script>
 
 <div class="section">
-	<h2>Recently Published</h2>
+	<h2>{m.recently_published()}</h2>
 	<div class="grid">
 		{#each recentlyPublished as fuiz}
 			<a href="library/public/{fuiz.id}">
@@ -29,7 +29,7 @@
 	</div>
 </div>
 <div class="section">
-	<h2>Most Played</h2>
+	<h2>{m.most_published()}</h2>
 	<div class="grid">
 		{#each mostPlayed as fuiz}
 			<a href="library/public/{fuiz.id}">

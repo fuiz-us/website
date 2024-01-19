@@ -49,6 +49,14 @@
 					</div>
 				</FancyAnchorButton>
 			</div>
+			<div>
+				<FancyAnchorButton href={route('/library', languageTag())}>
+					<div class="a">
+						<Icon size="1.2em" src="$lib/assets/library.svg" alt={m.library()} />
+						<div>{m.library()}</div>
+					</div>
+				</FancyAnchorButton>
+			</div>
 			<LanguageSwitcher />
 			<DarkModeSwitcher />
 		</nav>
@@ -144,6 +152,7 @@
 
 	nav {
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: center;
 		align-items: center;
 		gap: 0.3em;

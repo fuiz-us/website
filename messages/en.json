@@ -161,5 +161,12 @@
 	"tag": "Tag",
 	"unknown": "Unknown",
 	"switch_dark": "Switch to Dark Mode",
-	"switch_light": "Switch to Light Mode"
+	"switch_light": "Switch to Light Mode",
+	"library": "Library",
+	"author_played_times": "{author} • played {times} times",
+	"fallback": "Fallback",
+	"played_times": "Played {times} times",
+	"import_fuiz": "Import",
+	"recently_published": "Recently Published",
+	"most_published": "Most Played"
 }

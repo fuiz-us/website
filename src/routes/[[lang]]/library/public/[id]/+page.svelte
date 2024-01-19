@@ -52,7 +52,7 @@
 							style:align-items="center"
 							style:justify-content="center"
 						>
-							<Icon src="$lib/assets/image.svg" size="2em" alt="fallback" />
+							<Icon src="$lib/assets/image.svg" size="2em" alt={m.fallback()} />
 						</div>
 					{/if}
 				</div>
@@ -61,26 +61,28 @@
 						{fuiz.title}
 					</div>
 					<div>
-						Author: {fuiz.author}
+						{m.author()}: {fuiz.author}
 					</div>
 					<div>
-						Tags: {new Intl.ListFormat('en', {
+						{m.tags()}: {new Intl.ListFormat('en', {
 							style: 'narrow',
 							type: 'conjunction'
 						}).format(fuiz.tags)}
 					</div>
 					<div>
-						Played {fuiz.played_count} times
+						{m.played_times({
+							times: fuiz.played_count
+						})}
 					</div>
 					<div>
-						Language: {new Intl.DisplayNames([languageTag()], {
+						{m.language()}: {new Intl.DisplayNames([languageTag()], {
 							type: 'language'
 						}).of(fuiz.language)}
 					</div>
 				</div>
 			</div>
 			<FancyButton on:click={addToCollection}>
-				<div style:font-family="Poppins">Import</div>
+				<div style:font-family="Poppins">{m.import_fuiz()}</div>
 			</FancyButton>
 		</div>
 		<div

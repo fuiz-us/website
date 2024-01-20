@@ -66,7 +66,9 @@
 						<h2>{m.choose_local()}</h2>
 						<ul id="creations-list">
 							{#each sortedCreations as { title, id, slidesCount }, index}
-								<li class="creation"><a href={'?id=' + id}>{title} · {slidesCount} slides</a></li>
+								<li class="creation">
+									<a href={'?id=' + id}>{title} · {m.slides_count({ count: slidesCount })}</a>
+								</li>
 								{#if index + 1 != creations.length}
 									<hr />
 								{/if}

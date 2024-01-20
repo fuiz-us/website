@@ -165,6 +165,7 @@
 	.a {
 		display: flex;
 		font-family: 'Poppins';
+		white-space: nowrap;
 		align-items: center;
 		justify-content: center;
 		gap: 0.2em;

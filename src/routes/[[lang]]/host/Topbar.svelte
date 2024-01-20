@@ -126,6 +126,7 @@
 		style:gap="2px"
 		style:align-items="center"
 		style:font-family="Poppins"
+		style:font-weight="800"
 	>
 		<div style:font-family="Poppins">
 			{m.slide_index({
@@ -142,6 +143,7 @@
 		style:align-items="baseline"
 		style:white-space="nowrap"
 		style:font-family="Poppins"
+		style:font-weight="800"
 	>
 		{m.game_code_display({
 			code: gameInfo.gameCode

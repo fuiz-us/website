@@ -94,11 +94,13 @@
 			<h2>{m.options()}</h2>
 			<div id="options">
 				<div class="switch">
-					<Switch id="teams" bind:checked={teams}>Teams</Switch>
+					<Switch id="teams" bind:checked={teams}>{m.teams()}</Switch>
 				</div>
 				{#if teams}
 					<hr />
-					<Slider id="team_size" bind:value={teamSize} min={2} max={5}>Optimal team size</Slider>
+					<Slider id="team_size" bind:value={teamSize} min={2} max={5}
+						>{m.optimal_team_size()}</Slider
+					>
 				{/if}
 				<hr />
 				<div class="switch">
@@ -126,7 +128,7 @@
 				</div>
 				<hr />
 				<div class="switch">
-					<Switch id="leaderboard" bind:checked={leaderboard}>Leaderboard</Switch>
+					<Switch id="leaderboard" bind:checked={leaderboard}>{m.leaderboard()}</Switch>
 				</div>
 			</div>
 			<ErrorMessage {errorMessage} />

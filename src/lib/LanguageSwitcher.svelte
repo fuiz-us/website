@@ -64,6 +64,7 @@
 		text-transform: capitalize;
 		padding: 0.3em 0.3em;
 		line-height: 1.25;
+		white-space: nowrap;
 	}
 
 	a {

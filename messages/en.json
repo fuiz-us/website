@@ -168,5 +168,8 @@
 	"played_times": "Played {times} times",
 	"import_fuiz": "Import",
 	"recently_published": "Recently Published",
-	"most_published": "Most Played"
+	"most_published": "Most Played",
+	"teams": "Teams",
+	"optimal_team_size": "Optimal team size",
+	"leaderboard": "Leaderboard"
 }

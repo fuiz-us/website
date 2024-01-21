@@ -82,7 +82,7 @@
 					random_names: randomizedNames || teams,
 					show_answers: questionsOnPlayersDevices || teams,
 					no_leaderboard: !leaderboard,
-					teams: teams ? 4 : 0
+					...(teams && { teams: teamSize })
 				}).then((err) => {
 					loading = false;
 					if (err) {

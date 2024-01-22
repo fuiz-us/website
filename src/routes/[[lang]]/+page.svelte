@@ -128,12 +128,22 @@
 			<Icon src="$lib/assets/code_blocks.svg" size="7em" alt="Peoeple's Choice" />
 		</div>
 	</section>
+	<section>
+		<div>
+			<h2>We Need Your Feedback!</h2>
+			<p>
+				Fuiz is an ongoing project. Your feedback is very crucial at this stage. Please feel free to
+				submit this <Anchor href="https://forms.gle/erhsbRc4vqViWqFb8">form</Anchor>. You can also
+				reach out at <Anchor href="info@fuiz.us">info@fuiz.us</Anchor>.
+			</p>
+		</div>
+	</section>
 </main>
 
 <style>
 	main {
 		background-color: var(--background-color);
-		line-height: 1.2;
+		line-height: 1.25;
 	}
 
 	header {

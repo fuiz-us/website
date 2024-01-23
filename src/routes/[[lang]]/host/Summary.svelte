@@ -3,11 +3,9 @@
 
 	import { playIdlessConfig } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
-	import Footer from '$lib/Footer.svelte';
-	import Header from '$lib/Header.svelte';
 	import Icon from '$lib/Icon.svelte';
-	import NiceBackground from '$lib/NiceBackground.svelte';
 	import type { FuizOptions, IdlessFuizConfig } from '$lib/types';
+	import TypicalPage from '$lib/TypicalPage.svelte';
 
 	export let stats: [number, number][],
 		player_count: number,
@@ -15,53 +13,37 @@
 		options: FuizOptions;
 </script>
 
-<NiceBackground>
-	<div
-		style:height="100%"
-		style:padding="0.5em"
-		style:gap="0.5em"
-		style:display="flex"
-		style:box-sizing="border-box"
-		style:flex-direction="column"
-		style:align-items="center"
-	>
-		<header>
-			<Header />
-		</header>
-		<div>
-			<FancyButton on:click={() => playIdlessConfig(config, options)}>
-				<div style:padding="0 0.3em">{m.play_again()}</div>
-			</FancyButton>
-		</div>
-		<div id="summary">
-			{#each config.slides as slide, index}
-				{@const [correct, wrong] = stats.at(index) || [0, 0]}
-				{@const unanswered = player_count - correct - wrong}
-				<div class="line">
-					<div class="question-text" title={slide.MultipleChoice.title}>
-						{slide.MultipleChoice.title}
-					</div>
-					<div class="stat">
-						{correct}
-						<Icon src="$lib/assets/correct.svg" alt={m.correct()} size="1em" />
-					</div>
-
-					<div class="stat">
-						{wrong}
-						<Icon src="$lib/assets/wrong.svg" alt={m.wrong()} size="1em" />
-					</div>
-					<div class="stat">
-						{unanswered}
-						<Icon src="$lib/assets/timer_off.svg" alt={m.unanswered()} size="1em" />
-					</div>
-				</div>
-			{/each}
-		</div>
-		<footer>
-			<Footer />
-		</footer>
+<TypicalPage>
+	<div>
+		<FancyButton on:click={() => playIdlessConfig(config, options)}>
+			<div style:padding="0 0.3em">{m.play_again()}</div>
+		</FancyButton>
 	</div>
-</NiceBackground>
+	<div id="summary">
+		{#each config.slides as slide, index}
+			{@const [correct, wrong] = stats.at(index) || [0, 0]}
+			{@const unanswered = player_count - correct - wrong}
+			<div class="line">
+				<div class="question-text" title={slide.MultipleChoice.title}>
+					{slide.MultipleChoice.title}
+				</div>
+				<div class="stat">
+					{correct}
+					<Icon src="$lib/assets/correct.svg" alt={m.correct()} size="1em" />
+				</div>
+
+				<div class="stat">
+					{wrong}
+					<Icon src="$lib/assets/wrong.svg" alt={m.wrong()} size="1em" />
+				</div>
+				<div class="stat">
+					{unanswered}
+					<Icon src="$lib/assets/timer_off.svg" alt={m.unanswered()} size="1em" />
+				</div>
+			</div>
+		{/each}
+	</div>
+</TypicalPage>
 
 <style>
 	#summary {
@@ -93,9 +75,5 @@
 	.stat {
 		display: flex;
 		align-items: center;
-	}
-
-	footer {
-		width: 100%;
 	}
 </style>

@@ -1,11 +1,9 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import Footer from '$lib/Footer.svelte';
-	import Header from '$lib/Header.svelte';
 	import Icon from '$lib/Icon.svelte';
-	import NiceBackground from '$lib/NiceBackground.svelte';
 	import type { IdlessFuizConfig } from '$lib/types';
+	import TypicalPage from '$lib/TypicalPage.svelte';
 
 	export let score:
 		| {
@@ -19,20 +17,9 @@
 	export let config: IdlessFuizConfig;
 </script>
 
-<NiceBackground>
-	<div
-		style:height="100%"
-		style:padding="0.5em"
-		style:gap="0.5em"
-		style:display="flex"
-		style:box-sizing="border-box"
-		style:flex-direction="column"
-		style:align-items="center"
-	>
-		<header>
-			<Header />
-		</header>
-		<div>
+<TypicalPage>
+	<div>
+		<div style:margin-bottom="0.5em">
 			{#if score}
 				{m.placed_summary({
 					position: score.position + 1,
@@ -67,15 +54,11 @@
 				</div>
 			{/each}
 		</div>
-		<footer>
-			<Footer />
-		</footer>
 	</div>
-</NiceBackground>
+</TypicalPage>
 
 <style>
 	#summary {
-		flex: 1;
 		display: flex;
 		flex-direction: column;
 		gap: 0.4em;
@@ -100,10 +83,6 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		flex: 1;
-	}
-
-	footer {
-		width: 100%;
 	}
 
 	.answers {

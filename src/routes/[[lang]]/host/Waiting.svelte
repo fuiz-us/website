@@ -18,6 +18,7 @@
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
 	import { languageTag } from '$paraglide/runtime';
 	import { route } from '$lib/i18n-routing';
+	import Icon from '$lib/Icon.svelte';
 
 	export let code: string;
 	export let players: string[];
@@ -109,7 +110,11 @@
 				style:padding="0.2em"
 				style:box-sizing="border-box"
 			>
-				<div style:margin-left="auto" style:display="flex" style:gap="0.2em">
+				<div style:display="flex" style:gap="0.2em" style:align-items="center">
+					<div style:flex="1" style:display="flex" style:align-items="center">
+						<Icon src="$lib/assets/person.svg" size="1em" alt={m.number_of_players()} />
+						{exact_count}
+					</div>
 					<StatedIconButton
 						icons={[
 							{ src: unlocked, alt: m.lock_game() },

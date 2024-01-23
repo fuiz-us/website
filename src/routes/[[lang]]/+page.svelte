@@ -4,6 +4,7 @@
 
 	import paint from '$lib/assets/paint.svg';
 	import game from '$lib/assets/game.svg';
+	import warning from '$lib/assets/error.svg';
 
 	import DarkModeSwitcher from '$lib/DarkModeSwitcher.svelte';
 	import Icon from '$lib/Icon.svelte';
@@ -17,6 +18,7 @@
 	import { route } from '$lib/i18n-routing';
 	import { languageTag } from '$paraglide/runtime';
 	import LanguageSwitcher from '$lib/LanguageSwitcher.svelte';
+	import AnchorMessage from '$lib/AnchorMessage.svelte';
 
 	const title = m.main_title();
 	const description = m.main_desc();
@@ -95,6 +97,19 @@
 		</div>
 	</section>
 	<section>
+		<div>
+			<AnchorMessage
+				image={{
+					src: warning,
+					alt: m.warning()
+				}}
+				background="#23456740"
+				message="Fuiz is an ongoing project. Your feedback is important."
+				href="#ongoing"
+			/>
+		</div>
+	</section>
+	<section>
 		<div class="split">
 			<div>
 				<h2>{m.community_made()}</h2>
@@ -128,7 +143,7 @@
 			<Icon src="$lib/assets/code_blocks.svg" size="7em" alt="Peoeple's Choice" />
 		</div>
 	</section>
-	<section>
+	<section id="ongoing">
 		<div>
 			<h2>We Need Your Feedback!</h2>
 			<p>

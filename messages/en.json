@@ -172,5 +172,6 @@
 	"teams": "Teams",
 	"optimal_team_size": "Optimal team size",
 	"leaderboard": "Leaderboard",
-	"number_of_players": "Number of players"
+	"number_of_players": "Number of players",
+	"warning": "Warning"
 }

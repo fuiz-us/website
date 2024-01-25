@@ -1,24 +1,18 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 	import { theme } from 'fractils';
-
-	import paint from '$lib/assets/paint.svg';
-	import game from '$lib/assets/game.svg';
 	import warning from '$lib/assets/error.svg';
 
-	import DarkModeSwitcher from '$lib/DarkModeSwitcher.svelte';
 	import Icon from '$lib/Icon.svelte';
-	import Header from '$lib/Header.svelte';
 	import blackLogo from '$lib/assets/dark_logo.svg';
 	import whiteLogo from '$lib/assets/white_logo.svg';
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
-	import FancyAnchorButton from '$lib/FancyAnchorButton.svelte';
 	import Anchor from '$lib/Anchor.svelte';
 	import QuestionAnswers from './host/QuestionAnswers.svelte';
 	import { route } from '$lib/i18n-routing';
 	import { languageTag } from '$paraglide/runtime';
-	import LanguageSwitcher from '$lib/LanguageSwitcher.svelte';
 	import AnchorMessage from '$lib/AnchorMessage.svelte';
+	import MainHeader from './MainHeader.svelte';
 
 	const title = m.main_title();
 	const description = m.main_desc();
@@ -32,37 +26,7 @@
 </svelte:head>
 
 <main>
-	<header>
-		<Header />
-		<nav>
-			<div>
-				<FancyAnchorButton href={route('/create', languageTag())}>
-					<div class="a">
-						<Icon src={paint} alt={m.create()} size="1.2em" />
-						<div>{m.create()}</div>
-					</div>
-				</FancyAnchorButton>
-			</div>
-			<div>
-				<FancyAnchorButton href={route('/play', languageTag())}>
-					<div class="a">
-						<Icon size="1.2em" src={game} alt={m.play()} />
-						<div>{m.play()}</div>
-					</div>
-				</FancyAnchorButton>
-			</div>
-			<div>
-				<FancyAnchorButton href={route('/library', languageTag())}>
-					<div class="a">
-						<Icon size="1.2em" src="$lib/assets/library.svg" alt={m.library()} />
-						<div>{m.library()}</div>
-					</div>
-				</FancyAnchorButton>
-			</div>
-			<LanguageSwitcher />
-			<DarkModeSwitcher />
-		</nav>
-	</header>
+	<MainHeader />
 	<section>
 		<div>
 			<h2>{m.greeting()}<br />{m.create_with()}</h2>
@@ -159,42 +123,6 @@
 	main {
 		background-color: var(--background-color);
 		line-height: 1.25;
-	}
-
-	header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 0.3em 0.6em;
-
-		@media (max-width: 600px) {
-			flex-direction: column;
-			align-items: stretch;
-		}
-
-		gap: 0.3em;
-	}
-
-	nav {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		align-items: center;
-		gap: 0.3em;
-	}
-
-	nav > div {
-		flex: 1;
-	}
-
-	.a {
-		display: flex;
-		font-family: 'Poppins';
-		white-space: nowrap;
-		align-items: center;
-		justify-content: center;
-		gap: 0.2em;
-		padding: 0.2em;
 	}
 
 	section {

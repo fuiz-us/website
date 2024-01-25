@@ -8,6 +8,8 @@
 	import Icon from './Icon.svelte';
 	import Anchor from './Anchor.svelte';
 	import LanguageSwitcher from './LanguageSwitcher.svelte';
+	import { route } from './i18n-routing';
+	import { languageTag } from '$paraglide/runtime';
 </script>
 
 <div
@@ -24,7 +26,7 @@
 	style:justify-content="center"
 	style:flex-wrap="wrap"
 >
-	<Anchor href="https://gitlab.com/opencode-mit/fuiz-website">
+	<Anchor href={route('/credits', languageTag())}>
 		<div style:display="inline-flex" style:align-items="center" style:gap="0.2em">
 			<Icon src={diversity} alt={m.community()} size="1em" />
 			<div>{m.community()}</div>

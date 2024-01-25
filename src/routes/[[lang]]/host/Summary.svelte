@@ -50,6 +50,7 @@
 		flex: 1;
 		display: flex;
 		flex-direction: column;
+		margin: 0 auto;
 		gap: 0.2em;
 		width: 100%;
 		max-width: min(40ch, 90vw);

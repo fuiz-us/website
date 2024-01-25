@@ -64,6 +64,7 @@
 		gap: 0.4em;
 		width: 100%;
 		max-width: min(40ch, 90vw);
+		margin: 0 auto;
 	}
 
 	.line {

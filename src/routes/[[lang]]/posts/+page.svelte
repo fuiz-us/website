@@ -18,7 +18,7 @@
 						<h3>{post.title}</h3>
 						<p class="description">{post.description}</p>
 						<p class="date">
-							{post.date.toLocaleDateString('en-US', {
+							{post.date.toLocaleDateString(languageTag(), {
 								year: 'numeric',
 								day: 'numeric',
 								month: 'short'

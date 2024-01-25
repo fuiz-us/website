@@ -7,6 +7,7 @@
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import type { Media } from '$lib/types';
+	import { languageTag } from '$paraglide/runtime';
 
 	const dispatch = createEventDispatcher<{
 		delete: undefined;
@@ -27,9 +28,9 @@
 	function dateToString(date: Date): string {
 		let currentDate = new Date();
 		if (currentDate.getFullYear() == date.getFullYear()) {
-			return date.toLocaleDateString(undefined, same_year);
+			return date.toLocaleDateString(languageTag(), same_year);
 		} else {
-			return date.toLocaleDateString(undefined, diff_year);
+			return date.toLocaleDateString(languageTag(), diff_year);
 		}
 	}
 </script>

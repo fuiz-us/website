@@ -2,8 +2,6 @@ import { fixPublish } from '$lib/serverOnlyUtils';
 import type { PublishedFuizDB } from '$lib/types';
 import type { PageServerLoad } from './$types';
 
-export const prerender = true;
-
 export const load = (async ({ platform }) => {
 	const mostPlayed = (
 		((

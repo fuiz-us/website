@@ -19,6 +19,7 @@
 	import { languageTag } from '$paraglide/runtime';
 	import { route } from '$lib/i18n-routing';
 	import Icon from '$lib/Icon.svelte';
+	import ExitFuiz from './ExitFuiz.svelte';
 
 	export let code: string;
 	export let players: string[];
@@ -55,10 +56,13 @@
 		style:padding="0.6em 0.4em"
 		style:justify-content="space-between"
 	>
-		<div style:padding="0.4em">
-			<div>{m.join_at()}</div>
-			<div style:font-weight="bold">
-				{PUBLIC_DISPLAY_PLAY_URL}{route('/play', languageTag())}
+		<div>
+			<ExitFuiz />
+			<div style:padding="0.4em">
+				<div>{m.join_at()}</div>
+				<div style:font-weight="bold">
+					{PUBLIC_DISPLAY_PLAY_URL}{route('/play', languageTag())}
+				</div>
 			</div>
 		</div>
 		<div

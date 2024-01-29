@@ -2,6 +2,8 @@
 	import * as m from '$paraglide/messages';
 
 	import computer from '$lib/assets/computer.svg';
+	import people from '$lib/assets/email.svg';
+	import translator from '$lib/assets/language.svg';
 	import brush from '$lib/assets/brush.svg';
 	import music from '$lib/assets/album.svg';
 	import AnchorMessage from '$lib/AnchorMessage.svelte';
@@ -40,6 +42,12 @@
 			message="Khaleel Al-Adhami"
 		/>
 		<AnchorMessage
+			href="https://www.linkedin.com/in/yichen-gao/"
+			image={{ src: people, alt: 'Community Lead' }}
+			background="#23456740"
+			message="Yichen Gao"
+		/>
+		<AnchorMessage
 			href="https://barish.me/"
 			image={{ src: computer, alt: m.developer() }}
 			background="#23456740"
@@ -50,6 +58,12 @@
 			image={{ src: brush, alt: m.designer() }}
 			background="#23456740"
 			message="Brage Fuglseth"
+		/>
+		<AnchorMessage
+			href="https://www.linkedin.com/in/zhironwu/"
+			image={{ src: translator, alt: 'Translator' }}
+			background="#23456740"
+			message="Zhiron Wu"
 		/>
 		<AnchorMessage
 			href="https://incompetech.com/wordpress/"

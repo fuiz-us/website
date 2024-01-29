@@ -13,6 +13,7 @@
 	import { languageTag } from '$paraglide/runtime';
 	import AnchorMessage from '$lib/AnchorMessage.svelte';
 	import MainHeader from './MainHeader.svelte';
+	import Footer from '$lib/Footer.svelte';
 
 	const title = m.main_title();
 	const description = m.main_desc();
@@ -76,47 +77,73 @@
 	<section>
 		<div class="split">
 			<div>
+				<h2>About Fuiz</h2>
+				<p>
+					The alternative to Kahoot with enhanced collaboration and problem-solving. Fuiz is a
+					privacy-focused, open-source learning platform hosting user-generated quizzes. Instead of
+					competition and memorization, we are committed to providing an accessible classroom tool
+					that encourages teamwork and discussions.
+				</p>
+			</div>
+			<Icon src="$lib/assets/help.svg" size="7em" alt="About" />
+		</div>
+	</section>
+	<section>
+		<div class="split">
+			<div>
+				<h2>Collaboration Over Competition</h2>
+				<p>
+					In addition to Kahoot's basic functionality, the <strong>collaboration mode</strong> incorporates
+					special features to encourage teamwork. Options are distributed among students in a team, prompting
+					interaction to gather all possible answers. Each team member has access to a full list of options.
+					Teams are randomly assigned at the beginning of the game.
+				</p>
+				<p>
+					For instance, a student may receive an incomplete list of options for a problem. To
+					explore additional options, they communicate with another student in the same group to
+					learn about possible alternatives. Subsequently, they engage in conversation to
+					collaborate on finding the answer. This approach fosters small group discussions and
+					promotes teamwork.
+				</p>
+			</div>
+			<Icon src="$lib/assets/collaboration.svg" size="7em" alt="Collaboration" />
+		</div>
+	</section>
+	<section>
+		<div class="split">
+			<div>
 				<h2>{m.community_made()}</h2>
 				<p>
 					{m.community_made_desc()}
+				</p>
+				<p>
+					We encourage teachers to share their knowledge with each other and create better
+					educational resources for everyone. You can publish the Fuiz you created so that anyone
+					can access it. We have created a <Anchor
+						href="https://join.slack.com/t/fuiz/shared_invite/zt-2bli7h700-uhE9fOkcepKJUm01JLPsfA"
+						>Slack workspace</Anchor
+					> for every teacher to join, connecting them with other teachers worldwide.
 				</p>
 			</div>
 			<Icon src="$lib/assets/diversity.svg" size="7em" alt={m.community_made()} />
 		</div>
 	</section>
-	<section>
-		<div class="split">
-			<div>
-				<h2>{m.peoples_choice()}</h2>
-				<p>
-					{m.peoples_choice_desc()}
-				</p>
-			</div>
-			<Icon src="$lib/assets/editor_choice.svg" size="7em" alt={m.peoples_choice()} />
-		</div>
-	</section>
-	<section>
-		<div class="split">
-			<div>
-				<h2>{m.always_open()}</h2>
-				<p>
-					{m.always_open_desc()}
-					<Anchor href="https://gitlab.com/opencode-mit">gitlab.com/opencode-mit</Anchor>
-				</p>
-			</div>
-			<Icon src="$lib/assets/code_blocks.svg" size="7em" alt="Peoeple's Choice" />
-		</div>
-	</section>
 	<section id="ongoing">
-		<div>
-			<h2>We Need Your Feedback!</h2>
-			<p>
-				Fuiz is an ongoing project. Your feedback is very crucial at this stage. Please feel free to
-				submit this <Anchor href="https://forms.gle/erhsbRc4vqViWqFb8">form</Anchor>. You can also
-				reach out at <Anchor href="info@fuiz.us">info@fuiz.us</Anchor>.
-			</p>
+		<div class="split">
+			<div>
+				<h2>Stay in Touch!</h2>
+				<p>
+					We value the feedback of every user. Please fill out this <Anchor
+						href="https://forms.gle/orFqr1wnhm6dv7xY7">form</Anchor
+					> and arrange a meeting with us! We are looking forward to meeting with you.
+				</p>
+			</div>
+			<Icon src="$lib/assets/email.svg" size="7em" alt="Email" />
 		</div>
 	</section>
+	<footer>
+		<Footer />
+	</footer>
 </main>
 
 <style>
@@ -142,7 +169,7 @@
 	}
 
 	p {
-		margin: 0;
+		margin: 0.5em 0;
 	}
 
 	.slide-container {

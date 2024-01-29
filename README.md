@@ -6,10 +6,23 @@ Host live quizzes freely
 
 [![License](https://img.shields.io/gitlab/license/opencode-mit/fuiz?style=for-the-badge)](https://gitlab.com/opencode-mit/fuiz/-/raw/main/LICENSE)
 
+## Dependancies
+
+This is the code for the website (developed in Svelte). It relies on two other components to function properly:
+
+- Backend game server: Code is open source under [opencode-mit/fuiz](https://gitlab.com/opencode-mit/fuiz). The urls to it are defined by: PUBLIC_BACKEND_URL and PUBLIC_WS_URL. In production, this is [api.fuiz.us](https://api.fuiz.us/).
+- Backend image server: Code is open source under [opencode-mit/corkboard](https://gitlab.com/opencode-mit/corkboard). The url to it is defined by PUBLIC_CORKBOARD_URL. In production, this is [corkboard.fuiz.us](https://corkboard.fuiz.us/).
+
+Additionally, the website relies on Cloudflare APIs for viewing the library. Since this is not a core component of the website, we will be putting off its proper documentation.
+
+Due to the nature of fast development, it's not a goal at the moment to make self-hosting as easy as possible. Once things stabilize a bit more we will put an effort towards providing docker images.
+
 ## Developing
 
-This is the static front-end component. Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+After installing dependancies with `bun install`, start a development server:
 
 ```bash
-npm run dev
+bun run dev
 ```
+
+While we use `bun` ourselves, `npm` should work just as fine.

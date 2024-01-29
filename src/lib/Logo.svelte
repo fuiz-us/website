@@ -3,7 +3,7 @@
 
 	import logo from '$lib/assets/logo.svg';
 	import logoDark from '$lib/assets/logo_dark.svg';
-	import { theme } from 'fractils';
+	import { theme } from '@jill64/svelte-dark-theme';
 
 	export let height = 60;
 	export let width = 150;

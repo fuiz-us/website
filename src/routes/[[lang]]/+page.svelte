@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
-	import { theme } from 'fractils';
+	import { theme } from '@jill64/svelte-dark-theme';
 	import warning from '$lib/assets/error.svg';
 
 	import Icon from '$lib/Icon.svelte';
@@ -126,6 +126,18 @@
 				</p>
 			</div>
 			<Icon src="$lib/assets/diversity.svg" size="7em" alt={m.community_made()} />
+		</div>
+	</section>
+	<section>
+		<div class="split">
+			<div>
+				<h2>{m.always_open()}</h2>
+				<p>
+					{m.always_open_desc()}
+					<Anchor href="https://gitlab.com/opencode-mit">gitlab.com/opencode-mit</Anchor>
+				</p>
+			</div>
+			<Icon src="$lib/assets/code_blocks.svg" size="7em" alt="Peoeple's Choice" />
 		</div>
 	</section>
 	<section id="ongoing">

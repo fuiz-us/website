@@ -1,14 +1,16 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import { theme, applyTheme } from 'fractils';
+	import { theme, setting } from '@jill64/svelte-dark-theme';
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
 	import darkMode from '$lib/assets/dark_mode.svg';
 	import lightMode from '$lib/assets/light_mode.svg';
 
 	$: state = $theme === 'dark' ? true : false;
 
-	$: applyTheme(state ? 'dark' : 'light');
+	$: {
+		$setting = state ? 'dark' : 'light';
+	}
 </script>
 
 <StatedIconButton

@@ -23,14 +23,24 @@ export async function getThumbnail(
 			const media = s.MultipleChoice.media;
 			if (!media) return undefined;
 			if ('Corkboard' in media.Image) {
-				const thumbnail = await bring(
-					PUBLIC_CORKBOARD_URL + '/thumbnail/' + media.Image.Corkboard.id,
-					{
-						method: 'GET'
-					}
-				);
+				const image = await bring(PUBLIC_CORKBOARD_URL + '/get/' + media.Image.Corkboard.id, {
+					method: 'GET'
+				});
 
-				if (!thumbnail) return undefined;
+				if (!image?.ok) return undefined;
+
+				const blob = await image.blob();
+
+				const form_data = new FormData();
+
+				form_data.append('image', blob);
+
+				const thumbnail = await bring(PUBLIC_CORKBOARD_URL + '/thumbnail', {
+					method: 'POST',
+					body: form_data
+				});
+
+				if (!thumbnail?.ok) return undefined;
 
 				return { thumbnail: await thumbnail.arrayBuffer(), alt: media.Image.Corkboard.alt };
 			} else if ('Base64' in media.Image) {
@@ -40,22 +50,12 @@ export async function getThumbnail(
 
 				form_data.append('image', blob);
 
-				const res = await bring(PUBLIC_CORKBOARD_URL + '/upload', {
+				const thumbnail = await bring(PUBLIC_CORKBOARD_URL + '/thumbnail', {
 					method: 'POST',
 					body: form_data
 				});
 
-				const id = await res?.json();
-
-				if (!id) return undefined;
-
-				const thumbnail = await bring(PUBLIC_CORKBOARD_URL + '/thumbnail/' + id, {
-					method: 'GET'
-				});
-
-				if (!thumbnail?.ok) {
-					return undefined;
-				}
+				if (!thumbnail?.ok) return undefined;
 
 				return { thumbnail: await thumbnail.arrayBuffer(), alt: media.Image.Base64.alt };
 			} else {

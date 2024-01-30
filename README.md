@@ -6,7 +6,7 @@ Host live quizzes freely
 
 [![License](https://img.shields.io/gitlab/license/opencode-mit/fuiz?style=for-the-badge)](https://gitlab.com/opencode-mit/fuiz/-/raw/main/LICENSE)
 
-## Dependancies
+## Dependencies
 
 This is the code for the website (developed in Svelte). It relies on two other components to function properly:
 
@@ -26,3 +26,7 @@ bun run dev
 ```
 
 While we use `bun` ourselves, `npm` should work just as fine.
+
+## Status
+
+The live components' status can be accessed on [status.fuiz.us](https://status.fuiz.us/).

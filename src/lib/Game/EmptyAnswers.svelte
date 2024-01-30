@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import EmptyAnswerButton from './EmptyAnswerButton.svelte';
 
-	export let answersCount: number;
+	export let indices: number[];
 
 	const dispatch = createEventDispatcher<{
 		answer: number;
@@ -17,7 +17,7 @@
 	style:gap="0.2em"
 	style:padding="0.2em"
 >
-	{#each Array(answersCount).keys() as index}
+	{#each indices as index}
 		<EmptyAnswerButton {index} on:click={() => dispatch('answer', index)} />
 	{/each}
 </div>

@@ -5,7 +5,7 @@
 
 <main>
 	<MainHeader />
-	<div>
+	<div style:flex="1">
 		<slot />
 	</div>
 	<footer>

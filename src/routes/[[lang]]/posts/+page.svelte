@@ -13,8 +13,12 @@
 			{@const url = `/posts/${post.slug}`}
 			<li>
 				<a href={route(url, languageTag())}>
-					<img src={post.image} alt={post.imageAlt} />
-					<div>
+					<div class="image-side">
+						<div class="image-container">
+							<img src={post.image} alt={post.imageAlt} />
+						</div>
+					</div>
+					<div class="info">
 						<h3>{post.title}</h3>
 						<p class="description">{post.description}</p>
 						<p class="date">
@@ -38,9 +42,9 @@
 	}
 
 	ul {
-		margin: 0 auto;
+		margin: 1em auto;
 		max-width: 35ch;
-		padding: 0.5em;
+		padding: 0 0.5em;
 	}
 
 	li {
@@ -49,13 +53,27 @@
 	}
 
 	img {
+		object-fit: cover;
+		height: 100%;
+		width: 100%;
+	}
+
+	.image-side {
+		flex: 1 0 15ch;
+	}
+
+	.image-container {
 		flex: 1;
-		width: 7em;
+		flex-basis: auto;
 		height: auto;
 		aspect-ratio: 40 / 21;
-		object-fit: cover;
 		border: 0.15em solid;
 		border-radius: 0.7em;
+		overflow: hidden;
+	}
+
+	.info {
+		flex: 1 0 15ch;
 	}
 
 	a {

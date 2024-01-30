@@ -23,11 +23,11 @@
 	<div style:flex="1">
 		<NiceBackground>
 			{#if !showAnswers}
-				<EmptyAnswers answersCount={answers.length} on:answer />
+				<EmptyAnswers indices={[...new Array(answers.length).keys()]} on:answer />
 			{:else}
 				<div style:height="100%" style:font-size="1.5em">
 					<Answers
-						answers={answers.map((t) => ({ text: t?.Text || '?', correct: undefined }))}
+						answers={answers.map((t) => ({ text: t?.Text, correct: undefined }))}
 						on:answer
 					/>
 				</div>

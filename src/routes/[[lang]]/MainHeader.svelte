@@ -37,14 +37,14 @@
 				</div>
 			</FancyAnchorButton>
 		</div>
-		<!-- <div>
+		<div>
 			<FancyAnchorButton href={route('/posts', languageTag())}>
 				<div class="a">
 					<Icon size="1.2em" src="$lib/assets/newspaper.svg" alt={m.blog()} />
 					<div>{m.blog()}</div>
 				</div>
 			</FancyAnchorButton>
-		</div> -->
+		</div>
 		<LanguageSwitcher />
 		<DarkModeSwitcher />
 	</nav>

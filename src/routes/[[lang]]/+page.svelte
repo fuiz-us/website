@@ -21,6 +21,7 @@
 
 <svelte:head>
 	<title>{title}</title>
+	<meta property="og:title" content={title} />
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
 	<link rel="canonical" href={PUBLIC_PLAY_URL + route('/', languageTag())} />
@@ -95,7 +96,7 @@
 				<p>
 					In addition to Kahoot's basic functionality, the <strong>collaboration mode</strong> incorporates
 					special features to encourage teamwork. Options are distributed among students in a team, prompting
-					interaction to gather all possible answers. Each team member has access to a full list of options.
+					interaction to gather all possible answers. The team has access to a full list of options.
 					Teams are randomly assigned at the beginning of the game.
 				</p>
 				<p>

@@ -58,13 +58,13 @@
 			padding: 10px;
 			display: grid;
 			grid-gap: 10px;
-			grid-template-columns: repeat(auto-fit, minmax(5em, 1fr));
-			width: min(80vw, 50vh);
+			font-size: max(7vmin, 1em);
+			grid-template-columns: repeat(auto-fit, minmax(6ch, 1fr));
+			width: min(80vw, 90vh);
 			flex-wrap: wrap;
 
 			& li {
 				display: block;
-				font-size: 10vmin;
 			}
 		}
 	}

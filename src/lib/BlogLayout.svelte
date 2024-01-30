@@ -5,6 +5,13 @@
 	export let metadata: Metadata;
 </script>
 
+<svelte:head>
+	<title>{metadata.title}</title>
+	<meta property="og:title" content={metadata.title} />
+	<meta name="description" content={metadata.description} />
+	<meta property="og:description" content={metadata.description} />
+</svelte:head>
+
 <div>
 	<hgroup>
 		<h1>
@@ -35,7 +42,6 @@
 	}
 
 	h1 {
-		margin: 0;
 		font-family: 'Poppins';
 	}
 
@@ -63,11 +69,15 @@
 	}
 
 	:global(h1, h2, h3, h4, h5, h6) {
-		margin: 0.25em 0;
+		margin: 0.5em 0;
 		font-family: 'Poppins';
 	}
 
 	:global(p) {
-		margin: 0.25em 0;
+		margin: 1em 0;
+	}
+
+	:global(a) {
+		color: inherit;
 	}
 </style>

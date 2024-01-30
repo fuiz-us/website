@@ -1,8 +1,40 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import TextAnswerButton from './TextAnswerButton.svelte';
+	import EmptyAnswerButton from './EmptyAnswerButton.svelte';
 
-	export let answers: { text: string; correct: boolean | undefined }[];
+	export let answers: { text: string | undefined; correct: boolean | undefined }[];
+
+	type knownAnswer = { index: number; text: string; correct: boolean | undefined };
+	type unknownAnswer = { index: number; correct: boolean | undefined };
+
+	function filterAnswers(answers: { text: string | undefined; correct: boolean | undefined }[]): {
+		knownAnswers: knownAnswer[];
+		unknownAnswers: unknownAnswer[];
+	} {
+		let knownAnswers: knownAnswer[] = [];
+		let unknownAnswers: unknownAnswer[] = [];
+		answers.forEach(({ text, correct }, index) => {
+			if (text) {
+				knownAnswers.push({
+					index,
+					text,
+					correct
+				});
+			} else {
+				unknownAnswers.push({
+					index,
+					correct
+				});
+			}
+		});
+		return {
+			unknownAnswers,
+			knownAnswers
+		};
+	}
+
+	$: answersFiltered = filterAnswers(answers);
 
 	const dispatch = createEventDispatcher<{
 		answer: number;
@@ -11,11 +43,19 @@
 
 <div id="container">
 	<div id="inner">
-		{#each answers as answer, index}
+		{#each answersFiltered.knownAnswers as answer}
 			<TextAnswerButton
-				{index}
+				index={answer.index}
 				answerText={answer.text}
 				correct={answer.correct}
+				on:click={() => {
+					dispatch('answer', answer.index);
+				}}
+			/>
+		{/each}
+		{#each answersFiltered.unknownAnswers as { index }}
+			<EmptyAnswerButton
+				{index}
 				on:click={() => {
 					dispatch('answer', index);
 				}}
@@ -29,6 +69,7 @@
 		container-type: inline-size;
 		height: 100%;
 	}
+
 	#inner {
 		grid-template-columns: 1fr 1fr;
 		height: 100%;

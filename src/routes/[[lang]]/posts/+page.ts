@@ -1,5 +1,7 @@
 import { type MdPost, type Metadata } from './lib';
 
+export const prerender = true;
+
 async function getPosts() {
 	let posts: MdPost[] = [];
 

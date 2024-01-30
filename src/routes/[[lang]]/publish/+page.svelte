@@ -31,6 +31,7 @@
 
 <svelte:head>
 	<title>{title}</title>
+	<meta property="og:title" content={title} />
 	<meta name="description" content={description} />
 	<meta property="og:description" content={description} />
 	<link rel="canonical" href="{PUBLIC_PLAY_URL}{route('/publish', languageTag())}" />

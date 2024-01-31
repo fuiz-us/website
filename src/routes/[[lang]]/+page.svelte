@@ -92,7 +92,7 @@
 	<section>
 		<div class="split">
 			<div>
-				<h2><a href="posts/introducing-fuiz"> Collaboration Over Competition</a></h2>
+				<h2><Anchor href="posts/introducing-fuiz">Collaboration Over Competition</Anchor></h2>
 				<p>
 					In addition to Kahoot's basic functionality, the <strong>collaboration mode</strong> incorporates
 					special features to encourage teamwork. Options are distributed among students in a team, prompting

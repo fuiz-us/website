@@ -14,12 +14,12 @@
 </script>
 
 <TypicalPage>
-	<div>
-		<FancyButton on:click={() => playIdlessConfig(config, options)}>
-			<div style:padding="0 0.3em">{m.play_again()}</div>
-		</FancyButton>
-	</div>
 	<div id="summary">
+		<div>
+			<FancyButton on:click={() => playIdlessConfig(config, options)}>
+				<div style:padding="0 0.3em">{m.play_again()}</div>
+			</FancyButton>
+		</div>
 		{#each config.slides as slide, index}
 			{@const [correct, wrong] = stats.at(index) || [0, 0]}
 			{@const unanswered = player_count - correct - wrong}

@@ -92,19 +92,11 @@
 	<section>
 		<div class="split">
 			<div>
-				<h2>Collaboration Over Competition</h2>
+				<h2><a href="posts/introducing-fuiz"> Collaboration Over Competition</a></h2>
 				<p>
 					In addition to Kahoot's basic functionality, the <strong>collaboration mode</strong> incorporates
 					special features to encourage teamwork. Options are distributed among students in a team, prompting
-					interaction to gather all possible answers. The team has access to a full list of options.
-					Teams are randomly assigned at the beginning of the game.
-				</p>
-				<p>
-					For instance, a student may receive an incomplete list of options for a problem. To
-					explore additional options, they communicate with another student in the same group to
-					learn about possible alternatives. Subsequently, they engage in conversation to
-					collaborate on finding the answer. This approach fosters small group discussions and
-					promotes teamwork.
+					interaction to gather all possible answers.
 				</p>
 			</div>
 			<Icon src="$lib/assets/collaboration.svg" size="7em" alt="Collaboration" />
@@ -116,14 +108,6 @@
 				<h2>{m.community_made()}</h2>
 				<p>
 					{m.community_made_desc()}
-				</p>
-				<p>
-					We encourage teachers to share their knowledge with each other and create better
-					educational resources for everyone. You can publish the Fuiz you created so that anyone
-					can access it. We have created a <Anchor
-						href="https://join.slack.com/t/fuiz/shared_invite/zt-2bli7h700-uhE9fOkcepKJUm01JLPsfA"
-						>Slack workspace</Anchor
-					> for every teacher to join, connecting them with other teachers worldwide.
 				</p>
 			</div>
 			<Icon src="$lib/assets/diversity.svg" size="7em" alt={m.community_made()} />
@@ -148,7 +132,11 @@
 				<p>
 					We value the feedback of every user. Please fill out this <Anchor
 						href="https://forms.gle/orFqr1wnhm6dv7xY7">form</Anchor
-					> and arrange a meeting with us! We are looking forward to meeting with you.
+					> and arrange a meeting with us! We are looking forward to meeting with you. You can also join
+					our <Anchor
+						href="https://join.slack.com/t/fuiz/shared_invite/zt-2bli7h700-uhE9fOkcepKJUm01JLPsfA"
+						>Slack community</Anchor
+					>.
 				</p>
 			</div>
 			<Icon src="$lib/assets/email.svg" size="7em" alt="Email" />

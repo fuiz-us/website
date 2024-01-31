@@ -50,7 +50,7 @@
 			style:display="none"
 			type="file"
 			name="image_input"
-			accept="image/png, image/jpeg, image/gif"
+			accept="image/png, image/jpeg, image/gif, image/webp"
 			id="image_input"
 			on:change={load_from_input}
 		/>

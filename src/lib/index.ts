@@ -142,8 +142,6 @@ export function addIds(config: IdlessFuizConfig): FuizConfig {
 		slides: config.slides.map((slide, id) => ({
 			MultipleChoice: {
 				...slide.MultipleChoice,
-				introduce_question: slide.MultipleChoice.introduce_question,
-				time_limit: slide.MultipleChoice.time_limit,
 				answers: slide.MultipleChoice.answers.map(({ content, correct }, id) => ({
 					content,
 					correct,
@@ -162,13 +160,7 @@ export async function getBackendConfig(config: IdlessFuizConfig): Promise<Idless
 			config.slides.map(async (slide) => ({
 				MultipleChoice: {
 					...slide.MultipleChoice,
-					media: await getBackendMedia(slide.MultipleChoice.media),
-					introduce_question: slide.MultipleChoice.introduce_question,
-					time_limit: slide.MultipleChoice.time_limit,
-					answers: slide.MultipleChoice.answers.map(({ content, correct }) => ({
-						content,
-						correct
-					}))
+					media: await getBackendMedia(slide.MultipleChoice.media)
 				}
 			}))
 		)
@@ -225,7 +217,7 @@ export async function playIdlessConfig(
 ): Promise<void | string> {
 	return await playJsonString(
 		JSON.stringify({
-			config: fixTimes(config),
+			config: fixTimes(await getBackendConfig(config)),
 			options
 		})
 	);

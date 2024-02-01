@@ -1,20 +1,24 @@
 <script lang="ts">
-	import type { ExportedFuiz } from '$lib/types';
+	import { removeIds } from '$lib';
+	import { updateCreation, type Database, type ExportedFuiz } from '$lib/storage';
+	import type { FuizConfig } from '$lib/types';
 	import Main from './Main.svelte';
 	import Topbar from './Topbar.svelte';
 
 	export let id: number;
-	export let config: ExportedFuiz;
-	export let db: IDBDatabase;
+	export let exportedFuiz: ExportedFuiz;
+	export let config: FuizConfig;
+	export let db: Database;
 
 	$: {
-		const creationsStore = db.transaction(['creations'], 'readwrite').objectStore('creations');
-		creationsStore.put(
+		updateCreation(
+			id,
 			{
-				...config,
+				...exportedFuiz,
+				config: removeIds(config),
 				lastEdited: Date.now()
 			},
-			id
+			db
 		);
 	}
 </script>
@@ -25,6 +29,6 @@
 	style:display="flex"
 	style:flex-direction="column"
 >
-	<Topbar bind:title={config.config.title} bind:id />
-	<Main bind:config={config.config} />
+	<Topbar bind:title={config.title} bind:id />
+	<Main bind:config />
 </div>

@@ -2,19 +2,13 @@
 	import * as m from '$paraglide/messages';
 
 	import { goto } from '$app/navigation';
-	import {
-		downloadTomlString,
-		getCreation,
-		getLocalConfig,
-		limits,
-		stringifyToml,
-		tomlifyConfig
-	} from '$lib';
+	import { downloadTomlString, limits, stringifyToml, tomlifyConfig } from '$lib';
 	import IconButton from '$lib/IconButton.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import Textfield from '$lib/Textfield.svelte';
 	import { languageTag } from '$paraglide/runtime';
 	import { route } from '$lib/i18n-routing';
+	import { getCreation } from '$lib/storage';
 
 	export let title: string;
 	export let id: number;
@@ -75,8 +69,8 @@
 				src="$lib/assets/download.svg"
 				alt={m.download()}
 				on:click={async () => {
-					const [creation] = await getCreation(id);
-					const configJson = await getLocalConfig(creation);
+					const creation = await getCreation(id);
+					const configJson = creation.config;
 
 					downloadTomlString(stringifyToml(tomlifyConfig(configJson)), configJson.title);
 				}}

@@ -8,14 +8,7 @@ import { PUBLIC_BACKEND_URL, PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import { goto } from '$app/navigation';
 import { Section, stringify } from '@ltd/j-toml';
 import { bring } from './util';
-import type {
-	Creation,
-	ExportedFuiz,
-	FuizConfig,
-	FuizOptions,
-	IdlessFuizConfig,
-	Media
-} from './types';
+import type { FuizConfig, FuizOptions, IdlessFuizConfig, Media } from './types';
 
 export const buttonColors = [
 	['hsl(358, 84%, 45%)', 'hsl(358, 84%, 35%)'],
@@ -41,88 +34,15 @@ export const limits = {
 		maxPlayerCount: 1000,
 		multipleChoice: {
 			maxTitleLength: 100,
-			introduceQuestion: 3,
+			introduceQuestion: 3000,
 			pointsAwarded: 1000,
-			allowedTimeLimits: [5, 10, 30, 60, 120, 240],
-			defaultTimeLimit: 30,
+			allowedTimeLimits: [5000, 10000, 30000, 60000, 120000, 240000],
+			defaultTimeLimit: 30000,
 			maxAnswerCount: 8
 		},
 		maxAnswerTextLength: 100
 	}
 } as const;
-
-export async function getDatabase(): Promise<IDBDatabase> {
-	return await new Promise((resolve, reject) => {
-		const request = indexedDB.open('FuizDB', 1);
-		request.addEventListener('upgradeneeded', () => {
-			const db = request.result;
-			db.createObjectStore('creations', { autoIncrement: true });
-		});
-		request.addEventListener('success', () => {
-			const db = request.result;
-
-			resolve(db);
-		});
-		request.addEventListener('error', reject);
-	});
-}
-
-export async function getAllCreations(): Promise<[Creation[], IDBDatabase]> {
-	const db = await getDatabase();
-
-	return await new Promise((resolve) => {
-		const creationsStore = db.transaction(['creations'], 'readonly').objectStore('creations');
-
-		const creationsTransaction = creationsStore.openCursor();
-
-		const creations: Creation[] = [];
-
-		creationsTransaction.addEventListener('success', () => {
-			const cursor = creationsTransaction.result;
-			if (cursor) {
-				const value: ExportedFuiz = cursor.value;
-				creations.push({
-					id: parseInt(cursor.key.toString()),
-					lastEdited: value.lastEdited,
-					title: value.config.title,
-					slidesCount: value.config.slides.length,
-					media: value.config.slides.reduce<Media | undefined>(
-						(p, c) => p || c.MultipleChoice.media,
-						undefined
-					)
-				});
-				cursor.continue();
-			} else {
-				resolve([creations, db]);
-			}
-		});
-	});
-}
-
-export async function getCreation(id: number): Promise<[FuizConfig, IDBDatabase]> {
-	const [fuiz, idb] = await getFullCreation(id);
-	return [fuiz.config, idb];
-}
-
-export async function getFullCreation(id: number): Promise<[ExportedFuiz, IDBDatabase]> {
-	const db = await getDatabase();
-
-	return await new Promise((resolve, reject) => {
-		const creationsStore = db.transaction(['creations'], 'readonly').objectStore('creations');
-
-		const creationsTransaction = creationsStore.get(id);
-
-		creationsTransaction.addEventListener('success', () => {
-			const value: ExportedFuiz | undefined | null = creationsTransaction.result;
-
-			if (value) {
-				resolve([value, db]);
-			} else {
-				reject('creation was not found');
-			}
-		});
-	});
-}
 
 export async function getBackendMedia(media: Media | undefined | null): Promise<Media | undefined> {
 	if (!media) {
@@ -197,7 +117,7 @@ export function downloadTomlString(str: string, title: string) {
 	window.URL.revokeObjectURL(url);
 }
 
-export function getLocalConfig(config: FuizConfig): IdlessFuizConfig {
+export function removeIds(config: FuizConfig): IdlessFuizConfig {
 	return {
 		title: config.title,
 		slides: config.slides.map((slide) => ({
@@ -205,8 +125,8 @@ export function getLocalConfig(config: FuizConfig): IdlessFuizConfig {
 				title: slide.MultipleChoice.title,
 				points_awarded: slide.MultipleChoice.points_awarded,
 				...(slide.MultipleChoice.media && { media: slide.MultipleChoice.media }),
-				introduce_question: slide.MultipleChoice.introduce_question * 1000,
-				time_limit: slide.MultipleChoice.time_limit * 1000,
+				introduce_question: slide.MultipleChoice.introduce_question,
+				time_limit: slide.MultipleChoice.time_limit,
 				answers: slide.MultipleChoice.answers.map(({ content, correct }) => ({
 					content,
 					correct
@@ -216,14 +136,14 @@ export function getLocalConfig(config: FuizConfig): IdlessFuizConfig {
 	};
 }
 
-export function getConfigFromLocal(config: IdlessFuizConfig): FuizConfig {
+export function addIds(config: IdlessFuizConfig): FuizConfig {
 	return {
 		title: config.title,
 		slides: config.slides.map((slide, id) => ({
 			MultipleChoice: {
 				...slide.MultipleChoice,
-				introduce_question: slide.MultipleChoice.introduce_question / 1000,
-				time_limit: slide.MultipleChoice.time_limit / 1000,
+				introduce_question: slide.MultipleChoice.introduce_question,
+				time_limit: slide.MultipleChoice.time_limit,
 				answers: slide.MultipleChoice.answers.map(({ content, correct }, id) => ({
 					content,
 					correct,
@@ -235,7 +155,7 @@ export function getConfigFromLocal(config: IdlessFuizConfig): FuizConfig {
 	};
 }
 
-export async function getBackendConfig(config: FuizConfig): Promise<IdlessFuizConfig> {
+export async function getBackendConfig(config: IdlessFuizConfig): Promise<IdlessFuizConfig> {
 	return {
 		title: config.title,
 		slides: await Promise.all(
@@ -243,8 +163,8 @@ export async function getBackendConfig(config: FuizConfig): Promise<IdlessFuizCo
 				MultipleChoice: {
 					...slide.MultipleChoice,
 					media: await getBackendMedia(slide.MultipleChoice.media),
-					introduce_question: slide.MultipleChoice.introduce_question * 1000,
-					time_limit: slide.MultipleChoice.time_limit * 1000,
+					introduce_question: slide.MultipleChoice.introduce_question,
+					time_limit: slide.MultipleChoice.time_limit,
 					answers: slide.MultipleChoice.answers.map(({ content, correct }) => ({
 						content,
 						correct
@@ -253,21 +173,6 @@ export async function getBackendConfig(config: FuizConfig): Promise<IdlessFuizCo
 			}))
 		)
 	};
-}
-
-export async function getSlide(id: number, db: IDBDatabase): Promise<ExportedFuiz | undefined> {
-	return await new Promise((resolve) => {
-		const creationsStore = db.transaction(['creations'], 'readwrite').objectStore('creations');
-		const transaction = creationsStore.get(id);
-
-		transaction.addEventListener('success', () => {
-			resolve(transaction.result);
-		});
-
-		transaction.addEventListener('error', () => {
-			resolve(undefined);
-		});
-	});
 }
 
 export async function playJsonString(config: string): Promise<void | string> {
@@ -295,18 +200,37 @@ export async function playJsonString(config: string): Promise<void | string> {
 	await goto('host?code=' + game_id);
 }
 
+function fixTime(time: number): number {
+	if (time === 0) return time;
+	if (time <= 1000) return time * 1000;
+	return time;
+}
+
+function fixTimes(config: IdlessFuizConfig): IdlessFuizConfig {
+	return {
+		title: config.title,
+		slides: config.slides.map((slide) => ({
+			MultipleChoice: {
+				...slide.MultipleChoice,
+				introduce_question: fixTime(slide.MultipleChoice.introduce_question),
+				time_limit: fixTime(slide.MultipleChoice.time_limit)
+			}
+		}))
+	};
+}
+
 export async function playIdlessConfig(
 	config: IdlessFuizConfig,
 	options: FuizOptions
 ): Promise<void | string> {
 	return await playJsonString(
 		JSON.stringify({
-			config,
+			config: fixTimes(config),
 			options
 		})
 	);
 }
 
 export async function playConfig(config: FuizConfig, options: FuizOptions): Promise<void | string> {
-	return await playIdlessConfig(await getBackendConfig(config), options);
+	return await playIdlessConfig(await getBackendConfig(removeIds(config)), options);
 }

@@ -2,7 +2,6 @@
 	import * as m from '$paraglide/messages';
 
 	import { page } from '$app/stores';
-	import { getAllCreations, getFullCreation } from '$lib';
 	import Editor from './Editor.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import ErrorPage from '$lib/ErrorPage.svelte';
@@ -11,7 +10,15 @@
 	import { browser } from '$app/environment';
 	import { languageTag } from '$paraglide/runtime';
 	import { route } from '$lib/i18n-routing';
-	import type { Creation, ExportedFuiz } from '$lib/types';
+	import type { Creation } from '$lib/types';
+	import {
+		getAllCreations,
+		getCreation,
+		type Database,
+		loadDatabase,
+		type ExportedFuiz
+	} from '$lib/storage';
+	import { addIds } from '$lib';
 
 	$: id_param = $page.url.searchParams.get('id');
 
@@ -24,17 +31,18 @@
 							id: number;
 							config: ExportedFuiz;
 					  };
-				db: IDBDatabase;
+				db: Database;
 		  }
 		| {
 				creations: Creation[];
-				db: IDBDatabase;
+				db: Database;
 		  } = 'loading';
 
 	async function getStatus(idParam: string | null) {
+		const db = await loadDatabase();
 		if (idParam) {
 			const id = parseInt(idParam);
-			const [config, db] = await getFullCreation(id);
+			const config = await getCreation(id, db);
 			status = {
 				creation: {
 					id,
@@ -43,7 +51,7 @@
 				db
 			};
 		} else {
-			const [creations, db] = await getAllCreations();
+			const creations = await getAllCreations(db);
 			status = {
 				creations,
 				db
@@ -72,5 +80,6 @@
 {:else if status.creation === 'failure'}
 	<ErrorPage errorMessage={m.missing_fuiz()} />
 {:else}
-	<Editor id={status.creation.id} config={status.creation.config} db={status.db} />
+	{@const config = addIds(status.creation.config.config)}
+	<Editor id={status.creation.id} exportedFuiz={status.creation.config} {config} db={status.db} />
 {/if}

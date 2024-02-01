@@ -2,7 +2,6 @@
 	import * as m from '$paraglide/messages';
 
 	import { page } from '$app/stores';
-	import { getAllCreations, getFullCreation } from '$lib';
 	import Loading from '$lib/Loading.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Header from '$lib/Header.svelte';
@@ -12,6 +11,7 @@
 	import { languageTag } from '$paraglide/runtime';
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
 	import Publish from './Publish.svelte';
+	import { getAllCreations, getCreation, loadDatabase } from '$lib/storage';
 
 	function parseInt(str: string | null): number | null {
 		if (str === null) {
@@ -38,17 +38,22 @@
 </svelte:head>
 
 {#if id}
-	{@const creation = getFullCreation(id)}
-	{#await creation}
+	{@const db = loadDatabase()}
+	{#await db}
 		<Loading />
-	{:then [creation, idb]}
-		<Publish {creation} {id} {idb} />
+	{:then db}
+		{@const creation = getCreation(id, db)}
+		{#await creation}
+			<Loading />
+		{:then creation}
+			<Publish {creation} {id} {db} />
+		{/await}
 	{/await}
 {:else}
 	{@const creations = getAllCreations()}
 	{#await creations}
 		<Loading />
-	{:then [creations]}
+	{:then creations}
 		{@const sortedCreations = creations.sort((a, b) => -b.lastEdited - a.lastEdited)}
 		<NiceBackground>
 			<div

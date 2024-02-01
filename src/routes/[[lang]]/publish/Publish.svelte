@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import { tomlifyConfig, stringifyToml, getLocalConfig } from '$lib';
+	import { tomlifyConfig, stringifyToml } from '$lib';
 	import Textfield from '$lib/Textfield.svelte';
 	import TypicalPage from '$lib/TypicalPage.svelte';
 	import Tags from './Tags.svelte';
@@ -11,11 +11,12 @@
 	import FancyButton from '$lib/FancyButton.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import { deserialize } from '$app/forms';
-	import type { ExportedFuiz, Media } from '$lib/types';
+	import type { Media } from '$lib/types';
+	import { updateCreation, type Database, type ExportedFuiz } from '$lib/storage';
 
 	export let creation: ExportedFuiz;
 	export let id: number;
-	export let idb: IDBDatabase;
+	export let db: Database;
 
 	let author = '';
 	let tags: string[] = [];
@@ -42,7 +43,7 @@
 				author,
 				tags,
 				language: lang,
-				config: tomlifyConfig(getLocalConfig(creation.config))
+				config: tomlifyConfig(creation.config)
 			})
 		);
 
@@ -79,8 +80,7 @@
 			}
 		};
 
-		const creationsStore = idb.transaction(['creations'], 'readwrite').objectStore('creations');
-		creationsStore.put(creation, id);
+		await updateCreation(id, creation, db);
 	}
 
 	let reasonState: string | undefined = undefined;
@@ -128,8 +128,7 @@
 				}
 			};
 
-			const creationsStore = idb.transaction(['creations'], 'readwrite').objectStore('creations');
-			creationsStore.put(creation, id);
+			await updateCreation(id, creation, db);
 		}
 
 		return status;

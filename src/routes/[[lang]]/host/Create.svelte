@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import { getAllCreations, playJsonString } from '$lib';
+	import { playJsonString } from '$lib';
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import FancyAnchorButton from '$lib/FancyAnchorButton.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
@@ -10,6 +10,7 @@
 	import { route } from '$lib/i18n-routing';
 	import { languageTag } from '$paraglide/runtime';
 	import TypicalPage from '$lib/TypicalPage.svelte';
+	import { getAllCreations } from '$lib/storage';
 
 	let loading = false;
 	let fuizConfig = '';
@@ -35,7 +36,7 @@
 
 {#await creations}
 	<Loading />
-{:then [creations]}
+{:then creations}
 	{@const sortedCreations = creations.sort((a, b) => -b.lastEdited - a.lastEdited)}
 	<TypicalPage>
 		<div style:max-width="25ch" style:margin="auto">

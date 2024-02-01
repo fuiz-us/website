@@ -44,6 +44,7 @@
 		<div>
 			<SelectTime
 				options={[...limits.fuiz.multipleChoice.allowedTimeLimits]}
+				map={(v) => (parseInt(v) / 1000).toString()}
 				bind:selected={slide.time_limit}
 			>
 				<Icon src={timer} size="1em" alt={m.time_limit()} />

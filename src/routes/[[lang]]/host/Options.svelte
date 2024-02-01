@@ -1,14 +1,15 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import { getCreation, playConfig } from '$lib';
+	import { playIdlessConfig } from '$lib';
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import Switch from '$lib/Switch.svelte';
 	import TypicalPage from '$lib/TypicalPage.svelte';
-	import type { FuizConfig, Slide } from '$lib/types';
+	import type { IdlessFuizConfig, IdlessSlide } from '$lib/types';
 	import Slider from '$lib/Slider.svelte';
+	import { getCreation } from '$lib/storage';
 
 	export let id: number;
 
@@ -42,7 +43,7 @@
 		return array;
 	}
 
-	function conditionalShuffleAnswer(slide: Slide, shuffleAnswers: boolean): Slide {
+	function conditionalShuffleAnswer(slide: IdlessSlide, shuffleAnswers: boolean): IdlessSlide {
 		return {
 			...slide,
 			MultipleChoice: {
@@ -55,10 +56,10 @@
 	}
 
 	function shuffle(
-		config: FuizConfig,
+		config: IdlessFuizConfig,
 		shuffleSlides: boolean,
 		shuffleAnswers: boolean
-	): FuizConfig {
+	): IdlessFuizConfig {
 		return {
 			...config,
 			slides: (shuffleSlides ? shuffleArray(config.slides) : config.slides).map((slide) =>
@@ -72,13 +73,13 @@
 
 {#await creation}
 	<Loading />
-{:then [config]}
+{:then { config }}
 	<TypicalPage>
 		<form
 			on:submit|preventDefault={() => {
 				errorMessage = '';
 				loading = true;
-				playConfig(shuffle(config, shuffleSlides, shuffleAnswers), {
+				playIdlessConfig(shuffle(config, shuffleSlides, shuffleAnswers), {
 					random_names: randomizedNames || teams,
 					show_answers: questionsOnPlayersDevices || teams,
 					no_leaderboard: !leaderboard,

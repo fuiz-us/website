@@ -77,15 +77,6 @@ export type IdlessFuizConfig = {
 	slides: IdlessSlide[];
 };
 
-export type ExportedFuiz = {
-	config: FuizConfig;
-	lastEdited: number;
-	publish?: {
-		released_r2_key?: string;
-		pending_r2_key?: string;
-	};
-};
-
 export type Creation = {
 	id: number;
 	title: string;
@@ -123,7 +114,7 @@ export type PublishedFuizDB = {
 };
 
 // https://gist.github.com/ackvf/de21847e78083034252961d550963579#file-global-d-ts-L154
-type Modify<T, R extends PartialAny<T>> = Omit<T, keyof R> & R;
+export type Modify<T, R extends PartialAny<T>> = Omit<T, keyof R> & R;
 /* eslint-disable */
 type PartialAny<T> = {
 	[P in keyof T]?: any;

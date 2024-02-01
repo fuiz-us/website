@@ -18,7 +18,7 @@
 	<div style:display="flex" style:align-items="center" style:justify-content="center">
 		<slot />
 		<div style:padding="0 5px" style:text-transform="capitalize">
-			{map($listbox.selected)}
+			{map(selected.toString())}
 		</div>
 	</div>
 </FancyButton>

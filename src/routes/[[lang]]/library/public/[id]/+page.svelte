@@ -7,10 +7,10 @@
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import type { PageData } from '../[id]/$types';
 	import FancyButton from '$lib/FancyButton.svelte';
-	import { getConfigFromLocal, getDatabase } from '$lib';
-	import type { ExportedFuiz } from '$lib/types';
+	import { addIds } from '$lib';
 	import { goto } from '$app/navigation';
 	import { route } from '$lib/i18n-routing';
+	import { loadDatabase, type ExportedFuiz } from '$lib/storage';
 
 	export let data: PageData;
 
@@ -19,11 +19,11 @@
 	$: config = data.config;
 
 	async function addToCollection() {
-		const db = await getDatabase();
+		const db = await loadDatabase();
 
 		let newSlide: ExportedFuiz = {
 			lastEdited: Date.now(),
-			config: getConfigFromLocal(config)
+			config: addIds(config)
 		};
 
 		const creationsStore = db.transaction(['creations'], 'readwrite').objectStore('creations');

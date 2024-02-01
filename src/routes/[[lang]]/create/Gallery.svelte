@@ -4,31 +4,25 @@
 	import GalleryCreation from './GalleryCreation.svelte';
 	import { createDialog } from 'svelte-headlessui';
 
-	import {
-		getCreation,
-		getLocalConfig,
-		downloadTomlString,
-		getConfigFromLocal,
-		stringifyToml,
-		tomlifyConfig
-	} from '$lib';
+	import { downloadTomlString, addIds, stringifyToml, tomlifyConfig } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import { goto } from '$app/navigation';
 	import Icon from '$lib/Icon.svelte';
 	import ghost from '$lib/assets/ghost.svg';
 	import { parse } from '@ltd/j-toml';
-	import type { Creation, ExportedFuiz, IdlessFuizConfig, Media } from '$lib/types';
+	import type { Creation, IdlessFuizConfig, Media } from '$lib/types';
 	import { isNotUndefined } from '$lib/util';
 	import TypicalPage from '$lib/TypicalPage.svelte';
+	import { getCreation, type Database, deleteCreation, addCreation } from '$lib/storage';
 
 	export let creations: Creation[];
 
-	export let db: IDBDatabase;
+	export let db: Database;
 
 	$: sortedCreations = creations.sort((a, b) => b.lastEdited - a.lastEdited);
 
-	function addSlide() {
-		let newSlide: ExportedFuiz = {
+	async function addSlide() {
+		let newSlide = {
 			lastEdited: Date.now(),
 			config: {
 				title: m.untitled(),
@@ -36,34 +30,24 @@
 			}
 		};
 
-		const creationsStore = db.transaction(['creations'], 'readwrite').objectStore('creations');
+		let id = await addCreation(newSlide, db);
 
-		const request = creationsStore.put(newSlide);
-
-		request.addEventListener('success', () => {
-			const id = request.result;
-
-			creations.push({
-				id: parseInt(id.toString()),
+		creations = [
+			...creations,
+			{
+				id,
 				lastEdited: newSlide.lastEdited,
 				title: newSlide.config.title,
 				slidesCount: newSlide.config.slides.length
-			});
+			}
+		];
 
-			creations = creations;
-
-			goto('?id=' + id.toString());
-		});
+		goto(`?id=${id}`);
 	}
 
-	function deleteSlide(id: number) {
-		const creationsStore = db.transaction(['creations'], 'readwrite').objectStore('creations');
-
-		const request = creationsStore.delete(id);
-
-		request.addEventListener('success', () => {
-			creations = creations.filter((c) => c.id != id);
-		});
+	async function deleteSlide(id: number) {
+		await deleteCreation(id, db);
+		creations = creations.filter((c) => c.id != id);
 	}
 
 	const dialog = createDialog();
@@ -110,35 +94,32 @@
 			})
 		);
 
-		const creationsStore = db.transaction(['creations'], 'readwrite').objectStore('creations');
+		await Promise.all(
+			exportedFuizzesWithFailures.filter(isNotUndefined).map(async (config) => {
+				const idedConfig = addIds(config);
 
-		exportedFuizzesWithFailures.filter(isNotUndefined).forEach((config) => {
-			const idedConfig = getConfigFromLocal(config);
+				const fuiz = {
+					config: idedConfig,
+					lastEdited: Date.now()
+				};
 
-			const fuiz = {
-				config: idedConfig,
-				lastEdited: Date.now()
-			};
+				const id = await addCreation(fuiz);
 
-			const request = creationsStore.put(fuiz);
-
-			request.addEventListener('success', () => {
-				const id = request.result;
-
-				creations.push({
-					id: parseInt(id.toString()),
-					lastEdited: fuiz.lastEdited,
-					title: idedConfig.title,
-					slidesCount: idedConfig.slides.length,
-					media: idedConfig.slides.reduce<Media | undefined>(
-						(p, c) => p || c.MultipleChoice.media,
-						undefined
-					)
-				});
-
-				creations = creations;
-			});
-		});
+				creations = [
+					...creations,
+					{
+						id,
+						lastEdited: fuiz.lastEdited,
+						title: idedConfig.title,
+						slidesCount: idedConfig.slides.length,
+						media: idedConfig.slides.reduce<Media | undefined>(
+							(p, c) => p || c.MultipleChoice.media,
+							undefined
+						)
+					}
+				];
+			})
+		);
 	}
 </script>
 
@@ -229,8 +210,8 @@
 							}}
 							on:play={() => goto('host?id=' + id)}
 							on:download={async () => {
-								const [creation] = await getCreation(id);
-								const configJson = await getLocalConfig(creation);
+								const creation = await getCreation(id);
+								const configJson = creation.config;
 
 								downloadTomlString(stringifyToml(tomlifyConfig(configJson)), configJson.title);
 							}}

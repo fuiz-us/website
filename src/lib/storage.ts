@@ -106,12 +106,24 @@ async function collectFuiz(fuiz: InternalFuiz, database: Database): Promise<Expo
 		config: {
 			...fuiz.config,
 			slides: await Promise.all(
-				fuiz.config.slides.map(async (slide) => ({
-					MultipleChoice: {
-						...slide.MultipleChoice,
-						media: await collectMedia(slide.MultipleChoice.media, database)
-					}
-				}))
+				fuiz.config.slides.map(async (slide) =>
+					slide.MultipleChoice.media
+						? {
+								MultipleChoice: {
+									...slide.MultipleChoice,
+									media: await collectMedia(slide.MultipleChoice.media, database)
+								}
+						  }
+						: {
+								MultipleChoice: {
+									introduce_question: slide.MultipleChoice.introduce_question,
+									time_limit: slide.MultipleChoice.time_limit,
+									points_awarded: slide.MultipleChoice.points_awarded,
+									answers: slide.MultipleChoice.answers,
+									title: slide.MultipleChoice.title
+								}
+						  }
+				)
 			)
 		}
 	};

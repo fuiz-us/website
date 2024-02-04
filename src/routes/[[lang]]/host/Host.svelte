@@ -326,7 +326,7 @@
 						...(currentState || { index: previous_index, count: previous_count }),
 						Slide: {
 							...previous_state,
-							MultipleChoice: 'AnswersAnnouncement',
+							MultipleChoice: previous_state?.MultipleChoice ?? 'AnswersAnnouncement',
 							answered_count: mc.AnswersCount
 						}
 					};

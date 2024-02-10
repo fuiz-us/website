@@ -11,6 +11,9 @@
 	import type { MultipleChoiceSlide } from '$lib/types';
 
 	export let slide: MultipleChoiceSlide;
+
+	if (slide.time_limit < 1000) slide.time_limit *= 1000;
+	if (slide.introduce_question < 1000) slide.introduce_question *= 1000;
 </script>
 
 <div

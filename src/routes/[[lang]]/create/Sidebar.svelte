@@ -43,6 +43,10 @@
 
 	let section: HTMLElement;
 
+	function clamp(min: number, value: number, max: number): number {
+		return Math.min(max, Math.max(value, min));
+	}
+
 	async function changeSelected(newValue: number) {
 		let clamped = Math.min(Math.max(0, newValue), slides.length - 1);
 		selectedSlideIndex = clamped;
@@ -52,8 +56,12 @@
 			let selectedRect = selected_slide.getBoundingClientRect();
 			let parentRect = section.getBoundingClientRect();
 			section.scrollTo({
-				top: section.scrollTop + selectedRect.y - parentRect.y,
-				left: section.scrollLeft + selectedRect.x - parentRect.x
+				top:
+					section.scrollTop +
+					clamp(selectedRect.bottom - parentRect.bottom, 0, selectedRect.y - parentRect.y),
+				left:
+					section.scrollLeft +
+					clamp(selectedRect.right - parentRect.right, 0, selectedRect.x - parentRect.x)
 			});
 		}
 	}

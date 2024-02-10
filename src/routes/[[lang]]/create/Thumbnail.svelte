@@ -59,7 +59,8 @@
 		style:background="none"
 		style:font="inherit"
 		style:color="inherit"
-		style:border={selected ? '3px solid var(--accent-color)' : '3px solid darkgray'}
+		style:border="none"
+		style:outline={selected ? '3px solid var(--accent-color)' : '1px solid darkgray'}
 		style:border-radius="0.5em"
 		style:overflow="hidden"
 		style:cursor="pointer"

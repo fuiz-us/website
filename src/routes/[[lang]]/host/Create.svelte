@@ -10,7 +10,10 @@
 	import { route } from '$lib/i18n-routing';
 	import { languageTag } from '$paraglide/runtime';
 	import TypicalPage from '$lib/TypicalPage.svelte';
-	import { getAllCreations } from '$lib/storage';
+	import { getAllCreations, loadDatabase } from '$lib/storage';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	let loading = false;
 	let fuizConfig = '';
@@ -30,11 +33,9 @@
 			reset(value);
 		}
 	}
-
-	const creations = getAllCreations();
 </script>
 
-{#await creations}
+{#await loadDatabase({ google: data.google }).then((db) => getAllCreations(db))}
 	<Loading />
 {:then creations}
 	{@const sortedCreations = creations.sort((a, b) => -b.lastEdited - a.lastEdited)}

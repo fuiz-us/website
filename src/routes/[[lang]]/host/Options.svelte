@@ -9,9 +9,12 @@
 	import TypicalPage from '$lib/TypicalPage.svelte';
 	import type { IdlessFuizConfig, IdlessSlide } from '$lib/types';
 	import Slider from '$lib/Slider.svelte';
-	import { getCreation } from '$lib/storage';
+	import { getCreation, loadDatabase } from '$lib/storage';
+	import type { PageData } from './$types';
+	import ErrorPage from '$lib/ErrorPage.svelte';
 
 	export let id: number;
+	export let data: PageData;
 
 	let loading = false;
 
@@ -67,79 +70,83 @@
 			)
 		};
 	}
-
-	$: creation = getCreation(id);
 </script>
 
-{#await creation}
+{#await loadDatabase({ google: data.google }).then((db) => getCreation(id, db))}
 	<Loading />
-{:then { config }}
-	<TypicalPage>
-		<form
-			on:submit|preventDefault={() => {
-				errorMessage = '';
-				loading = true;
-				playIdlessConfig(shuffle(config, shuffleSlides, shuffleAnswers), {
-					random_names: randomizedNames || teams,
-					show_answers: questionsOnPlayersDevices || teams,
-					no_leaderboard: !leaderboard,
-					...(teams && { teams: teamSize })
-				}).then((err) => {
-					loading = false;
-					if (err) {
-						errorMessage = err;
-					}
-				});
-			}}
-		>
-			<h2>{m.options()}</h2>
-			<div id="options">
-				<div class="switch">
-					<Switch id="teams" bind:checked={teams}>{m.teams()}</Switch>
-				</div>
-				{#if teams}
+{:then fuiz}
+	{#if !fuiz}
+		<ErrorPage errorMessage={m.missing_fuiz()} />
+	{:else}
+		{@const { config } = fuiz}
+		<TypicalPage>
+			<form
+				on:submit|preventDefault={() => {
+					errorMessage = '';
+					loading = true;
+					playIdlessConfig(shuffle(config, shuffleSlides, shuffleAnswers), {
+						random_names: randomizedNames || teams,
+						show_answers: questionsOnPlayersDevices || teams,
+						no_leaderboard: !leaderboard,
+						...(teams && { teams: teamSize })
+					}).then((err) => {
+						loading = false;
+						if (err) {
+							errorMessage = err;
+						}
+					});
+				}}
+			>
+				<h2>{m.options()}</h2>
+				<div id="options">
+					<div class="switch">
+						<Switch id="teams" bind:checked={teams}>{m.teams()}</Switch>
+					</div>
+					{#if teams}
+						<hr />
+						<Slider id="team_size" bind:value={teamSize} min={2} max={5}
+							>{m.optimal_team_size()}</Slider
+						>
+					{/if}
 					<hr />
-					<Slider id="team_size" bind:value={teamSize} min={2} max={5}
-						>{m.optimal_team_size()}</Slider
-					>
-				{/if}
-				<hr />
-				<div class="switch">
-					<Switch id="random" bind:checked={randomizedNames} stuck={teams ? true : undefined}
-						>{m.randomized_names()}</Switch
-					>
+					<div class="switch">
+						<Switch id="random" bind:checked={randomizedNames} stuck={teams ? true : undefined}
+							>{m.randomized_names()}</Switch
+						>
+					</div>
+					<hr />
+					<div class="switch">
+						<Switch
+							id="players"
+							bind:checked={questionsOnPlayersDevices}
+							stuck={teams ? true : undefined}
+						>
+							{m.questions_on_players_devices()}
+						</Switch>
+					</div>
+					<hr />
+					<div class="switch">
+						<Switch id="shuffle_slides" bind:checked={shuffleSlides}>{m.shuffle_slides()}</Switch>
+					</div>
+					<hr />
+					<div class="switch">
+						<Switch id="shuffle_answers" bind:checked={shuffleAnswers}>{m.shuffle_answers()}</Switch
+						>
+					</div>
+					<hr />
+					<div class="switch">
+						<Switch id="leaderboard" bind:checked={leaderboard}>{m.leaderboard()}</Switch>
+					</div>
 				</div>
-				<hr />
-				<div class="switch">
-					<Switch
-						id="players"
-						bind:checked={questionsOnPlayersDevices}
-						stuck={teams ? true : undefined}
-					>
-						{m.questions_on_players_devices()}
-					</Switch>
+				<ErrorMessage {errorMessage} />
+				<div>
+					<FancyButton disabled={loading}>
+						<div id="button">{m.start()}</div>
+					</FancyButton>
 				</div>
-				<hr />
-				<div class="switch">
-					<Switch id="shuffle_slides" bind:checked={shuffleSlides}>{m.shuffle_slides()}</Switch>
-				</div>
-				<hr />
-				<div class="switch">
-					<Switch id="shuffle_answers" bind:checked={shuffleAnswers}>{m.shuffle_answers()}</Switch>
-				</div>
-				<hr />
-				<div class="switch">
-					<Switch id="leaderboard" bind:checked={leaderboard}>{m.leaderboard()}</Switch>
-				</div>
-			</div>
-			<ErrorMessage {errorMessage} />
-			<div>
-				<FancyButton disabled={loading}>
-					<div id="button">{m.start()}</div>
-				</FancyButton>
-			</div>
-		</form>
-	</TypicalPage>
+			</form>
+		</TypicalPage>
+	{/if}
 {/await}
 
 <style>

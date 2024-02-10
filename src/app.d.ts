@@ -5,7 +5,9 @@ import type { D1Database, R2Bucket } from '@cloudflare/workers-types';
 declare global {
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
+		interface Locals {
+			google: boolean;
+		}
 		// interface PageData {}
 		interface Platform {
 			env: {

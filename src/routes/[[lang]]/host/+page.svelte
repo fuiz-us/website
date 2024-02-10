@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import type { PageData } from '../$types';
 	import Create from './Create.svelte';
 	import Host from './Host.svelte';
 	import Options from './Options.svelte';
@@ -17,13 +18,15 @@
 		}
 	}
 
+	export let data: PageData;
+
 	$: id = parseInt($page.url.searchParams.get('id'));
 </script>
 
 {#if code !== null}
 	<Host {code} />
 {:else if id !== null}
-	<Options {id} />
+	<Options {id} {data} />
 {:else}
-	<Create />
+	<Create {data} />
 {/if}

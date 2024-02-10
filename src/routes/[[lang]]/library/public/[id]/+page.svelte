@@ -7,10 +7,9 @@
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import type { PageData } from '../[id]/$types';
 	import FancyButton from '$lib/FancyButton.svelte';
-	import { addIds } from '$lib';
 	import { goto } from '$app/navigation';
 	import { route } from '$lib/i18n-routing';
-	import { loadDatabase, type ExportedFuiz } from '$lib/storage';
+	import { addCreation, generateUuid, loadDatabase } from '$lib/storage';
 
 	export let data: PageData;
 
@@ -19,22 +18,18 @@
 	$: config = data.config;
 
 	async function addToCollection() {
-		const db = await loadDatabase();
+		const db = await loadDatabase({ google: data.google });
+		const id = await addCreation(
+			{
+				lastEdited: Date.now(),
+				uniqueId: generateUuid(),
+				versionId: 0,
+				config
+			},
+			db
+		);
 
-		let newSlide: ExportedFuiz = {
-			lastEdited: Date.now(),
-			config: addIds(config)
-		};
-
-		const creationsStore = db.transaction(['creations'], 'readwrite').objectStore('creations');
-
-		const request = creationsStore.put(newSlide);
-
-		request.addEventListener('success', () => {
-			const id = request.result;
-
-			goto(route('/create', languageTag()) + '?id=' + id.toString());
-		});
+		goto(route('/create', languageTag()) + '?id=' + id.toString());
 	}
 </script>
 

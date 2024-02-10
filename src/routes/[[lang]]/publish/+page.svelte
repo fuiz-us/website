@@ -12,6 +12,8 @@
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
 	import Publish from './Publish.svelte';
 	import { getAllCreations, getCreation, loadDatabase } from '$lib/storage';
+	import type { PageData } from '../$types';
+	import ErrorMessage from '$lib/ErrorMessage.svelte';
 
 	function parseInt(str: string | null): number | null {
 		if (str === null) {
@@ -23,6 +25,8 @@
 			return null;
 		}
 	}
+
+	export let data: PageData;
 
 	$: id = parseInt($page.url.searchParams.get('id'));
 	const title = m.publish_title();
@@ -38,20 +42,18 @@
 </svelte:head>
 
 {#if id}
-	{@const db = loadDatabase()}
-	{#await db}
+	{@const filteredId = id}
+	{#await loadDatabase( { google: data.google } ).then( async (db) => ({ db, creation: await getCreation(filteredId, db) }) )}
 		<Loading />
-	{:then db}
-		{@const creation = getCreation(id, db)}
-		{#await creation}
-			<Loading />
-		{:then creation}
+	{:then { db, creation }}
+		{#if creation}
 			<Publish {creation} {id} {db} />
-		{/await}
+		{:else}
+			<ErrorMessage errorMessage={m.missing_fuiz()} />
+		{/if}
 	{/await}
 {:else}
-	{@const creations = getAllCreations()}
-	{#await creations}
+	{#await loadDatabase({ google: data.google }).then((db) => getAllCreations(db))}
 		<Loading />
 	{:then creations}
 		{@const sortedCreations = creations.sort((a, b) => -b.lastEdited - a.lastEdited)}

@@ -19,6 +19,7 @@
 		type ExportedFuiz
 	} from '$lib/storage';
 	import { addIds } from '$lib';
+	import type { PageData } from '../$types';
 
 	$: id_param = $page.url.searchParams.get('id');
 
@@ -39,17 +40,22 @@
 		  } = 'loading';
 
 	async function getStatus(idParam: string | null) {
-		const db = await loadDatabase();
+		const db = await loadDatabase({ google: data.google });
 		if (idParam) {
 			const id = parseInt(idParam);
 			const config = await getCreation(id, db);
-			status = {
-				creation: {
-					id,
-					config
-				},
-				db
-			};
+			status = config
+				? {
+						creation: {
+							id,
+							config
+						},
+						db
+				  }
+				: {
+						creation: 'failure',
+						db
+				  };
 		} else {
 			const creations = await getAllCreations(db);
 			status = {
@@ -60,6 +66,8 @@
 	}
 
 	$: browser && getStatus(id_param);
+
+	export let data: PageData;
 
 	const title = m.create_title();
 	const description = m.create_desc();
@@ -76,7 +84,7 @@
 {#if status === 'loading'}
 	<Loading />
 {:else if 'creations' in status}
-	<Gallery creations={status.creations} db={status.db} />
+	<Gallery creations={status.creations} db={status.db} {data} />
 {:else if status.creation === 'failure'}
 	<ErrorPage errorMessage={m.missing_fuiz()} />
 {:else}

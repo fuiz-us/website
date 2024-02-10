@@ -8,10 +8,11 @@
 	import Textfield from '$lib/Textfield.svelte';
 	import { languageTag } from '$paraglide/runtime';
 	import { route } from '$lib/i18n-routing';
-	import { getCreation } from '$lib/storage';
+	import { getCreation, type Database } from '$lib/storage';
 
 	export let title: string;
 	export let id: number;
+	export let db: Database;
 </script>
 
 <div
@@ -69,7 +70,7 @@
 				src="$lib/assets/download.svg"
 				alt={m.download()}
 				on:click={async () => {
-					const creation = await getCreation(id);
+					const creation = await getCreation(id, db);
 					const configJson = creation.config;
 
 					downloadTomlString(stringifyToml(tomlifyConfig(configJson)), configJson.title);

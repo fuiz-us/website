@@ -1,9 +1,10 @@
 import type { AvailableLanguageTag } from '$paraglide/runtime';
 
-type Image =
+export type Image =
 	| {
 			Base64: {
 				data: string;
+				hash?: string;
 				alt: string;
 			};
 	  }

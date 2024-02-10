@@ -47,6 +47,8 @@
 		"@sveltejs/enhanced-img": "^0.1.7",
 		"object-hash": "^3.0.0",
 		"qrcode": "^1.5.3",
-		"svelte-headlessui": "^0.0.32"
+		"query-string": "^8.2.0",
+		"svelte-headlessui": "^0.0.32",
+		"worker-auth-providers": "^0.0.13-beta.4"
 	}
 }

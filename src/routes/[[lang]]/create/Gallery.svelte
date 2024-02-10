@@ -13,17 +13,29 @@
 	import type { Creation, IdlessFuizConfig, Media } from '$lib/types';
 	import { isNotUndefined } from '$lib/util';
 	import TypicalPage from '$lib/TypicalPage.svelte';
-	import { getCreation, type Database, deleteCreation, addCreation } from '$lib/storage';
+	import {
+		getCreation,
+		type Database,
+		deleteCreation,
+		addCreation,
+		generateUuid
+	} from '$lib/storage';
+	import { login, logout } from '$lib/remoteStorage';
+	import type { PageData } from './$types';
+	import { env } from '$env/dynamic/public';
 
 	export let creations: Creation[];
 
 	export let db: Database;
+	export let data: PageData;
 
 	$: sortedCreations = creations.sort((a, b) => b.lastEdited - a.lastEdited);
 
 	async function addSlide() {
 		let newSlide = {
 			lastEdited: Date.now(),
+			uniqueId: generateUuid(),
+			versionId: 0,
 			config: {
 				title: m.untitled(),
 				slides: []
@@ -100,10 +112,12 @@
 
 				const fuiz = {
 					config: idedConfig,
+					uniqueId: generateUuid(),
+					versionId: 0,
 					lastEdited: Date.now()
 				};
 
-				const id = await addCreation(fuiz);
+				const id = await addCreation(fuiz, db);
 
 				creations = [
 					...creations,
@@ -146,6 +160,45 @@
 				</div>
 			</FancyButton>
 		</div>
+		{#if env.PUBLIC_GOOGLE === 'true'}
+			{#if data.google}
+				<div>
+					<FancyButton on:click={() => logout('google')}>
+						<div
+							style:display="flex"
+							style:align-items="center"
+							style:font-family="Poppins"
+							style:gap="0.2em"
+							style:padding="0.15em 0.25em"
+							style:justify-content="center"
+						>
+							<Icon size="1.25em" src="$lib/assets/drive.svg" alt="Log out from Google Drive" />
+							<div>Log Out</div>
+						</div>
+					</FancyButton>
+				</div>
+			{:else}
+				<div>
+					<FancyButton on:click={() => login('google')}>
+						<div
+							style:display="flex"
+							style:align-items="center"
+							style:font-family="Poppins"
+							style:gap="0.2em"
+							style:padding="0.15em 0.25em"
+							style:justify-content="center"
+						>
+							<Icon
+								size="1.25em"
+								src="$lib/assets/drive.svg"
+								alt="Synchronize your data with Google Drive"
+							/>
+							<div>Backup</div>
+						</div>
+					</FancyButton>
+				</div>
+			{/if}
+		{/if}
 		<div>
 			<input
 				bind:this={fileInput}
@@ -210,7 +263,8 @@
 							}}
 							on:play={() => goto('host?id=' + id)}
 							on:download={async () => {
-								const creation = await getCreation(id);
+								const creation = await getCreation(id, db);
+								if (!creation) return;
 								const configJson = creation.config;
 
 								downloadTomlString(stringifyToml(tomlifyConfig(configJson)), configJson.title);

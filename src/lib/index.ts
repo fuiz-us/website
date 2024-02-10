@@ -193,9 +193,7 @@ export async function playJsonString(config: string): Promise<void | string> {
 }
 
 function fixTime(time: number): number {
-	if (time === 0) return time;
-	if (time <= 1000) return time * 1000;
-	return time;
+	return time <= 1000 ? time * 1000 : time;
 }
 
 function fixTimes(config: IdlessFuizConfig): IdlessFuizConfig {

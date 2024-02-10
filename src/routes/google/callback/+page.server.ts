@@ -5,6 +5,7 @@ import type { PageServerLoad } from './$types';
 import type { OAuthTokens } from 'worker-auth-providers';
 
 async function getTokensFromCode(code: string): Promise<OAuthTokens> {
+	const { clientId, clientSecret, redirectUri } = options();
 	const response = await fetch('https://oauth2.googleapis.com/token', {
 		method: 'POST',
 		headers: {
@@ -12,9 +13,9 @@ async function getTokensFromCode(code: string): Promise<OAuthTokens> {
 			accept: 'application/json'
 		},
 		body: JSON.stringify({
-			client_id: options.clientId,
-			client_secret: options.clientSecret,
-			redirect_uri: options.redirectUri,
+			client_id: clientId,
+			client_secret: clientSecret,
+			redirect_uri: redirectUri,
 			scope,
 			code,
 			grant_type: 'authorization_code'

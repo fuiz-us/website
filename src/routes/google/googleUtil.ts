@@ -4,11 +4,12 @@ import { bring } from '$lib/util';
 import { error, type Cookies } from '@sveltejs/kit';
 import type { OAuthTokens } from 'worker-auth-providers';
 
-export const options = {
-	clientId: env.CLIENT_ID,
-	clientSecret: env.CLIENT_SECRET,
-	redirectUri: env.REDIRECT_URI
-} as const;
+export const options = () =>
+	({
+		clientId: env.CLIENT_ID,
+		clientSecret: env.CLIENT_SECRET,
+		redirectUri: env.REDIRECT_URI
+	} as const);
 
 export const scope = 'https://www.googleapis.com/auth/drive.appdata' as const;
 
@@ -19,6 +20,7 @@ export function getToken(cookies: Cookies): OAuthTokens {
 }
 
 export async function refreshToken(tokens: OAuthTokens): Promise<OAuthTokens | undefined> {
+	const { clientId, clientSecret } = options();
 	const response = await bring('https://oauth2.googleapis.com/token', {
 		method: 'POST',
 		headers: {
@@ -26,8 +28,8 @@ export async function refreshToken(tokens: OAuthTokens): Promise<OAuthTokens | u
 			accept: 'application/json'
 		},
 		body: JSON.stringify({
-			client_id: options.clientId,
-			client_secret: options.clientSecret,
+			client_id: clientId,
+			client_secret: clientSecret,
 			refreshToken: tokens.refresh_token,
 			grant_type: 'refresh_token'
 		})

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import * as m from '$paraglide/messages';
 
 	import { page } from '$app/stores';
@@ -7,8 +7,11 @@
 	import Play from './Play.svelte';
 	import { languageTag } from '$paraglide/runtime';
 	import { route } from '$lib/i18n-routing';
+	import { browser } from '$app/environment';
 
-	$: code = $page.url.searchParams.get('code');
+	let code: string | null = null;
+
+	$: browser && ((c) => (code = c))($page.url.searchParams.get('code'));
 
 	const title = m.play_title();
 	const description = m.play_desc();

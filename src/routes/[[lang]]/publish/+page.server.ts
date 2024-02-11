@@ -1,5 +1,7 @@
 import { fail, type Actions } from '@sveltejs/kit';
 
+export const prerender = false;
+
 export const actions: Actions = {
 	request_publish: async ({ request, platform }) => {
 		const data = await request.formData();

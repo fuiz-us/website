@@ -4,6 +4,8 @@ import type { OnlineFuiz } from '../+page';
 import { error } from '@sveltejs/kit';
 import { getThumbnail } from '$lib/serverOnlyUtils';
 
+export const prerender = false;
+
 export const GET: RequestHandler = async ({ request, platform }) => {
 	const email = request.headers.get('Cf-Access-Authenticated-User-Email');
 

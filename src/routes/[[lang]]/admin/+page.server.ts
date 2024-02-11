@@ -6,6 +6,8 @@ import type { OnlineFuiz } from './+page';
 import { createFileInGit, updateFileInGit } from '$lib/gitlab';
 import { getThumbnail } from '$lib/serverOnlyUtils';
 
+export const prerender = false;
+
 export const load: PageServerLoad = async ({ request, platform }) => {
 	const email = request.headers.get('Cf-Access-Authenticated-User-Email');
 

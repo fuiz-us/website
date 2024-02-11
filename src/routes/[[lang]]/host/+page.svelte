@@ -4,8 +4,13 @@
 	import Create from './Create.svelte';
 	import Host from './Host.svelte';
 	import Options from './Options.svelte';
+	import { browser } from '$app/environment';
 
-	$: code = $page.url.searchParams.get('code');
+	let code: string | null = null;
+	let id: number | null = null;
+
+	$: browser && ((c) => (code = c))($page.url.searchParams.get('code'));
+	$: browser && ((i) => (id = i))(parseInt($page.url.searchParams.get('id')));
 
 	function parseInt(str: string | null): number | null {
 		if (str === null) {
@@ -19,8 +24,6 @@
 	}
 
 	export let data: PageData;
-
-	$: id = parseInt($page.url.searchParams.get('id'));
 </script>
 
 {#if code !== null}

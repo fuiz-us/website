@@ -8,8 +8,15 @@
 	import I18NHeader from '$lib/I18NHeader.svelte';
 	import { ThemeManager } from '@jill64/svelte-dark-theme';
 
+	function getLang(param: AvailableLanguageTag): AvailableLanguageTag {
+		return param ?? sourceLanguageTag;
+	}
+
+	let lang: AvailableLanguageTag = sourceLanguageTag;
+
+	$: browser && ((l) => (lang = l))(getLang($page.params.lang as AvailableLanguageTag));
+
 	//Use the default language if no language is given
-	$: lang = ($page.params.lang as AvailableLanguageTag) ?? sourceLanguageTag;
 	$: setLanguageTag(lang);
 
 	//Set the lang attribute on the html tag

@@ -7,7 +7,6 @@
 	import ErrorPage from '$lib/ErrorPage.svelte';
 	import Gallery from './Gallery.svelte';
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
-	import { browser } from '$app/environment';
 	import { languageTag } from '$paraglide/runtime';
 	import { route } from '$lib/i18n-routing';
 	import type { Creation } from '$lib/types';
@@ -20,8 +19,7 @@
 	} from '$lib/storage';
 	import { addIds } from '$lib';
 	import type { PageData } from '../$types';
-
-	$: id_param = $page.url.searchParams.get('id');
+	import { browser } from '$app/environment';
 
 	let status:
 		| 'loading'
@@ -65,7 +63,7 @@
 		}
 	}
 
-	$: browser && getStatus(id_param);
+	$: browser && getStatus($page.url.searchParams.get('id'));
 
 	export let data: PageData;
 

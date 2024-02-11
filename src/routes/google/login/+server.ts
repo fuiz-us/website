@@ -15,7 +15,8 @@ export const GET: RequestHandler = async () => {
 			scope,
 			include_granted_scopes: 'true',
 			state: 'pass-through value',
-			access_type: 'offline'
+			access_type: 'offline',
+			prompt: 'consent'
 		})}`
 	);
 };

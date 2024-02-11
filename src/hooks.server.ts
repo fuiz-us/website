@@ -11,6 +11,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		? await (async () => {
 				try {
 					const tokens = await refreshToken(JSON.parse(session));
+					console.log(tokens, JSON.parse(session));
 
 					if (tokens === undefined) {
 						event.cookies.delete('google', { path: '/' });

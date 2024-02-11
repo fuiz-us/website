@@ -122,7 +122,7 @@ export type StrictInternalFuizMetadata = Modify<
 >;
 
 export type StrictInternalFuizMetadataStrings = Modify<
-	StrictInternalFuiz,
+	StrictInternalFuizMetadata,
 	{
 		lastEdited: string;
 		versionId: string;

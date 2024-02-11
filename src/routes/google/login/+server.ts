@@ -14,7 +14,8 @@ export const GET: RequestHandler = async () => {
 			response_type: 'code',
 			scope,
 			include_granted_scopes: 'true',
-			state: 'pass-through value'
+			state: 'pass-through value',
+			access_type: 'offline'
 		})}`
 	);
 };

@@ -22,11 +22,11 @@
 	async function handleConsider(e: CustomEvent<DndEvent<Slide>>) {
 		const id = slides.at(selectedSlideIndex)?.id ?? 0;
 		slides = e.detail.items;
-		const new_index = e.detail.items.findIndex((s) => s.id == id);
+		const newIndex = e.detail.items.findIndex((s) => s.id == id);
 		selectedSlideIndex =
-			new_index === -1
+			newIndex === -1
 				? e.detail.items.findIndex((s) => s.id.toString().startsWith('id'))
-				: new_index;
+				: newIndex;
 	}
 
 	async function handleFinalize(e: CustomEvent<DndEvent<Slide>>) {
@@ -48,22 +48,24 @@
 	}
 
 	async function changeSelected(newValue: number) {
-		let clamped = Math.min(Math.max(0, newValue), slides.length - 1);
+		const clamped = Math.min(Math.max(0, newValue), slides.length - 1);
 		selectedSlideIndex = clamped;
+
 		await tick();
-		let selected_slide = document.querySelector(`#slide_${clamped}`);
-		if (selected_slide) {
-			let selectedRect = selected_slide.getBoundingClientRect();
-			let parentRect = section.getBoundingClientRect();
-			section.scrollTo({
-				top:
-					section.scrollTop +
-					clamp(selectedRect.bottom - parentRect.bottom, 0, selectedRect.y - parentRect.y),
-				left:
-					section.scrollLeft +
-					clamp(selectedRect.right - parentRect.right, 0, selectedRect.x - parentRect.x)
-			});
-		}
+
+		const selectedSlide = document.querySelector(`#slide_${clamped}`);
+		if (!selectedSlide) return;
+
+		const selectedRect = selectedSlide.getBoundingClientRect();
+		const parentRect = section.getBoundingClientRect();
+		section.scrollTo({
+			top:
+				section.scrollTop +
+				clamp(selectedRect.bottom - parentRect.bottom, 0, selectedRect.y - parentRect.y),
+			left:
+				section.scrollLeft +
+				clamp(selectedRect.right - parentRect.right, 0, selectedRect.x - parentRect.x)
+		});
 	}
 </script>
 
@@ -118,9 +120,9 @@
 								slides = slides;
 							}}
 							on:duplicate={async () => {
-								let same_slide = structuredClone(slide);
-								same_slide.id = Date.now();
-								slides.splice(index + 1, 0, same_slide);
+								const sameSlide = structuredClone(slide);
+								sameSlide.id = Date.now();
+								slides.splice(index + 1, 0, sameSlide);
 								slides = slides;
 								await changeSelected(selectedSlideIndex + 1);
 							}}

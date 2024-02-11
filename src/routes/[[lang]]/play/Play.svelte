@@ -236,16 +236,16 @@
 
 		// // Listen for messages
 		socket.addEventListener('message', (event) => {
-			let new_msg: IncomingMessage = JSON.parse(event.data);
+			let newMsg: IncomingMessage = JSON.parse(event.data);
 
 			let {
-				index: previous_index = 0,
-				count: previous_count = 1,
-				score: previous_score = points || 0
+				index: previousIndex = 0,
+				count: previousCount = 1,
+				score: previousScore = points || 0
 			} = currentState && 'Slide' in currentState ? currentState : {};
 
-			if ('Game' in new_msg) {
-				if (new_msg.Game === 'NameChoose') {
+			if ('Game' in newMsg) {
+				if (newMsg.Game === 'NameChoose') {
 					currentState = {
 						Game: {
 							NameChoose: {
@@ -254,20 +254,20 @@
 							}
 						}
 					};
-				} else if ('NameAssign' in new_msg.Game) {
+				} else if ('NameAssign' in newMsg.Game) {
 					currentState = undefined;
-					setName = new_msg.Game.NameAssign;
-				} else if ('NameError' in new_msg.Game) {
+					setName = newMsg.Game.NameAssign;
+				} else if ('NameError' in newMsg.Game) {
 					let errorMessage = '';
-					if (new_msg.Game.NameError === 'Used') {
+					if (newMsg.Game.NameError === 'Used') {
 						errorMessage = m.in_use();
-					} else if (new_msg.Game.NameError === 'Assigned') {
+					} else if (newMsg.Game.NameError === 'Assigned') {
 						errorMessage = m.have_name();
-					} else if (new_msg.Game.NameError === 'Empty') {
+					} else if (newMsg.Game.NameError === 'Empty') {
 						errorMessage = m.cannot_empty();
-					} else if (new_msg.Game.NameError === 'Sinful') {
+					} else if (newMsg.Game.NameError === 'Sinful') {
 						errorMessage = m.inappropriate();
-					} else if (new_msg.Game.NameError === 'TooLong') {
+					} else if (newMsg.Game.NameError === 'TooLong') {
 						errorMessage = m.too_long();
 					}
 					currentState = {
@@ -278,15 +278,15 @@
 							}
 						}
 					};
-				} else if ('Score' in new_msg.Game) {
+				} else if ('Score' in newMsg.Game) {
 					let {
-						index = previous_index,
-						count = previous_count,
+						index = previousIndex,
+						count = previousCount,
 						score: { points, position } = {
-							points: previous_score,
+							points: previousScore,
 							position: undefined
 						}
-					} = new_msg.Game.Score;
+					} = newMsg.Game.Score;
 
 					currentState = {
 						index,
@@ -299,8 +299,8 @@
 							}
 						}
 					};
-				} else if ('WaitingScreen' in new_msg.Game) {
-					let { exact_count } = new_msg.Game.WaitingScreen;
+				} else if ('WaitingScreen' in newMsg.Game) {
+					let { exact_count } = newMsg.Game.WaitingScreen;
 					currentState = {
 						Game: {
 							WaitingScreen: {
@@ -308,24 +308,24 @@
 							}
 						}
 					};
-				} else if ('IdAssign' in new_msg.Game) {
-					watcherId = new_msg.Game.IdAssign;
+				} else if ('IdAssign' in newMsg.Game) {
+					watcherId = newMsg.Game.IdAssign;
 					localStorage.setItem(code + '_play', watcherId);
-				} else if ('Metainfo' in new_msg.Game) {
-					let { score, show_answers } = new_msg.Game.Metainfo.Player;
+				} else if ('Metainfo' in newMsg.Game) {
+					let { score, show_answers } = newMsg.Game.Metainfo.Player;
 					points = score;
 					showAnswers = show_answers;
-				} else if ('Summary' in new_msg.Game) {
+				} else if ('Summary' in newMsg.Game) {
 					finished = true;
 					currentState = {
 						Game: {
-							Summary: new_msg.Game.Summary.Player
+							Summary: newMsg.Game.Summary.Player
 						}
 					};
 					socket.close();
 				}
-			} else if ('MultipleChoice' in new_msg) {
-				let mc = new_msg.MultipleChoice;
+			} else if ('MultipleChoice' in newMsg) {
+				let mc = newMsg.MultipleChoice;
 
 				let previous_state =
 					currentState && 'Slide' in currentState && 'MultipleChoice' in currentState.Slide
@@ -337,7 +337,7 @@
 					currentState = {
 						index,
 						count,
-						score: previous_score,
+						score: previousScore,
 						Slide: {
 							MultipleChoice: 'QuestionAnnouncment',
 							question,
@@ -346,8 +346,8 @@
 					};
 				} else if ('AnswersAnnouncement' in mc) {
 					let {
-						index = previous_index,
-						count = previous_count,
+						index = previousIndex,
+						count = previousCount,
 						question = previous_state?.question,
 						media = previous_state?.media,
 						answers
@@ -355,7 +355,7 @@
 					currentState = {
 						index,
 						count,
-						score: previous_score,
+						score: previousScore,
 						Slide: {
 							MultipleChoice: 'AnswersAnnouncement',
 							question,
@@ -368,8 +368,8 @@
 					};
 				} else if ('AnswersResults' in mc) {
 					let {
-						index = previous_index,
-						count = previous_count,
+						index = previousIndex,
+						count = previousCount,
 						question = previous_state?.question,
 						media = previous_state?.media,
 						answers,
@@ -378,7 +378,7 @@
 					currentState = {
 						index,
 						count,
-						score: previous_score,
+						score: previousScore,
 						Slide: {
 							MultipleChoice: 'AnswersResults',
 							question,
@@ -389,10 +389,10 @@
 						}
 					};
 				}
-			} else if ('Bingo' in new_msg) {
-				let bingo = new_msg.Bingo;
+			} else if ('Bingo' in newMsg) {
+				let bingo = newMsg.Bingo;
 
-				let previous_state =
+				let previousState =
 					currentState && 'Slide' in currentState && 'Bingo' in currentState.Slide
 						? currentState.Slide
 						: undefined;
@@ -403,7 +403,7 @@
 					currentState = {
 						index,
 						count,
-						score: previous_score,
+						score: previousScore,
 						Slide: {
 							Bingo: 'List',
 							all_statements,
@@ -413,11 +413,11 @@
 						}
 					};
 				} else if ('Winners' in bingo) {
-					let { index = previous_index, count = previous_count, winners } = bingo.Winners;
+					let { index = previousIndex, count = previousCount, winners } = bingo.Winners;
 					currentState = {
 						index,
 						count,
-						score: previous_score,
+						score: previousScore,
 						Slide: {
 							Bingo: 'Winners',
 							winners
@@ -426,11 +426,11 @@
 				} else if ('Cross' in bingo) {
 					let { crossed } = bingo.Cross;
 					currentState = {
-						index: previous_index,
-						count: previous_count,
-						score: previous_score,
+						index: previousIndex,
+						count: previousCount,
+						score: previousScore,
 						Slide: {
-							...previous_state,
+							...previousState,
 							Bingo: 'List',
 							crossed
 						}
@@ -438,11 +438,11 @@
 				} else if ('Votes' in bingo) {
 					let { user_votes } = bingo.Votes;
 					currentState = {
-						index: previous_index,
-						count: previous_count,
-						score: previous_score,
+						index: previousIndex,
+						count: previousCount,
+						score: previousScore,
 						Slide: {
-							...previous_state,
+							...previousState,
 							Bingo: 'List',
 							user_votes
 						}

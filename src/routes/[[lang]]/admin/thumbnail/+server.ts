@@ -11,15 +11,15 @@ export const GET: RequestHandler = async ({ request, platform }) => {
 		return error(400, 'not allowed');
 	}
 
-	const { r2_key }: { r2_key: string | undefined } = (await platform?.env.DATABASE.prepare(
+	const { r2_key: r2Key }: { r2_key: string | undefined } = (await platform?.env.DATABASE.prepare(
 		`SELECT * FROM pending_submissions WHERE assigned = ?1 LIMIT 1`
 	)
 		.bind(email)
 		.first()) || { r2_key: undefined };
 
-	if (!r2_key) error(400, 'not allowed');
+	if (!r2Key) error(400, 'not allowed');
 
-	const fuizBody = (await platform?.env.BUCKET.get(r2_key)) || undefined;
+	const fuizBody = (await platform?.env.BUCKET.get(r2Key)) || undefined;
 
 	if (!fuizBody) error(401, 'not allowed');
 

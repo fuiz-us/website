@@ -9,16 +9,16 @@
 
 	export let data: PageServerData;
 
-	$: previous_fuiz = data.previous_fuiz;
+	$: previousFuiz = data.previous_fuiz;
 	$: fuiz = data.fuiz;
 </script>
 
 <TypicalPage>
 	{#if fuiz}
 		<FuizDisplay {fuiz} />
-		{#if previous_fuiz}
+		{#if previousFuiz}
 			<p>{m.this_replaces()}</p>
-			<FuizDisplay fuiz={previous_fuiz} />
+			<FuizDisplay fuiz={previousFuiz} />
 		{/if}
 		<div style:display="flex" style:flex-direction="column" style:gap="0.5em">
 			<form method="POST" action="?/approve">

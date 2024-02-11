@@ -12,6 +12,7 @@
 	import { getCreation, loadDatabase } from '$lib/storage';
 	import type { PageData } from './$types';
 	import ErrorPage from '$lib/ErrorPage.svelte';
+	import LoadingCircle from '$lib/LoadingCircle.svelte';
 
 	export let id: number;
 	export let data: PageData;
@@ -141,7 +142,14 @@
 				<ErrorMessage {errorMessage} />
 				<div>
 					<FancyButton disabled={loading}>
-						<div id="button">{m.start()}</div>
+						<div id="button">
+							{#if loading}
+								<div style:height="1em" style:width="1em">
+									<LoadingCircle borderWidth={7} />
+								</div>
+							{/if}
+							{m.start()}
+						</div>
 					</FancyButton>
 				</div>
 			</form>
@@ -183,6 +191,9 @@
 
 	#button {
 		padding: 0.1em 0.5em;
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
 		font-family: Poppins;
 	}
 </style>

@@ -9,6 +9,7 @@ import { goto } from '$app/navigation';
 import { Section, stringify } from '@ltd/j-toml';
 import { bring } from './util';
 import type { FuizConfig, FuizOptions, IdlessFuizConfig, Media } from './types';
+import type { OnlineFuiz } from '../routes/[[lang]]/admin/+page';
 
 export const buttonColors = [
 	['hsl(358, 84%, 45%)', 'hsl(358, 84%, 35%)'],
@@ -36,7 +37,7 @@ export const limits = {
 			maxTitleLength: 100,
 			introduceQuestion: 3000,
 			pointsAwarded: 1000,
-			allowedTimeLimits: [5000, 10000, 30000, 60000, 120000, 240000],
+			allowedTimeLimits: [5000, 15000, 30000, 60000, 120000, 240000],
 			defaultTimeLimit: 30000,
 			maxAnswerCount: 8
 		},
@@ -49,36 +50,26 @@ export async function getBackendMedia(media: Media | undefined | null): Promise<
 		return undefined;
 	}
 	if ('Base64' in media.Image) {
-		const image_res = await bring(media.Image.Base64.data);
+		const { data, alt } = media.Image.Base64;
 
-		if (image_res === undefined) {
-			return undefined;
-		}
+		const imageRes = await bring(data);
+		if (!imageRes) return;
 
-		const blob = await image_res.blob();
-
-		const form_data = new FormData();
-
-		form_data.append('image', blob);
+		const formData = new FormData();
+		formData.append('image', await imageRes.blob());
 
 		const res = await bring(PUBLIC_CORKBOARD_URL + '/upload', {
 			method: 'POST',
 			mode: 'cors',
-			body: form_data
+			body: formData
 		});
 
-		const v = await res?.json();
-
-		if (v === undefined) {
-			return undefined;
-		}
+		const id = await res?.json();
+		if (!id) return undefined;
 
 		return {
 			Image: {
-				Corkboard: {
-					id: v,
-					alt: media.Image.Base64.alt
-				}
+				Corkboard: { id, alt }
 			}
 		};
 	} else {
@@ -86,7 +77,7 @@ export async function getBackendMedia(media: Media | undefined | null): Promise<
 	}
 }
 
-export function tomlifyConfig(config: IdlessFuizConfig) {
+export function tomlifyConfig(config: IdlessFuizConfig): IdlessFuizConfig {
 	return {
 		title: config.title,
 		slides: config.slides.map((slide) =>
@@ -97,8 +88,7 @@ export function tomlifyConfig(config: IdlessFuizConfig) {
 	};
 }
 
-/* eslint-disable */
-export function stringifyToml(obj: any): string {
+export function stringifyToml(obj: IdlessFuizConfig | OnlineFuiz): string {
 	return stringify(obj, { newline: '\n', newlineAround: 'section', integer: 1000000 });
 }
 
@@ -177,13 +167,8 @@ export async function playJsonString(config: string): Promise<void | string> {
 		body: config
 	});
 
-	if (res === undefined) {
-		return 'Inaccessible Server';
-	}
-
-	if (!res.ok) {
-		return await res.text();
-	}
+	if (res === undefined) return 'Inaccessible Server';
+	if (!res.ok) return await res.text();
 
 	const { game_id, watcher_id } = await res.json();
 
@@ -213,14 +198,19 @@ export async function playIdlessConfig(
 	config: IdlessFuizConfig,
 	options: FuizOptions
 ): Promise<void | string> {
-	return await playJsonString(
-		JSON.stringify({
-			config: fixTimes(await getBackendConfig(config)),
-			options
-		})
-	);
+	try {
+		const backendReadyConfig = await getBackendConfig(config);
+		return await playJsonString(
+			JSON.stringify({
+				config: fixTimes(backendReadyConfig),
+				options
+			})
+		);
+	} catch (e) {
+		return 'Failed to upload images';
+	}
 }
 
 export async function playConfig(config: FuizConfig, options: FuizOptions): Promise<void | string> {
-	return await playIdlessConfig(await getBackendConfig(removeIds(config)), options);
+	return await playIdlessConfig(removeIds(config), options);
 }

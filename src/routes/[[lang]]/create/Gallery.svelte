@@ -67,13 +67,13 @@
 
 	let fileInput: HTMLInputElement;
 
-	function load_from_input() {
+	function loadFromInput() {
 		const target = document.querySelector('input[type=file]');
 		if (!target) {
 			return;
 		}
-		const input_image = target as HTMLInputElement;
-		const filesList = input_image.files;
+		const inputImage = target as HTMLInputElement;
+		const filesList = inputImage.files;
 		if (!filesList) {
 			return;
 		}
@@ -84,10 +84,10 @@
 				files.push(file);
 			}
 		}
-		load_file(files);
+		loadFile(files);
 	}
 
-	async function load_file(files: File[]) {
+	async function loadFile(files: File[]) {
 		const exportedFuizzesWithFailures = await Promise.all(
 			files.map((file) => {
 				return new Promise<IdlessFuizConfig | undefined>((resolve) => {
@@ -208,7 +208,7 @@
 				accept="application/toml, .toml"
 				name="config"
 				multiple
-				on:change={load_from_input}
+				on:change={loadFromInput}
 			/>
 			<FancyButton on:click={() => fileInput.click()}>
 				<div

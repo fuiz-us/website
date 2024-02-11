@@ -20,17 +20,20 @@ export const load: PageServerLoad = async ({ request, platform }) => {
 			.bind(email)
 			.run();
 
-		const { r2_key, desired_id }: { r2_key: string | undefined; desired_id: string | undefined } =
+		const {
+			r2_key: r2Key,
+			desired_id: desiredId
+		}: { r2_key: string | undefined; desired_id: string | undefined } =
 			(await platform?.env.DATABASE.prepare(
 				`SELECT * FROM pending_submissions WHERE assigned = ?1 LIMIT 1`
 			)
 				.bind(email)
 				.first()) || { r2_key: undefined, desired_id: undefined };
 
-		if (!r2_key || !desired_id) return { fuiz: undefined };
+		if (!r2Key || !desiredId) return { fuiz: undefined };
 
 		try {
-			const fuizBody = await loadStorage(r2_key, platform);
+			const fuizBody = await loadStorage(r2Key, platform);
 			if (!fuizBody) {
 				throw new Error('Fuiz not found in R2 storage');
 			}
@@ -38,11 +41,11 @@ export const load: PageServerLoad = async ({ request, platform }) => {
 			const { author, tags, config, language } = (await parse(fuizBuf, {
 				bigint: false
 			})) as OnlineFuiz;
-			const previous_fuiz =
-				desired_id === r2_key
+			const previousFuiz =
+				desiredId === r2Key
 					? undefined
 					: await (async () => {
-							const fuizBody = await loadStorage(desired_id, platform);
+							const fuizBody = await loadStorage(desiredId, platform);
 							if (!fuizBody) {
 								throw new Error('Fuiz not found in R2 storage');
 							}
@@ -53,7 +56,7 @@ export const load: PageServerLoad = async ({ request, platform }) => {
 							return { author, tags, config: structuredClone(config), language };
 					  })();
 			return {
-				previous_fuiz,
+				previous_fuiz: previousFuiz,
 				fuiz: {
 					author,
 					tags,
@@ -64,26 +67,26 @@ export const load: PageServerLoad = async ({ request, platform }) => {
 		} catch (err) {
 			let message = 'Unknown Error';
 			if (err instanceof Error) message = err.message;
-			await denyWithReason(r2_key, message, 'System', platform);
+			await denyWithReason(r2Key, message, 'System', platform);
 			continue;
 		}
 	}
 };
 
 async function denyWithReason(
-	r2_key: string,
+	r2Key: string,
 	reason: string,
 	by: string,
 	platform: App.Platform | undefined
 ) {
 	await platform?.env.DATABASE.prepare(`DELETE FROM pending_submissions WHERE r2_key = ?1`)
-		.bind(r2_key)
+		.bind(r2Key)
 		.run();
 
 	await platform?.env.DATABASE.prepare(
 		`INSERT INTO denied_submissions (r2_key, denied_by, reason) VALUES (?1, ?2, ?3)`
 	)
-		.bind(r2_key, by, reason)
+		.bind(r2Key, by, reason)
 		.run();
 }
 
@@ -100,7 +103,10 @@ export const actions: Actions = {
 
 		if (!email) return fail(400, { missing: true });
 
-		const { r2_key, desired_id }: { r2_key: string | undefined; desired_id: string | undefined } =
+		const {
+			r2_key: r2Key,
+			desired_id: desiredId
+		}: { r2_key: string | undefined; desired_id: string | undefined } =
 			(await platform?.env.DATABASE.prepare(
 				`DELETE FROM pending_submissions WHERE assigned = ?1 RETURNING r2_key, desired_id`
 			)
@@ -110,9 +116,9 @@ export const actions: Actions = {
 				desired_id: undefined
 			};
 
-		if (!r2_key || !desired_id) return fail(400, { missing: true });
+		if (!r2Key || !desiredId) return fail(400, { missing: true });
 
-		const fuizBody = await loadStorage(r2_key, platform);
+		const fuizBody = await loadStorage(r2Key, platform);
 
 		if (!fuizBody) return fail(400, { missing: true });
 
@@ -120,11 +126,11 @@ export const actions: Actions = {
 
 		const { author, tags, config, language } = parse(fuizText, { bigint: false }) as OnlineFuiz;
 
-		if (desired_id != r2_key) {
-			await platform?.env.BUCKET.delete(desired_id);
-			await platform?.env.BUCKET.put(desired_id, fuizText);
-			await platform?.env.BUCKET.delete(r2_key);
-			const gitUrl = await updateFileInGit(desired_id + '.toml', fuizText);
+		if (desiredId != r2Key) {
+			await platform?.env.BUCKET.delete(desiredId);
+			await platform?.env.BUCKET.put(desiredId, fuizText);
+			await platform?.env.BUCKET.delete(r2Key);
+			const gitUrl = await updateFileInGit(desiredId + '.toml', fuizText);
 			const { thumbnail, alt } = (await getThumbnail(config)) || {
 				thumbnail: null,
 				alt: null
@@ -155,11 +161,11 @@ export const actions: Actions = {
 					alt,
 					Date.now(),
 					language,
-					desired_id
+					desiredId
 				)
 				.run();
 		} else {
-			const gitUrl = await createFileInGit(r2_key + '.toml', fuizText);
+			const gitUrl = await createFileInGit(r2Key + '.toml', fuizText);
 			const { thumbnail, alt } = (await getThumbnail(config)) || {
 				thumbnail: null,
 				alt: null
@@ -174,7 +180,7 @@ export const actions: Actions = {
 					author,
 					Date.now(),
 					gitUrl,
-					r2_key,
+					r2Key,
 					email,
 					tags.join(' ~ '),
 					config.slides.length,
@@ -191,14 +197,11 @@ export const actions: Actions = {
 	},
 	reject: async ({ request, platform }) => {
 		const email = request.headers.get('Cf-Access-Authenticated-User-Email');
-
-		if (!email) {
-			return fail(400, { missing: true });
-		}
+		if (!email) return fail(400, { missing: true });
 
 		const reason = (await request.formData()).get('reason')?.toString() || null;
 
-		const { r2_key }: { r2_key: string | undefined } = (await platform?.env.DATABASE.prepare(
+		const { r2_key: r2Key }: { r2_key: string | undefined } = (await platform?.env.DATABASE.prepare(
 			`DELETE FROM pending_submissions WHERE assigned = ?1 RETURNING r2_key`
 		)
 			.bind(email)
@@ -206,14 +209,12 @@ export const actions: Actions = {
 			r2_key: undefined
 		};
 
-		if (!r2_key) {
-			return fail(400, { missing: true });
-		}
+		if (!r2Key) return fail(400, { missing: true });
 
 		await platform?.env.DATABASE.prepare(
 			`INSERT INTO denied_submissions (r2_key, denied_by, reason) VALUES (?1, ?2, ?3)`
 		)
-			.bind(r2_key, email, reason)
+			.bind(r2Key, email, reason)
 			.run();
 
 		return { success: true };

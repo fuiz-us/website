@@ -18,12 +18,12 @@
 	function load_from_input() {
 		const target = document.querySelector('input[type=file]');
 		if (target) {
-			const input_image = target as HTMLInputElement;
-			load_file(input_image.files?.item(0) ?? undefined);
+			const inputImage = target as HTMLInputElement;
+			loadFile(inputImage.files?.item(0) ?? undefined);
 		}
 	}
 
-	function load_file(file: File | undefined) {
+	function loadFile(file: File | undefined) {
 		dragOver = false;
 		if (file == undefined) {
 			media = undefined;
@@ -72,9 +72,9 @@
 			}}
 			on:drop|preventDefault={(e) => {
 				dragOver = false;
-				let files = e.dataTransfer?.files ?? undefined;
+				const files = e.dataTransfer?.files ?? undefined;
 				if (files && files.length > 0) {
-					load_file(e.dataTransfer?.files?.item(0) ?? undefined);
+					loadFile(e.dataTransfer?.files?.item(0) ?? undefined);
 				}
 			}}
 		>

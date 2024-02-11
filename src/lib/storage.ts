@@ -113,25 +113,21 @@ export type StrictInternalFuiz = {
 	config: MediaReferencedFuizConfig;
 } & StrictInternalFuizMetadata;
 
-export type StrictInternalFuizMetadata = {
-	lastEdited: number;
-	uniqueId: string;
-	versionId: number;
-	publish?: {
-		released_r2_key?: string;
-		pending_r2_key?: string;
-	};
-};
+export type StrictInternalFuizMetadata = Modify<
+	InternalFuizMetadata,
+	{
+		uniqueId: string;
+		versionId: number;
+	}
+>;
 
-export type StrictInternalFuizMetadataStrings = {
-	lastEdited: string;
-	uniqueId: string;
-	versionId: string;
-	publish?: {
-		released_r2_key?: string;
-		pending_r2_key?: string;
-	};
-};
+export type StrictInternalFuizMetadataStrings = Modify<
+	StrictInternalFuiz,
+	{
+		lastEdited: string;
+		versionId: string;
+	}
+>;
 
 export function hashMedia(media: Media): [string, string, Media | string] {
 	if ('Base64' in media.Image) {

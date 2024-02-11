@@ -44,9 +44,9 @@ export const actions: Actions = {
 	request_update: async ({ request, platform }) => {
 		const data = await request.formData();
 		const config = data.get('config');
-		const desired_id = data.get('id');
+		const desiredId = data.get('id');
 
-		if (!config || !desired_id) return fail(400, { missing: true });
+		if (!config || !desiredId) return fail(400, { missing: true });
 
 		const id = crypto.randomUUID();
 
@@ -54,7 +54,7 @@ export const actions: Actions = {
 		await platform?.env.DATABASE.prepare(
 			'INSERT INTO pending_submissions (id, assigned, desired_id, r2_key) VALUES (NULL, NULL, ?1, ?2)'
 		)
-			.bind(desired_id, id)
+			.bind(desiredId, id)
 			.run();
 
 		return { r2_key: id };

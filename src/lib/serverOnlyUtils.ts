@@ -31,13 +31,12 @@ export async function getThumbnail(
 
 				const blob = await image.blob();
 
-				const form_data = new FormData();
-
-				form_data.append('image', blob);
+				const formData = new FormData();
+				formData.append('image', blob);
 
 				const thumbnail = await bring(PUBLIC_CORKBOARD_URL + '/thumbnail', {
 					method: 'POST',
-					body: form_data
+					body: formData
 				});
 
 				if (!thumbnail?.ok) return undefined;
@@ -46,13 +45,12 @@ export async function getThumbnail(
 			} else if ('Base64' in media.Image) {
 				const blob = dataURIToBlob(media.Image.Base64.data);
 
-				const form_data = new FormData();
-
-				form_data.append('image', blob);
+				const formData = new FormData();
+				formData.append('image', blob);
 
 				const thumbnail = await bring(PUBLIC_CORKBOARD_URL + '/thumbnail', {
 					method: 'POST',
-					body: form_data
+					body: formData
 				});
 
 				if (!thumbnail?.ok) return undefined;

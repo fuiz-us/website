@@ -15,6 +15,7 @@
 		<div
 			style:height="100%"
 			style:width="100%"
+			style:min-height="1.5em"
 			style:display="flex"
 			style:align-items="center"
 			style:justify-content="center"

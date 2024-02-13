@@ -540,14 +540,15 @@
 {:else if 'Slide' in currentState}
 	{@const { Slide: slide, index, count, score } = currentState}
 	{#if 'MultipleChoice' in slide}
-		{@const { MultipleChoice: kind, question, answers, results, answered } = slide}
+		{@const { MultipleChoice: kind, question, answers, media, results, answered } = slide}
 		{#if kind === 'QuestionAnnouncment'}
-			<Question {name} {score} questionText={question || ''} />
+			<Question {name} {score} {media} questionText={question || ''} />
 		{:else if kind === 'AnswersAnnouncement'}
 			{#if answered === undefined}
 				<Answers
 					on:answer={(e) => sendAnswer(e.detail)}
 					questionText={question || ''}
+					{media}
 					{name}
 					{score}
 					{showAnswers}

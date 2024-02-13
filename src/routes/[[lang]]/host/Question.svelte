@@ -19,7 +19,7 @@
 <svelte:head>
 	{#if media && 'Corkboard' in media.Image}
 		<link
-			rel="prefetch"
+			rel="preload"
 			as="image"
 			href={PUBLIC_CORKBOARD_URL + '/get/' + media.Image.Corkboard.id}
 		/>

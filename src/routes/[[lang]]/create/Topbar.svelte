@@ -31,7 +31,7 @@
 		style:margin="0 5px"
 		style:overflow="hidden"
 	>
-		<Logo height={65} width={162} />
+		<Logo height={65} />
 	</a>
 	<div
 		style:flex="1"
@@ -71,6 +71,7 @@
 				alt={m.download()}
 				on:click={async () => {
 					const creation = await getCreation(id, db);
+					if (!creation) return;
 					const configJson = creation.config;
 
 					downloadTomlString(stringifyToml(tomlifyConfig(configJson)), configJson.title);

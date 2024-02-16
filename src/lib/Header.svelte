@@ -5,7 +5,12 @@
 </script>
 
 <div style:display="flex" style:justify-content="center">
-	<a href={route('/', languageTag())} style:height="60px" style:overflow="hidden">
-		<Logo height={60} width={150} />
+	<a
+		href={route('/', languageTag())}
+		style:height="60px"
+		style:overflow="hidden"
+		style:color="inherit"
+	>
+		<Logo height={60} />
 	</a>
 </div>

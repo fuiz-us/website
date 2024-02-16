@@ -42,8 +42,8 @@
 	"dependencies": {
 		"@fontsource/atkinson-hyperlegible": "^5.0.18",
 		"@fontsource/poppins": "^5.0.8",
-		"@jill64/svelte-dark-theme": "^2.3.23",
 		"@ltd/j-toml": "^1.38.0",
+		"@svelte-put/inline-svg": "^3.0.0",
 		"@sveltejs/enhanced-img": "^0.1.7",
 		"object-hash": "^3.0.0",
 		"qrcode": "^1.5.3",

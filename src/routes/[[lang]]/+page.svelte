@@ -1,11 +1,9 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
-	import { theme } from '@jill64/svelte-dark-theme';
 	import warning from '$lib/assets/error.svg';
 
 	import Icon from '$lib/Icon.svelte';
-	import blackLogo from '$lib/assets/dark_logo.svg';
-	import whiteLogo from '$lib/assets/white_logo.svg';
+	import logo from '$lib/assets/same_color_logo.svg';
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
 	import Anchor from '$lib/Anchor.svelte';
 	import QuestionAnswers from './host/QuestionAnswers.svelte';
@@ -52,7 +50,7 @@
 						media={{
 							Image: {
 								Url: {
-									url: $theme === 'dark' ? whiteLogo : blackLogo,
+									url: logo,
 									alt: m.logo_alt()
 								}
 							}

@@ -1,23 +1,38 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
 
-	import { theme, setting } from '@jill64/svelte-dark-theme';
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
 	import darkMode from '$lib/assets/dark_mode.svg';
 	import lightMode from '$lib/assets/light_mode.svg';
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 
-	$: state = $theme === 'dark' ? true : false;
+	let state: boolean | undefined = undefined;
+
+	function getName(state: boolean): string {
+		return state ? 'dark' : 'light';
+	}
+
+	onMount(() => {
+		state = (localStorage.getItem('theme') ?? 'light') === 'dark';
+	});
 
 	$: {
-		$setting = state ? 'dark' : 'light';
+		if (browser && state !== undefined) {
+			localStorage.setItem('theme', getName(state));
+			document.querySelector('html')?.classList.remove(getName(!state));
+			document.querySelector('html')?.classList.add(getName(state));
+		}
 	}
 </script>
 
-<StatedIconButton
-	icons={[
-		{ src: lightMode, alt: m.switch_dark() },
-		{ src: darkMode, alt: m.switch_light() }
-	]}
-	bind:state
-	size="1em"
-/>
+{#if state !== undefined}
+	<StatedIconButton
+		icons={[
+			{ src: lightMode, alt: m.switch_dark() },
+			{ src: darkMode, alt: m.switch_light() }
+		]}
+		bind:state
+		size="1em"
+	/>
+{/if}

@@ -6,7 +6,7 @@
 	import { setLanguageTag, sourceLanguageTag, type AvailableLanguageTag } from '$paraglide/runtime';
 	import { browser } from '$app/environment';
 	import I18NHeader from '$lib/I18NHeader.svelte';
-	import { ThemeManager } from '@jill64/svelte-dark-theme';
+	import { onMount } from 'svelte';
 
 	function getLang(param: AvailableLanguageTag): AvailableLanguageTag {
 		return param ?? sourceLanguageTag;
@@ -19,12 +19,32 @@
 	//Use the default language if no language is given
 	$: setLanguageTag(lang);
 
+	onMount(() => {
+		function getTheme() {
+			if (window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches) {
+				return 'dark';
+			} else {
+				return 'light';
+			}
+		}
+
+		function getOrSet(): string {
+			const local = localStorage.getItem('theme');
+			if (local) return local;
+
+			const def = getTheme();
+			localStorage.setItem('theme', def);
+			return def;
+		}
+
+		document.querySelector('html')?.classList.add(getOrSet());
+	});
+
 	//Set the lang attribute on the html tag
 	$: if (browser) document.documentElement.lang = lang;
 </script>
 
 <I18NHeader />
-<ThemeManager />
 
 {#key lang}
 	<slot />

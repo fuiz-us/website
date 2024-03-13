@@ -9,7 +9,7 @@ export const GET: RequestHandler = async () => {
 			origin: 'https://fuiz.us',
 			lang: {
 				default: 'en',
-				alternates: ['az', 'es', 'fr', 'zh-cn']
+				alternates: ['az', 'de', 'es', 'fr', 'zh-cn']
 			},
 			excludePatterns: ['.*\\[id\\].*']
 		})

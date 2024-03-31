@@ -1,14 +1,13 @@
 import type { IdlessFuizConfig } from '$lib/types';
-import crypto from 'node:crypto';
 import type { RequestHandler } from './$types';
-import { error, json } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
 
 export const PUT: RequestHandler = async ({ request, platform }) => {
 	let config: IdlessFuizConfig = await request.json();
 
 	let id = crypto.randomUUID();
 
-	platform?.env.MAP.put(crypto.randomUUID(), JSON.stringify(config));
+	platform?.env.MAP.put(id, JSON.stringify(config));
 
 	return json(id);
 };

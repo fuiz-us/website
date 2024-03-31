@@ -181,7 +181,7 @@ function fixTime(time: number): number {
 	return time <= 1000 ? time * 1000 : time;
 }
 
-function fixTimes(config: IdlessFuizConfig): IdlessFuizConfig {
+export function fixTimes(config: IdlessFuizConfig): IdlessFuizConfig {
 	return {
 		title: config.title,
 		slides: config.slides.map((slide) => ({

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
-	import { removeIds } from '$lib';
+	import { fixTimes, removeIds } from '$lib';
 	import { route } from '$lib/i18n-routing';
 	import { updateCreation, type Database, type ExportedFuiz } from '$lib/storage';
 	import type { FuizConfig } from '$lib/types';
@@ -30,7 +30,7 @@
 			id,
 			{
 				...exportedFuiz,
-				config: removeIds(config),
+				config: fixTimes(removeIds(config)),
 				lastEdited: Date.now()
 			},
 			db

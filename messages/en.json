@@ -163,7 +163,7 @@
 	"switch_dark": "Switch to Dark Mode",
 	"switch_light": "Switch to Light Mode",
 	"library": "Library",
-	"author_played_times": "{author} • played {times} times",
+	"author_played_times": "{author}",
 	"fallback": "Fallback",
 	"played_times": "Played {times} times",
 	"import_fuiz": "Import",

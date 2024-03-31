@@ -29,7 +29,7 @@
 			db
 		);
 
-		goto(route('/create', languageTag()) + '?id=' + id.toString());
+		await goto(route('/create', languageTag()) + '?id=' + id.toString());
 	}
 </script>
 
@@ -63,11 +63,6 @@
 							style: 'narrow',
 							type: 'conjunction'
 						}).format(fuiz.tags)}
-					</div>
-					<div>
-						{m.played_times({
-							times: fuiz.played_count
-						})}
 					</div>
 					<div>
 						{m.language()}: {new Intl.DisplayNames([languageTag()], {

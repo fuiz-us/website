@@ -4,31 +4,102 @@
 	import Icon from '$lib/Icon.svelte';
 	import type { PublishedFuiz } from '$lib/types';
 	import OnlinePublised from './OnlinePublised.svelte';
+	import LoadingCircle from '$lib/LoadingCircle.svelte';
+	import Textbox from '$lib/Textbox.svelte';
+	import Textfield from '$lib/Textfield.svelte';
 
 	export let recentlyPublished: PublishedFuiz[], mostPlayed: PublishedFuiz[];
+
+	let searchTerm = '';
+
+	const debounce = (f: () => void, ms: number) => {
+		let timer: ReturnType<typeof setTimeout>;
+		return () => {
+			clearTimeout(timer);
+			timer = setTimeout(f, ms);
+		};
+	};
+
+	let results: Promise<PublishedFuiz[] | undefined> | undefined = undefined;
+
+	const search = debounce(
+		() =>
+			(results = fetch('search', {
+				method: 'POST',
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify({ term: searchTerm })
+			})
+				.then((res) => (res.ok ? (res.json() as Promise<PublishedFuiz[]>) : undefined))
+				.catch(() => undefined)),
+		500
+	);
+
+	$: {
+		searchTerm && search();
+	}
 </script>
 
-<div class="section">
-	<h2>{m.recently_published()}</h2>
-	<div class="grid">
-		{#each recentlyPublished as fuiz}
-			<a href="library/public/{fuiz.id}">
-				<OnlinePublised data={fuiz} />
-			</a>
-		{:else}
-			<div
-				style:display="flex"
-				style:flex-direction="column"
-				style:opacity="0.7"
-				style:align-items="center"
-			>
-				<Icon src="$lib/assets/ghost.svg" size="min(20vh, 60vw)" alt={m.nothing()} />
-				{m.nothing()}
-			</div>
-		{/each}
+<Textfield
+	id="search"
+	required={false}
+	disabled={false}
+	bind:value={searchTerm}
+	placeholder="Search"
+/>
+
+{#await results}
+	<div style:display="flex" style:justify-content="center">
+		<div style:height="1em" style:width="1em" style:margin="1em">
+			<LoadingCircle />
+		</div>
 	</div>
-</div>
-<div class="section">
+{:then res}
+	{#if res}
+		<div class="section">
+			<h2>Search Results</h2>
+			<div class="grid">
+				{#each res as fuiz}
+					<a href="library/public/{fuiz.id}">
+						<OnlinePublised data={fuiz} />
+					</a>
+				{:else}
+					<div
+						style:display="flex"
+						style:flex-direction="column"
+						style:opacity="0.7"
+						style:align-items="center"
+					>
+						<Icon src="$lib/assets/ghost.svg" size="min(20vh, 60vw)" alt={m.nothing()} />
+						{m.nothing()}
+					</div>
+				{/each}
+			</div>
+		</div>
+	{:else}
+		<div class="section">
+			<h2>{m.recently_published()}</h2>
+			<div class="grid">
+				{#each recentlyPublished as fuiz}
+					<a href="library/public/{fuiz.id}">
+						<OnlinePublised data={fuiz} />
+					</a>
+				{:else}
+					<div
+						style:display="flex"
+						style:flex-direction="column"
+						style:opacity="0.7"
+						style:align-items="center"
+					>
+						<Icon src="$lib/assets/ghost.svg" size="min(20vh, 60vw)" alt={m.nothing()} />
+						{m.nothing()}
+					</div>
+				{/each}
+			</div>
+		</div>
+	{/if}
+{/await}
+
+<!-- <div class="section">
 	<h2>{m.most_published()}</h2>
 	<div class="grid">
 		{#each mostPlayed as fuiz}
@@ -47,7 +118,7 @@
 			</div>
 		{/each}
 	</div>
-</div>
+</div> -->
 
 <style>
 	.grid {

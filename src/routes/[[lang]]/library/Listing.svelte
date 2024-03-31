@@ -5,7 +5,6 @@
 	import type { PublishedFuiz } from '$lib/types';
 	import OnlinePublised from './OnlinePublised.svelte';
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
-	import Textbox from '$lib/Textbox.svelte';
 	import Textfield from '$lib/Textfield.svelte';
 
 	export let recentlyPublished: PublishedFuiz[], mostPlayed: PublishedFuiz[];
@@ -24,7 +23,7 @@
 
 	const search = debounce(
 		() =>
-			(results = fetch('search', {
+			(results = fetch('./search', {
 				method: 'POST',
 				headers: { 'content-type': 'application/json' },
 				body: JSON.stringify({ term: searchTerm })

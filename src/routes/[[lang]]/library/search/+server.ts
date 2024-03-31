@@ -9,7 +9,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 	const matches = (
 		((
 			await platform?.env.DATABASE.prepare(
-				'SELECT * FROM approved_submissions WHERE ((title + author + tags + alt) MATCH ?1) ORDER BY rank LIMIT 8'
+				'SELECT * FROM approved_submissions WHERE (title LIKE "%?1%" OR author LIKE "%?1%" OR tags LIKE "%?1%" OR alt LIKE "%?1%") LIMIT 8'
 			)
 				.bind(term)
 				.all()

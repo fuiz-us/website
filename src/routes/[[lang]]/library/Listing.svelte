@@ -23,7 +23,7 @@
 
 	const search = debounce(
 		() =>
-			(results = fetch('./search', {
+			(results = fetch('library/search', {
 				method: 'POST',
 				headers: { 'content-type': 'application/json' },
 				body: JSON.stringify({ term: searchTerm })

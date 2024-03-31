@@ -9,10 +9,15 @@
 	import { languageTag } from '$paraglide/runtime';
 	import { route } from '$lib/i18n-routing';
 	import { getCreation, type Database } from '$lib/storage';
+	import { createEventDispatcher } from 'svelte';
 
 	export let title: string;
 	export let id: number;
 	export let db: Database;
+
+	let dispatch = createEventDispatcher<{
+		share: void;
+	}>();
 </script>
 
 <div
@@ -30,6 +35,7 @@
 		style:height="65px"
 		style:margin="0 5px"
 		style:overflow="hidden"
+		style:color="inherit"
 	>
 		<Logo height={65} />
 	</a>
@@ -64,6 +70,12 @@
 				src="$lib/assets/publish.svg"
 				alt="Publish"
 				on:click={() => goto('publish?id=' + id)}
+			/>
+			<IconButton
+				size="1em"
+				src="$lib/assets/share.svg"
+				alt="Share"
+				on:click={() => dispatch('share')}
 			/>
 			<IconButton
 				size="1em"

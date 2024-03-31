@@ -53,7 +53,7 @@
 		</div>
 	</div>
 {:then res}
-	{#if res}
+	{#if res && searchTerm}
 		<div class="section">
 			<h2>Search Results</h2>
 			<div class="grid">

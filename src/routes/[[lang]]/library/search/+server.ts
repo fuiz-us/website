@@ -9,9 +9,9 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 	const matches = (
 		((
 			await platform?.env.DATABASE.prepare(
-				'SELECT * FROM approved_submissions WHERE (title LIKE "%?1%" OR author LIKE "%?1%" OR tags LIKE "%?1%" OR alt LIKE "%?1%") LIMIT 8'
+				'SELECT * FROM approved_submissions WHERE (title LIKE "%?1%" OR author LIKE "%?2%" OR tags LIKE "%?3%" OR alt LIKE "%?4%") LIMIT 8'
 			)
-				.bind(term)
+				.bind(term, term, term, term)
 				.all()
 		)?.results || []) as PublishedFuizDB[]
 	).map(fixPublish);

@@ -7,7 +7,7 @@ export const PUT: RequestHandler = async ({ request, platform }) => {
 
 	let id = crypto.randomUUID();
 
-	platform?.env.MAP.put(id, JSON.stringify(config));
+	await platform?.env.MAP.put(id, JSON.stringify(config));
 
 	return json(id);
 };

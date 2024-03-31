@@ -6,12 +6,14 @@ import type { RequestHandler } from './$types';
 export const POST: RequestHandler = async ({ request, platform }) => {
 	let { term } = await request.json();
 
+	let fixedTerm = `%${term}%`;
+
 	const matches = (
 		((
 			await platform?.env.DATABASE.prepare(
-				'SELECT * FROM approved_submissions WHERE (title LIKE "%?1%" OR author LIKE "%?2%" OR tags LIKE "%?3%" OR alt LIKE "%?4%") LIMIT 8'
+				'SELECT * FROM approved_submissions WHERE (title LIKE ? OR author LIKE ? OR tags LIKE ? OR alt LIKE ?) LIMIT 8'
 			)
-				.bind(term, term, term, term)
+				.bind(fixedTerm, fixedTerm, fixedTerm, fixedTerm)
 				.all()
 		)?.results || []) as PublishedFuizDB[]
 	).map(fixPublish);

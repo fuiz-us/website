@@ -31,5 +31,7 @@ export const GET: RequestHandler = async ({ request, platform }) => {
 
 	console.log('got config');
 
+	error(401, 'not allowed');
+
 	return new Response((await getThumbnail(config))?.thumbnail);
 };

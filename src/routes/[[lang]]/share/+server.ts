@@ -1,5 +1,5 @@
 import type { IdlessFuizConfig } from '$lib/types';
-import { crypto } from '@cloudflare/workers-types';
+import crypto from 'node:crypto';
 import type { RequestHandler } from './$types';
 import { error, json } from '@sveltejs/kit';
 

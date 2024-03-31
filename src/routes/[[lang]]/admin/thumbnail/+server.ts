@@ -29,5 +29,7 @@ export const GET: RequestHandler = async ({ request, platform }) => {
 
 	const { config } = parse(res, { bigint: false }) as OnlineFuiz;
 
+	console.log('got config');
+
 	return new Response((await getThumbnail(config))?.thumbnail);
 };

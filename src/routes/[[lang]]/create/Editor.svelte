@@ -61,8 +61,7 @@
 				body: JSON.stringify(removeIds(config))
 			});
 			let id = await req.json();
-			let clipboard = new Clipboard();
-			clipboard.writeText(PUBLIC_PLAY_URL + route('/share', languageTag()) + '/' + id);
+			navigator.clipboard.writeText(PUBLIC_PLAY_URL + route('/share', languageTag()) + '/' + id);
 			alert('Copied to the clipboard!');
 		}}
 	/>

@@ -76,25 +76,45 @@
 	<section>
 		<div class="split">
 			<div>
-				<h2>About Fuiz</h2>
+				<h2>{m.about_fuiz()}</h2>
 				<p>
-					The alternative to Kahoot with enhanced collaboration and problem-solving. Fuiz is a
-					privacy-focused, open-source learning platform hosting user-generated quizzes. Instead of
-					competition and memorization, we are committed to providing an accessible classroom tool
-					that encourages teamwork and discussions.
+					{m.about_fuiz_desc()}
 				</p>
 			</div>
-			<Icon src="$lib/assets/help.svg" size="7em" alt="About" />
+			<Icon src="$lib/assets/help.svg" size="7em" alt={m.about_fuiz()} />
 		</div>
 	</section>
 	<section>
 		<div class="split">
 			<div>
-				<h2><Anchor href="posts/introducing-fuiz">Collaboration Over Competition</Anchor></h2>
+				<h2>{m.free_of_charge()}</h2>
 				<p>
-					In addition to Kahoot's basic functionality, the <strong>collaboration mode</strong> incorporates
-					special features to encourage teamwork. Options are distributed among students in a team, prompting
-					interaction to gather all possible answers.
+					{m.free_of_charge_desc()}
+				</p>
+				<p>
+					{m.number_of_participants()}
+				</p>
+			</div>
+			<Icon src="$lib/assets/no_money.svg" size="7em" alt="Free of charge" />
+		</div>
+	</section>
+	<section>
+		<div class="split">
+			<div>
+				<h2>{m.well_translated()}</h2>
+				<p>
+					{m.well_translated_desc()}
+				</p>
+			</div>
+			<Icon src="$lib/assets/language.svg" size="7em" alt={m.language()} />
+		</div>
+	</section>
+	<section>
+		<div class="split">
+			<div>
+				<h2><Anchor href="posts/introducing-fuiz">{m.collab_over_comp()}</Anchor></h2>
+				<p>
+					{m.collab_over_comp_desc()}
 				</p>
 			</div>
 			<Icon src="$lib/assets/collaboration.svg" size="7em" alt="Collaboration" />
@@ -114,10 +134,11 @@
 	<section>
 		<div class="split">
 			<div>
-				<h2>{m.always_open()}</h2>
+				<h2>
+					<Anchor href="https://gitlab.com/opencode-mit/fuiz-us">{m.always_open()}</Anchor>
+				</h2>
 				<p>
 					{m.always_open_desc()}
-					<Anchor href="https://gitlab.com/opencode-mit">gitlab.com/opencode-mit</Anchor>
 				</p>
 			</div>
 			<Icon src="$lib/assets/code_blocks.svg" size="7em" alt="Peoeple's Choice" />

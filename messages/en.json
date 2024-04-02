@@ -174,5 +174,15 @@
 	"leaderboard": "Leaderboard",
 	"number_of_players": "Number of players",
 	"warning": "Warning",
-	"blog": "Blog"
+	"blog": "Blog",
+	"collab_over_comp_desc": "In addition to Kahoot's basic functionality, the collaboration mode incorporates special features to encourage teamwork. Options are distributed among students in a team, prompting interaction to gather all possible answers.",
+	"collab_over_comp": "Collaboration Over Competition",
+	"about_fuiz_desc": "The alternative to Kahoot with enhanced collaboration and problem-solving. Fuiz is a privacy-focused, open-source learning platform hosting user-generated quizzes. Instead of competition and memorization, we are committed to providing an accessible classroom tool that encourages teamwork and discussions.",
+	"about_fuiz": "About Fuiz",
+	"share": "Share",
+	"well_translated": "Well Translated",
+	"well_translated_desc": "Fuiz is translated to various languages through the work of volunteers. If it's not provided in your language, your contribution is welcome!",
+	"free_of_charge": "Free of Charge",
+	"free_of_charge_desc": "Fuiz is provided free of charge, with no sacrifice to your privacy. If you want to support the project financially let us know.",
+	"number_of_participants": "Fuiz provides a fairly capable server with up to a thousand participants at the same time. However, it should be most reliable with less than two hundered participants."
 }

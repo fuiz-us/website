@@ -68,13 +68,13 @@
 			<IconButton
 				size="1em"
 				src="$lib/assets/publish.svg"
-				alt="Publish"
+				alt={m.publish_title()}
 				on:click={() => goto('publish?id=' + id)}
 			/>
 			<IconButton
 				size="1em"
 				src="$lib/assets/share.svg"
-				alt="Share"
+				alt={m.share()}
 				on:click={() => dispatch('share')}
 			/>
 			<IconButton

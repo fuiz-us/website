@@ -66,7 +66,7 @@
 		<IconButton
 			size="1em"
 			src="$lib/assets/publish.svg"
-			alt="Publish"
+			alt={m.publish_title}
 			on:click={() => dispatch('publish')}
 		/>
 	</div>

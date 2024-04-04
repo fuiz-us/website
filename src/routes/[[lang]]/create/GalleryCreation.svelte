@@ -13,7 +13,7 @@
 		delete: undefined;
 		play: undefined;
 		download: undefined;
-		publish: undefined;
+		share: undefined;
 	}>();
 
 	export let id: number,
@@ -65,9 +65,9 @@
 		/>
 		<IconButton
 			size="1em"
-			src="$lib/assets/publish.svg"
-			alt={m.publish_title}
-			on:click={() => dispatch('publish')}
+			src="$lib/assets/share.svg"
+			alt={m.share()}
+			on:click={() => dispatch('share')}
 		/>
 	</div>
 </div>

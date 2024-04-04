@@ -56,7 +56,9 @@
 	};
 
 	let longNavigating = false;
-	let stopTimer: () => void = () => {};
+	let stopTimer: () => void = () => {
+		// left empty for a reason
+	};
 
 	$: {
 		if ($navigating) {
@@ -68,8 +70,6 @@
 			longNavigating = false;
 		}
 	}
-
-	$: console.log(longNavigating);
 </script>
 
 <I18NHeader />

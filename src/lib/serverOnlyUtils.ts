@@ -17,7 +17,7 @@ export async function getThumbnail(
 	fuiz: IdlessFuizConfig
 ): Promise<{ thumbnail: ArrayBuffer; alt: string } | undefined> {
 	return await fuiz.slides.reduce<
-	Promise<{ thumbnail: ArrayBuffer; alt: string } | undefined> | undefined
+		Promise<{ thumbnail: ArrayBuffer; alt: string } | undefined> | undefined
 	>(async (m, s) => {
 		const prev = await m;
 		if (prev) return prev;
@@ -27,33 +27,33 @@ export async function getThumbnail(
 			const image = await bring(PUBLIC_CORKBOARD_URL + '/get/' + media.Image.Corkboard.id, {
 				method: 'GET'
 			});
-			
+
 			if (!image?.ok) return undefined;
-			
+
 			const blob = await image.blob();
-			
+
 			const formData = new FormData();
 			formData.append('image', blob);
-			
+
 			const thumbnail = await bring(PUBLIC_CORKBOARD_URL + '/thumbnail', {
 				method: 'POST',
 				body: formData
 			});
-			
+
 			if (!thumbnail?.ok) return undefined;
-			
+
 			return { thumbnail: await thumbnail.arrayBuffer(), alt: media.Image.Corkboard.alt };
 		} else if ('Base64' in media.Image) {
 			const blob = dataURIToBlob(media.Image.Base64.data);
-			
+
 			const formData = new FormData();
 			formData.append('image', blob);
-			
+
 			const thumbnail = await bring(PUBLIC_CORKBOARD_URL + '/thumbnail', {
 				method: 'POST',
 				body: formData
 			});
-			
+
 			if (!thumbnail?.ok) return undefined;
 
 			return { thumbnail: await thumbnail.arrayBuffer(), alt: media.Image.Base64.alt };

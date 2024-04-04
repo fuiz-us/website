@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { PUBLIC_PLAY_URL } from '$env/static/public';
 	import { fixTimes, removeIds } from '$lib';
-	import { route } from '$lib/i18n-routing';
 	import { updateCreation, type Database, type ExportedFuiz } from '$lib/storage';
 	import type { FuizConfig } from '$lib/types';
 	import { debounce } from '$lib/util';
-	import { languageTag } from '$paraglide/runtime';
 	import Main from './Main.svelte';
 	import Topbar from './Topbar.svelte';
+	import { share } from './lib';
 
 	export let id: number;
 	export let exportedFuiz: ExportedFuiz;
@@ -46,16 +44,7 @@
 		bind:id
 		{db}
 		on:share={async () => {
-			let req = await fetch('/share', {
-				method: 'PUT',
-				headers: {
-					'content-type': 'application/json'
-				},
-				body: JSON.stringify(removeIds(config))
-			});
-			let id = await req.json();
-			navigator.clipboard.writeText(PUBLIC_PLAY_URL + route('/share', languageTag()) + '/' + id);
-			alert('Copied to the clipboard!');
+			await share(config);
 		}}
 	/>
 	<Main bind:config />

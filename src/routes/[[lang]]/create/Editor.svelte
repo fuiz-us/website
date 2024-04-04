@@ -4,6 +4,7 @@
 	import { route } from '$lib/i18n-routing';
 	import { updateCreation, type Database, type ExportedFuiz } from '$lib/storage';
 	import type { FuizConfig } from '$lib/types';
+	import { debounce } from '$lib/util';
 	import { languageTag } from '$paraglide/runtime';
 	import Main from './Main.svelte';
 	import Topbar from './Topbar.svelte';
@@ -12,14 +13,6 @@
 	export let exportedFuiz: ExportedFuiz;
 	export let config: FuizConfig;
 	export let db: Database;
-
-	const debounce = (f: () => void, ms: number) => {
-		let timer: ReturnType<typeof setTimeout>;
-		return () => {
-			clearTimeout(timer);
-			timer = setTimeout(f, ms);
-		};
-	};
 
 	const updateStorage = debounce(() => {
 		exportedFuiz = {

@@ -6,18 +6,11 @@
 	import OnlinePublised from './OnlinePublised.svelte';
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
 	import Textfield from '$lib/Textfield.svelte';
+	import { debounce } from '$lib/util';
 
 	export let recentlyPublished: PublishedFuiz[], mostPlayed: PublishedFuiz[];
 
 	let searchTerm = '';
-
-	const debounce = (f: () => void, ms: number) => {
-		let timer: ReturnType<typeof setTimeout>;
-		return () => {
-			clearTimeout(timer);
-			timer = setTimeout(f, ms);
-		};
-	};
 
 	let results: Promise<PublishedFuiz[] | undefined> | undefined = undefined;
 

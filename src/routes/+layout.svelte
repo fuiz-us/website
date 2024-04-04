@@ -62,7 +62,7 @@
 		if ($navigating) {
 			stopTimer = startTimer(() => {
 				longNavigating = true;
-			}, 200);
+			}, 100);
 		} else {
 			stopTimer();
 			longNavigating = false;

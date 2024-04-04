@@ -2,11 +2,12 @@
 	import '@fontsource/poppins/800.css';
 	import '@fontsource/atkinson-hyperlegible';
 
-	import { page } from '$app/stores';
+	import { navigating, page } from '$app/stores';
 	import { setLanguageTag, sourceLanguageTag, type AvailableLanguageTag } from '$paraglide/runtime';
 	import { browser } from '$app/environment';
 	import I18NHeader from '$lib/I18NHeader.svelte';
 	import { onMount } from 'svelte';
+	import Loading from '$lib/Loading.svelte';
 
 	function getLang(param: AvailableLanguageTag): AvailableLanguageTag {
 		return param ?? sourceLanguageTag;
@@ -37,17 +38,48 @@
 			return def;
 		}
 
-		document.querySelector('html')?.classList.add(getOrSet());
+		document.documentElement.setAttribute('data-theme', getOrSet());
+
+		mounting = false;
 	});
 
 	//Set the lang attribute on the html tag
 	$: if (browser) document.documentElement.lang = lang;
+
+	let mounting = true;
+
+	const startTimer = (f: () => void, ms: number) => {
+		let timer = setTimeout(f, ms);
+		return () => {
+			clearTimeout(timer);
+		};
+	};
+
+	let longNavigating = false;
+	let stopTimer: () => void = () => {};
+
+	$: {
+		if ($navigating) {
+			stopTimer = startTimer(() => {
+				longNavigating = true;
+			}, 200);
+		} else {
+			stopTimer();
+			longNavigating = false;
+		}
+	}
+
+	$: console.log(longNavigating);
 </script>
 
 <I18NHeader />
 
 {#key lang}
-	<slot />
+	{#if mounting || longNavigating}
+		<Loading />
+	{:else}
+		<slot />
+	{/if}
 {/key}
 
 <style>
@@ -64,12 +96,12 @@
 		}
 	}
 
-	:global(html.light) {
+	:global(html[data-theme='light']) {
 		--background-color: #fffbf5;
 		--color: #241f31;
 	}
 
-	:global(html.dark) {
+	:global(html[data-theme='dark']) {
 		--background-color: #241f31;
 		--color: #fffbf5;
 	}

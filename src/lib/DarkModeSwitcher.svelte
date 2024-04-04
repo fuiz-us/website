@@ -20,8 +20,7 @@
 	$: {
 		if (browser && state !== undefined) {
 			localStorage.setItem('theme', getName(state));
-			document.querySelector('html')?.classList.remove(getName(!state));
-			document.querySelector('html')?.classList.add(getName(state));
+			document.documentElement.setAttribute('data-theme', getName(state));
 		}
 	}
 </script>

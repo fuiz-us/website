@@ -6,11 +6,11 @@ import { refreshToken } from './routes/google/googleUtil';
 export const handle: Handle = async ({ event, resolve }) => {
 	const lang = event.params.lang ?? sourceLanguageTag;
 
-	const session = event.cookies.get('google');
-	const google = session
+	const googleCookie = event.cookies.get('google');
+	const google = googleCookie
 		? await (async () => {
 				try {
-					const tokens = await refreshToken(JSON.parse(session));
+					const tokens = await refreshToken(JSON.parse(googleCookie));
 
 					if (tokens === undefined) {
 						event.cookies.delete('google', { path: '/' });

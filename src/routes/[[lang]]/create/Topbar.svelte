@@ -9,15 +9,28 @@
 	import { languageTag } from '$paraglide/runtime';
 	import { route } from '$lib/i18n-routing';
 	import { getCreation, type Database } from '$lib/storage';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import tippy, { type Instance } from 'tippy.js';
 
 	export let title: string;
 	export let id: number;
 	export let db: Database;
 
 	let dispatch = createEventDispatcher<{
-		share: void;
+		share: Instance;
 	}>();
+
+	let element: HTMLElement;
+
+	let instance: Instance;
+
+	onMount(() => {
+		instance = tippy(element, {
+			trigger: 'manual',
+			content: m.copied(),
+			theme: 'fuiz'
+		});
+	});
 </script>
 
 <div
@@ -71,12 +84,14 @@
 				alt={m.publish_title()}
 				on:click={() => goto('publish?id=' + id)}
 			/>
-			<IconButton
-				size="1em"
-				src="$lib/assets/share.svg"
-				alt={m.share()}
-				on:click={() => dispatch('share')}
-			/>
+			<div bind:this={element}>
+				<IconButton
+					size="1em"
+					src="$lib/assets/share.svg"
+					alt={m.share()}
+					on:click={() => dispatch('share', instance)}
+				/>
+			</div>
 			<IconButton
 				size="1em"
 				src="$lib/assets/download.svg"

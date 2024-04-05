@@ -23,6 +23,7 @@
 	import { login, logout } from '$lib/remoteStorage';
 	import type { PageData } from './$types';
 	import { env } from '$env/dynamic/public';
+	import { share } from './lib';
 
 	export let creations: Creation[];
 
@@ -269,7 +270,13 @@
 
 								downloadTomlString(stringifyToml(tomlifyConfig(configJson)), configJson.title);
 							}}
-							on:publish={() => goto('publish?id=' + id)}
+							on:share={async (e) => {
+								const creation = await getCreation(id, db);
+								if (creation) {
+									await share(creation.config);
+								}
+								e.detail.show();
+							}}
 						/>
 					{/each}
 					{#if $dialog.expanded}

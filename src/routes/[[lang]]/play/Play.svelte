@@ -24,11 +24,22 @@
 	import { browser } from '$app/environment';
 	import Summary from './Summary.svelte';
 	import { bring } from '$lib/util';
+	import FindTeam from './FindTeam.svelte';
+	import ChooseTeammates from './ChooseTeammates.svelte';
 
 	type GameState =
 		| {
 				WaitingScreen: {
 					exact_count: number;
+				};
+		  }
+		| {
+				FindTeam: string;
+		  }
+		| {
+				ChooseTeammates: {
+					max_selection: number;
+					available: [string, boolean][];
 				};
 		  }
 		| {
@@ -99,6 +110,15 @@
 		| {
 				WaitingScreen: {
 					exact_count: number;
+				};
+		  }
+		| {
+				FindTeam: string;
+		  }
+		| {
+				ChooseTeammates: {
+					max_selection: number;
+					available: [string, boolean][];
 				};
 		  }
 		| {
@@ -226,6 +246,8 @@
 
 	let finished = false;
 
+	let leaderboardName = '';
+
 	let showAnswers = false;
 
 	let watcherId = (browser && localStorage.getItem(code + '_play')) || undefined;
@@ -323,6 +345,19 @@
 						}
 					};
 					socket.close();
+				} else if ('FindTeam' in newMsg.Game) {
+					currentState = {
+						Game: {
+							FindTeam: newMsg.Game.FindTeam
+						}
+					};
+					leaderboardName = newMsg.Game.FindTeam;
+				} else if ('ChooseTeammates' in newMsg.Game) {
+					currentState = {
+						Game: {
+							ChooseTeammates: newMsg.Game.ChooseTeammates
+						}
+					};
 				}
 			} else if ('MultipleChoice' in newMsg) {
 				let mc = newMsg.MultipleChoice;
@@ -489,7 +524,7 @@
 		});
 	});
 
-	$: name = setName || m.you();
+	$: name = (leaderboardName ? leaderboardName + ' - ' : '') + setName || m.you();
 
 	function requestName(name: string) {
 		currentState = {
@@ -520,6 +555,10 @@
 	function sendVote(index: number) {
 		socket.send(JSON.stringify({ Player: { IndexAnswer: index } }));
 	}
+
+	function sendChooseTeammate(names: string[]) {
+		socket.send(JSON.stringify({ Player: { ChooseTeammates: names } }));
+	}
 </script>
 
 {#if currentState === undefined}
@@ -536,6 +575,16 @@
 	{:else if 'Summary' in game}
 		{@const { score, points, config } = game.Summary}
 		<Summary {score} {points} {config} />
+	{:else if 'FindTeam' in game}
+		<FindTeam {name} gameCode={code} teamName={game.FindTeam} />
+	{:else if 'ChooseTeammates' in game}
+		<ChooseTeammates
+			{name}
+			gameCode={code}
+			max={game.ChooseTeammates.max_selection - 1}
+			available={game.ChooseTeammates.available.filter(([name]) => name !== setName)}
+			on:choose={(e) => sendChooseTeammate(e.detail)}
+		/>
 	{/if}
 {:else if 'Slide' in currentState}
 	{@const { Slide: slide, index, count, score } = currentState}

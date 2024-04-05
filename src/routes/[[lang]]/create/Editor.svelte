@@ -1,25 +1,16 @@
 <script lang="ts">
-	import { PUBLIC_PLAY_URL } from '$env/static/public';
 	import { fixTimes, removeIds } from '$lib';
-	import { route } from '$lib/i18n-routing';
 	import { updateCreation, type Database, type ExportedFuiz } from '$lib/storage';
 	import type { FuizConfig } from '$lib/types';
-	import { languageTag } from '$paraglide/runtime';
+	import { debounce } from '$lib/util';
 	import Main from './Main.svelte';
 	import Topbar from './Topbar.svelte';
+	import { share } from './lib';
 
 	export let id: number;
 	export let exportedFuiz: ExportedFuiz;
 	export let config: FuizConfig;
 	export let db: Database;
-
-	const debounce = (f: () => void, ms: number) => {
-		let timer: ReturnType<typeof setTimeout>;
-		return () => {
-			clearTimeout(timer);
-			timer = setTimeout(f, ms);
-		};
-	};
 
 	const updateStorage = debounce(() => {
 		exportedFuiz = {
@@ -52,17 +43,9 @@
 		bind:title={config.title}
 		bind:id
 		{db}
-		on:share={async () => {
-			let req = await fetch('/share', {
-				method: 'PUT',
-				headers: {
-					'content-type': 'application/json'
-				},
-				body: JSON.stringify(removeIds(config))
-			});
-			let id = await req.json();
-			navigator.clipboard.writeText(PUBLIC_PLAY_URL + route('/share', languageTag()) + '/' + id);
-			alert('Copied to the clipboard!');
+		on:share={async (e) => {
+			await share(config);
+			e.detail.show();
 		}}
 	/>
 	<Main bind:config />

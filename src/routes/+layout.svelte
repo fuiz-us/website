@@ -1,12 +1,15 @@
 <script lang="ts">
 	import '@fontsource/poppins/800.css';
 	import '@fontsource/atkinson-hyperlegible';
+	import 'tippy.js/dist/tippy.css';
+	import 'tippy.js/dist/border.css';
 
-	import { page } from '$app/stores';
+	import { navigating, page } from '$app/stores';
 	import { setLanguageTag, sourceLanguageTag, type AvailableLanguageTag } from '$paraglide/runtime';
 	import { browser } from '$app/environment';
 	import I18NHeader from '$lib/I18NHeader.svelte';
 	import { onMount } from 'svelte';
+	import Loading from '$lib/Loading.svelte';
 
 	function getLang(param: AvailableLanguageTag): AvailableLanguageTag {
 		return param ?? sourceLanguageTag;
@@ -37,17 +40,48 @@
 			return def;
 		}
 
-		document.querySelector('html')?.classList.add(getOrSet());
+		document.documentElement.setAttribute('data-theme', getOrSet());
+
+		mounting = false;
 	});
 
 	//Set the lang attribute on the html tag
 	$: if (browser) document.documentElement.lang = lang;
+
+	let mounting = true;
+
+	const startTimer = (f: () => void, ms: number) => {
+		let timer = setTimeout(f, ms);
+		return () => {
+			clearTimeout(timer);
+		};
+	};
+
+	let longNavigating = false;
+	let stopTimer: () => void = () => {
+		// left empty for a reason
+	};
+
+	$: {
+		if ($navigating) {
+			stopTimer = startTimer(() => {
+				longNavigating = true;
+			}, 100);
+		} else {
+			stopTimer();
+			longNavigating = false;
+		}
+	}
 </script>
 
 <I18NHeader />
 
 {#key lang}
-	<slot />
+	{#if mounting || longNavigating}
+		<Loading />
+	{:else}
+		<slot />
+	{/if}
 {/key}
 
 <style>
@@ -64,12 +98,12 @@
 		}
 	}
 
-	:global(html.light) {
+	:global(html[data-theme='light']) {
 		--background-color: #fffbf5;
 		--color: #241f31;
 	}
 
-	:global(html.dark) {
+	:global(html[data-theme='dark']) {
 		--background-color: #241f31;
 		--color: #fffbf5;
 	}
@@ -82,5 +116,32 @@
 
 	:global(html) {
 		background: var(--background-color);
+	}
+
+	:global(.tippy-box[data-theme~='fuiz']) {
+		--better-color: color-mix(in srgb, var(--background-color) 80%, var(--color));
+
+		background-color: var(--better-color);
+		border-radius: 0.7em;
+		padding: 0em 0.4em;
+		font-size: inherit;
+		color: inherit;
+
+		& > .tippy-arrow::before {
+			transform: scale(2);
+		}
+
+		&[data-placement^='top'] > .tippy-arrow::before {
+			border-top-color: var(--better-color);
+		}
+		&[data-placement^='bottom'] > .tippy-arrow::before {
+			border-bottom-color: var(--better-color);
+		}
+		&[data-placement^='left'] > .tippy-arrow::before {
+			border-left-color: var(--better-color);
+		}
+		&[data-placement^='right'] > .tippy-arrow::before {
+			border-right-color: var(--better-color);
+		}
 	}
 </style>

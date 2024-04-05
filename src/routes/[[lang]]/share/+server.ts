@@ -3,9 +3,9 @@ import type { RequestHandler } from './$types';
 import { json } from '@sveltejs/kit';
 
 export const PUT: RequestHandler = async ({ request, platform }) => {
-	let config: IdlessFuizConfig = await request.json();
+	const config: IdlessFuizConfig = await request.json();
 
-	let id = crypto.randomUUID();
+	const id = crypto.randomUUID();
 
 	await platform?.env.BUCKET.put(id, JSON.stringify(config));
 

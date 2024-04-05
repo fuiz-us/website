@@ -4,9 +4,9 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ request, platform }) => {
-	let { term } = await request.json();
+	const { term } = await request.json();
 
-	let fixedTerm = `%${term}%`;
+	const fixedTerm = `%${term}%`;
 
 	const matches = (
 		((

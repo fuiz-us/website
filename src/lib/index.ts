@@ -107,7 +107,7 @@ export function downloadTomlString(str: string, title: string) {
 	window.URL.revokeObjectURL(url);
 }
 
-export function removeIds(config: FuizConfig): IdlessFuizConfig {
+export function removeIds(config: IdlessFuizConfig): IdlessFuizConfig {
 	return {
 		title: config.title,
 		slides: config.slides.map((slide) => ({

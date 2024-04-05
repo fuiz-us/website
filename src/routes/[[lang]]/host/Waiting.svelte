@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as m from '$paraglide/messages';
-
 	import { PUBLIC_DISPLAY_PLAY_URL, PUBLIC_PLAY_URL } from '$env/static/public';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Fullscreen from '$lib/Fullscreen.svelte';
@@ -13,21 +12,20 @@
 	import unlocked from '$lib/assets/unlocked.svg';
 	import locked from '$lib/assets/locked.svg';
 	import QrCode from '$lib/Game/QRCode.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import type { BindableGameInfo } from './+page';
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
 	import { languageTag } from '$paraglide/runtime';
 	import { route } from '$lib/i18n-routing';
 	import Icon from '$lib/Icon.svelte';
 	import ExitFuiz from './ExitFuiz.svelte';
+	import tippy from 'tippy.js';
 
 	export let code: string;
 	export let players: string[];
 	export let exact_count: number;
 
 	export let bindableGameInfo: BindableGameInfo;
-
-	let codeTitle = m.copy_clipboard();
 
 	$: actualUrl = PUBLIC_PLAY_URL + route('/play?code=' + code, languageTag());
 
@@ -38,10 +36,23 @@
 
 	function copy_url_to_clipboard() {
 		navigator.clipboard.writeText(actualUrl);
-		codeTitle = m.copied();
 	}
 
 	let fullscreenElement;
+
+	let copyUrlButton: HTMLButtonElement;
+
+	onMount(() => {
+		tippy(copyUrlButton, {
+			content: m.copy_clipboard(),
+			theme: 'fuiz'
+		});
+		tippy(copyUrlButton, {
+			trigger: 'click',
+			content: m.copied(),
+			theme: 'fuiz'
+		});
+	});
 </script>
 
 <Audio audioUrl={bee3} volumeOn={bindableGameInfo.volumeOn} />
@@ -76,7 +87,7 @@
 		>
 			<button
 				on:click={copy_url_to_clipboard}
-				title={codeTitle}
+				bind:this={copyUrlButton}
 				style:font="inherit"
 				style:color="inherit"
 				style:appearance="none"
@@ -158,7 +169,7 @@
 						style:padding="0.2em"
 						style:overflow="auto"
 					>
-						<PlayersList {players} exactCount={exact_count} />
+						<PlayersList players={players.map((n) => [n, false])} exactCount={exact_count} />
 					</div>
 				</div>
 			</div>

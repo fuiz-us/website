@@ -124,7 +124,7 @@
 								sameSlide.id = Date.now();
 								slides.splice(index + 1, 0, sameSlide);
 								slides = slides;
-								await changeSelected(selectedSlideIndex + 1);
+								await changeSelected(index + 1);
 							}}
 						/>
 					</div>

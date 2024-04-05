@@ -5,15 +5,17 @@
 	import present from '$lib/assets/slideshow.svg';
 	import IconButton from '$lib/IconButton.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import type { Media } from '$lib/types';
 	import { languageTag } from '$paraglide/runtime';
+	import type { Instance } from 'tippy.js';
+	import tippy from 'tippy.js';
 
 	const dispatch = createEventDispatcher<{
 		delete: undefined;
 		play: undefined;
 		download: undefined;
-		share: undefined;
+		share: Instance;
 	}>();
 
 	export let id: number,
@@ -33,6 +35,17 @@
 			return date.toLocaleDateString(languageTag(), diff_year);
 		}
 	}
+
+	let shareElement: HTMLElement;
+	let tippyInstance: Instance;
+
+	onMount(() => {
+		tippyInstance = tippy(shareElement, {
+			trigger: 'manual',
+			content: m.copied(),
+			theme: 'fuiz'
+		});
+	});
 </script>
 
 <div class="entry">
@@ -63,12 +76,16 @@
 			alt={m.download()}
 			on:click={() => dispatch('download')}
 		/>
-		<IconButton
-			size="1em"
-			src="$lib/assets/share.svg"
-			alt={m.share()}
-			on:click={() => dispatch('share')}
-		/>
+		<div bind:this={shareElement}>
+			<IconButton
+				size="1em"
+				src="$lib/assets/share.svg"
+				alt={m.share()}
+				on:click={() => {
+					dispatch('share', tippyInstance);
+				}}
+			/>
+		</div>
 	</div>
 </div>
 

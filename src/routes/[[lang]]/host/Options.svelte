@@ -21,13 +21,14 @@
 
 	let errorMessage = '';
 
-	export let randomizedNames = false,
+	let randomizedNames = false,
 		questionsOnPlayersDevices = false,
 		shuffleAnswers = false,
 		shuffleSlides = false,
 		leaderboard = true,
 		teams = false,
-		teamSize = 4;
+		teamSize = 4,
+		assignRandom = false;
 
 	// https://stackoverflow.com/a/2450976
 	function shuffleArray<T>(array: T[]): T[] {
@@ -86,10 +87,10 @@
 					errorMessage = '';
 					loading = true;
 					playIdlessConfig(shuffle(config, shuffleSlides, shuffleAnswers), {
-						random_names: randomizedNames || teams,
+						random_names: randomizedNames,
 						show_answers: questionsOnPlayersDevices || teams,
 						no_leaderboard: !leaderboard,
-						...(teams && { teams: teamSize })
+						...(teams && { teams: { size: teamSize, assign_random: assignRandom } })
 					}).then((err) => {
 						loading = false;
 						if (err) {
@@ -108,13 +109,13 @@
 						<Slider id="team_size" bind:value={teamSize} min={2} max={5}
 							>{m.optimal_team_size()}</Slider
 						>
+						<hr />
+						<div class="switch">
+							<Switch id="assign_random" bind:checked={assignRandom}>
+								{m.assign_random()}
+							</Switch>
+						</div>
 					{/if}
-					<hr />
-					<div class="switch">
-						<Switch id="random" bind:checked={randomizedNames} stuck={teams ? true : undefined}
-							>{m.randomized_names()}</Switch
-						>
-					</div>
 					<hr />
 					<div class="switch">
 						<Switch
@@ -124,6 +125,10 @@
 						>
 							{m.questions_on_players_devices()}
 						</Switch>
+					</div>
+					<hr />
+					<div class="switch">
+						<Switch id="random" bind:checked={randomizedNames}>{m.randomized_names()}</Switch>
 					</div>
 					<hr />
 					<div class="switch">

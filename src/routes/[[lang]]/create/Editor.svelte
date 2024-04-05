@@ -43,8 +43,9 @@
 		bind:title={config.title}
 		bind:id
 		{db}
-		on:share={async () => {
+		on:share={async (e) => {
 			await share(config);
+			e.detail.show();
 		}}
 	/>
 	<Main bind:config />

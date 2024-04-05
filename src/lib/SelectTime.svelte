@@ -47,7 +47,8 @@
 		left: 0;
 		height: 100%;
 		width: 100%;
-		background-color: #ffffffa0;
+		background-color: color-mix(in srgb, var(--background-color) 80%, transparent);
+		backdrop-filter: blur(4px);
 
 		display: flex;
 		align-items: center;

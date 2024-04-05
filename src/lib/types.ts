@@ -90,7 +90,10 @@ export type FuizOptions = {
 	random_names: boolean;
 	show_answers: boolean;
 	no_leaderboard: boolean;
-	teams?: number;
+	teams?: {
+		size: number;
+		assign_random: boolean;
+	};
 };
 
 export type ServerPossiblyHidden<T> =

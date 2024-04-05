@@ -270,11 +270,12 @@
 
 								downloadTomlString(stringifyToml(tomlifyConfig(configJson)), configJson.title);
 							}}
-							on:share={async () => {
+							on:share={async (e) => {
 								const creation = await getCreation(id, db);
 								if (creation) {
 									await share(creation.config);
 								}
+								e.detail.show();
 							}}
 						/>
 					{/each}

@@ -45,6 +45,14 @@
 				</div>
 			</FancyAnchorButton>
 		</div>
+		<div>
+			<FancyAnchorButton href={'https://opencollective.com/fuiz'}>
+				<div class="a">
+					<Icon size="1.2em" src="$lib/assets/donate.svg" alt={m.donate()} />
+					<div>{m.donate()}</div>
+				</div>
+			</FancyAnchorButton>
+		</div>
 		<LanguageSwitcher />
 		<DarkModeSwitcher />
 	</nav>

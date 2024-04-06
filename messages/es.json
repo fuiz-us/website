@@ -14,8 +14,6 @@
 	"logo_alt": "logo de Fuiz",
 	"community_made": "Hecho por la Comunidad, e Impulsado por la Comunidad",
 	"community_made_desc": "No creamos Fuiz con fines de lucro. Creemos en soluciones open source enfocadas en la privacidad que brindan una educación más justa a través del mundo",
-	"peoples_choice": "La Elección de la Gente",
-	"peoples_choice_desc": "Fuiz brinda una mejor experiencia porque está diseñado para hacerlo. Otras plataformas intencionalmente ofrecen una peor experiencia para forzarte a comprar sus planes sobrevalorados.",
 	"always_open": "Siempre Open Source",
 	"always_open_desc": "Con la licencia AGPLv3, Fuiz siempre será open source. Puedes modificar y ejecutar el código como desees.",
 	"create_title": "Crea Tu Propio Fuiz",
@@ -141,5 +139,7 @@
 	"spade": "pica",
 	"club": "trébol",
 	"length_too_short": "demasiado corto",
-	"language": "Idioma"
+	"language": "Idioma",
+	"peoples_choice": "La Elección de la Gente",
+	"peoples_choice_desc": "Fuiz brinda una mejor experiencia porque está diseñado para hacerlo. Otras plataformas intencionalmente ofrecen una peor experiencia para forzarte a comprar sus planes sobrevalorados."
 }

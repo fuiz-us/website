@@ -42,6 +42,7 @@
 	"dependencies": {
 		"@fontsource/atkinson-hyperlegible": "^5.0.18",
 		"@fontsource/poppins": "^5.0.8",
+		"@inlang/paraglide-js-adapter-sveltekit": "^0.5.20",
 		"@ltd/j-toml": "^1.38.0",
 		"@svelte-put/inline-svg": "^3.0.0",
 		"@sveltejs/enhanced-img": "^0.1.7",

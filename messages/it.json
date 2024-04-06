@@ -14,8 +14,6 @@
 	"logo_alt": "Logo di Fuiz",
 	"community_made": "Fatto per la community",
 	"community_made_desc": "Il pulsante `Pubblica` consente di condividere il proprio Fuiz con il pubblico, permettendo a tutti di visualizzare e importare i Fuiz creati. Vi incoraggiamo a condividere i vostri preziosi Fuiz con tutta la community, in modo che molti altri insegnanti e studenti possano beneficiare della tua conoscenza! Una volta richiesta la pubblicazione, i moderatori la esamineranno e, o la pubblicheranno, o forniranno un feedback, nel caso non sia pronta per la pubblicazione.",
-	"peoples_choice": "Scelta dalle persone",
-	"peoples_choice_desc": "Fuiz offre un'esperienza migliore perché è stata costruita proprio per questo. Altre piattaforme offrono intenzionalmente un'esperienza peggiore per costringere l'utente ad acquistare piani troppo costosi.",
 	"always_open": "Sempre Open Source",
 	"always_open_desc": "Come previsto dalla licenza AGPLv3, Fuiz sarà sempre open source. È possibile modificare ed eseguire il codice sorgente a proprio piacimento.",
 	"create_title": "Crea il tuo Fuiz personale",
@@ -174,5 +172,7 @@
 	"leaderboard": "Classifica",
 	"number_of_players": "Numero di giocatori",
 	"warning": "Attenzione",
-	"blog": "Blog"
+	"blog": "Blog",
+	"peoples_choice": "Scelta dalle persone",
+	"peoples_choice_desc": "Fuiz offre un'esperienza migliore perché è stata costruita proprio per questo. Altre piattaforme offrono intenzionalmente un'esperienza peggiore per costringere l'utente ad acquistare piani troppo costosi."
 }

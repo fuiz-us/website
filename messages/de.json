@@ -14,8 +14,6 @@
 	"logo_alt": "Fuiz-Logo",
 	"community_made": "Community-gesteuert",
 	"community_made_desc": "Die Schaltfläche `Veröffentlichen` ermöglicht es Ihnen, Ihre Fuiz mit der Öffentlichkeit zu teilen, so dass jeder die von Ihnen erstellten Fuizzes ansehen und importieren kann. Wir ermutigen Sie dazu, Ihre wertvollen Fuiz mit der gesamten Gemeinschaft zu teilen, damit viele andere Lehrer und Schüler von Ihrem Wissen profitieren können! Sobald eine Anfrage zur Veröffentlichung gestellt wurde, wird sie von den Moderatoren geprüft und entweder veröffentlicht oder es wird ein Feedback gegeben, wenn sie nicht zur Veröffentlichung geeignet ist.",
-	"peoples_choice": "People's Choice",
-	"peoples_choice_desc": "Fuiz liefert eine bessere Qualität, weil es dafür konzipiert ist. Andere Plattformen bieten absichtlich ein schlechteres Erlebnis, um Sie zum Kauf übermäßig teurer Pläne zu zwingen.",
 	"always_open": "Immer Open Source",
 	"always_open_desc": "Gemäß der AGPLv3-Lizenz wird Fuiz immer Open Source sein. Sie können den Quellcode nach Belieben verändern und ausführen.",
 	"create_title": "Erstellen Sie Ihr eigenes Fuiz!",
@@ -174,5 +172,7 @@
 	"leaderboard": "Bestenliste",
 	"number_of_players": "Anzahl der Spieler",
 	"warning": "Warnung",
-	"blog": "Blog"
+	"blog": "Blog",
+	"peoples_choice": "People's Choice",
+	"peoples_choice_desc": "Fuiz liefert eine bessere Qualität, weil es dafür konzipiert ist. Andere Plattformen bieten absichtlich ein schlechteres Erlebnis, um Sie zum Kauf übermäßig teurer Pläne zu zwingen."
 }

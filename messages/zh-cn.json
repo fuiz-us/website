@@ -14,8 +14,6 @@
 	"logo_alt": "协习图标",
 	"community_made": "社区制造，社区驱动",
 	"community_made_desc": "我们创建协习并不是为了盈利。我们相信以隐私为中心的开源解决方案可以在世界各地提供更公平的教育。",
-	"peoples_choice": "人们的选择",
-	"peoples_choice_desc": "协习提供了更好的体验，因为它是为此而构建的。其他平台故意提供更糟糕的体验，迫使您购买过于昂贵的计划。",
 	"always_open": "始终开源",
 	"always_open_desc": "根据 AGPLv3 许可证，协习将始终开源。您可以随意修改和运行源代码。",
 	"create_title": "创建你自己的协习问答",
@@ -168,5 +166,7 @@
 	"played_times": "被主持了{times}次",
 	"import_fuiz": "导入",
 	"recently_published": "最近发布",
-	"most_published": "最受欢迎"
+	"most_published": "最受欢迎",
+	"peoples_choice": "人们的选择",
+	"peoples_choice_desc": "协习提供了更好的体验，因为它是为此而构建的。其他平台故意提供更糟糕的体验，迫使您购买过于昂贵的计划。"
 }

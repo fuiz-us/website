@@ -2,6 +2,7 @@ import { sourceLanguageTag } from '$paraglide/runtime';
 import type { Handle } from '@sveltejs/kit';
 import { dev } from '$app/environment';
 import { refreshToken } from './routes/google/googleUtil';
+import { i18n } from '$lib/i18n';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const lang = event.params.lang ?? sourceLanguageTag;
@@ -37,7 +38,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 		transformPageChunk({ done, html }) {
 			//Only do it at the very end of the rendering process
 			if (done) {
-				return html.replace('%lang%', lang);
+				return html
+					.replace('%lang%', lang)
+					.replace('%dir%', i18n.config.textDirection[i18n.getLanguageFromUrl(event.url)]);
 			}
 		}
 	});

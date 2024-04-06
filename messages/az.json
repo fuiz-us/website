@@ -14,8 +14,6 @@
 	"logo_alt": "Fuiz loqosu",
 	"community_made": "Birgə Yaradılıb və Birgə İdarə Olunur",
 	"community_made_desc": "Biz Fuizi qazanc üçün yaratmadıq. Dünyada daha ədalətli təhsil təmin etmək üçün məxfilikyönümlü açıq kodlu həllərinə inanırıq.",
-	"peoples_choice": "Hamının Seçimi",
-	"peoples_choice_desc": "Fuiz daha yaxşı təcrübə ilə təmin etmək üçün yaradılmışdır. Digər platformalar sizi qəsdən daha bahalı planlara məcbur etmək üçün daha pis təcrübə ilə təmin edir.",
 	"always_open": "Həmişə Açıq Kodlu",
 	"always_open_desc": "AGPLv3 lisenziyasına görə, Fuiz həmişə açıq kodlu olacaq. İstədiyiniz kimi mənbə kodunu dəyişdirə və işlədə bilərsiniz.",
 	"create_title": "Öz Fuizinizi Yaradın",
@@ -174,5 +172,7 @@
 	"leaderboard": "Liderlər Siyahısı",
 	"number_of_players": "Oyunçuların sayı",
 	"warning": "Xəbərdarlıq",
-	"blog": "Bloq"
+	"blog": "Bloq",
+	"peoples_choice": "Hamının Seçimi",
+	"peoples_choice_desc": "Fuiz daha yaxşı təcrübə ilə təmin etmək üçün yaradılmışdır. Digər platformalar sizi qəsdən daha bahalı planlara məcbur etmək üçün daha pis təcrübə ilə təmin edir."
 }

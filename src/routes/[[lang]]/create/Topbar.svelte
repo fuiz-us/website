@@ -15,6 +15,7 @@
 	export let title: string;
 	export let id: number;
 	export let db: Database;
+	export let errorMessage: string | undefined;
 
 	let dispatch = createEventDispatcher<{
 		share: Instance;
@@ -23,14 +24,33 @@
 	let element: HTMLElement;
 
 	let instance: Instance;
+	let hostElement: HTMLElement;
 
 	onMount(() => {
 		instance = tippy(element, {
 			trigger: 'manual',
 			content: m.copied(),
+			arrow: false,
 			theme: 'fuiz'
 		});
 	});
+
+	let hostTippy: undefined | Instance;
+
+	$: {
+		if (hostElement) {
+			if (errorMessage) {
+				hostTippy?.destroy();
+				hostTippy = tippy(hostElement, {
+					content: errorMessage,
+					arrow: false,
+					theme: 'fuiz'
+				});
+			} else {
+				hostTippy?.destroy();
+			}
+		}
+	}
 </script>
 
 <div
@@ -104,12 +124,15 @@
 					downloadTomlString(stringifyToml(tomlifyConfig(configJson)), configJson.title);
 				}}
 			/>
-			<IconButton
-				size="1em"
-				src="$lib/assets/slideshow.svg"
-				alt={m.host()}
-				on:click={() => goto('host?id=' + id)}
-			/>
+			<div bind:this={hostElement}>
+				<IconButton
+					size="1em"
+					src="$lib/assets/slideshow.svg"
+					alt={m.host()}
+					disabled={errorMessage != undefined}
+					on:click={() => goto('host?id=' + id)}
+				/>
+			</div>
 		</div>
 	</div>
 </div>

@@ -8,7 +8,7 @@
 	import Textfield from '$lib/Textfield.svelte';
 	import { debounce } from '$lib/util';
 
-	export let recentlyPublished: PublishedFuiz[], mostPlayed: PublishedFuiz[];
+	export let recentlyPublished: PublishedFuiz[];
 
 	let searchTerm = '';
 

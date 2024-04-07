@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$paraglide/messages';
+
 	import { fixTimes, removeIds } from '$lib';
 	import { updateCreation, type Database, type ExportedFuiz } from '$lib/storage';
 	import type { FuizConfig } from '$lib/types';
@@ -31,6 +33,11 @@
 	$: {
 		config && updateStorage();
 	}
+
+	$: no_answer = config.slides.filter((s) => s.MultipleChoice.answers.length == 0).length > 0;
+	$: no_correct_answer =
+		config.slides.filter((s) => s.MultipleChoice.answers.filter((s) => s.correct).length == 0)
+			.length > 0;
 </script>
 
 <div
@@ -47,6 +54,11 @@
 			await share(config);
 			e.detail.show();
 		}}
+		errorMessage={no_answer
+			? m.missing_answers()
+			: no_correct_answer
+			? m.missing_correct()
+			: undefined}
 	/>
 	<Main bind:config />
 </div>

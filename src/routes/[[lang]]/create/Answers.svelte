@@ -18,6 +18,7 @@
 	{#each answers as { correct, content, id }, index (id)}
 		<div transition:scale={{ easing: backOut, duration: 300 }} animate:flip={{ duration: 300 }}>
 			<Answer
+				attention={answers.filter((a) => a.correct).length == 0}
 				bind:content
 				bind:correct
 				{index}

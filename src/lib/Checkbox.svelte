@@ -9,6 +9,7 @@
 
 	export let value: boolean;
 	export let color: string | undefined = undefined;
+	export let attention = false;
 
 	const duration = 150;
 </script>
@@ -52,6 +53,7 @@
 		{:else}
 			<div
 				in:scale={{ easing: backOut, duration: duration, delay: duration }}
+				class={attention ? 'attention' : ''}
 				out:scale={{ easing: backOut, duration: duration }}
 			>
 				<Icon src={wrong} alt={m.marked_as_wrong()} size="100%" />
@@ -59,3 +61,19 @@
 		{/if}
 	</div>
 </button>
+
+<style>
+	.attention {
+		animation: heartbeat 600ms ease-in-out infinite alternate;
+	}
+
+	@keyframes heartbeat {
+		50% {
+			transform: scale(1);
+		}
+
+		to {
+			transform: scale(0.5);
+		}
+	}
+</style>

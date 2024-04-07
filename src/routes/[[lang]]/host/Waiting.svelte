@@ -45,11 +45,13 @@
 	onMount(() => {
 		tippy(copyUrlButton, {
 			content: m.copy_clipboard(),
+			arrow: false,
 			theme: 'fuiz'
 		});
 		tippy(copyUrlButton, {
 			trigger: 'click',
 			content: m.copied(),
+			arrow: false,
 			theme: 'fuiz'
 		});
 	});

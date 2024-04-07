@@ -184,5 +184,9 @@
 	"free_of_charge_desc": "Fuiz is provided free of charge, with no sacrifice to your privacy. If you want to support the project financially let us know.",
 	"number_of_participants": "Fuiz provides a fairly capable server with up to a 1000 participants at the same time. However, it should be most reliable with less than 200 participants.",
 	"assign_random": "Assign teams randomly",
-	"donate": "Donate"
+	"donate": "Donate",
+	"no_correct": "No Correct Answers",
+	"no_answers": "No Answers",
+	"missing_answers": "Missing answers",
+	"missing_correct": "Missing correct answers"
 }

@@ -43,6 +43,7 @@
 		tippyInstance = tippy(shareElement, {
 			trigger: 'manual',
 			content: m.copied(),
+			arrow: false,
 			theme: 'fuiz'
 		});
 	});

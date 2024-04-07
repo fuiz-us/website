@@ -4,6 +4,7 @@
 	export let src: string;
 	export let alt: string;
 	export let size: string;
+	export let disabled = false;
 	export let padding = '0';
 </script>
 
@@ -15,8 +16,10 @@
 	style:padding
 	style:box-sizing="border-box"
 	style:border="none"
-	style:cursor="pointer"
+	style:cursor={disabled ? 'normal' : 'pointer'}
+	style:opacity={disabled ? '0.7' : '1'}
 	style:color="inherit"
+	{disabled}
 	on:click
 >
 	<Icon {alt} {src} {size} />

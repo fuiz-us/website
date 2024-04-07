@@ -12,7 +12,7 @@
 <div
 	style:display="flex"
 	style:gap="0.2em"
-	style:height="4em"
+	style:height="100%"
 	style:overflow="hidden"
 	style:flex-direction="column"
 	style:justify-content="space-between"
@@ -26,7 +26,7 @@
 		style:font-size="0.6em"
 		style:white-space="nowrap"
 	>
-		{slide.title ? slide.title : m.question_text()}
+		{slide.title ? slide.title : '...'}
 	</div>
 	<VerticalSplit>
 		<svelte:fragment slot="top">
@@ -37,20 +37,36 @@
 			{/if}
 		</svelte:fragment>
 		<svelte:fragment slot="bottom">
-			<div
-				style:display="grid"
-				style:grid-template-columns="1fr 1fr"
-				style:gap="0.2em"
-				style:padding="0.2em"
-			>
-				{#each slide.answers.keys() as i}
-					<div
-						style:background={buttonColors.at(i % buttonColors.length)?.[0]}
-						style:height="0.5em"
-						style:border-radius="0.7em"
-					/>
-				{/each}
-			</div>
+			{#if slide.answers.filter((a) => a.correct).length}
+				<div
+					style:display="grid"
+					style:grid-template-columns="1fr 1fr"
+					style:gap="0.2em"
+					style:padding="0.2em"
+				>
+					{#each slide.answers.keys() as i}
+						<div
+							style:background={buttonColors.at(i % buttonColors.length)?.[0]}
+							style:height="0.5em"
+							style:border-radius="0.7em"
+						/>
+					{/each}
+				</div>
+			{:else}
+				<div
+					style:font-size="18px"
+					style:padding="0.2em 0.1em"
+					style:font-weight="bold"
+					style:background="#F5C211"
+					style:flex="1"
+				>
+					{#if slide.answers.length}
+						{m.no_correct()}
+					{:else}
+						{m.no_answers()}
+					{/if}
+				</div>
+			{/if}
 		</svelte:fragment>
 	</VerticalSplit>
 </div>

@@ -2,7 +2,6 @@
 	import '@fontsource/poppins/800.css';
 	import '@fontsource/atkinson-hyperlegible';
 	import 'tippy.js/dist/tippy.css';
-	import 'tippy.js/dist/border.css';
 
 	import { navigating, page } from '$app/stores';
 	import { setLanguageTag, sourceLanguageTag, type AvailableLanguageTag } from '$paraglide/runtime';
@@ -119,29 +118,11 @@
 	}
 
 	:global(.tippy-box[data-theme~='fuiz']) {
-		--better-color: color-mix(in srgb, var(--background-color) 80%, var(--color));
-
-		background-color: var(--better-color);
+		background-color: var(--background-color);
+		border: 3px solid;
 		border-radius: 0.7em;
 		padding: 0em 0.4em;
 		font-size: inherit;
 		color: inherit;
-
-		& > .tippy-arrow::before {
-			transform: scale(2);
-		}
-
-		&[data-placement^='top'] > .tippy-arrow::before {
-			border-top-color: var(--better-color);
-		}
-		&[data-placement^='bottom'] > .tippy-arrow::before {
-			border-bottom-color: var(--better-color);
-		}
-		&[data-placement^='left'] > .tippy-arrow::before {
-			border-left-color: var(--better-color);
-		}
-		&[data-placement^='right'] > .tippy-arrow::before {
-			border-right-color: var(--better-color);
-		}
 	}
 </style>

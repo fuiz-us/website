@@ -12,6 +12,7 @@
 	export let correct: boolean;
 	export let content: TextOrMedia;
 	export let index: number;
+	export let attention = false;
 </script>
 
 <FancyButton
@@ -27,7 +28,11 @@
 		style:color="var(--palette-light)"
 	>
 		<div style:height="1.5em" style:display="flex">
-			<Checkbox bind:value={correct} color={buttonColors.at(index % buttonColors.length)?.[0]} />
+			<Checkbox
+				{attention}
+				bind:value={correct}
+				color={buttonColors.at(index % buttonColors.length)?.[0]}
+			/>
 		</div>
 		<Textbox
 			bind:value={content.Text}

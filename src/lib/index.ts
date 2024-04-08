@@ -10,6 +10,8 @@ import { Section, stringify } from '@ltd/j-toml';
 import { bring } from './util';
 import type { FuizConfig, FuizOptions, IdlessFuizConfig, Media } from './types';
 import type { OnlineFuiz } from '../routes/[[lang]]/admin/+page';
+import JSZip from 'jszip';
+import objectHash from 'object-hash';
 
 export const buttonColors = [
 	['hsl(358, 84%, 45%)', 'hsl(358, 84%, 35%)'],
@@ -92,8 +94,82 @@ export function stringifyToml(obj: IdlessFuizConfig | OnlineFuiz): string {
 	return stringify(obj, { newline: '\n', newlineAround: 'section', integer: 1000000 });
 }
 
+export async function downloadFuiz(configJson: IdlessFuizConfig) {
+	const [urlified, images] = urlifyBase64(configJson);
+
+	downloadBlob(
+		[await createZip(stringifyToml(tomlifyConfig(urlified)), images)],
+		configJson.title + '.zip'
+	);
+}
+
+export function urlifyBase64(
+	config: IdlessFuizConfig
+): [IdlessFuizConfig, { name: string; base64: string }[]] {
+	const mimetypes = new Map([
+		['image/apng', 'apng'],
+		['image/avif', 'avif'],
+		['image/gif', 'gif'],
+		['image/jpeg', 'jpg'],
+		['image/png', 'png'],
+		['image/svg+xml', 'svg'],
+		['image/webp', 'webp']
+	]);
+
+	function getMimetype(base64string: string): string {
+		return base64string.split(';')[0].split(':')[1];
+	}
+
+	const images: { name: string; base64: string }[] = [];
+
+	function urlifyImage({ data, hash }: { data: string; hash?: string }): string {
+		const name = (hash ?? objectHash(data)) + '.' + mimetypes.get(getMimetype(data));
+		images.push({
+			name,
+			base64: data.split(',')[1]
+		});
+		return name;
+	}
+
+	const urlifiedConfig = {
+		...config,
+		slides: config.slides.map((s) => ({
+			MultipleChoice: {
+				...s.MultipleChoice,
+				...(s.MultipleChoice.media &&
+					'Base64' in s.MultipleChoice.media.Image && {
+						media: {
+							Image: {
+								Url: {
+									alt: s.MultipleChoice.media.Image.Base64.alt,
+									url: urlifyImage(s.MultipleChoice.media.Image.Base64)
+								}
+							}
+						}
+					})
+			}
+		}))
+	};
+	return [urlifiedConfig, images];
+}
+
+export async function createZip(fuizString: string, images: { name: string; base64: string }[]) {
+	const archive = JSZip();
+	archive.file('config.toml', fuizString);
+
+	images.forEach(({ name, base64 }) => {
+		archive.file(name, base64, { base64: true });
+	});
+
+	return await archive.generateAsync({ type: 'blob', compression: 'STORE' });
+}
+
 export function downloadTomlString(str: string, title: string) {
-	const file = new File([str], title + '.toml', { type: 'application/toml', endings: 'native' });
+	downloadBlob([str], title + '.toml', { type: 'application/toml', endings: 'native' });
+}
+
+export function downloadBlob(blobs: BlobPart[], name: string, options?: FilePropertyBag) {
+	const file = new File(blobs, name, options);
 	const url = URL.createObjectURL(file);
 
 	const link = document.createElement('a');

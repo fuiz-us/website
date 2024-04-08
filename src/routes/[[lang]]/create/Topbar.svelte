@@ -2,7 +2,7 @@
 	import * as m from '$paraglide/messages';
 
 	import { goto } from '$app/navigation';
-	import { downloadTomlString, limits, stringifyToml, tomlifyConfig } from '$lib';
+	import { downloadFuiz, limits } from '$lib';
 	import IconButton from '$lib/IconButton.svelte';
 	import Logo from '$lib/Logo.svelte';
 	import Textfield from '$lib/Textfield.svelte';
@@ -120,8 +120,7 @@
 					const creation = await getCreation(id, db);
 					if (!creation) return;
 					const configJson = creation.config;
-
-					downloadTomlString(stringifyToml(tomlifyConfig(configJson)), configJson.title);
+					await downloadFuiz(configJson);
 				}}
 			/>
 			<div bind:this={hostElement}>

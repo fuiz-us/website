@@ -4,7 +4,7 @@
 	import GalleryCreation from './GalleryCreation.svelte';
 	import { createDialog } from 'svelte-headlessui';
 
-	import { downloadTomlString, addIds, stringifyToml, tomlifyConfig } from '$lib';
+	import { addIds, downloadFuiz } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import { goto } from '$app/navigation';
 	import Icon from '$lib/Icon.svelte';
@@ -24,6 +24,7 @@
 	import type { PageData } from './$types';
 	import { env } from '$env/dynamic/public';
 	import { share } from './lib';
+	import JSZip from 'jszip';
 
 	export let creations: Creation[];
 
@@ -90,20 +91,90 @@
 
 	async function loadFile(files: File[]) {
 		const exportedFuizzesWithFailures = await Promise.all(
-			files.map((file) => {
-				return new Promise<IdlessFuizConfig | undefined>((resolve) => {
-					const reader = new FileReader();
-					reader.readAsText(file);
-					reader.addEventListener('load', () => {
-						const str = reader.result?.toString();
-						if (str) {
-							const detomlified = parse(str, { bigint: false }) as IdlessFuizConfig;
-							resolve(detomlified);
-						} else {
-							resolve(undefined);
-						}
+			files.map(async (file) => {
+				if (file.name.endsWith('.zip')) {
+					const mimetypes = new Map([
+						['apng', 'image/apng'],
+						['avif', 'image/avif'],
+						['gif', 'image/gif'],
+						['jpg', 'image/jpeg'],
+						['png', 'image/png'],
+						['svg', 'image/svg+xml'],
+						['webp', 'image/webp']
+					]);
+
+					const archive = new JSZip();
+					await archive.loadAsync(file);
+					const images = Object.keys(archive.files)
+						.filter((name) => !name.endsWith('.toml'))
+						.map((name) => ({
+							name,
+							file: archive.files[name]
+						}));
+
+					const fuiz = Object.keys(archive.files)
+						.filter((name) => name.endsWith('.toml'))
+						.map((name) => archive.files[name])
+						.at(0);
+
+					const betterImages: {
+						name: string;
+						base64: string;
+					}[] = [];
+
+					for (const { name, file } of images) {
+						const base64 =
+							'data:' +
+							mimetypes.get(file.name.split('.').at(-1) ?? 'png') +
+							';base64,' +
+							(await file.async('base64'));
+						betterImages.push({ name, base64 });
+					}
+
+					if (!fuiz) return undefined;
+
+					const str = await fuiz.async('string');
+					const detomlified = parse(str, { bigint: false }) as IdlessFuizConfig;
+
+					const unurlify = (imageUrl: string): string => {
+						return betterImages.find(({ name }) => name === imageUrl)?.base64 ?? '';
+					};
+
+					return {
+						...detomlified,
+						slides: detomlified.slides.map((s) => ({
+							MultipleChoice: {
+								...s.MultipleChoice,
+								...(s.MultipleChoice.media &&
+									'Url' in s.MultipleChoice.media.Image && {
+										media: {
+											Image: {
+												Base64: {
+													alt: s.MultipleChoice.media.Image.Url.alt,
+													data: unurlify(s.MultipleChoice.media.Image.Url.url),
+													hash: s.MultipleChoice.media.Image.Url.url.split('.')[0]
+												}
+											}
+										}
+									})
+							}
+						}))
+					};
+				} else {
+					return new Promise<IdlessFuizConfig | undefined>((resolve) => {
+						const reader = new FileReader();
+						reader.readAsText(file);
+						reader.addEventListener('load', () => {
+							const str = reader.result?.toString();
+							if (str) {
+								const detomlified = parse(str, { bigint: false }) as IdlessFuizConfig;
+								resolve(detomlified);
+							} else {
+								resolve(undefined);
+							}
+						});
 					});
-				});
+				}
 			})
 		);
 
@@ -206,7 +277,7 @@
 				style:display="none"
 				type="file"
 				id="config"
-				accept="application/toml, .toml"
+				accept="application/toml, .toml, application/x-zip, .zip"
 				name="config"
 				multiple
 				on:change={loadFromInput}
@@ -267,8 +338,7 @@
 								const creation = await getCreation(id, db);
 								if (!creation) return;
 								const configJson = creation.config;
-
-								downloadTomlString(stringifyToml(tomlifyConfig(configJson)), configJson.title);
+								await downloadFuiz(configJson);
 							}}
 							on:share={async (e) => {
 								const creation = await getCreation(id, db);
@@ -302,6 +372,7 @@
 										<FancyButton
 											backgroundColor="var(--background-color)"
 											backgroundDeepColor="currentcolor"
+											foregroundColor="currentColor"
 											on:click={dialog.close}
 										>
 											<div style:padding="0.2em 0.4em">{m.cancel()}</div>

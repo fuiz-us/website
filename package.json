@@ -46,6 +46,7 @@
 		"@ltd/j-toml": "^1.38.0",
 		"@svelte-put/inline-svg": "^3.0.0",
 		"@sveltejs/enhanced-img": "^0.1.7",
+		"jszip": "^3.10.1",
 		"object-hash": "^3.0.0",
 		"qrcode": "^1.5.3",
 		"query-string": "^8.2.0",

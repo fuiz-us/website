@@ -78,7 +78,7 @@
 		}
 	}
 
-	@media only screen and (max-width: 600px) {
+	@media only screen and (max-width: 900px) {
 		#sidebar {
 			overflow: scroll;
 			width: auto;

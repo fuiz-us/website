@@ -238,7 +238,7 @@
 		height: 0;
 	}
 
-	@media only screen and (max-width: 600px) {
+	@media only screen and (max-width: 900px) {
 		section {
 			height: unset;
 		}

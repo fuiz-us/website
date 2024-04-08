@@ -69,20 +69,13 @@
 	}
 </script>
 
-<div
-	id="sidebar"
-	style:padding="0.4em"
-	style:display="flex"
-	style:flex-direction="column"
-	style:gap="0.4em"
->
+<div id="sidebar" style:display="flex" style:flex-direction="column">
 	<div
 		class="switched"
 		style:flex="1"
 		style:display="flex"
 		style:align-items="stretch"
 		style:justify-content="space-between"
-		style:gap="0.4em"
 		style:box-sizing="border-box"
 	>
 		<div style:flex="1" style:flex-direction="column" style:box-sizing="border-box">
@@ -131,7 +124,7 @@
 				{/each}
 			</section>
 		</div>
-		<div>
+		<div id="add-button">
 			<FancyButton
 				disabled={slides.length >= limits.fuiz.maxSlidesCount}
 				on:click={async () => {
@@ -226,8 +219,14 @@
 		flex-direction: column;
 	}
 
+	#add-button {
+		padding: 0.4em;
+		border-top: 0.05em solid #00000020;
+	}
+
 	#controls {
 		display: none;
+		padding: 0.4em;
 
 		& > div {
 			background: color-mix(in srgb, currentColor 20%, transparent);
@@ -244,7 +243,13 @@
 			height: unset;
 		}
 
+		#add-button {
+			border-inline-start: 0.05em solid #00000020;
+			border-top: none;
+		}
+
 		#controls {
+			border-top: 0.05em solid #00000020;
 			display: flex;
 			justify-content: center;
 			align-items: center;

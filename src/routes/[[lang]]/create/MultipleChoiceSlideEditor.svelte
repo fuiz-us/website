@@ -2,10 +2,7 @@
 	import * as m from '$paraglide/messages';
 
 	import { limits } from '$lib';
-	import Icon from '$lib/Icon.svelte';
-	import SelectTime from '$lib/SelectTime.svelte';
 	import Textarea from '$lib/Textarea.svelte';
-	import timer from '$lib/assets/timer.svg';
 	import Answers from './Answers.svelte';
 	import MediaChooser from './MediaChooser.svelte';
 	import type { MultipleChoiceSlide } from '$lib/types';
@@ -44,15 +41,6 @@
 		style:align-items="center"
 		style:justify-content="center"
 	>
-		<div>
-			<SelectTime
-				options={[...limits.fuiz.multipleChoice.allowedTimeLimits]}
-				map={(v) => (parseInt(v) / 1000).toString()}
-				bind:selected={slide.time_limit}
-			>
-				<Icon src={timer} size="1em" alt={m.time_limit()} />
-			</SelectTime>
-		</div>
 		<MediaChooser bind:media={slide.media} />
 	</div>
 	<Answers bind:answers={slide.answers} />

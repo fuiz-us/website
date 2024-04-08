@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { FuizConfig } from '$lib/types';
+	import OptionsBar from './OptionsBar.svelte';
 	import Sidebar from './Sidebar.svelte';
 	import SlideEditor from './SlideEditor.svelte';
 
@@ -21,6 +22,9 @@
 	<div style:flex="1" style:display="flex" style:flex-direction="column">
 		<SlideEditor bind:slide={activeSlide} />
 	</div>
+	{#if activeSlide}
+		<OptionsBar bind:activeSlide />
+	{/if}
 </div>
 
 <style>

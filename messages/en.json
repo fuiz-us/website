@@ -188,5 +188,10 @@
 	"no_correct": "No Correct Answers",
 	"no_answers": "No Answers",
 	"missing_answers": "Missing answers",
-	"missing_correct": "Missing correct answers"
+	"missing_correct": "Missing correct answers",
+	"double": "Double",
+	"regular": "Regular",
+	"half": "Half",
+	"none": "None",
+	"points": "Points"
 }

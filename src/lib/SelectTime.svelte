@@ -60,7 +60,7 @@
 			display: grid;
 			grid-gap: 10px;
 			font-size: max(7vmin, 1em);
-			grid-template-columns: repeat(auto-fit, minmax(6ch, 1fr));
+			grid-template-columns: repeat(auto-fit, minmax(8ch, 1fr));
 			width: min(80vw, 90vh);
 			flex-wrap: wrap;
 

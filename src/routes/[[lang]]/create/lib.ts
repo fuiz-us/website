@@ -14,5 +14,4 @@ export const share = async (config: IdlessFuizConfig) => {
 	});
 	const id = await req.json();
 	navigator.clipboard.writeText(PUBLIC_PLAY_URL + route('/share', languageTag()) + '/' + id);
-	alert('Copied to the clipboard!');
 };

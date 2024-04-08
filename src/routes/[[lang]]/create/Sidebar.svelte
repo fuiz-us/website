@@ -219,6 +219,7 @@
 <style>
 	#sidebar {
 		width: 8em;
+		border-inline-end: 0.05em solid #00000020;
 	}
 
 	.switched {
@@ -253,7 +254,8 @@
 		#sidebar {
 			width: unset;
 			height: unset;
-			border-top: 0.15em solid #00000020;
+			border-top: 0.05em solid #00000020;
+			border-inline-end: none;
 		}
 
 		.switched {

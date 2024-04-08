@@ -97,10 +97,14 @@ export function stringifyToml(obj: IdlessFuizConfig | OnlineFuiz): string {
 export async function downloadFuiz(configJson: IdlessFuizConfig) {
 	const [urlified, images] = urlifyBase64(configJson);
 
-	downloadBlob(
-		[await createZip(stringifyToml(tomlifyConfig(urlified)), images)],
-		configJson.title + '.zip'
-	);
+	if (images.length > 0) {
+		downloadBlob(
+			[await createZip(stringifyToml(tomlifyConfig(urlified)), images)],
+			configJson.title + '.zip'
+		);
+	} else {
+		await downloadTomlString(stringifyToml(tomlifyConfig(urlified)), urlified.title);
+	}
 }
 
 export function urlifyBase64(

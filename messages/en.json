@@ -193,5 +193,6 @@
 	"regular": "Regular",
 	"half": "Half",
 	"none": "None",
-	"points": "Points"
+	"points": "Points",
+	"image_alt_desc": "Image Alt is a one or two sentences description of the image to help the visually impaired."
 }

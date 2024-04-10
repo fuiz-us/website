@@ -4,12 +4,12 @@
 	import { buttonColors } from '$lib';
 	import delete_image from '$lib/assets/delete.svg';
 	import add_photo from '$lib/assets/add_photo.svg';
-	import hearing from '$lib/assets/hearing.svg';
 	import MediaDisplay from '$lib/MediaDisplay.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import Textarea from '$lib/Textarea.svelte';
 	import IconButton from '$lib/IconButton.svelte';
 	import type { Media } from '$lib/types';
+	import tippy from 'tippy.js';
 
 	export let media: Media | null | undefined;
 
@@ -158,7 +158,6 @@
 					<MediaDisplay {media} fit="contain" />
 				</div>
 				<div style:display="flex" style:align-items="center" style:gap="10px">
-					<Icon size="1.2em" src={hearing} alt={m.image_alt()} />
 					<div style:flex="1">
 						<Textarea
 							id="alt"
@@ -167,6 +166,25 @@
 							maxHeight="5em"
 							bind:value={media.Image.Base64.alt}
 							placeholder={m.image_alt()}
+						/>
+					</div>
+					<div id="alt-help">
+						<IconButton
+							size="1.2em"
+							src="$lib/assets/help.svg"
+							alt={m.image_alt()}
+							on:click={() => {
+								let element = document.getElementById('alt-help');
+								if (!element) return;
+								const instance = tippy(element, {
+									trigger: 'manual',
+									content: m.image_alt_desc(),
+									arrow: false,
+									theme: 'fuiz'
+								});
+
+								instance.show();
+							}}
 						/>
 					</div>
 				</div>

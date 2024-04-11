@@ -12,9 +12,20 @@
 	import AnchorMessage from '$lib/AnchorMessage.svelte';
 	import MainHeader from './MainHeader.svelte';
 	import Footer from '$lib/Footer.svelte';
+	import QuestionStatistics from './host/QuestionStatistics.svelte';
+	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
+
+	export let data: PageData;
 
 	const title = m.main_title();
 	const description = m.main_desc();
+
+	let answered = false;
+
+	onMount(() => {
+		answered = (localStorage.getItem('answered') ?? '').length > 0;
+	});
 </script>
 
 <svelte:head>
@@ -32,30 +43,94 @@
 			<h2>{m.greeting()}<br />{m.create_with()}</h2>
 			<div class="slide-container">
 				<div class="slide">
-					<QuestionAnswers
-						questionText={m.what_are_features()}
-						timeLeft={15000}
-						timeStarted={30000}
-						answers={[m.open_source(), m.beautiful_design(), m.lightweight(), m.privacy_friendly()]}
-						answeredCount={0}
-						bindableGameInfo={{
-							volumeOn: false,
-							locked: false
-						}}
-						gameInfo={{
-							gameCode: '13213',
-							questionIndex: 0,
-							questionTotalCount: 1
-						}}
-						media={{
-							Image: {
-								Url: {
-									url: logo,
-									alt: m.logo_alt()
+					{#if answered}
+						<QuestionStatistics
+							questionText={m.which_feature()}
+							answers={[
+								{
+									text: m.open_source(),
+									count: data.stats.openSource,
+									correct: true
+								},
+								{
+									text: m.beautiful_design(),
+									count: data.stats.design,
+									correct: true
+								},
+								{
+									text: m.lightweight(),
+									count: data.stats.lightweight,
+									correct: true
+								},
+								{
+									text: m.privacy_friendly(),
+									count: data.stats.privacy,
+									correct: true
 								}
-							}
-						}}
-					/>
+							]}
+							bindableGameInfo={{
+								volumeOn: false,
+								locked: false
+							}}
+							gameInfo={{
+								gameCode: 'Survey',
+								questionIndex: 0,
+								questionTotalCount: 1
+							}}
+						/>
+					{:else}
+						<QuestionAnswers
+							on:answer={async (e) => {
+								const field = Object.keys(data.stats)[e.detail];
+
+								let resp = await fetch('/increment', {
+									method: 'POST',
+									headers: {
+										'content-type': 'application/json'
+									},
+									body: JSON.stringify(field)
+								});
+
+								localStorage.setItem('answered', 'true');
+
+								let res = await resp.json();
+
+								data.stats = res;
+
+								answered = true;
+							}}
+							questionText={m.which_feature()}
+							timeLeft={undefined}
+							timeStarted={undefined}
+							answers={[
+								m.open_source(),
+								m.beautiful_design(),
+								m.lightweight(),
+								m.privacy_friendly()
+							]}
+							answeredCount={data.stats.openSource +
+								data.stats.design +
+								data.stats.lightweight +
+								data.stats.privacy}
+							bindableGameInfo={{
+								volumeOn: false,
+								locked: false
+							}}
+							gameInfo={{
+								gameCode: 'Survey',
+								questionIndex: 0,
+								questionTotalCount: 1
+							}}
+							media={{
+								Image: {
+									Url: {
+										url: logo,
+										alt: m.logo_alt()
+									}
+								}
+							}}
+						/>
+					{/if}
 				</div>
 			</div>
 		</div>
@@ -195,6 +270,7 @@
 	.slide-container {
 		border: 0.15em solid;
 		border-radius: 0.9em;
+		position: relative;
 		overflow: hidden;
 	}
 

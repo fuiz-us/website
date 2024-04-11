@@ -194,5 +194,6 @@
 	"half": "Half",
 	"none": "None",
 	"points": "Points",
-	"image_alt_desc": "Image Alt is a one or two sentences description of the image to help the visually impaired."
+	"image_alt_desc": "Image Alt is a one or two sentences description of the image to help the visually impaired.",
+	"which_feature": "Which feature do you like the most in Fuiz?"
 }

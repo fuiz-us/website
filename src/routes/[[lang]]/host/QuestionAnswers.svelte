@@ -17,8 +17,8 @@
 
 	export let questionText: string;
 	export let answers: (string | undefined)[];
-	export let timeLeft: number;
-	export let timeStarted: number;
+	export let timeLeft: number | undefined;
+	export let timeStarted: number | undefined;
 	export let answeredCount: number;
 	export let media: Media | undefined;
 
@@ -44,7 +44,9 @@
 						style:z-index="1"
 						style:padding="0.4em"
 					>
-						<TimeLeft {timeLeft} {timeStarted} />
+						{#if timeLeft !== undefined && timeStarted !== undefined}
+							<TimeLeft {timeLeft} {timeStarted} />
+						{/if}
 						<AnsweredCount {answeredCount} />
 					</div>
 				</svelte:fragment>
@@ -53,6 +55,7 @@
 				</svelte:fragment>
 				<svelte:fragment slot="bottom">
 					<Answers
+						on:answer
 						answers={answers.map((a) => {
 							if (a === undefined) return { text: '?', correct: undefined };
 							return { text: a, correct: undefined };

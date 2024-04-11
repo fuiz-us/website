@@ -13,6 +13,7 @@ declare global {
 			env: {
 				BUCKET: R2Bucket;
 				DATABASE: D1Database;
+				MAP: KVNamespace;
 				FUIZ_POLL: KVNamespace;
 			};
 		}

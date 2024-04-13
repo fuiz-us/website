@@ -60,11 +60,11 @@
 <Audio audioUrl={bee3} volumeOn={bindableGameInfo.volumeOn} />
 <div id="container" bind:this={fullscreenElement} style:height="100%" style:display="flex">
 	<div
+		id="info"
 		style:background="var(--background-color)"
 		style:box-shadow="0 2px 2px #00000040, 2px 0 2px #00000040"
 		style:display="flex"
-		style:flex-direction="column"
-		style:align-items="center"
+		style:align-items="start"
 		style:gap="1em"
 		style:padding="0.6em 0.4em"
 		style:justify-content="space-between"
@@ -81,7 +81,6 @@
 		<div
 			style:background="color-mix(in srgb, currentColor 20%, transparent)"
 			style:display="flex"
-			style:flex-direction="column"
 			style:align-items="center"
 			style:padding="0.4em"
 			style:gap="0.4em"
@@ -184,13 +183,21 @@
 		font-size: 1.5em;
 	}
 
-	@media (max-width: 700px) {
-		#container {
-			flex-direction: column;
-		}
+	#container {
+		flex-direction: column;
+	}
 
+	#info {
+		flex-wrap: wrap;
+	}
+
+	@media (max-width: 700px) {
 		#players {
 			font-size: 0.8em;
+		}
+
+		#info {
+			flex-direction: column;
 		}
 	}
 </style>

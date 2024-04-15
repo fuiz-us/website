@@ -30,9 +30,11 @@ export const load = (async ({ url, cookies, platform }) => {
 		body: '{"query": "{ me { id name email } }"}'
 	});
 
-	const oauthUser: OauthUser = (await oauthUserResponse.json()).me;
+	const jsonResp = await oauthUserResponse.json();
 
-	console.log(JSON.stringify(oauthUser));
+	const oauthUser: OauthUser = jsonResp.me;
+
+	console.log(JSON.stringify(jsonResp));
 
 	const lucia = initializeLucia(db);
 

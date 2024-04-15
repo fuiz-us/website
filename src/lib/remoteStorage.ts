@@ -301,7 +301,7 @@ class OauthSync implements RemoteSync {
 
 	async createImage(hash: string, value: string | Media): Promise<void> {
 		const reqExists = await bring(`/oauth/existImage/${hash}`);
-		if (!reqExists?.ok || (await reqExists.json())) return undefined;
+		if (!reqExists?.ok || !(await reqExists.json())) return undefined;
 		const serialized = typeof value === 'string' ? value : JSON.stringify(value);
 		await fetch(`/oauth/createImage`, {
 			method: 'POST',
@@ -374,7 +374,7 @@ class GoogleDriveSync implements RemoteSync {
 
 	async createImage(hash: string, value: string | Media): Promise<void> {
 		const reqExists = await bring(`/google/existImage/${hash}`);
-		if (!reqExists?.ok || (await reqExists.json())) return undefined;
+		if (!reqExists?.ok || !(await reqExists.json())) return undefined;
 
 		const serialized = typeof value === 'string' ? value : JSON.stringify(value);
 		await fetch(`/google/createImage/${hash}`, {

@@ -29,18 +29,23 @@ export interface RemoteSync {
 	getImage(hash: string): Promise<Media | string | undefined>;
 }
 
-export function login(provider: 'google') {
-	if (provider === 'google') GoogleDriveSync.connect();
+export type Providers = 'google' | 'oauth';
+
+export function login(provider: Providers) {
+	if (provider === 'google') return GoogleDriveSync.connect();
+	if (provider === 'oauth') return OauthSync.connect();
 	throw `got unexpected '${provider}' as provider`;
 }
 
-export function logout(provider: 'google') {
-	if (provider === 'google') GoogleDriveSync.disconnect();
+export function logout(provider: Providers) {
+	if (provider === 'google') return GoogleDriveSync.disconnect();
+	if (provider === 'oauth') return OauthSync.disconnect();
 	throw `got unexpected '${provider}' as provider`;
 }
 
-export function retrieveRemoteSync(provider: 'google'): RemoteSync {
+export function retrieveRemoteSync(provider: Providers): RemoteSync {
 	if (provider === 'google') return new GoogleDriveSync();
+	if (provider === 'oauth') return new OauthSync();
 	throw `got unexpected '${provider}' as provider`;
 }
 
@@ -227,6 +232,74 @@ export async function reconcile(
 			internal && (await remoteDatabase.update(uniqueId, internal));
 		})
 	]);
+}
+
+class OauthSync implements RemoteSync {
+	static async connect(): Promise<void> {
+		window.open('/oauth/login', 'fuizWindow', 'popup');
+	}
+
+	static async disconnect(): Promise<void> {
+		await bring('/oauth/logout');
+		window.location.reload();
+	}
+
+	async sync(
+		localDatabase: LocalDatabase,
+		existing: [CreationId, StrictInternalFuizMetadata][]
+	): Promise<void> {
+		// const res = await fetch(`/google/list`);
+		// const imageList = await bring('/google/listImage');
+		// const imageSet: Set<string | undefined> = new Set((await imageList?.json()) ?? []);
+		// await reconcile(this, localDatabase, await res.json(), (hash) => imageSet.has(hash), existing);
+	}
+
+	async get(uuid: string): Promise<FuizConfig | undefined> {
+		return undefined;
+		// const res = await bring(`/google/get/${uuid}`);
+
+		// return res?.ok ? await res.json() : undefined;
+	}
+
+	async create(uuid: string, internalFuiz: InternalFuiz): Promise<void> {
+		// await fetch(`/google/create/${uuid}`, {
+		// 	method: 'POST',
+		// 	body: JSON.stringify(internalFuiz)
+		// });
+	}
+
+	async update(uuid: string, internalFuiz: InternalFuiz): Promise<void> {
+		// await fetch(`/google/update/${uuid}`, {
+		// 	method: 'POST',
+		// 	body: JSON.stringify(internalFuiz)
+		// });
+	}
+
+	async delete(uuid: string): Promise<void> {
+		// await fetch(`/google/delete/${uuid}`);
+	}
+
+	async createImage(hash: string, value: string | Media): Promise<void> {
+		// const reqExists = await bring(`/google/existImage/${hash}`);
+		// if (!reqExists?.ok || (await reqExists.json())) return undefined;
+		// const serialized = typeof value === 'string' ? value : JSON.stringify(value);
+		// await fetch(`/google/createImage/${hash}`, {
+		// 	method: 'POST',
+		// 	body: serialized
+		// });
+	}
+
+	async getImage(hash: string): Promise<string | undefined> {
+		// const res = await bring(`/google/getImage/${hash}`);
+		// if (!res?.ok) return undefined;
+		// const media = await res.text();
+		// try {
+		// 	return JSON.parse(media);
+		// } catch (e) {
+		// 	return media;
+		// }
+		return undefined;
+	}
 }
 
 class GoogleDriveSync implements RemoteSync {

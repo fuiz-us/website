@@ -25,6 +25,7 @@
 	import { env } from '$env/dynamic/public';
 	import { share } from './lib';
 	import JSZip from 'jszip';
+	import { page } from '$app/stores';
 
 	export let creations: Creation[];
 
@@ -264,6 +265,45 @@
 								size="1.25em"
 								src="$lib/assets/drive.svg"
 								alt="Synchronize your data with Google Drive"
+							/>
+							<div>Backup</div>
+						</div>
+					</FancyButton>
+				</div>
+			{/if}
+		{/if}
+		{#if env.PUBLIC_AUTH === 'true'}
+			{#if $page.data.session}
+				<div>
+					<FancyButton on:click={() => logout('oauth')}>
+						<div
+							style:display="flex"
+							style:align-items="center"
+							style:font-family="Poppins"
+							style:gap="0.2em"
+							style:padding="0.15em 0.25em"
+							style:justify-content="center"
+						>
+							<Icon size="1.25em" src="$lib/assets/logout.svg" alt="Log out from OpenCollective" />
+							<div>Log Out</div>
+						</div>
+					</FancyButton>
+				</div>
+			{:else}
+				<div>
+					<FancyButton on:click={() => login('oauth')}>
+						<div
+							style:display="flex"
+							style:align-items="center"
+							style:font-family="Poppins"
+							style:gap="0.2em"
+							style:padding="0.15em 0.25em"
+							style:justify-content="center"
+						>
+							<Icon
+								size="1.25em"
+								src="$lib/assets/login.svg"
+								alt="Synchronize your data with OpenCollective"
 							/>
 							<div>Backup</div>
 						</div>

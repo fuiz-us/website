@@ -32,7 +32,7 @@ export const load = (async ({ url, cookies, platform }) => {
 
 	const oauthUser: OauthUser = (await oauthUserResponse.json()).me;
 
-	console.log(oauth2Client);
+	console.log(JSON.stringify(oauthUser));
 
 	const lucia = initializeLucia(db);
 

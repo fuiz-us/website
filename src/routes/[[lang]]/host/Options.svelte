@@ -74,7 +74,7 @@
 	}
 </script>
 
-{#await loadDatabase({ google: data.google }).then((db) => getCreation(id, db))}
+{#await loadDatabase( { google: data.google, oauth: data.user !== null } ).then( (db) => getCreation(id, db) )}
 	<Loading />
 {:then fuiz}
 	{#if !fuiz}

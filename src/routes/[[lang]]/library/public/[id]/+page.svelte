@@ -18,7 +18,7 @@
 	$: config = data.config;
 
 	async function addToCollection() {
-		const db = await loadDatabase({ google: data.google });
+		const db = await loadDatabase({ google: data.google, oauth: data.user !== null });
 		const id = await addCreation(
 			{
 				lastEdited: Date.now(),

@@ -88,7 +88,7 @@ type MediaReferencedSlide = {
 	MultipleChoice: MediaReferencedMultipleChoiceSlide;
 };
 
-type MediaReferencedFuizConfig = Modify<
+export type MediaReferencedFuizConfig = Modify<
 	IdlessFuizConfig,
 	{
 		slides: MediaReferencedSlide[];

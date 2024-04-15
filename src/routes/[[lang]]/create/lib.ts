@@ -4,14 +4,15 @@ import { route } from '$lib/i18n-routing';
 import type { IdlessFuizConfig } from '$lib/types';
 import { languageTag } from '$paraglide/runtime';
 
-export const share = async (config: IdlessFuizConfig) => {
-	const req = await fetch('/share', {
-		method: 'PUT',
-		headers: {
-			'content-type': 'application/json'
-		},
-		body: JSON.stringify(removeIds(config))
-	});
-	const id = await req.json();
+export const share = async (config: IdlessFuizConfig, id?: string) => {
+	id ??= await (
+		await fetch('/share', {
+			method: 'PUT',
+			headers: {
+				'content-type': 'application/json'
+			},
+			body: JSON.stringify(removeIds(config))
+		})
+	).json();
 	navigator.clipboard.writeText(PUBLIC_PLAY_URL + route('/share', languageTag()) + '/' + id);
 };

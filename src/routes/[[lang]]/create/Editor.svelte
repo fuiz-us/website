@@ -8,6 +8,7 @@
 	import Main from './Main.svelte';
 	import Topbar from './Topbar.svelte';
 	import { share } from './lib';
+	import { page } from '$app/stores';
 
 	export let id: number;
 	export let exportedFuiz: ExportedFuiz;
@@ -51,7 +52,7 @@
 		bind:id
 		{db}
 		on:share={async (e) => {
-			await share(config);
+			await share(config, $page.data.user ? exportedFuiz.uniqueId : undefined);
 			e.detail.show();
 		}}
 		errorMessage={no_answer

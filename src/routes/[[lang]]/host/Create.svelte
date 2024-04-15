@@ -35,7 +35,7 @@
 	}
 </script>
 
-{#await loadDatabase({ google: data.google }).then((db) => getAllCreations(db))}
+{#await loadDatabase( { google: data.google, oauth: data.user !== null } ).then( (db) => getAllCreations(db) )}
 	<Loading />
 {:then creations}
 	{@const sortedCreations = creations.sort((a, b) => -b.lastEdited - a.lastEdited)}

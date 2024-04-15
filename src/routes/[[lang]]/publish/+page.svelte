@@ -43,7 +43,7 @@
 
 {#if id}
 	{@const filteredId = id}
-	{#await loadDatabase( { google: data.google } ).then( async (db) => ({ db, creation: await getCreation(filteredId, db) }) )}
+	{#await loadDatabase( { google: data.google, oauth: data.user !== null } ).then( async (db) => ({ db, creation: await getCreation(filteredId, db) }) )}
 		<Loading />
 	{:then { db, creation }}
 		{#if creation}
@@ -53,7 +53,7 @@
 		{/if}
 	{/await}
 {:else}
-	{#await loadDatabase({ google: data.google }).then((db) => getAllCreations(db))}
+	{#await loadDatabase( { google: data.google, oauth: data.user !== null } ).then( (db) => getAllCreations(db) )}
 		<Loading />
 	{:then creations}
 		{@const sortedCreations = creations.sort((a, b) => -b.lastEdited - a.lastEdited)}

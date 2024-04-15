@@ -383,7 +383,7 @@
 							on:share={async (e) => {
 								const creation = await getCreation(id, db);
 								if (creation) {
-									await share(creation.config);
+									await share(creation.config, $page.data.user ? creation.uniqueId : undefined);
 								}
 								e.detail.show();
 							}}

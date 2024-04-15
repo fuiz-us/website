@@ -32,9 +32,7 @@ export const load = (async ({ url, cookies, platform }) => {
 
 	const jsonResp = await oauthUserResponse.json();
 
-	const oauthUser: OauthUser = jsonResp.me;
-
-	console.log(JSON.stringify(jsonResp));
+	const oauthUser: OauthUser = jsonResp.data.me;
 
 	const lucia = initializeLucia(db);
 
@@ -55,7 +53,7 @@ export const load = (async ({ url, cookies, platform }) => {
 
 		await db
 			.prepare('INSERT INTO user (id, name, email) VALUES (?, ?, ?)')
-			.bind(userId, oauthUser.name, oauthUser.email)
+			.bind(userId, oauthUser.name || '', oauthUser.email || '')
 			.run();
 
 		const session = await lucia.createSession(userId, {});
@@ -71,6 +69,6 @@ export const load = (async ({ url, cookies, platform }) => {
 
 interface OauthUser {
 	id: string;
-	email: string;
-	name: string;
+	email: string | null;
+	name: string | null;
 }

@@ -9,7 +9,7 @@ export const GET: RequestHandler = async ({ platform, locals }) => {
 	const userId = locals.user?.id;
 	if (!db || !userId || !storage) error(500);
 
-	const files = await getCreations(db, userId, (f) => f);
+	const files = await getCreations(db, userId, (f) => ({ ...f, uniqueId: f.id }));
 
 	return new Response(JSON.stringify(files.filter(isNotUndefined)), {
 		headers: {

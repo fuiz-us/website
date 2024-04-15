@@ -12,7 +12,7 @@ export const POST: RequestHandler = async ({ request, platform, locals }) => {
 
 	const hash = objectHash(data);
 
-	storage.put(hash, data);
+	await storage.put(hash, data);
 
 	return new Response();
 };

@@ -38,7 +38,7 @@
 		  } = 'loading';
 
 	async function getStatus(idParam: string | null) {
-		const db = await loadDatabase({ google: data.google });
+		const db = await loadDatabase({ google: data.google, oauth: data.user !== null });
 		if (idParam) {
 			const id = parseInt(idParam);
 			const config = await getCreation(id, db);

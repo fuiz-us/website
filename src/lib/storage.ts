@@ -282,7 +282,7 @@ async function collectFuiz(fuiz: InternalFuiz, database: LocalDatabase): Promise
 	};
 }
 
-export async function loadDatabase(remote: { google: boolean }): Promise<Database> {
+export async function loadDatabase(remote: { google: boolean; oauth: boolean }): Promise<Database> {
 	const request = indexedDB.open('FuizDB', 2);
 
 	request.addEventListener('upgradeneeded', (event) => {
@@ -299,6 +299,9 @@ export async function loadDatabase(remote: { google: boolean }): Promise<Databas
 			const remotes = [];
 			if (remote.google) {
 				remotes.push(retrieveRemoteSync('google'));
+			}
+			if (remote.oauth) {
+				remotes.push(retrieveRemoteSync('oauth'));
 			}
 			resolve({
 				local: request.result,

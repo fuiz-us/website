@@ -261,7 +261,9 @@ class OauthSync implements RemoteSync {
 		localDatabase: LocalDatabase,
 		existing: [CreationId, StrictInternalFuizMetadata][]
 	): Promise<void> {
-		const res = await fetch(`/oauth/list`);
+		const res = await bring(`/oauth/list`);
+		if (!res?.ok) return;
+		
 		await reconcile(
 			this,
 			localDatabase,

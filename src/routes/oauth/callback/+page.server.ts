@@ -27,7 +27,7 @@ export const load = (async ({ url, cookies, platform }) => {
 			Authorization: `Bearer ${access_token}`,
 			'content-type': 'application/json'
 		},
-		body: '{"query": "{ me { id name email } }"}'
+		body: '{"query": "{ me { id name emails } }"}'
 	});
 
 	const jsonResp = await oauthUserResponse.json();
@@ -36,12 +36,20 @@ export const load = (async ({ url, cookies, platform }) => {
 
 	const lucia = initializeLucia(db);
 
-	const existingUser: OauthUser | null = await db
+	const existingUser: DatabaseOauthUser | null = await db
 		.prepare('SELECT * FROM user WHERE id=?')
 		.bind(oauthUser.id)
 		.first();
 
 	if (existingUser) {
+		const userId = oauthUser.id;
+
+		if (!existingUser.email) {
+			await db
+				.prepare('UPDATE user SET email = ? WHERE id = ?')
+				.bind(oauthUser.emails?.at(0) || '', userId)
+				.run();
+		}
 		const session = await lucia.createSession(existingUser.id, {});
 		const sessionCookie = lucia.createSessionCookie(session.id);
 		cookies.set(sessionCookie.name, sessionCookie.value, {
@@ -53,7 +61,7 @@ export const load = (async ({ url, cookies, platform }) => {
 
 		await db
 			.prepare('INSERT INTO user (id, name, email) VALUES (?, ?, ?)')
-			.bind(userId, oauthUser.name || '', oauthUser.email || '')
+			.bind(userId, oauthUser.name || '', oauthUser.emails?.at(0) || '')
 			.run();
 
 		const session = await lucia.createSession(userId, {});
@@ -69,6 +77,12 @@ export const load = (async ({ url, cookies, platform }) => {
 
 interface OauthUser {
 	id: string;
-	email: string | null;
+	emails: string[] | null;
+	name: string | null;
+}
+
+interface DatabaseOauthUser {
+	id: string;
+	email: string[] | null;
 	name: string | null;
 }

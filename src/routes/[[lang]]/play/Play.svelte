@@ -253,7 +253,7 @@
 	let watcherId = (browser && localStorage.getItem(code + '_play')) || undefined;
 
 	onMount(() => {
-		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code);
+		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code + '/' + (watcherId ?? 'none'));
 		setName = undefined;
 
 		// // Listen for messages

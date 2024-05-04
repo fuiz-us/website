@@ -220,14 +220,14 @@
 	let finished = false;
 
 	function connect_server(code: string) {
-		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code);
+		watcherId = localStorage.getItem(code + '_host') || undefined;
+		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code + '/' + (watcherId ?? ''));
 		currentState = undefined;
 		bindableGameInfo = {
 			volumeOn: bindableGameInfo.volumeOn,
 			locked: false
 		};
 		finished = false;
-		watcherId = localStorage.getItem(code + '_host') || undefined;
 
 		// Listen for messages
 		socket.addEventListener('message', (event) => {

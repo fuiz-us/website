@@ -10,7 +10,13 @@
 	const listbox = createListbox({ label: 'Actions', selected });
 
 	function onSelect(e: Event) {
-		selected = (e as CustomEvent).detail.selected;
+		selected = (e as CustomEvent).detail.selected.guard;
+	}
+
+	$: {
+		if (options.find((s) => s == selected) === undefined) {
+			selected = options[0];
+		}
 	}
 </script>
 
@@ -28,7 +34,14 @@
 		<ul use:listbox.items>
 			{#each options as value}
 				<li>
-					<FancyButton action={(n) => listbox.item(n, { value })}>
+					<FancyButton
+						action={(n) =>
+							listbox.item(n, {
+								value: {
+									guard: value
+								}
+							})}
+					>
 						<div style:padding="0.25em 0.5em" style:text-transform="capitalize">
 							{map(value.toString())}
 						</div>

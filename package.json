@@ -53,7 +53,7 @@
 		"oslo": "^1.2.0",
 		"qrcode": "^1.5.3",
 		"query-string": "^8.2.0",
-		"svelte-headlessui": "^0.0.32",
+		"svelte-headlessui": "^0.0.35",
 		"tippy.js": "^6.3.7",
 		"worker-auth-providers": "^0.0.13-beta.4"
 	}

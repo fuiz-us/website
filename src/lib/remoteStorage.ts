@@ -263,7 +263,7 @@ class OauthSync implements RemoteSync {
 	): Promise<void> {
 		const res = await bring(`/oauth/list`);
 		if (!res?.ok) return;
-		
+
 		await reconcile(
 			this,
 			localDatabase,

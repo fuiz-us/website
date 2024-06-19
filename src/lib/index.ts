@@ -29,14 +29,14 @@ export const buttonSymbols = [
 	[club, m.club()]
 ] as const;
 
-// must be a subset of https://gitlab.com/opencode-mit/fuiz/-/raw/main/config.toml
+// must be a subset of https://gitlab.com/opencode-mit/fuiz/game/-/raw/main/config.toml
 export const limits = {
 	fuiz: {
 		maxSlidesCount: 100,
-		maxTitleLength: 100,
+		maxTitleLength: 200,
 		maxPlayerCount: 1000,
 		multipleChoice: {
-			maxTitleLength: 100,
+			maxTitleLength: 200,
 			introduceQuestion: 3000,
 			allowedIntroduceQuestion: [0, 3000, 5000, 7000, 10000, 15000],
 			pointsAwarded: 1000,
@@ -45,7 +45,7 @@ export const limits = {
 			defaultTimeLimit: 30000,
 			maxAnswerCount: 8
 		},
-		maxAnswerTextLength: 100
+		maxAnswerTextLength: 200
 	}
 } as const;
 

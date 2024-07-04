@@ -45,7 +45,7 @@
 	>
 		<MediaChooser bind:media={slide.media} />
 	</div>
-	<div style:display="flex" style:flex-direction="column" style:gap="0.4em">
+	<div style:display="flex" style:flex-direction="column" style:gap="0.4em" style:width="20ch">
 		{#each slide.answers as answer}
 			<div
 				style:display="flex"

@@ -173,7 +173,7 @@
 						await changeSelected(slides.length - 1);
 					}}
 				>
-					<div style:padding="0.2em 0.6em">Short Answer</div>
+					<div style:padding="0.2em 0.6em">{m.short_answer()}</div>
 				</FancyButton>
 			</div>
 			<FancyButton

@@ -2,16 +2,18 @@
 	import * as m from '$lib/paraglide/messages.js';
 
 	import FancyAnchorButton from '$lib/FancyAnchorButton.svelte';
+	import FancyButton from '$lib/FancyButton.svelte';
 	import Header from '$lib/Header.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import LanguageSwitcher from '$lib/LanguageSwitcher.svelte';
 	import DarkModeSwitcher from '$lib/DarkModeSwitcher.svelte';
 	import { i18n } from '$lib/i18n';
+	import { page } from '$app/stores';
 </script>
 
 <header>
 	<Header />
-	<nav>
+	<nav style:font-size="0.8em">
 		<div>
 			<FancyAnchorButton href={i18n.resolveRoute('/create')}>
 				<div class="a">
@@ -52,6 +54,25 @@
 				</div>
 			</FancyAnchorButton>
 		</div>
+		{#if $page.data.session?.user}
+			<div>
+				<FancyButton>
+					<div class="a">
+						<Icon size="1.2em" src="$lib/assets/logout.svg" alt={m.logout()} />
+						<div>{m.logout()}</div>
+					</div>
+				</FancyButton>
+			</div>
+		{:else}
+			<div>
+				<FancyAnchorButton href={i18n.resolveRoute('/signin')}>
+					<div class="a">
+						<Icon size="1.2em" src="$lib/assets/login.svg" alt={m.login()} />
+						<div>{m.login()}</div>
+					</div>
+				</FancyAnchorButton>
+			</div>
+		{/if}
 		<LanguageSwitcher />
 		<DarkModeSwitcher />
 	</nav>

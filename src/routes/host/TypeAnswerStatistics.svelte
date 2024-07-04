@@ -7,6 +7,7 @@
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import type { BindableGameInfo, SharedGameInfo } from './+page';
 	import Icon from '$lib/Icon.svelte';
+	import { buttonColors } from '$lib';
 
 	export let bindableGameInfo: BindableGameInfo;
 	export let gameInfo: SharedGameInfo;
@@ -49,7 +50,7 @@
 				>
 					{#each allAnswers as [text, count]}
 						{@const correct = answers.includes(text)}
-						<div style:text-align="end">
+						<div style:text-align="end" style:font-family="Poppins">
 							{text}
 						</div>
 						<div
@@ -60,9 +61,10 @@
 							style:opacity={correct ? 1 : 0.5}
 						>
 							<div
-								style:background="var(--accent-color)"
-								style:width="max({(count / maxCount) * 100}%, 0.5em)"
-								style:border-radius="0.4em"
+								style:background={buttonColors[0][0]}
+								style:border="0.15em solid {buttonColors[0][1]}"
+								style:width="calc(0.5em + {(count / maxCount) * 100}%)"
+								style:border-radius="0.6em"
 								style:height="100%"
 							/>
 							<div style:font-family="Poppins" style:display="flex" style:gap="0.2em">

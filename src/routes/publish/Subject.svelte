@@ -1,5 +1,4 @@
 <script lang="ts">
-	import * as m from '$lib/paraglide/messages.js';
 	import RegularCheckbox from '$lib/regular-checkbox.svelte';
 	import { subjects } from '$lib/types';
 

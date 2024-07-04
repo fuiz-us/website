@@ -1,6 +1,6 @@
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import type { OnlineFuiz, PublishedFuizDB } from '$lib/types';
+import type { PublishedFuizDB } from '$lib/types';
 import { env } from '$env/dynamic/private';
 
 export const prerender = false;

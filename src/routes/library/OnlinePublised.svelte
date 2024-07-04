@@ -6,14 +6,16 @@
 	export let data: PublishedFuiz;
 </script>
 
-<div class="container">
+<a class="container" href="library/public/{data.storage_id}">
 	<div class="image-container">
 		{#if data.thumbnail}
-			<img src={data.thumbnail} alt={data.alt} />
+			<img src={data.thumbnail} alt={data.thumbnail_alt} />
 		{/if}
 	</div>
-	<div class="info">
-		{data.title}
+	<div class="info" title={data.title}>
+		<div class="title">
+			{data.title}
+		</div>
 		<div class="little">
 			{m.author_played_times({
 				author: data.author,
@@ -21,21 +23,21 @@
 			})}
 		</div>
 	</div>
-</div>
+</a>
 
 <style>
 	.container {
+		color: inherit;
+		text-decoration: none;
 		border: 0.15em solid;
 		border-radius: 0.7em;
 		max-width: 20ch;
-		display: flex;
-		flex-direction: column;
 		overflow: hidden;
 		background: var(--background-color);
-		aspect-ratio: 4/3;
 	}
 
 	.image-container {
+		height: 8em;
 		flex: 1;
 		overflow: hidden;
 		display: flex;
@@ -46,14 +48,22 @@
 		width: 100%;
 		height: auto;
 		flex: 1;
-		object-fit: cover;
+		object-fit: contain;
 	}
 
 	.info {
-		padding: 0.15em;
+		padding: 0.25em;
+		font-size: 0.8em;
+	}
+
+	.title {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	.little {
-		font-size: 0.75em;
+		font-size: 0.6em;
+		margin: 0.25em 0;
 	}
 </style>

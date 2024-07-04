@@ -121,18 +121,16 @@
 	{:then res}
 		{#if res && (searchTerm.length || subjectsList.length || gradesList.length || languagesList.length)}
 			<div class="section">
-				<h3>Search Results</h3>
 				<div class="grid">
 					{#each res as fuiz}
-						<a href="library/public/{fuiz.storage_id}">
-							<OnlinePublised data={fuiz} />
-						</a>
+						<OnlinePublised data={fuiz} />
 					{:else}
 						<div
 							style:display="flex"
 							style:flex-direction="column"
 							style:opacity="0.7"
 							style:align-items="center"
+							style:justify-content="center"
 						>
 							<Icon src="$lib/assets/ghost.svg" size="min(20vh, 60vw)" alt={m.nothing()} />
 							{m.nothing()}
@@ -142,18 +140,16 @@
 			</div>
 		{:else}
 			<div class="section">
-				<h3>{m.recently_published()}</h3>
 				<div class="grid">
 					{#each recentlyPublished as fuiz}
-						<a href="library/public/{fuiz.storage_id}">
-							<OnlinePublised data={fuiz} />
-						</a>
+						<OnlinePublised data={fuiz} />
 					{:else}
 						<div
 							style:display="flex"
 							style:flex-direction="column"
 							style:opacity="0.7"
 							style:align-items="center"
+							style:justify-content="center"
 						>
 							<Icon src="$lib/assets/ghost.svg" size="min(20vh, 60vw)" alt={m.nothing()} />
 							{m.nothing()}
@@ -176,6 +172,7 @@
 		flex-direction: column;
 		gap: 0.8em;
 		padding: 0.5em;
+		line-height: 1.25;
 		min-width: 15ch;
 	}
 
@@ -193,22 +190,16 @@
 
 	.grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(15ch, 1fr));
-		grid-auto-rows: 1fr;
+		grid-template-columns: repeat(auto-fit, minmax(16ch, 1fr));
+		grid-auto-rows: min-content;
 		grid-gap: 0.4em;
-	}
-
-	h3 {
-		margin: 0.2em 0;
-		font-family: 'Poppins';
+		padding: 0.4em;
+		height: 100%;
 	}
 
 	.section {
 		margin-bottom: 0.8em;
-	}
-
-	a {
-		color: inherit;
-		text-decoration: inherit;
+		flex: 1;
+		height: auto;
 	}
 </style>

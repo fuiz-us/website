@@ -74,7 +74,7 @@
 	}
 </script>
 
-{#await loadDatabase(data.session !== null).then( (db) => getCreation(id, db) )}
+{#await loadDatabase(data.session !== null).then((db) => getCreation(id, db))}
 	<Loading />
 {:then fuiz}
 	{#if !fuiz}

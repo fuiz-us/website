@@ -52,6 +52,52 @@ type WalloMedia =
 	  };
 
 export const POST: RequestHandler = async ({ request, platform }) => {
+	function serializeMedia(media: Media | undefined): WalloMedia | undefined {
+		if (!media) return undefined;
+		if (!('Base64' in media.Image)) return undefined;
+		return {
+			kind: 'image',
+			url: media.Image.Base64.data,
+			alt: media.Image.Base64.alt,
+			tag: 'Slide Image'
+		};
+	}
+
+	function extractSlide(slide: IdlessSlide): WalloMedia[] {
+		const medias: (WalloMedia | undefined)[] = [
+			{
+				kind: 'text',
+				message: slide.MultipleChoice.title,
+				tag: 'Slide Title'
+			},
+			{
+				kind: 'text',
+				message: slide.MultipleChoice.answers
+					.map((a) => `- ${a.content.Text}, ${a.correct ? 'correct' : 'wrong'}`)
+					.join('\n'),
+				tag: 'Slide Answers'
+			},
+			{
+				kind: 'text',
+				message: slide.MultipleChoice.introduce_question.toString() + 'ms',
+				tag: 'Introduce Question'
+			},
+			{
+				kind: 'text',
+				message: slide.MultipleChoice.time_limit.toString() + 'ms',
+				tag: 'Time Limit'
+			},
+			{
+				kind: 'text',
+				message: slide.MultipleChoice.points_awarded.toString() + 'pts',
+				tag: 'Points Awarded'
+			},
+			serializeMedia(slide.MultipleChoice.media)
+		];
+
+		return medias.filter(isNotUndefined);
+	}
+
 	const auth = request.headers.get('Authorization')?.trim();
 	if (!timingSafeEqual(auth ?? '', `Basic ${env.WALLO_CLIENT_SECRET}`)) throw fail(403);
 
@@ -103,7 +149,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 							.first<number>('played_count')) ?? 0;
 				}
 
-				const gitUrl = ''; //await updateFileInGit(desiredId + '.toml', fuizText);
+				const gitUrl = await updateFileInGit(desiredId + '.toml', fuizText);
 
 				const {
 					author,
@@ -222,7 +268,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 							.first<number>('played_count')) ?? 0;
 				}
 
-				const gitUrl = ''; //await updateFileInGit(desiredId + '.toml', fuizText);
+				const gitUrl = await updateFileInGit(desiredId + '.toml', fuizText);
 
 				const {
 					author,
@@ -282,17 +328,6 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 		const fuiz = parse(fuiz_str, { bigint: false }) as OnlineFuiz;
 
-		function serializeMedia(media: Media | undefined): WalloMedia | undefined {
-			if (!media) return undefined;
-			if (!('Base64' in media.Image)) return undefined;
-			return {
-				kind: 'image',
-				url: media.Image.Base64.data,
-				alt: media.Image.Base64.alt,
-				tag: 'Slide Image'
-			};
-		}
-
 		const originalMedias: WalloMedia[] = [
 			{
 				kind: 'text',
@@ -320,41 +355,6 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 				tag: 'Title'
 			}
 		];
-
-		function extractSlide(slide: IdlessSlide): WalloMedia[] {
-			const medias: (WalloMedia | undefined)[] = [
-				{
-					kind: 'text',
-					message: slide.MultipleChoice.title,
-					tag: 'Slide Title'
-				},
-				{
-					kind: 'text',
-					message: slide.MultipleChoice.answers
-						.map((a) => `- ${a.content.Text}, ${a.correct ? 'correct' : 'wrong'}`)
-						.join('\n'),
-					tag: 'Slide Answers'
-				},
-				{
-					kind: 'text',
-					message: slide.MultipleChoice.introduce_question.toString() + 'ms',
-					tag: 'Introduce Question'
-				},
-				{
-					kind: 'text',
-					message: slide.MultipleChoice.time_limit.toString() + 'ms',
-					tag: 'Time Limit'
-				},
-				{
-					kind: 'text',
-					message: slide.MultipleChoice.points_awarded.toString() + 'pts',
-					tag: 'Points Awarded'
-				},
-				serializeMedia(slide.MultipleChoice.media)
-			];
-
-			return medias.filter(isNotUndefined);
-		}
 
 		const medias: WalloMedia[] = originalMedias.concat(fuiz.config.slides.flatMap(extractSlide));
 

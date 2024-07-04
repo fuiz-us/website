@@ -8,9 +8,6 @@
 	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
 	import { i18n } from '$lib/i18n';
 	import { onMount } from 'svelte';
-	import type { LayoutData } from './$types';
-
-	export let data: LayoutData;
 
 	let mounting = true;
 

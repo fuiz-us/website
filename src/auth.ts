@@ -1,4 +1,4 @@
-import { AUTH_GOOGLE_ID, AUTH_GOOGLE_SECRET, AUTH_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { D1Adapter } from '@auth/d1-adapter';
 import { SvelteKitAuth } from '@auth/sveltekit';
 import type { Provider } from '@auth/sveltekit/providers';
@@ -6,8 +6,8 @@ import google from '@auth/sveltekit/providers/google';
 
 const providers: Provider[] = [
 	google({
-		clientId: AUTH_GOOGLE_ID,
-		clientSecret: AUTH_GOOGLE_SECRET,
+		clientId: env.AUTH_GOOGLE_ID,
+		clientSecret: env.AUTH_GOOGLE_SECRET,
 		authorization: {
 			params: {
 				prompt: 'consent',
@@ -30,7 +30,7 @@ export const providerMap = providers.map((provider) => {
 export const { handle } = SvelteKitAuth(async (event) => ({
 	providers,
 	trustHost: true,
-	secret: AUTH_SECRET,
+	secret: env.AUTH_SECRET,
 	adapter: D1Adapter(event.platform?.env.DATABASE),
 	callbacks: {
 		session({ session, user }) {

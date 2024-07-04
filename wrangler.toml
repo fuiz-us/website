@@ -15,3 +15,7 @@ id = "c6b2f3614bcd414aabc6ae65a6546b64"
 [[r2_buckets]]
 binding = "BUCKET"
 bucket_name = "fuiz"
+
+[[kv_namespaces]]
+binding = "MAP"
+id = "c8aca143fe384d89aa82e431cf579069"

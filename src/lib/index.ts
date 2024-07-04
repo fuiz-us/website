@@ -1,4 +1,4 @@
-import * as m from '$paraglide/messages';
+import * as m from '$lib/paraglide/messages.js';
 
 import heart from '$lib/assets/cards-heart.svg';
 import club from '$lib/assets/cards-club.svg';
@@ -8,8 +8,7 @@ import { PUBLIC_BACKEND_URL, PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import { goto } from '$app/navigation';
 import { Section, stringify } from '@ltd/j-toml';
 import { bring } from './util';
-import type { FuizConfig, FuizOptions, IdlessFuizConfig, Media } from './types';
-import type { OnlineFuiz } from '../routes/[[lang]]/admin/+page';
+import type { FuizConfig, FuizOptions, IdlessFuizConfig, Media, OnlineFuiz } from './types';
 import JSZip from 'jszip';
 import objectHash from 'object-hash';
 

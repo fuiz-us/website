@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as m from '$paraglide/messages';
+	import * as m from '$lib/paraglide/messages.js';
 
 	import { backOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';

@@ -1,0 +1,17 @@
+name = "fuiz"
+compatibility_date = "2024-06-05"
+pages_build_output_dir = ".svelte-kit/cloudflare"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DATABASE"
+database_name = "fuiz"
+database_id = "51b4dee7-59e7-42d9-9b90-9be2d4e6500e"
+
+[[kv_namespaces]]
+binding = "FUIZ_POLL"
+id = "c6b2f3614bcd414aabc6ae65a6546b64"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "fuiz"

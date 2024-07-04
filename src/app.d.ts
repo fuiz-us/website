@@ -6,9 +6,7 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			google: boolean;
-			user: import('lucia').User | null;
-			session: import('lucia').Session | null;
+			paraglide: ParaglideLocals<AvailableLanguageTag>;
 		}
 		// interface PageData {}
 		interface Platform {

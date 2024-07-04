@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as m from '$paraglide/messages';
+	import * as m from '$lib/paraglide/messages.js';
 
 	import hourglassFilled from '$lib/assets/hourglass_filled.svg';
 	import hourglassEmpty from '$lib/assets/hourglass_empty.svg';

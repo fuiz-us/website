@@ -1,4 +1,4 @@
-import type { AvailableLanguageTag } from '$paraglide/runtime';
+import type { AvailableLanguageTag } from '$lib/paraglide/runtime.js';
 
 export type Image =
 	| {
@@ -103,19 +103,42 @@ export type ServerPossiblyHidden<T> =
 	| 'Hidden';
 
 export type PublishedFuizDB = {
-	id: number;
+	storage_id: number;
 	title: string;
 	author: string;
-	published: number;
+	published_at: string;
 	public_url: string;
-	tags: string;
+	subjects: string;
+	grades: string;
 	slides_count: number;
-	thumbnail: ArrayBuffer | null;
-	alt: string | null;
 	played_count: number;
-	last_updated: number;
-	language: string;
+	thumbnail_alt: string | null;
+	language_code: string;
+	thumbnail: ArrayBuffer | null;
 };
+
+export const grades = ['University', 'Secondary-School', 'Primary-School', 'Other'] as const;
+
+export const subjects = [
+	'Art',
+	'Business',
+	'Computer Science',
+	'Culture and Traditions',
+	'English Language Arts',
+	'Finance',
+	'General Knowledge',
+	'Geography',
+	'History',
+	'Languages',
+	'Law',
+	'Math',
+	'Music',
+	'Science',
+	'Seasonal',
+	'Social Emotional Learning',
+	'Social Studies',
+	'Trivia'
+] as const;
 
 // https://gist.github.com/ackvf/de21847e78083034252961d550963579#file-global-d-ts-L154
 export type Modify<T, R extends PartialAny<T>> = Omit<T, keyof R> & R;
@@ -128,9 +151,17 @@ export type PublishedFuiz = Modify<
 	PublishedFuizDB,
 	{
 		thumbnail: string | null;
-		tags: string[];
-		published: Date;
-		last_updated: Date;
+		subjects: string[];
+		grades: string[];
+		published_at: Date;
 		language: AvailableLanguageTag;
 	}
 >;
+
+export type OnlineFuiz = {
+	author: string;
+	subjects?: string[];
+	grades?: string[];
+	language: string;
+	config: IdlessFuizConfig;
+};

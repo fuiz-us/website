@@ -35,8 +35,8 @@ const config = {
 			relative: false
 		},
 
-		alias: {
-			$paraglide: './src/paraglide'
+		prerender: {
+			origin: 'https://fuiz.us'
 		}
 	}
 };

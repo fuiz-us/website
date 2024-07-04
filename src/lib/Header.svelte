@@ -1,12 +1,11 @@
 <script>
-	import { languageTag } from '$paraglide/runtime';
 	import Logo from './Logo.svelte';
-	import { route } from './i18n-routing';
+	import { i18n } from './i18n';
 </script>
 
 <div style:display="flex" style:justify-content="center">
 	<a
-		href={route('/', languageTag())}
+		href={i18n.resolveRoute('/')}
 		style:height="60px"
 		style:overflow="hidden"
 		style:color="inherit"

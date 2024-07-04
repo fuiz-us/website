@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as m from '$paraglide/messages';
+	import * as m from '$lib/paraglide/messages.js';
 
 	import factual from '$lib/assets/correct.svg';
 	import wrong from '$lib/assets/wrong.svg';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Metadata } from '../routes/[[lang]]/posts/lib';
-	import { languageTag } from '$paraglide/runtime';
+	import { languageTag } from '$lib/paraglide/runtime.js';
 
 	export let metadata: Metadata;
 </script>

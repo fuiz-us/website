@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as m from '$paraglide/messages';
+	import * as m from '$lib/paraglide/messages.js';
 
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
 	import darkMode from '$lib/assets/dark_mode.svg';

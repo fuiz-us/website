@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
-import type { Stats } from '../[[lang]]/+page.server';
-import { getStats, setStats } from '../[[lang]]/lib';
+import type { Stats } from '../+page.server';
+import { getStats, setStats } from '../lib';
 import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ request, platform }) => {

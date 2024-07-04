@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as m from '$paraglide/messages';
+	import * as m from '$lib/paraglide/messages.js';
 
 	import { createEventDispatcher } from 'svelte';
 	import vote from '$lib/assets/vote.svg';

@@ -1,5 +1,5 @@
 <script>
-	import * as m from '$paraglide/messages';
+	import * as m from '$lib/paraglide/messages.js';
 
 	import heart from '$lib/assets/cards-heart.svg';
 	import club from '$lib/assets/cards-club.svg';

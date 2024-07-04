@@ -42,7 +42,7 @@ export type CreationId = number;
 
 export type Database = {
 	local: LocalDatabase;
-	remotes: RemoteSync[];
+	remote?: RemoteSync;
 };
 
 export type Creation = {
@@ -165,9 +165,7 @@ export async function updateLocalImagesDatabse(
 
 async function updateImagesDatabse(media: Media | string, hash: string, database: Database) {
 	if (await updateLocalImagesDatabse(media, hash, database.local)) {
-		database.remotes.forEach((db) => {
-			db.createImage(hash, media);
-		});
+		database?.remote?.createImage(hash, media);
 	}
 }
 
@@ -282,7 +280,7 @@ async function collectFuiz(fuiz: InternalFuiz, database: LocalDatabase): Promise
 	};
 }
 
-export async function loadDatabase(remote: { google: boolean; oauth: boolean }): Promise<Database> {
+export async function loadDatabase(remote: boolean): Promise<Database> {
 	const request = indexedDB.open('FuizDB', 2);
 
 	request.addEventListener('upgradeneeded', (event) => {
@@ -296,16 +294,9 @@ export async function loadDatabase(remote: { google: boolean; oauth: boolean }):
 
 	return await new Promise((resolve, reject) => {
 		request.addEventListener('success', () => {
-			const remotes = [];
-			if (remote.google) {
-				remotes.push(retrieveRemoteSync('google'));
-			}
-			if (remote.oauth) {
-				remotes.push(retrieveRemoteSync('oauth'));
-			}
 			resolve({
 				local: request.result,
-				remotes
+				remote: remote ? retrieveRemoteSync() : undefined
 			});
 		});
 		request.addEventListener('error', reject);
@@ -313,12 +304,10 @@ export async function loadDatabase(remote: { google: boolean; oauth: boolean }):
 }
 
 export async function sync(database: Database) {
-	for (const remote of database.remotes) {
-		await remote.sync(
-			database.local,
-			(await getAllCreationsLocal(database.local)).map(([k, v]) => [parseInt(k.toString()), v])
-		);
-	}
+	await database.remote?.sync(
+		database.local,
+		(await getAllCreationsLocal(database.local)).map(([k, v]) => [parseInt(k.toString()), v])
+	);
 }
 
 export async function getAllCreationsLocal(
@@ -414,7 +403,7 @@ export async function deleteCreation(id: CreationId, database: Database): Promis
 	const uniqueId = (await getCreation(id, database))?.uniqueId;
 	if (!uniqueId) return;
 	await deleteCreationLocal(id, database.local);
-	database.remotes.forEach((db) => db.delete(uniqueId));
+	database.remote?.delete(uniqueId);
 }
 
 export async function addCreationLocal(
@@ -435,7 +424,7 @@ export async function addCreationLocal(
 export async function addCreation(newSlide: ExportedFuiz, database: Database): Promise<CreationId> {
 	const internalFuiz = internalizeFuiz(newSlide, database);
 	const id = await addCreationLocal(internalFuiz, database.local);
-	database.remotes.forEach((db) => db.create(newSlide.uniqueId, internalFuiz));
+	database.remote?.create(newSlide.uniqueId, internalFuiz);
 	return id;
 }
 
@@ -461,5 +450,5 @@ export async function updateCreation(
 ): Promise<void> {
 	const internalFuiz = internalizeFuiz(newSlide, database);
 	await updateCreationLocal(id, internalFuiz, database.local);
-	database.remotes.forEach((db) => db.update(newSlide.uniqueId, internalFuiz));
+	database.remote?.update(newSlide.uniqueId, internalFuiz);
 }

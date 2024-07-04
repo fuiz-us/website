@@ -1,11 +1,11 @@
 <script lang="ts">
-	import * as m from '$paraglide/messages';
+	import * as m from '$lib/paraglide/messages.js';
 
-	import { availableLanguageTags } from '$paraglide/runtime';
+	import { availableLanguageTags, languageTag } from '$lib/paraglide/runtime.js';
 	import { page } from '$app/stores';
-	import { route } from '$lib/i18n-routing';
 	import IconButton from './IconButton.svelte';
 	import { createDialog } from 'svelte-headlessui';
+	import { i18n } from './i18n';
 
 	const dialog = createDialog();
 
@@ -26,11 +26,16 @@
 		<ul use:dialog.modal style:--y={up ? 'calc(-100% - 1.25em)' : '0'}>
 			{#each availableLanguageTags as lang}
 				<li>
-					<a href={route($page.url.pathname + $page.url.search, lang)} hreflang={lang}
-						>{new Intl.DisplayNames([lang], {
-							type: 'language'
-						}).of(lang)}</a
+					<!-- the hreflang attribute decides which language the link points to -->
+					<a
+						href={i18n.route($page.url.pathname + $page.url.search)}
+						hreflang={lang}
+						aria-current={lang === languageTag() ? 'page' : undefined}
 					>
+						{new Intl.DisplayNames([lang], {
+							type: 'language'
+						}).of(lang)}
+					</a>
 				</li>
 			{/each}
 		</ul>

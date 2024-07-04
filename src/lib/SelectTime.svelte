@@ -72,9 +72,9 @@
 			padding: 10px;
 			display: grid;
 			grid-gap: 10px;
-			font-size: max(7vmin, 1em);
-			grid-template-columns: repeat(auto-fit, minmax(8ch, 1fr));
-			width: min(80vw, 90vh);
+			font-size: max(4vmin, 0.8em);
+			grid-template-columns: repeat(auto-fit, minmax(12ch, 1fr));
+			max-width: min(80vw, 50ch);
 			flex-wrap: wrap;
 
 			& li {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as m from '$paraglide/messages';
+	import * as m from '$lib/paraglide/messages.js';
 
 	import DarkModeSwitcher from '$lib/DarkModeSwitcher.svelte';
 
@@ -8,8 +8,7 @@
 	import Icon from './Icon.svelte';
 	import Anchor from './Anchor.svelte';
 	import LanguageSwitcher from './LanguageSwitcher.svelte';
-	import { route } from './i18n-routing';
-	import { languageTag } from '$paraglide/runtime';
+	import { i18n } from './i18n';
 </script>
 
 <div
@@ -26,7 +25,7 @@
 	style:justify-content="center"
 	style:flex-wrap="wrap"
 >
-	<Anchor href={route('/credits', languageTag())}>
+	<Anchor href={i18n.resolveRoute('/credits')}>
 		<div style:display="inline-flex" style:align-items="center" style:gap="0.2em">
 			<Icon src={diversity} alt={m.community()} size="1em" />
 			<div>{m.community()}</div>

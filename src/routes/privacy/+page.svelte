@@ -1,7 +1,7 @@
 <script>
 	import Anchor from '$lib/Anchor.svelte';
 	import Footer from '$lib/Footer.svelte';
-	import MainHeader from '../[[lang]]/MainHeader.svelte';
+	import MainHeader from '../MainHeader.svelte';
 </script>
 
 <main>

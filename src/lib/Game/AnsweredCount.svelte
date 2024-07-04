@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as m from '$paraglide/messages';
+	import * as m from '$lib/paraglide/messages.js';
 
 	import Icon from '$lib/Icon.svelte';
 	import assignmentTurned from '$lib/assets/answer_turned.svg';

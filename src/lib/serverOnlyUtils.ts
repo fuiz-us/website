@@ -1,7 +1,7 @@
 import { bring } from './util';
 import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import type { IdlessFuizConfig, PublishedFuiz, PublishedFuizDB } from './types';
-import type { AvailableLanguageTag } from '$paraglide/runtime';
+import type { AvailableLanguageTag } from '$lib/paraglide/runtime.js';
 
 export function dataURIToBlob(dataURI: string): Blob {
 	const [info, data] = dataURI.split(',');
@@ -15,9 +15,9 @@ export function dataURIToBlob(dataURI: string): Blob {
 
 export async function getThumbnail(
 	fuiz: IdlessFuizConfig
-): Promise<{ thumbnail: ArrayBuffer; alt: string } | undefined> {
+): Promise<{ thumbnail: ArrayBuffer; thumbnailAlt: string } | undefined> {
 	return await fuiz.slides.reduce<
-		Promise<{ thumbnail: ArrayBuffer; alt: string } | undefined> | undefined
+		Promise<{ thumbnail: ArrayBuffer; thumbnailAlt: string } | undefined> | undefined
 	>(async (m, s) => {
 		const prev = await m;
 		if (prev) return prev;
@@ -42,7 +42,7 @@ export async function getThumbnail(
 
 			if (!thumbnail?.ok) return undefined;
 
-			return { thumbnail: await thumbnail.arrayBuffer(), alt: media.Image.Corkboard.alt };
+			return { thumbnail: await thumbnail.arrayBuffer(), thumbnailAlt: media.Image.Corkboard.alt };
 		} else if ('Base64' in media.Image) {
 			const blob = dataURIToBlob(media.Image.Base64.data);
 
@@ -56,7 +56,7 @@ export async function getThumbnail(
 
 			if (!thumbnail?.ok) return undefined;
 
-			return { thumbnail: await thumbnail.arrayBuffer(), alt: media.Image.Base64.alt };
+			return { thumbnail: await thumbnail.arrayBuffer(), thumbnailAlt: media.Image.Base64.alt };
 		} else {
 			return undefined;
 		}
@@ -75,9 +75,9 @@ export function fixPublish(p: PublishedFuizDB): PublishedFuiz {
 	return {
 		...p,
 		thumbnail: p.thumbnail ? encodeAsDataURL(p.thumbnail) : null,
-		tags: p.tags.split(' ~ '),
-		published: new Date(p.published),
-		last_updated: new Date(p.last_updated),
-		language: p.language as AvailableLanguageTag
+		subjects: p.subjects.split(' ~ '),
+		grades: p.grades.split(' ~ '),
+		published_at: new Date(p.published_at),
+		language: p.language_code as AvailableLanguageTag
 	};
 }

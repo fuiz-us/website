@@ -3,49 +3,14 @@
 	import '@fontsource/atkinson-hyperlegible';
 	import 'tippy.js/dist/tippy.css';
 
-	import { navigating, page } from '$app/stores';
-	import { setLanguageTag, sourceLanguageTag, type AvailableLanguageTag } from '$paraglide/runtime';
-	import { browser } from '$app/environment';
-	import I18NHeader from '$lib/I18NHeader.svelte';
-	import { onMount } from 'svelte';
+	import { navigating } from '$app/stores';
 	import Loading from '$lib/Loading.svelte';
+	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
+	import { i18n } from '$lib/i18n';
+	import { onMount } from 'svelte';
+	import type { LayoutData } from './$types';
 
-	function getLang(param: AvailableLanguageTag): AvailableLanguageTag {
-		return param ?? sourceLanguageTag;
-	}
-
-	let lang: AvailableLanguageTag = sourceLanguageTag;
-
-	$: browser && ((l) => (lang = l))(getLang($page.params.lang as AvailableLanguageTag));
-
-	//Use the default language if no language is given
-	$: setLanguageTag(lang);
-
-	onMount(() => {
-		function getTheme() {
-			if (window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches) {
-				return 'dark';
-			} else {
-				return 'light';
-			}
-		}
-
-		function getOrSet(): string {
-			const local = localStorage.getItem('theme');
-			if (local) return local;
-
-			const def = getTheme();
-			localStorage.setItem('theme', def);
-			return def;
-		}
-
-		document.documentElement.setAttribute('data-theme', getOrSet());
-
-		mounting = false;
-	});
-
-	//Set the lang attribute on the html tag
-	$: if (browser) document.documentElement.lang = lang;
+	export let data: LayoutData;
 
 	let mounting = true;
 
@@ -71,17 +36,19 @@
 			longNavigating = false;
 		}
 	}
+
+	onMount(() => {
+		mounting = false;
+	});
 </script>
 
-<I18NHeader />
-
-{#key lang}
+<ParaglideJS {i18n}>
 	{#if mounting || longNavigating}
 		<Loading />
 	{:else}
 		<slot />
 	{/if}
-{/key}
+</ParaglideJS>
 
 <style>
 	:root {

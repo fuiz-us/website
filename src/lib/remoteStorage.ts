@@ -29,24 +29,8 @@ export interface RemoteSync {
 	getImage(hash: string): Promise<Media | string | undefined>;
 }
 
-export type Providers = 'google' | 'oauth';
-
-export function login(provider: Providers) {
-	if (provider === 'google') return GoogleDriveSync.connect();
-	if (provider === 'oauth') return OauthSync.connect();
-	throw `got unexpected '${provider}' as provider`;
-}
-
-export function logout(provider: Providers) {
-	if (provider === 'google') return GoogleDriveSync.disconnect();
-	if (provider === 'oauth') return OauthSync.disconnect();
-	throw `got unexpected '${provider}' as provider`;
-}
-
-export function retrieveRemoteSync(provider: Providers): RemoteSync {
-	if (provider === 'google') return new GoogleDriveSync();
-	if (provider === 'oauth') return new OauthSync();
-	throw `got unexpected '${provider}' as provider`;
+export function retrieveRemoteSync(): RemoteSync {
+	return new OauthSync();
 }
 
 export async function reconcile(
@@ -248,20 +232,11 @@ export async function reconcile(
 }
 
 class OauthSync implements RemoteSync {
-	static async connect(): Promise<void> {
-		window.open('/oauth/login', 'fuizWindow', 'popup');
-	}
-
-	static async disconnect(): Promise<void> {
-		await bring('/oauth/logout');
-		window.location.reload();
-	}
-
 	async sync(
 		localDatabase: LocalDatabase,
 		existing: [CreationId, StrictInternalFuizMetadata][]
 	): Promise<void> {
-		const res = await bring(`/oauth/list`);
+		const res = await bring(`/api/list`);
 		if (!res?.ok) return;
 
 		await reconcile(
@@ -269,7 +244,7 @@ class OauthSync implements RemoteSync {
 			localDatabase,
 			await res.json(),
 			async (hash) => {
-				const reqExists = await bring(`/oauth/existImage/${hash}`);
+				const reqExists = await bring(`/api/existImage/${hash}`);
 				if (!reqExists?.ok) return false;
 				return await reqExists.json();
 			},
@@ -278,115 +253,41 @@ class OauthSync implements RemoteSync {
 	}
 
 	async get(uuid: string): Promise<FuizConfig | undefined> {
-		const res = await bring(`/oauth/get/${uuid}`);
+		const res = await bring(`/api/get/${uuid}`);
 
 		return res?.ok ? await res.json() : undefined;
 	}
 
 	async create(uuid: string, internalFuiz: InternalFuiz): Promise<void> {
-		await fetch(`/oauth/create/${uuid}`, {
+		await fetch(`/api/create/${uuid}`, {
 			method: 'POST',
 			body: JSON.stringify(internalFuiz)
 		});
 	}
 
 	async update(uuid: string, internalFuiz: InternalFuiz): Promise<void> {
-		await fetch(`/oauth/update/${uuid}`, {
+		await fetch(`/api/update/${uuid}`, {
 			method: 'POST',
 			body: JSON.stringify(internalFuiz)
 		});
 	}
 
 	async delete(uuid: string): Promise<void> {
-		await fetch(`/oauth/delete/${uuid}`);
+		await fetch(`/api/delete/${uuid}`);
 	}
 
 	async createImage(hash: string, value: string | Media): Promise<void> {
-		const reqExists = await bring(`/oauth/existImage/${hash}`);
+		const reqExists = await bring(`/api/existImage/${hash}`);
 		if (!reqExists?.ok || (await reqExists.json())) return undefined;
 		const serialized = typeof value === 'string' ? value : JSON.stringify(value);
-		await fetch(`/oauth/createImage`, {
+		await fetch(`/api/createImage`, {
 			method: 'POST',
 			body: serialized
 		});
 	}
 
 	async getImage(hash: string): Promise<string | undefined> {
-		const res = await bring(`/oauth/getImage/${hash}`);
-		if (!res?.ok) return undefined;
-		const media = await res.text();
-		try {
-			return JSON.parse(media);
-		} catch (e) {
-			return media;
-		}
-	}
-}
-
-class GoogleDriveSync implements RemoteSync {
-	static async connect(): Promise<void> {
-		window.open('/google/login', 'fuizWindow', 'popup');
-	}
-
-	static async disconnect(): Promise<void> {
-		await bring('/google/logout');
-		window.location.reload();
-	}
-
-	async sync(
-		localDatabase: LocalDatabase,
-		existing: [CreationId, StrictInternalFuizMetadata][]
-	): Promise<void> {
-		const res = await fetch(`/google/list`);
-		const imageList = await bring('/google/listImage');
-		const imageSet: Set<string | undefined> = new Set((await imageList?.json()) ?? []);
-
-		await reconcile(
-			this,
-			localDatabase,
-			await res.json(),
-			async (hash) => imageSet.has(hash),
-			existing
-		);
-	}
-
-	async get(uuid: string): Promise<FuizConfig | undefined> {
-		const res = await bring(`/google/get/${uuid}`);
-
-		return res?.ok ? await res.json() : undefined;
-	}
-
-	async create(uuid: string, internalFuiz: InternalFuiz): Promise<void> {
-		await fetch(`/google/create/${uuid}`, {
-			method: 'POST',
-			body: JSON.stringify(internalFuiz)
-		});
-	}
-
-	async update(uuid: string, internalFuiz: InternalFuiz): Promise<void> {
-		await fetch(`/google/update/${uuid}`, {
-			method: 'POST',
-			body: JSON.stringify(internalFuiz)
-		});
-	}
-
-	async delete(uuid: string): Promise<void> {
-		await fetch(`/google/delete/${uuid}`);
-	}
-
-	async createImage(hash: string, value: string | Media): Promise<void> {
-		const reqExists = await bring(`/google/existImage/${hash}`);
-		if (!reqExists?.ok || (await reqExists.json())) return undefined;
-
-		const serialized = typeof value === 'string' ? value : JSON.stringify(value);
-		await fetch(`/google/createImage/${hash}`, {
-			method: 'POST',
-			body: serialized
-		});
-	}
-
-	async getImage(hash: string): Promise<string | undefined> {
-		const res = await bring(`/google/getImage/${hash}`);
+		const res = await bring(`/api/getImage/${hash}`);
 		if (!res?.ok) return undefined;
 		const media = await res.text();
 		try {

@@ -1,9 +1,11 @@
+import { providerMap } from '../auth';
 import type { LayoutServerLoad } from './$types';
 
 export const load = (async ({ locals }) => {
+	const session = await locals.auth();
+
 	return {
-		google: locals.google,
-		user: locals.user,
-		session: locals.session
+		session,
+		providers: providerMap
 	};
 }) satisfies LayoutServerLoad;

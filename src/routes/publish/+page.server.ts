@@ -1,7 +1,7 @@
-import { WALLO_CLIENT_ID, WALLO_CLIENT_SECRET, WALLO_ORIGIN } from '$env/static/private';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { OnlineFuiz, PublishedFuizDB } from '$lib/types';
+import { env } from '$env/dynamic/private';
 
 export const prerender = false;
 
@@ -33,13 +33,13 @@ export const actions: Actions = {
 			.bind(id, session.user.id)
 			.run();
 
-		await fetch(`${WALLO_ORIGIN}/api/v0/requestPublication`, {
+		await fetch(`${env.WALLO_ORIGIN}/api/v0/requestPublication`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${WALLO_CLIENT_SECRET}`
+				Authorization: `Bearer ${env.WALLO_CLIENT_SECRET}`
 			},
-			body: JSON.stringify({ id, clientId: WALLO_CLIENT_ID, kind: 'content' })
+			body: JSON.stringify({ id, clientId: env.WALLO_CLIENT_ID, kind: 'content' })
 		});
 
 		return { r2_key: id };
@@ -99,13 +99,13 @@ export const actions: Actions = {
 			.bind(id, desiredId, session.user.id)
 			.run();
 
-		await fetch(`${WALLO_ORIGIN}/api/v0/requestPublication`, {
+		await fetch(`${env.WALLO_ORIGIN}/api/v0/requestPublication`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${WALLO_CLIENT_SECRET}`
+				Authorization: `Bearer ${env.WALLO_CLIENT_SECRET}`
 			},
-			body: JSON.stringify({ id, clientId: WALLO_CLIENT_ID, kind: 'content' })
+			body: JSON.stringify({ id, clientId: env.WALLO_CLIENT_ID, kind: 'content' })
 		});
 
 		return { r2_key: id };

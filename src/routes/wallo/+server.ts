@@ -1,4 +1,3 @@
-import { WALLO_CLIENT_SECRET } from '$env/static/private';
 import { fail, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import type { IdlessSlide, Media, OnlineFuiz } from '$lib/types';
@@ -6,6 +5,7 @@ import { isNotUndefined } from '$lib/util';
 import { parse } from '@ltd/j-toml';
 import { updateFileInGit } from '$lib/gitlab';
 import { getThumbnail } from '$lib/serverOnlyUtils';
+import { env } from '$env/dynamic/private';
 
 function timingSafeEqual(a: string, b: string): boolean {
 	if (a.length !== b.length) {
@@ -53,7 +53,7 @@ type WalloMedia =
 
 export const POST: RequestHandler = async ({ request, platform }) => {
 	const auth = request.headers.get('Authorization')?.trim();
-	if (!timingSafeEqual(auth ?? '', `Basic ${WALLO_CLIENT_SECRET}`)) throw fail(403);
+	if (!timingSafeEqual(auth ?? '', `Basic ${env.WALLO_CLIENT_SECRET}`)) throw fail(403);
 
 	const body = (await request.json()) as {
 		kind: 'content';

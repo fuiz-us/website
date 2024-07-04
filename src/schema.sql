@@ -69,6 +69,7 @@ CREATE TABLE IF NOT EXISTS "approved_submissions" (
     "public_url" text NOT NULL,
     "subjects" text NOT NULL,
     "grades" text NOT NULL,
+    "keywords" text NOT NULL,
     "slides_count" number NOT NULL,
     "played_count" number NOT NULL,
     "thumbnail_alt" text DEFAULT NULL,

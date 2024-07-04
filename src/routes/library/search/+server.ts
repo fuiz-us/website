@@ -56,13 +56,11 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		.map((query) => `(${query})`)
 		.join(' AND ');
 
-	console.log(allQueries);
-
 	if (term.length) {
 		const matches = (
 			(
 				await platform?.env.DATABASE.prepare(
-					`SELECT * FROM approved_submissions WHERE (title LIKE ? OR author LIKE ? OR subjects LIKE ? OR thumbnail_alt LIKE ?) ${
+					`SELECT * FROM approved_submissions WHERE (title LIKE ? OR author LIKE ? OR subjects LIKE ? OR keywords LIKE ? OR thumbnail_alt LIKE ?) ${
 						allQueries ? ' AND ' + allQueries : ''
 					} LIMIT 24`
 				)

@@ -1,11 +1,12 @@
 import { fail, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import type { IdlessSlide, Media, OnlineFuiz } from '$lib/types';
+import type { IdlessFuizConfig, IdlessSlide, Media, OnlineFuiz } from '$lib/types';
 import { isNotUndefined } from '$lib/util';
 import { parse } from '@ltd/j-toml';
 import { updateFileInGit } from '$lib/gitlab';
 import { getThumbnail } from '$lib/serverOnlyUtils';
 import { env } from '$env/dynamic/private';
+import type { Ai } from '@cloudflare/workers-types';
 
 function timingSafeEqual(a: string, b: string): boolean {
 	if (a.length !== b.length) {
@@ -20,6 +21,41 @@ function timingSafeEqual(a: string, b: string): boolean {
 	if (aEncoded.byteLength !== bEncoded.byteLength) return false;
 
 	return crypto.subtle.timingSafeEqual(aEncoded, bEncoded);
+}
+
+async function extractKeywords(ai: Ai, config: IdlessFuizConfig): Promise<string[]> {
+	const messages = [
+		{
+			role: 'system',
+			content:
+				'Give sixteen keywords of the following user content to aid users find it while searching, separated with commas and no other system text ever'
+		},
+		{
+			role: 'user',
+			content: config.slides.map((slide) => slide.MultipleChoice.title).join('\n')
+		}
+	];
+	const response = await ai.run('@cf/meta/llama-3-8b-instruct', { messages });
+
+	if (!response) {
+		return [];
+	}
+
+	if ('getReader' in response) {
+		const reader = response.getReader();
+		let fullValue = '';
+		/*eslint no-constant-condition: ["error", { "checkLoops": false }]*/
+		while (true) {
+			const { done, value } = await reader.read();
+			fullValue += value;
+			if (done) {
+				break;
+			}
+		}
+
+		return fullValue.split(',').slice(0, 16);
+	}
+	return response.response?.split(',')?.slice(0, 16) ?? [];
 }
 
 type Response = {
@@ -161,6 +197,10 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 					bigint: false
 				}) as OnlineFuiz;
 
+				const keywords = platform?.env.AI
+					? await extractKeywords(platform?.env.AI, { title, slides })
+					: [];
+
 				const { thumbnail, thumbnailAlt } = (await getThumbnail({ title, slides })) || {
 					thumbnail: null,
 					thumbnailAlt: null
@@ -174,12 +214,13 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 						public_url,
 						subjects,
 						grades,
+						keywords,
 						slides_count,
 						played_count,
 						language_code,
 						thumbnail_alt,
 						thumbnail
-					) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+					) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 				)
 					.bind(
 						desiredId,
@@ -188,6 +229,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 						gitUrl,
 						subjects.join(' ~ '),
 						grades.join(' ~ '),
+						keywords.join(' ~ '),
 						slides.length,
 						played_count,
 						language,
@@ -280,6 +322,10 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 					bigint: false
 				}) as OnlineFuiz;
 
+				const keywords = platform?.env.AI
+					? await extractKeywords(platform?.env.AI, { title, slides })
+					: [];
+
 				const { thumbnail, thumbnailAlt } = (await getThumbnail({ title, slides })) || {
 					thumbnail: null,
 					thumbnailAlt: null
@@ -293,12 +339,13 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 							public_url,
 							subjects,
 							grades,
+							keywords,
 							slides_count,
 							played_count,
 							language_code,
 							thumbnail_alt,
 							thumbnail
-						) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+						) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 				)
 					.bind(
 						desiredId,
@@ -307,6 +354,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 						gitUrl,
 						subjects.join(' ~ '),
 						grades.join(' ~ '),
+						keywords.join(' ~ '),
 						slides.length,
 						played_count,
 						language,

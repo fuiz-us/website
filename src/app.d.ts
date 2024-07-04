@@ -1,4 +1,4 @@
-import type { D1Database, KVNamespace, R2Bucket } from '@cloudflare/workers-types';
+import type { Ai, D1Database, KVNamespace, R2Bucket } from '@cloudflare/workers-types';
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
@@ -15,6 +15,7 @@ declare global {
 				DATABASE: D1Database;
 				MAP: KVNamespace;
 				FUIZ_POLL: KVNamespace;
+				AI: Ai;
 			};
 		}
 	}

@@ -39,7 +39,7 @@
 			<div id="summary">
 				<div class="image-container">
 					{#if fuiz.thumbnail}
-						<img src={fuiz.thumbnail} alt={fuiz.alt} />
+						<img src={fuiz.thumbnail} alt={fuiz.thumbnail_alt} />
 					{:else}
 						<div
 							style:width="100%"
@@ -57,12 +57,6 @@
 					</div>
 					<div>
 						{m.author()}: {fuiz.author}
-					</div>
-					<div>
-						{m.tags()}: {new Intl.ListFormat('en', {
-							style: 'narrow',
-							type: 'conjunction'
-						}).format(fuiz.tags)}
 					</div>
 					<div>
 						{m.language()}: {new Intl.DisplayNames([languageTag()], {

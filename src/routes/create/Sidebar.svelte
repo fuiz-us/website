@@ -67,6 +67,8 @@
 				clamp(selectedRect.right - parentRect.right, 0, selectedRect.x - parentRect.x)
 		});
 	}
+
+	let popoverElement: HTMLElement;
 </script>
 
 <div id="sidebar" style:display="flex" style:flex-direction="column">
@@ -125,22 +127,59 @@
 			</section>
 		</div>
 		<div id="add-button">
+			<div
+				popover="auto"
+				bind:this={popoverElement}
+				style:border="4px solid currentColor"
+				style:background="var(--background-color)"
+				style:border-radius="1em"
+				style:padding="1em"
+			>
+				<FancyButton
+					on:click={async () => {
+						popoverElement.hidePopover();
+						slides.push({
+							MultipleChoice: {
+								title: '',
+								media: undefined,
+								introduce_question: limits.fuiz.multipleChoice.introduceQuestion,
+								time_limit: limits.fuiz.multipleChoice.defaultTimeLimit,
+								points_awarded: limits.fuiz.multipleChoice.pointsAwarded,
+								answers: []
+							},
+							id: Date.now()
+						});
+						slides = slides;
+						await changeSelected(slides.length - 1);
+					}}
+				>
+					<div style:padding="0.2em 0.6em">
+						{m.multiple_choice()}
+					</div>
+				</FancyButton>
+				<FancyButton
+					on:click={async () => {
+						popoverElement.hidePopover();
+						slides.push({
+							TypeAnswer: {
+								title: '',
+								time_limit: limits.fuiz.typeAnswer.defaultTimeLimit,
+								points_awarded: limits.fuiz.typeAnswer.pointsAwarded,
+								answers: []
+							},
+							id: Date.now()
+						});
+						slides = slides;
+						await changeSelected(slides.length - 1);
+					}}
+				>
+					<div style:padding="0.2em 0.6em">Short Answer</div>
+				</FancyButton>
+			</div>
 			<FancyButton
 				disabled={slides.length >= limits.fuiz.maxSlidesCount}
 				on:click={async () => {
-					slides.push({
-						MultipleChoice: {
-							title: '',
-							media: undefined,
-							introduce_question: limits.fuiz.multipleChoice.introduceQuestion,
-							time_limit: limits.fuiz.multipleChoice.defaultTimeLimit,
-							points_awarded: limits.fuiz.multipleChoice.pointsAwarded,
-							answers: []
-						},
-						id: Date.now()
-					});
-					slides = slides;
-					await changeSelected(slides.length - 1);
+					popoverElement.showPopover();
 				}}
 			>
 				<div
@@ -236,6 +275,10 @@
 
 	section {
 		height: 0;
+	}
+
+	[popover]::backdrop {
+		background: color-mix(in srgb, currentColor 20%, transparent);
 	}
 
 	@media only screen and (max-width: 900px) {

@@ -1,5 +1,13 @@
 import objectHash from 'object-hash';
-import type { IdlessFuizConfig, IdlessMultipleChoiceSlide, Image, Media, Modify } from './types';
+import {
+	getMedia,
+	mapIdlessMedia,
+	type GenericIdlessFuizConfig,
+	type IdlessFuizConfig,
+	type Image,
+	type Media,
+	type Modify
+} from './types';
 import { retrieveRemoteSync, type RemoteSync } from './remoteStorage';
 
 export function generateUuid(): string {
@@ -77,23 +85,7 @@ type MediaReference =
 	  }
 	| string;
 
-type MediaReferencedMultipleChoiceSlide = Modify<
-	IdlessMultipleChoiceSlide,
-	{
-		media?: MediaReference;
-	}
->;
-
-type MediaReferencedSlide = {
-	MultipleChoice: MediaReferencedMultipleChoiceSlide;
-};
-
-export type MediaReferencedFuizConfig = Modify<
-	IdlessFuizConfig,
-	{
-		slides: MediaReferencedSlide[];
-	}
->;
+export type MediaReferencedFuizConfig = GenericIdlessFuizConfig<MediaReference | undefined>;
 
 export type InternalFuiz = {
 	config: MediaReferencedFuizConfig;
@@ -191,12 +183,21 @@ function internalizeFuiz(fuiz: ExportedFuiz, database: Database): InternalFuiz {
 		...fuiz,
 		config: {
 			...fuiz.config,
-			slides: fuiz.config.slides.map((slide) => ({
-				MultipleChoice: {
-					...slide.MultipleChoice,
-					media: internalizeMedia(slide.MultipleChoice.media, database)
-				}
-			}))
+			slides: fuiz.config.slides.map((slide) =>
+				'MultipleChoice' in slide
+					? {
+							MultipleChoice: {
+								...slide.MultipleChoice,
+								media: internalizeMedia(slide.MultipleChoice.media, database)
+							}
+					  }
+					: {
+							TypeAnswer: {
+								...slide.TypeAnswer,
+								media: internalizeMedia(slide.TypeAnswer.media, database)
+							}
+					  }
+			)
 		}
 	};
 }
@@ -257,23 +258,9 @@ async function collectFuiz(fuiz: InternalFuiz, database: LocalDatabase): Promise
 		config: {
 			...fuiz.config,
 			slides: await Promise.all(
-				fuiz.config.slides.map(async (slide) =>
-					slide.MultipleChoice.media
-						? {
-								MultipleChoice: {
-									...slide.MultipleChoice,
-									media: await collectMedia(slide.MultipleChoice.media, database)
-								}
-						  }
-						: {
-								MultipleChoice: {
-									introduce_question: slide.MultipleChoice.introduce_question,
-									time_limit: slide.MultipleChoice.time_limit,
-									points_awarded: slide.MultipleChoice.points_awarded,
-									answers: slide.MultipleChoice.answers,
-									title: slide.MultipleChoice.title
-								}
-						  }
+				fuiz.config.slides.map(
+					async (slide) =>
+						await mapIdlessMedia(slide, async (media) => await collectMedia(media, database))
 				)
 			)
 		}
@@ -354,10 +341,7 @@ export async function getAllCreations(database: Database): Promise<Creation[]> {
 				lastEdited: value.lastEdited,
 				title: value.config.title,
 				slidesCount: value.config.slides.length,
-				media: value.config.slides.reduce<Media | undefined>(
-					(p, c) => p || c.MultipleChoice.media,
-					undefined
-				)
+				media: value.config.slides.reduce<Media | undefined>((p, c) => p || getMedia(c), undefined)
 			};
 		})
 	);

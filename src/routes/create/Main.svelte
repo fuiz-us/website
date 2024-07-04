@@ -1,8 +1,9 @@
 <script lang="ts">
 	import type { FuizConfig } from '$lib/types';
-	import OptionsBar from './OptionsBar.svelte';
+	import MultipleChoiceOptionBar from './MultipleChoiceOptionsBar.svelte';
 	import Sidebar from './Sidebar.svelte';
 	import SlideEditor from './SlideEditor.svelte';
+	import TypeAnswerOptionsBar from './TypeAnswerOptionsBar.svelte';
 
 	export let config: FuizConfig;
 
@@ -23,7 +24,11 @@
 		<SlideEditor bind:slide={activeSlide} />
 	</div>
 	{#if activeSlide}
-		<OptionsBar bind:activeSlide />
+		{#if 'MultipleChoice' in activeSlide}
+			<MultipleChoiceOptionBar bind:activeSlide={activeSlide.MultipleChoice} />
+		{:else}
+			<TypeAnswerOptionsBar bind:activeSlide={activeSlide.TypeAnswer} />
+		{/if}
 	{/if}
 </div>
 

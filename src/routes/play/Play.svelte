@@ -19,13 +19,12 @@
 	import Loading from '$lib/Loading.svelte';
 	import { PUBLIC_BACKEND_URL, PUBLIC_WS_URL } from '$env/static/public';
 	import ErrorPage from '$lib/ErrorPage.svelte';
-	import Bingo from './Bingo.svelte';
-	import Winners from './Winners.svelte';
 	import { browser } from '$app/environment';
 	import Summary from './Summary.svelte';
 	import { bring } from '$lib/util';
 	import FindTeam from './FindTeam.svelte';
 	import ChooseTeammates from './ChooseTeammates.svelte';
+	import TypeAnswerQuestion from './TypeAnswerQuestion.svelte';
 
 	type GameState =
 		| {
@@ -70,17 +69,13 @@
 				answered?: number;
 		  }
 		| {
-				Bingo: 'List' | 'Winners';
+				TypeAnswer: 'QuestionAnnouncment' | 'AnswersResults';
 
-				all_statements?: {
-					id: number;
-					text: string;
-				}[];
-				assigned_statements?: number[];
-				crossed?: number[];
-				user_votes?: number[];
-
-				winners?: string[];
+				question?: string;
+				media?: Media;
+				answers?: string[];
+				results?: [string, number][];
+				answered?: string;
 		  }
 		| {
 				Score: {
@@ -191,35 +186,24 @@
 				};
 		  };
 
-	type BingoIncomingMessage =
+	type TypeAnswerIncomingMessage =
 		| {
-				List: {
+				QuestionAnnouncment: {
 					index: number;
 					count: number;
-					all_statements: {
-						id: number;
-						text: string;
-					}[];
-					assigned_statements: number[];
-					crossed: number[];
-					user_votes: number[];
+					question: string;
+					media?: Media;
+					duration: number;
 				};
 		  }
 		| {
-				Cross: {
-					crossed: number[];
-				};
-		  }
-		| {
-				Votes: {
-					user_votes: number[];
-				};
-		  }
-		| {
-				Winners: {
+				AnswersResults: {
 					index?: number;
 					count?: number;
-					winners: string[];
+					question?: string;
+					media?: Media;
+					answers: string[];
+					results: [string, number][];
 				};
 		  };
 
@@ -231,7 +215,7 @@
 				MultipleChoice: MultipleChoiceIncomingMessage;
 		  }
 		| {
-				Bingo: BingoIncomingMessage;
+				TypeAnswer: TypeAnswerIncomingMessage;
 		  };
 
 	let currentState: State | undefined = undefined;
@@ -424,62 +408,46 @@
 						}
 					};
 				}
-			} else if ('Bingo' in newMsg) {
-				let bingo = newMsg.Bingo;
+			} else if ('TypeAnswer' in newMsg) {
+				let ta = newMsg.TypeAnswer;
 
-				let previousState =
-					currentState && 'Slide' in currentState && 'Bingo' in currentState.Slide
+				let previous_state =
+					currentState && 'Slide' in currentState && 'TypeAnswer' in currentState.Slide
 						? currentState.Slide
 						: undefined;
 
-				if ('List' in bingo) {
-					let { index, count, all_statements, assigned_statements, crossed, user_votes } =
-						bingo.List;
+				if ('QuestionAnnouncment' in ta) {
+					let { index, count, question, media } = ta.QuestionAnnouncment;
 					currentState = {
 						index,
 						count,
 						score: previousScore,
 						Slide: {
-							Bingo: 'List',
-							all_statements,
-							assigned_statements,
-							crossed,
-							user_votes
+							TypeAnswer: 'QuestionAnnouncment',
+							question,
+							media
 						}
 					};
-				} else if ('Winners' in bingo) {
-					let { index = previousIndex, count = previousCount, winners } = bingo.Winners;
+				} else if ('AnswersResults' in ta) {
+					let {
+						index = previousIndex,
+						count = previousCount,
+						question = previous_state?.question,
+						media = previous_state?.media,
+						answers,
+						results
+					} = ta.AnswersResults;
 					currentState = {
 						index,
 						count,
 						score: previousScore,
 						Slide: {
-							Bingo: 'Winners',
-							winners
-						}
-					};
-				} else if ('Cross' in bingo) {
-					let { crossed } = bingo.Cross;
-					currentState = {
-						index: previousIndex,
-						count: previousCount,
-						score: previousScore,
-						Slide: {
-							...previousState,
-							Bingo: 'List',
-							crossed
-						}
-					};
-				} else if ('Votes' in bingo) {
-					let { user_votes } = bingo.Votes;
-					currentState = {
-						index: previousIndex,
-						count: previousCount,
-						score: previousScore,
-						Slide: {
-							...previousState,
-							Bingo: 'List',
-							user_votes
+							TypeAnswer: 'AnswersResults',
+							question,
+							media,
+							answers,
+							results,
+							answered: previous_state?.answered
 						}
 					};
 				}
@@ -552,8 +520,18 @@
 		socket.send(JSON.stringify({ Player: { IndexAnswer: index } }));
 	}
 
-	function sendVote(index: number) {
-		socket.send(JSON.stringify({ Player: { IndexAnswer: index } }));
+	function sendStringAnswer(text: string) {
+		if (currentState && 'Slide' in currentState && 'TypeAnswer' in currentState.Slide) {
+			currentState = {
+				...currentState,
+				Slide: {
+					...currentState.Slide,
+					answered: text
+				}
+			};
+		}
+
+		socket.send(JSON.stringify({ Player: { StringAnswer: text } }));
 	}
 
 	function sendChooseTeammate(names: string[]) {
@@ -616,27 +594,22 @@
 	{:else if 'Score' in slide}
 		{@const { points, position } = slide.Score}
 		<Leaderboard {name} score={points} {position} final={index + 1 === count} />
-	{:else if 'Bingo' in slide}
-		{@const {
-			Bingo: kind,
-			all_statements: allStatements,
-			assigned_statements: assignedStatements,
-			crossed,
-			user_votes: userVotes,
-			winners
-		} = slide}
-		{#if kind === 'List'}
-			<Bingo
+	{:else if 'TypeAnswer' in slide}
+		{@const { TypeAnswer: kind, question, answers, media, answered } = slide}
+		{#if kind === 'QuestionAnnouncment'}
+			<TypeAnswerQuestion
+				on:answer={(e) => sendStringAnswer(e.detail)}
 				{name}
 				{score}
-				crossed={crossed || []}
-				allStatements={allStatements || []}
-				userVotes={userVotes || []}
-				assignedStatements={assignedStatements || []}
-				on:index={(e) => sendVote(e.detail)}
+				{media}
+				questionText={question || ''}
 			/>
-		{:else if kind === 'Winners'}
-			<Winners {name} {score} winners={winners || []} isWinner={winners?.includes(name) || false} />
+		{:else if kind === 'AnswersResults'}
+			<Result
+				{name}
+				{score}
+				correct={answered === undefined ? false : answers?.includes(answered) ?? false}
+			/>
 		{/if}
 	{/if}
 {/if}

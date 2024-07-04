@@ -23,9 +23,11 @@
 		{#each config.slides as slide, index}
 			{@const [correct, wrong] = stats.at(index) || [0, 0]}
 			{@const unanswered = player_count - correct - wrong}
+			{@const title =
+				'MultipleChoice' in slide ? slide.MultipleChoice.title : slide.TypeAnswer.title}
 			<div class="line">
-				<div class="question-text" title={slide.MultipleChoice.title}>
-					{slide.MultipleChoice.title}
+				<div class="question-text" {title}>
+					{title}
 				</div>
 				<div class="stat">
 					{correct}

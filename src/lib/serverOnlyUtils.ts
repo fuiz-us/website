@@ -1,6 +1,6 @@
 import { bring } from './util';
 import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
-import type { IdlessFuizConfig, PublishedFuiz, PublishedFuizDB } from './types';
+import { getMedia, type IdlessFuizConfig, type PublishedFuiz, type PublishedFuizDB } from './types';
 import type { AvailableLanguageTag } from '$lib/paraglide/runtime.js';
 
 export function dataURIToBlob(dataURI: string): Blob {
@@ -21,7 +21,7 @@ export async function getThumbnail(
 	>(async (m, s) => {
 		const prev = await m;
 		if (prev) return prev;
-		const media = s.MultipleChoice.media;
+		const media = getMedia(s);
 		if (!media) return undefined;
 		if ('Corkboard' in media.Image) {
 			const image = await bring(PUBLIC_CORKBOARD_URL + '/get/' + media.Image.Corkboard.id, {

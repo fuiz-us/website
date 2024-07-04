@@ -51,12 +51,14 @@
 	function conditionalShuffleAnswer(slide: IdlessSlide, shuffleAnswers: boolean): IdlessSlide {
 		return {
 			...slide,
-			MultipleChoice: {
-				...slide.MultipleChoice,
-				answers: shuffleAnswers
-					? shuffleArray(slide.MultipleChoice.answers)
-					: slide.MultipleChoice.answers
-			}
+			...('MultipleChoice' in slide && {
+				MultipleChoice: {
+					...slide.MultipleChoice,
+					answers: shuffleAnswers
+						? shuffleArray(slide.MultipleChoice.answers)
+						: slide.MultipleChoice.answers
+				}
+			})
 		};
 	}
 

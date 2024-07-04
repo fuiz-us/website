@@ -8,7 +8,16 @@ import { PUBLIC_BACKEND_URL, PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import { goto } from '$app/navigation';
 import { Section, stringify } from '@ltd/j-toml';
 import { bring } from './util';
-import type { FuizConfig, FuizOptions, IdlessFuizConfig, Media, OnlineFuiz } from './types';
+import {
+	mapIdlessMedia,
+	type FuizConfig,
+	type FuizOptions,
+	type GenericFuizConfig,
+	type GenericIdlessFuizConfig,
+	type IdlessFuizConfig,
+	type Media,
+	type OnlineFuiz
+} from './types';
 import JSZip from 'jszip';
 import objectHash from 'object-hash';
 
@@ -43,6 +52,14 @@ export const limits = {
 			allowedTimeLimits: [5000, 15000, 30000, 60000, 120000, 240000],
 			defaultTimeLimit: 30000,
 			maxAnswerCount: 8
+		},
+		typeAnswer: {
+			maxTitleLength: 200,
+			pointsAwarded: 1000,
+			allowedPointsAwarded: [0, 500, 1000, 2000],
+			allowedTimeLimits: [5000, 15000, 30000, 60000, 120000, 240000],
+			defaultTimeLimit: 60000,
+			maxAnswerCount: 16
 		},
 		maxAnswerTextLength: 200
 	}
@@ -84,9 +101,13 @@ export function tomlifyConfig(config: IdlessFuizConfig): IdlessFuizConfig {
 	return {
 		title: config.title,
 		slides: config.slides.map((slide) =>
-			Section({
-				MultipleChoice: Section(slide.MultipleChoice)
-			})
+			'MultipleChoice' in slide
+				? Section({
+						MultipleChoice: Section(slide.MultipleChoice)
+				  })
+				: Section({
+						TypeAnswer: Section(slide.TypeAnswer)
+				  })
 		)
 	};
 }
@@ -96,7 +117,7 @@ export function stringifyToml(obj: IdlessFuizConfig | OnlineFuiz): string {
 }
 
 export async function downloadFuiz(configJson: IdlessFuizConfig) {
-	const [urlified, images] = urlifyBase64(configJson);
+	const [urlified, images] = await urlifyBase64(configJson);
 
 	if (images.length > 0) {
 		downloadBlob(
@@ -108,9 +129,9 @@ export async function downloadFuiz(configJson: IdlessFuizConfig) {
 	}
 }
 
-export function urlifyBase64(
+export async function urlifyBase64(
 	config: IdlessFuizConfig
-): [IdlessFuizConfig, { name: string; base64: string }[]] {
+): Promise<[IdlessFuizConfig, { name: string; base64: string }[]]> {
 	const mimetypes = new Map([
 		['image/apng', 'apng'],
 		['image/avif', 'avif'],
@@ -138,22 +159,24 @@ export function urlifyBase64(
 
 	const urlifiedConfig = {
 		...config,
-		slides: config.slides.map((s) => ({
-			MultipleChoice: {
-				...s.MultipleChoice,
-				...(s.MultipleChoice.media &&
-					'Base64' in s.MultipleChoice.media.Image && {
-						media: {
-							Image: {
-								Url: {
-									alt: s.MultipleChoice.media.Image.Base64.alt,
-									url: urlifyImage(s.MultipleChoice.media.Image.Base64)
+		slides: await Promise.all(
+			config.slides.map(
+				async (s) =>
+					await mapIdlessMedia(s, async (media) => {
+						if (media && 'Base64' in media.Image) {
+							return {
+								Image: {
+									Url: {
+										alt: media.Image.Base64.alt,
+										url: urlifyImage(media.Image.Base64)
+									}
 								}
-							}
+							};
 						}
+						return undefined;
 					})
-			}
-		}))
+			)
+		)
 	};
 	return [urlifiedConfig, images];
 }
@@ -188,39 +211,68 @@ export function downloadBlob(blobs: BlobPart[], name: string, options?: FileProp
 	window.URL.revokeObjectURL(url);
 }
 
-export function removeIds(config: IdlessFuizConfig): IdlessFuizConfig {
+export function removeIds<T>(
+	config: GenericIdlessFuizConfig<T> | GenericFuizConfig<T>
+): GenericIdlessFuizConfig<T> {
 	return {
 		title: config.title,
-		slides: config.slides.map((slide) => ({
-			MultipleChoice: {
-				title: slide.MultipleChoice.title,
-				points_awarded: slide.MultipleChoice.points_awarded,
-				...(slide.MultipleChoice.media && { media: slide.MultipleChoice.media }),
-				introduce_question: slide.MultipleChoice.introduce_question,
-				time_limit: slide.MultipleChoice.time_limit,
-				answers: slide.MultipleChoice.answers.map(({ content, correct }) => ({
-					content,
-					correct
-				}))
-			}
-		}))
+		slides: config.slides.map((slide) =>
+			'MultipleChoice' in slide
+				? {
+						MultipleChoice: {
+							title: slide.MultipleChoice.title,
+							points_awarded: slide.MultipleChoice.points_awarded,
+							...(slide.MultipleChoice.media && { media: slide.MultipleChoice.media }),
+							introduce_question: slide.MultipleChoice.introduce_question,
+							time_limit: slide.MultipleChoice.time_limit,
+							answers: slide.MultipleChoice.answers.map(({ content, correct }) => ({
+								content,
+								correct
+							}))
+						}
+				  }
+				: {
+						TypeAnswer: {
+							title: slide.TypeAnswer.title,
+							...(slide.TypeAnswer.media && { media: slide.TypeAnswer.media }),
+							time_limit: slide.TypeAnswer.time_limit,
+							points_awarded: slide.TypeAnswer.points_awarded,
+							answers: slide.TypeAnswer.answers.map((text) =>
+								typeof text === 'string' ? text : text.text
+							)
+						}
+				  }
+		)
 	};
 }
 
-export function addIds(config: IdlessFuizConfig): FuizConfig {
+export function addIds<T>(config: GenericIdlessFuizConfig<T>): GenericFuizConfig<T> {
 	return {
 		title: config.title,
-		slides: config.slides.map((slide, id) => ({
-			MultipleChoice: {
-				...slide.MultipleChoice,
-				answers: slide.MultipleChoice.answers.map(({ content, correct }, id) => ({
-					content,
-					correct,
-					id
-				}))
-			},
-			id
-		}))
+		slides: config.slides.map((slide, id) =>
+			'MultipleChoice' in slide
+				? {
+						MultipleChoice: {
+							...slide.MultipleChoice,
+							answers: slide.MultipleChoice.answers.map(({ content, correct }, id) => ({
+								content,
+								correct,
+								id
+							}))
+						},
+						id
+				  }
+				: {
+						TypeAnswer: {
+							...slide.TypeAnswer,
+							answers: slide.TypeAnswer.answers.map((text, id) => ({
+								text,
+								id
+							}))
+						},
+						id
+				  }
+		)
 	};
 }
 
@@ -228,12 +280,9 @@ export async function getBackendConfig(config: IdlessFuizConfig): Promise<Idless
 	return {
 		title: config.title,
 		slides: await Promise.all(
-			config.slides.map(async (slide) => ({
-				MultipleChoice: {
-					...slide.MultipleChoice,
-					media: await getBackendMedia(slide.MultipleChoice.media)
-				}
-			}))
+			config.slides.map(
+				async (slide) => await mapIdlessMedia(slide, async (media) => await getBackendMedia(media))
+			)
 		)
 	};
 }
@@ -265,13 +314,22 @@ function fixTime(time: number): number {
 export function fixTimes(config: IdlessFuizConfig): IdlessFuizConfig {
 	return {
 		title: config.title,
-		slides: config.slides.map((slide) => ({
-			MultipleChoice: {
-				...slide.MultipleChoice,
-				introduce_question: fixTime(slide.MultipleChoice.introduce_question),
-				time_limit: fixTime(slide.MultipleChoice.time_limit)
-			}
-		}))
+		slides: config.slides.map((slide) =>
+			'MultipleChoice' in slide
+				? {
+						MultipleChoice: {
+							...slide.MultipleChoice,
+							introduce_question: fixTime(slide.MultipleChoice.introduce_question),
+							time_limit: fixTime(slide.MultipleChoice.time_limit)
+						}
+				  }
+				: {
+						TypeAnswer: {
+							...slide.TypeAnswer,
+							time_limit: fixTime(slide.TypeAnswer.time_limit)
+						}
+				  }
+		)
 	};
 }
 

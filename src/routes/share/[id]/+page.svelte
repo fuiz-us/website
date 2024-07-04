@@ -9,7 +9,7 @@
 	} from '$lib/storage';
 	import { goto } from '$app/navigation';
 	import Loading from '$lib/Loading.svelte';
-	import type { IdlessFuizConfig, Media } from '$lib/types';
+	import { mapIdlessMedia, type IdlessFuizConfig } from '$lib/types';
 	import { i18n } from '$lib/i18n';
 
 	export let data: PageData;
@@ -26,30 +26,23 @@
 		const fuizWithoutRef: IdlessFuizConfig = {
 			...config,
 			slides: await Promise.all(
-				config.slides.map(async (s) => ({
-					MultipleChoice: {
-						...(s.MultipleChoice.media
-							? {
-									...s.MultipleChoice,
-									media: (typeof s.MultipleChoice.media === 'string'
-										? undefined
-										: 'HashReference' in s.MultipleChoice.media.Image
-										? {
-												Image: {
-													Base64: {
-														alt: s.MultipleChoice.media.Image.HashReference.alt,
-														hash: s.MultipleChoice.media.Image.HashReference.hash,
-														data: await dereferenceImage(
-															s.MultipleChoice.media.Image.HashReference.hash
-														)
-													}
-												}
-										  }
-										: undefined) satisfies Media | undefined
-							  }
-							: { ...s.MultipleChoice, media: undefined })
-					}
-				}))
+				config.slides.map(
+					async (s) =>
+						await mapIdlessMedia(s, async (s) => {
+							if (s && typeof s !== 'string' && 'HashReference' in s.Image) {
+								return {
+									Image: {
+										Base64: {
+											alt: s.Image.HashReference.alt,
+											hash: s.Image.HashReference.hash,
+											data: await dereferenceImage(s.Image.HashReference.hash)
+										}
+									}
+								};
+							}
+							return undefined;
+						})
+				)
 			)
 		};
 

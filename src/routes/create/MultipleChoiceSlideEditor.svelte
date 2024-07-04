@@ -30,7 +30,7 @@
 			required={false}
 			disabled={false}
 			maxHeight="4em"
-			maxLength={limits.fuiz.maxTitleLength}
+			maxLength={limits.fuiz.multipleChoice.maxTitleLength}
 		/>
 	</div>
 	<div

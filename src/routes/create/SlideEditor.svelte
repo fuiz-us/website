@@ -5,6 +5,7 @@
 	import ghost from '$lib/assets/ghost.svg';
 	import MultipleChoiceSlideEditor from './MultipleChoiceSlideEditor.svelte';
 	import type { Slide } from '$lib/types';
+	import TypeAnswerSlideEditor from './TypeAnswerSlideEditor.svelte';
 
 	export let slide: Slide | undefined;
 </script>
@@ -25,4 +26,6 @@
 	</div>
 {:else if 'MultipleChoice' in slide}
 	<MultipleChoiceSlideEditor bind:slide={slide.MultipleChoice} />
+{:else}
+	<TypeAnswerSlideEditor bind:slide={slide.TypeAnswer} />
 {/if}

@@ -17,12 +17,11 @@
 	import Loading from '$lib/Loading.svelte';
 	import { PUBLIC_BACKEND_URL, PUBLIC_WS_URL } from '$env/static/public';
 	import ErrorPage from '$lib/ErrorPage.svelte';
-	import Bingo from './Bingo.svelte';
-	import Winners from './Winners.svelte';
 	import { browser } from '$app/environment';
 	import type { BindableGameInfo, TruncatedList } from './+page';
 	import Summary from './Summary.svelte';
 	import { bring, zip } from '$lib/util';
+	import TypeAnswerStatistics from './TypeAnswerStatistics.svelte';
 
 	type GameState =
 		| {
@@ -48,16 +47,13 @@
 				results?: AnswerResult[];
 		  }
 		| {
-				Bingo: 'List' | 'Winners';
+				TypeAnswer: 'QuestionAnnouncment' | 'AnswersResults';
 
-				all_statements?: {
-					id: number;
-					text: string;
-				}[];
-				crossed?: number[];
-				user_votes?: number[];
-
-				winners?: string[];
+				question?: string;
+				media?: Media;
+				answers?: string[];
+				answered_count?: number;
+				results?: [string, number][];
 		  }
 		| {
 				Leaderboard: {
@@ -152,35 +148,27 @@
 				};
 		  };
 
-	type BingoIncomingMessage =
+	type TypeAnswerIncomingMessage =
 		| {
-				List: {
+				QuestionAnnouncment: {
 					index: number;
 					count: number;
-					all_statements: {
-						id: number;
-						text: string;
-					}[];
-					assigned_statements: number[];
-					crossed: number[];
-					user_votes: number[];
+					question: string;
+					media?: Media;
+					duration: number;
 				};
 		  }
 		| {
-				Cross: {
-					crossed: number[];
-				};
+				AnswersCount: number;
 		  }
 		| {
-				Votes: {
-					user_votes: number[];
-				};
-		  }
-		| {
-				Winners: {
+				AnswersResults: {
 					index?: number;
 					count?: number;
-					winners: string[];
+					question?: string;
+					media?: Media;
+					answers: Array<string>;
+					results: Array<[string, number]>;
 				};
 		  };
 
@@ -192,7 +180,7 @@
 				MultipleChoice: MultipleChoiceIncomingMessage;
 		  }
 		| {
-				Bingo: BingoIncomingMessage;
+				TypeAnswer: TypeAnswerIncomingMessage;
 		  };
 
 	let currentState: State | undefined = undefined;
@@ -351,63 +339,56 @@
 						}
 					};
 				}
-			} else if ('Bingo' in new_msg) {
-				let bingo = new_msg.Bingo;
+			} else if ('TypeAnswer' in new_msg) {
+				let ta = new_msg.TypeAnswer;
 
 				let previous_state =
-					currentState && 'Slide' in currentState && 'Bingo' in currentState.Slide
+					currentState && 'Slide' in currentState && 'TypeAnswer' in currentState.Slide
 						? currentState.Slide
 						: undefined;
 
 				let { index: previous_index = 0, count: previous_count = 1 } =
 					currentState && 'Slide' in currentState ? currentState : {};
 
-				if ('List' in bingo) {
+				if ('QuestionAnnouncment' in ta) {
+					let { index, count, question, media, duration } = ta.QuestionAnnouncment;
+					currentState = {
+						index,
+						count,
+						Slide: {
+							TypeAnswer: 'QuestionAnnouncment',
+							question,
+							media
+						}
+					};
+					timer = duration;
+					initialTimer = duration;
+				} else if ('AnswersCount' in ta) {
+					currentState = {
+						...(currentState || { index: previous_index, count: previous_count }),
+						Slide: {
+							...previous_state,
+							TypeAnswer: previous_state?.TypeAnswer ?? 'QuestionAnnouncment'
+						}
+					};
+				} else if ('AnswersResults' in ta) {
 					let {
 						index = previous_index,
 						count = previous_count,
-						all_statements,
-						crossed,
-						user_votes
-					} = bingo.List;
+						question = previous_state?.question,
+						media = previous_state?.media,
+						answers,
+						results
+					} = ta.AnswersResults;
 					currentState = {
 						index,
 						count,
 						Slide: {
-							Bingo: 'List',
-							all_statements,
-							crossed,
-							user_votes
-						}
-					};
-				} else if ('Cross' in bingo) {
-					let { crossed } = bingo.Cross;
-					currentState = {
-						...(currentState || { index: previous_index, count: previous_count }),
-						Slide: {
-							...previous_state,
-							Bingo: 'List',
-							crossed
-						}
-					};
-				} else if ('Votes' in bingo) {
-					let { user_votes } = bingo.Votes;
-					currentState = {
-						...(currentState || { index: previous_index, count: previous_count }),
-						Slide: {
-							...previous_state,
-							Bingo: 'List',
-							user_votes
-						}
-					};
-				} else if ('Winners' in bingo) {
-					let { index = previous_index, count = previous_count, winners } = bingo.Winners;
-					currentState = {
-						index,
-						count,
-						Slide: {
-							Bingo: 'Winners',
-							winners
+							TypeAnswer: 'AnswersResults',
+							question,
+							media,
+							answers,
+							results
 						}
 					};
 				}
@@ -456,10 +437,6 @@
 
 	function next() {
 		socket.send(HOST_NEXT);
-	}
-
-	function sendIndex(u: number) {
-		socket.send(JSON.stringify({ Host: { Index: u } }));
 	}
 
 	function receiveLock(e: CustomEvent<boolean>) {
@@ -550,25 +527,27 @@
 				}))}
 			/>
 		{/if}
-	{:else if 'Bingo' in slide}
-		{@const { all_statements: allStatements, crossed, user_votes: userVotes, winners } = slide}
-		{#if slide.Bingo === 'List'}
-			<Bingo
-				on:lock={receiveLock}
-				bind:bindableGameInfo
-				{gameInfo}
-				crossed={crossed || []}
-				allStatements={allStatements || []}
-				userVotes={userVotes || []}
-				on:index={(e) => sendIndex(e.detail)}
-			/>
-		{:else if slide.Bingo === 'Winners'}
-			<Winners
-				on:lock={receiveLock}
-				bind:bindableGameInfo
-				{gameInfo}
-				winners={winners || []}
+	{:else if 'TypeAnswer' in slide}
+		{@const { TypeAnswer: kind, question, media, answers, results } = slide}
+		{#if kind === 'QuestionAnnouncment'}
+			<Question
 				on:next={next}
+				on:lock={receiveLock}
+				bind:bindableGameInfo
+				{media}
+				{gameInfo}
+				timeStarted={initialTimer}
+				questionText={question || ''}
+			/>
+		{:else if kind === 'AnswersResults'}
+			<TypeAnswerStatistics
+				on:next={next}
+				on:lock={receiveLock}
+				bind:bindableGameInfo
+				{gameInfo}
+				questionText={question || ''}
+				answers={answers || []}
+				results={results || []}
 			/>
 		{/if}
 	{/if}

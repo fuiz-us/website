@@ -77,7 +77,8 @@
 			style:height="fit-content"
 		>
 			{#each config.slides as slide}
-				{@const { title, answers, media } = slide.MultipleChoice}
+				{@const { title, answers, media } =
+					'MultipleChoice' in slide ? slide.MultipleChoice : slide.TypeAnswer}
 				<div
 					style:border="0.15em solid"
 					style:border-radius="0.7em"
@@ -95,7 +96,11 @@
 						{title}
 						<ul>
 							{#each answers as answer}
-								<li>{answer.content.Text}, {answer.correct ? m.correct() : m.wrong()}</li>
+								{#if typeof answer === 'string'}
+									<li>{answer}</li>
+								{:else}
+									<li>{answer.content.Text}, {answer.correct ? m.correct() : m.wrong()}</li>
+								{/if}
 							{/each}
 						</ul>
 					</div>

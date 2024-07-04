@@ -10,7 +10,7 @@
 	import FancyButton from '$lib/FancyButton.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import { deserialize } from '$app/forms';
-	import type { Media } from '$lib/types';
+	import { getMedia, type Media } from '$lib/types';
 	import { updateCreation, type Database, type ExportedFuiz } from '$lib/storage';
 	import { page } from '$app/stores';
 	import Subject from './Subject.svelte';
@@ -34,7 +34,7 @@
 	}
 
 	$: media = creation.config.slides.reduce<Media | undefined>(
-		(m, s) => m || s.MultipleChoice.media,
+		(m, s) => m || getMedia(s),
 		undefined
 	);
 

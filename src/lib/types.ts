@@ -43,40 +43,161 @@ export type MultipleChoiceAnswer = IdlessMultipleChoiceAnswer & {
 	id: number;
 };
 
-export type IdlessMultipleChoiceSlide = {
+export type GenericIdlessMultipleChoiceSlide<T> = {
 	title: string;
-	media?: Media;
+	media?: T;
 	introduce_question: number;
 	time_limit: number;
 	points_awarded: number;
 	answers: IdlessMultipleChoiceAnswer[];
 };
 
-export type MultipleChoiceSlide = Modify<
-	IdlessMultipleChoiceSlide,
+export type IdlessMultipleChoiceSlide = GenericIdlessMultipleChoiceSlide<Media | undefined>;
+
+export type GenericIdlessTypeAnswer<T> = {
+	title: string;
+	media?: T;
+	time_limit: number;
+	points_awarded: number;
+	answers: string[];
+};
+
+export type IdlessTypeAnswer = GenericIdlessTypeAnswer<Media | undefined>;
+
+export type GenericMultipleChoiceSlide<T> = Modify<
+	GenericIdlessMultipleChoiceSlide<T>,
 	{
 		answers: MultipleChoiceAnswer[];
 	}
 >;
 
-export type IdlessSlide = {
-	MultipleChoice: IdlessMultipleChoiceSlide;
-};
+export type MultipleChoiceSlide = GenericMultipleChoiceSlide<Media | undefined>;
 
-export type Slide = {
-	MultipleChoice: MultipleChoiceSlide;
-	id: number;
-};
+export type GenericTypeAnswer<T> = Modify<
+	GenericIdlessTypeAnswer<T>,
+	{
+		answers: {
+			text: string;
+			id: number;
+		}[];
+	}
+>;
 
-export type FuizConfig = {
+export type TypeAnswer = GenericTypeAnswer<Media | undefined>;
+
+export function getMedia<T>(slide: GenericIdlessSlide<T> | GenericSlide<T>): T | undefined {
+	if ('MultipleChoice' in slide) return slide.MultipleChoice.media;
+	if ('TypeAnswer' in slide) return slide.TypeAnswer.media;
+	return undefined;
+}
+
+export async function mapMedia<T, O>(
+	slide: GenericSlide<T>,
+	map: (media: T) => Promise<O>
+): Promise<GenericSlide<O>> {
+	if ('MultipleChoice' in slide)
+		return slide.MultipleChoice.media
+			? {
+					MultipleChoice: { ...slide.MultipleChoice, media: await map(slide.MultipleChoice.media) },
+					id: slide.id
+			  }
+			: {
+					MultipleChoice: {
+						title: slide.MultipleChoice.title,
+						introduce_question: slide.MultipleChoice.introduce_question,
+						time_limit: slide.MultipleChoice.time_limit,
+						points_awarded: slide.MultipleChoice.points_awarded,
+						answers: slide.MultipleChoice.answers
+					},
+					id: slide.id
+			  };
+	if ('TypeAnswer' in slide)
+		return slide.TypeAnswer.media
+			? {
+					TypeAnswer: { ...slide.TypeAnswer, media: await map(slide.TypeAnswer.media) },
+					id: slide.id
+			  }
+			: {
+					TypeAnswer: {
+						title: slide.TypeAnswer.title,
+						time_limit: slide.TypeAnswer.time_limit,
+						points_awarded: slide.TypeAnswer.points_awarded,
+						answers: slide.TypeAnswer.answers
+					},
+					id: slide.id
+			  };
+	return slide;
+}
+
+export async function mapIdlessMedia<T, O>(
+	slide: GenericIdlessSlide<T>,
+	map: (media: T) => Promise<O>
+): Promise<GenericIdlessSlide<O>> {
+	if ('MultipleChoice' in slide)
+		return slide.MultipleChoice.media
+			? {
+					MultipleChoice: { ...slide.MultipleChoice, media: await map(slide.MultipleChoice.media) }
+			  }
+			: {
+					MultipleChoice: {
+						title: slide.MultipleChoice.title,
+						introduce_question: slide.MultipleChoice.introduce_question,
+						time_limit: slide.MultipleChoice.time_limit,
+						points_awarded: slide.MultipleChoice.points_awarded,
+						answers: slide.MultipleChoice.answers
+					}
+			  };
+	if ('TypeAnswer' in slide)
+		return slide.TypeAnswer.media
+			? {
+					TypeAnswer: { ...slide.TypeAnswer, media: await map(slide.TypeAnswer.media) }
+			  }
+			: {
+					TypeAnswer: {
+						title: slide.TypeAnswer.title,
+						time_limit: slide.TypeAnswer.time_limit,
+						points_awarded: slide.TypeAnswer.points_awarded,
+						answers: slide.TypeAnswer.answers
+					}
+			  };
+	return slide;
+}
+
+export type GenericIdlessSlide<T> =
+	| {
+			MultipleChoice: GenericIdlessMultipleChoiceSlide<T>;
+	  }
+	| {
+			TypeAnswer: GenericIdlessTypeAnswer<T>;
+	  };
+
+export type IdlessSlide = GenericIdlessSlide<Media | undefined>;
+
+export type GenericSlide<T> =
+	| {
+			MultipleChoice: GenericMultipleChoiceSlide<T>;
+			id: number;
+	  }
+	| {
+			TypeAnswer: GenericTypeAnswer<T>;
+			id: number;
+	  };
+
+export type Slide = GenericSlide<Media | undefined>;
+
+export type GenericFuizConfig<T> = {
 	title: string;
-	slides: Slide[];
+	slides: GenericSlide<T>[];
 };
 
-export type IdlessFuizConfig = {
+export type FuizConfig = GenericFuizConfig<Media | undefined>;
+
+export type GenericIdlessFuizConfig<T> = {
 	title: string;
-	slides: IdlessSlide[];
+	slides: GenericIdlessSlide<T>[];
 };
+
+export type IdlessFuizConfig = GenericIdlessFuizConfig<Media | undefined>;
 
 export type Creation = {
 	id: number;

@@ -4,13 +4,19 @@
 	import GalleryCreation from './GalleryCreation.svelte';
 	import { createDialog } from 'svelte-headlessui';
 
-	import { addIds, downloadFuiz } from '$lib';
+	import { addIds, downloadFuiz, removeIds } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import { goto } from '$app/navigation';
 	import Icon from '$lib/Icon.svelte';
 	import ghost from '$lib/assets/ghost.svg';
 	import { parse } from '@ltd/j-toml';
-	import type { Creation, IdlessFuizConfig, Media } from '$lib/types';
+	import {
+		getMedia,
+		mapIdlessMedia,
+		type Creation,
+		type IdlessFuizConfig,
+		type Media
+	} from '$lib/types';
 	import { isNotUndefined } from '$lib/util';
 	import TypicalPage from '$lib/TypicalPage.svelte';
 	import {
@@ -142,23 +148,25 @@
 
 					return {
 						...detomlified,
-						slides: detomlified.slides.map((s) => ({
-							MultipleChoice: {
-								...s.MultipleChoice,
-								...(s.MultipleChoice.media &&
-									'Url' in s.MultipleChoice.media.Image && {
-										media: {
-											Image: {
-												Base64: {
-													alt: s.MultipleChoice.media.Image.Url.alt,
-													data: unurlify(s.MultipleChoice.media.Image.Url.url),
-													hash: s.MultipleChoice.media.Image.Url.url.split('.')[0]
+						slides: await Promise.all(
+							detomlified.slides.map(
+								async (s) =>
+									await mapIdlessMedia(s, async (media) => {
+										if (media?.Image && 'Url' in media.Image) {
+											return {
+												Image: {
+													Base64: {
+														alt: media.Image.Url.alt,
+														data: unurlify(media.Image.Url.url),
+														hash: media.Image.Url.url.split('.')[0]
+													}
 												}
-											}
+											};
 										}
+										return undefined;
 									})
-							}
-						}))
+							)
+						)
 					};
 				} else {
 					return new Promise<IdlessFuizConfig | undefined>((resolve) => {
@@ -189,7 +197,15 @@
 					lastEdited: Date.now()
 				};
 
-				const id = await addCreation(fuiz, db);
+				const id = await addCreation(
+					{
+						config: removeIds(fuiz.config),
+						uniqueId: fuiz.uniqueId,
+						versionId: fuiz.versionId,
+						lastEdited: fuiz.lastEdited
+					},
+					db
+				);
 
 				creations = [
 					...creations,
@@ -199,7 +215,7 @@
 						title: idedConfig.title,
 						slidesCount: idedConfig.slides.length,
 						media: idedConfig.slides.reduce<Media | undefined>(
-							(p, c) => p || c.MultipleChoice.media,
+							(p, c) => p || getMedia(c),
 							undefined
 						)
 					}

@@ -7,6 +7,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import IconButton from '$lib/IconButton.svelte';
 	import type { Slide } from '$lib/types';
+	import TypeAnswerThumbnail from './TypeAnswerThumbnail.svelte';
 
 	export let slide: Slide;
 	export let index: number;
@@ -68,6 +69,8 @@
 	>
 		{#if 'MultipleChoice' in slide}
 			<MultipleChoiceThumbnail slide={slide.MultipleChoice} />
+		{:else}
+			<TypeAnswerThumbnail slide={slide.TypeAnswer} />
 		{/if}
 	</button>
 </div>

@@ -35,10 +35,17 @@
 		config && updateStorage();
 	}
 
-	$: no_answer = config.slides.filter((s) => s.MultipleChoice.answers.length == 0).length > 0;
+	$: no_answer =
+		config.slides.filter((s) =>
+			'MultipleChoice' in s
+				? s.MultipleChoice.answers.length == 0
+				: s.TypeAnswer.answers.length == 0
+		).length > 0;
+
 	$: no_correct_answer =
-		config.slides.filter((s) => s.MultipleChoice.answers.filter((s) => s.correct).length == 0)
-			.length > 0;
+		config.slides.filter((s) =>
+			'MultipleChoice' in s ? s.MultipleChoice.answers.filter((s) => s.correct).length == 0 : false
+		).length > 0;
 </script>
 
 <div
@@ -52,7 +59,7 @@
 		bind:id
 		{db}
 		on:share={async (e) => {
-			await share(config, $page.data.user ? exportedFuiz.uniqueId : undefined);
+			await share(removeIds(config), $page.data.user ? exportedFuiz.uniqueId : undefined);
 			e.detail.show();
 		}}
 		errorMessage={no_answer

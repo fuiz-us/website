@@ -9,9 +9,10 @@ import {
 	retrieveMediaFromLocal,
 	updateLocalImagesDatabse,
 	type CreationId,
-	type StrictInternalFuizMetadata
+	type StrictInternalFuizMetadata,
+	type MediaReferencedFuizConfig
 } from './storage';
-import type { FuizConfig, Media } from './types';
+import { getMedia, type Media } from './types';
 import { bring, isNotUndefined } from './util';
 
 export interface RemoteSync {
@@ -21,7 +22,7 @@ export interface RemoteSync {
 	): Promise<void>;
 
 	create(uuid: string, internalFuiz: InternalFuiz): Promise<void>;
-	get(uuid: string): Promise<FuizConfig | undefined>;
+	get(uuid: string): Promise<MediaReferencedFuizConfig | undefined>;
 	update(uuid: string, internalFuiz: InternalFuiz): Promise<void>;
 	delete(uuid: string): Promise<void>;
 
@@ -95,8 +96,8 @@ export async function reconcile(
 		const references = (
 			await Promise.all(
 				internal?.config.slides.map(async (s) => {
-					if (!s.MultipleChoice.media) return undefined;
-					const mediaReference = s.MultipleChoice.media;
+					const mediaReference = getMedia(s);
+					if (!mediaReference) return undefined;
 					if (typeof mediaReference === 'string') {
 						const media = await remoteDatabase.getImage(mediaReference);
 						if (!media) return undefined;
@@ -123,8 +124,8 @@ export async function reconcile(
 		const references = (
 			await Promise.all(
 				internal?.config.slides.map(async (s) => {
-					if (!s.MultipleChoice.media) return undefined;
-					const mediaReference = s.MultipleChoice.media;
+					const mediaReference = getMedia(s);
+					if (!mediaReference) return undefined;
 					if (typeof mediaReference === 'string') {
 						const media = await retrieveMediaFromLocal(mediaReference, localDatabase);
 						if (!media) return undefined;
@@ -252,7 +253,7 @@ class OauthSync implements RemoteSync {
 		);
 	}
 
-	async get(uuid: string): Promise<FuizConfig | undefined> {
+	async get(uuid: string): Promise<MediaReferencedFuizConfig | undefined> {
 		const res = await bring(`/api/get/${uuid}`);
 
 		return res?.ok ? await res.json() : undefined;

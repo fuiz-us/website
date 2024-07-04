@@ -33,22 +33,38 @@
 			{#each config.slides as slide, index}
 				{@const correct = points.at(index) || 0 > 0}
 				<div class="line">
-					<div class="question-text" title={slide.MultipleChoice.title}>
-						{slide.MultipleChoice.title}
-					</div>
+					{#if 'MultipleChoice' in slide}
+						<div class="question-text" title={slide.MultipleChoice.title}>
+							{slide.MultipleChoice.title}
+						</div>
+					{:else}
+						<div class="question-text" title={slide.TypeAnswer.title}>
+							{slide.TypeAnswer.title}
+						</div>
+					{/if}
 					{#if correct}
 						<Icon src="$lib/assets/correct.svg" alt={m.correct()} size="1em" />
 					{:else}
 						<Icon src="$lib/assets/wrong.svg" alt={m.wrong()} size="1em" />
 						<div class="answers">
 							<div>{m.correct_answers()}</div>
-							<ul>
-								{#each slide.MultipleChoice.answers.filter((a) => a.correct) as answer}
-									<li>
-										{answer.content.Text}
-									</li>
-								{/each}
-							</ul>
+							{#if 'TypeAnswer' in slide}
+								<ul>
+									{#each slide.TypeAnswer.answers as answer}
+										<li>
+											{answer}
+										</li>
+									{/each}
+								</ul>
+							{:else}
+								<ul>
+									{#each slide.MultipleChoice.answers.filter((a) => a.correct) as answer}
+										<li>
+											{answer.content.Text}
+										</li>
+									{/each}
+								</ul>
+							{/if}
 						</div>
 					{/if}
 				</div>

@@ -32,7 +32,11 @@ async function extractKeywords(ai: Ai, config: IdlessFuizConfig): Promise<string
 		},
 		{
 			role: 'user',
-			content: config.slides.map((slide) => slide.MultipleChoice.title).join('\n')
+			content: config.slides
+				.map((slide) =>
+					'MultipleChoice' in slide ? slide.MultipleChoice.title : slide.TypeAnswer.title
+				)
+				.join('\n')
 		}
 	];
 	const response = await ai.run('@cf/meta/llama-3-8b-instruct', { messages });
@@ -100,6 +104,33 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 	}
 
 	function extractSlide(slide: IdlessSlide): WalloMedia[] {
+		if ('TypeAnswer' in slide) {
+			const medias: (WalloMedia | undefined)[] = [
+				{
+					kind: 'text',
+					message: slide.TypeAnswer.title,
+					tag: 'Slide Title'
+				},
+				{
+					kind: 'text',
+					message: slide.TypeAnswer.answers.join('\n'),
+					tag: 'Slide Answers'
+				},
+				{
+					kind: 'text',
+					message: slide.TypeAnswer.time_limit.toString() + 'ms',
+					tag: 'Time Limit'
+				},
+				{
+					kind: 'text',
+					message: slide.TypeAnswer.points_awarded.toString() + 'pts',
+					tag: 'Points Awarded'
+				},
+				serializeMedia(slide.TypeAnswer.media)
+			];
+
+			return medias.filter(isNotUndefined);
+		}
 		const medias: (WalloMedia | undefined)[] = [
 			{
 				kind: 'text',

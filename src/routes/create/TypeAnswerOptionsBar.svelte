@@ -4,32 +4,20 @@
 	import { limits } from '$lib';
 	import Icon from '$lib/Icon.svelte';
 	import SelectTime from '$lib/SelectTime.svelte';
-	import type { Slide } from '$lib/types';
+	import type { TypeAnswer } from '$lib/types';
 
-	export let activeSlide: Slide;
+	export let activeSlide: TypeAnswer;
 </script>
 
 <div id="sidebar-container">
 	<div id="sidebar">
 		<div>
-			<div class="field-title">{m.time_before_answers()}</div>
-			<div>
-				<SelectTime
-					options={[...limits.fuiz.multipleChoice.allowedIntroduceQuestion]}
-					map={(v) => (parseInt(v) / 1000).toString()}
-					bind:selected={activeSlide.MultipleChoice.introduce_question}
-				>
-					<Icon src="$lib/assets/timer.svg" size="1em" alt={m.time_before_answers()} />
-				</SelectTime>
-			</div>
-		</div>
-		<div>
 			<div class="field-title">{m.time_limit()}</div>
 			<div>
 				<SelectTime
-					options={[...limits.fuiz.multipleChoice.allowedTimeLimits]}
+					options={[...limits.fuiz.typeAnswer.allowedTimeLimits]}
 					map={(v) => (parseInt(v) / 1000).toString()}
-					bind:selected={activeSlide.MultipleChoice.time_limit}
+					bind:selected={activeSlide.time_limit}
 				>
 					<Icon src="$lib/assets/timer.svg" size="1em" alt={m.time_limit()} />
 				</SelectTime>
@@ -39,7 +27,7 @@
 			<div class="field-title">{m.points()}</div>
 			<div>
 				<SelectTime
-					options={[...limits.fuiz.multipleChoice.allowedPointsAwarded]}
+					options={[...limits.fuiz.typeAnswer.allowedPointsAwarded]}
 					map={(v) => {
 						if (v === '0') {
 							return m.none();
@@ -52,7 +40,7 @@
 						}
 						return v;
 					}}
-					bind:selected={activeSlide.MultipleChoice.points_awarded}
+					bind:selected={activeSlide.points_awarded}
 				>
 					<Icon src="$lib/assets/score.svg" size="1em" alt={m.points()} />
 				</SelectTime>

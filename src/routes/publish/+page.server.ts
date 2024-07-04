@@ -8,7 +8,7 @@ export const prerender = false;
 export const load = (async ({ locals }) => {
 	const session = await locals.auth();
 
-	if (!session?.user?.id) redirect(303, '/login');
+	if (!session?.user?.id) redirect(303, '/signin');
 
 	return {};
 }) satisfies PageServerLoad;

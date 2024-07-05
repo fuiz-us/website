@@ -5,6 +5,7 @@
 	import type { BindableGameInfo, SharedGameInfo } from './+page';
 	import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
 	import type { Media } from '$lib/types';
+	import MediaContainer from '$lib/MediaContainer.svelte';
 
 	export let bindableGameInfo: BindableGameInfo;
 	export let gameInfo: SharedGameInfo;
@@ -43,10 +44,15 @@
 				style:flex-direction="column"
 				style:justify-content="center"
 			>
-				<TextBar text={questionText} topShadow={true} />
+				<TextBar text={questionText} topShadow={media === undefined} />
 				<div id="progress" style:--duration="{timeStarted}ms">
 					<div id="value" />
 				</div>
+				{#if media}
+					<div style:flex="1" style:position="relative">
+						<MediaContainer {media} fit="contain" />
+					</div>
+				{/if}
 			</div>
 		</NiceBackground>
 	</div>

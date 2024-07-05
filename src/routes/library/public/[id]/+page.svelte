@@ -10,6 +10,7 @@
 	import { addCreation, generateUuid, loadDatabase } from '$lib/storage';
 	import { i18n } from '$lib/i18n';
 	import { languageTag } from '$lib/paraglide/runtime';
+	import { buttonColors } from '$lib';
 
 	export let data: PageData;
 
@@ -17,7 +18,7 @@
 
 	$: config = data.config;
 
-	async function addToCollection() {
+	async function addToCollection(): Promise<number> {
 		const db = await loadDatabase(data.session !== null);
 		const id = await addCreation(
 			{
@@ -29,7 +30,7 @@
 			db
 		);
 
-		await goto(i18n.resolveRoute('/create') + '?id=' + id.toString());
+		return id;
 	}
 </script>
 
@@ -65,8 +66,23 @@
 					</div>
 				</div>
 			</div>
-			<FancyButton on:click={addToCollection}>
+			<FancyButton
+				on:click={async () => {
+					const id = await addToCollection();
+					await goto(i18n.resolveRoute('/create') + '?id=' + id.toString());
+				}}
+			>
 				<div style:font-family="Poppins">{m.import_fuiz()}</div>
+			</FancyButton>
+			<FancyButton
+				on:click={async () => {
+					const id = await addToCollection();
+					await goto(i18n.resolveRoute('/host') + '?id=' + id.toString());
+				}}
+				backgroundColor={buttonColors[1][0]}
+				backgroundDeepColor={buttonColors[1][1]}
+			>
+				<div style:font-family="Poppins">{m.host()}</div>
 			</FancyButton>
 		</div>
 		<div

@@ -7,7 +7,7 @@
 	export let placeholder: string;
 	export let required: boolean;
 	export let disabled: boolean;
-	export let value: string;
+	export let value: string | undefined;
 	export let textTransform = '';
 	export let autocomplete = 'off';
 	export let maxLength: number | undefined = undefined;

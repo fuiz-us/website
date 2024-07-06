@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$lib/paraglide/messages.js';
 
-	import { playIdlessConfig } from '$lib';
+	import { assertUnreachable, playIdlessConfig } from '$lib';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import Icon from '$lib/Icon.svelte';
 	import type { FuizOptions, IdlessFuizConfig } from '$lib/types';
@@ -23,8 +23,18 @@
 		{#each config.slides as slide, index}
 			{@const [correct, wrong] = stats.at(index) || [0, 0]}
 			{@const unanswered = player_count - correct - wrong}
-			{@const title =
-				'MultipleChoice' in slide ? slide.MultipleChoice.title : slide.TypeAnswer.title}
+			{@const title = ((slide) => {
+				switch (true) {
+					case 'MultipleChoice' in slide:
+						return slide.MultipleChoice.title;
+					case 'Order' in slide:
+						return slide.Order.title;
+					case 'TypeAnswer' in slide:
+						return slide.TypeAnswer.title;
+					default:
+						return assertUnreachable(slide);
+				}
+			})(slide)}
 			<div class="line">
 				<div class="question-text" {title}>
 					{title}

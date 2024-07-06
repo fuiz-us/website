@@ -49,6 +49,7 @@ export type GenericIdlessMultipleChoiceSlide<T> = {
 	introduce_question: number;
 	time_limit: number;
 	points_awarded: number;
+
 	answers: IdlessMultipleChoiceAnswer[];
 };
 
@@ -57,12 +58,41 @@ export type IdlessMultipleChoiceSlide = GenericIdlessMultipleChoiceSlide<Media |
 export type GenericIdlessTypeAnswer<T> = {
 	title: string;
 	media?: T;
+	introduce_question: number;
 	time_limit: number;
 	points_awarded: number;
 	answers: string[];
+	case_sensitive: boolean;
 };
 
 export type IdlessTypeAnswer = GenericIdlessTypeAnswer<Media | undefined>;
+
+export type GenericIdlessOrderSlide<T> = {
+	title: string;
+	media?: T;
+	introduce_question: number;
+	time_limit: number;
+	points_awarded: number;
+	axis_labels: {
+		from?: string;
+		to?: string;
+	};
+	answers: string[];
+};
+
+export type IdlessOrderSlide = GenericIdlessOrderSlide<Media | undefined>;
+
+export type GenericOrderSlide<T> = Modify<
+	GenericIdlessOrderSlide<T>,
+	{
+		answers: {
+			text: string;
+			id: number;
+		}[];
+	}
+>;
+
+export type OrderSlide = GenericOrderSlide<Media | undefined>;
 
 export type GenericMultipleChoiceSlide<T> = Modify<
 	GenericIdlessMultipleChoiceSlide<T>,
@@ -120,9 +150,28 @@ export async function mapMedia<T, O>(
 			: {
 					TypeAnswer: {
 						title: slide.TypeAnswer.title,
+						introduce_question: slide.TypeAnswer.introduce_question,
 						time_limit: slide.TypeAnswer.time_limit,
 						points_awarded: slide.TypeAnswer.points_awarded,
-						answers: slide.TypeAnswer.answers
+						answers: slide.TypeAnswer.answers,
+						case_sensitive: slide.TypeAnswer.case_sensitive
+					},
+					id: slide.id
+			  };
+	if ('Order' in slide)
+		return slide.Order.media
+			? {
+					Order: { ...slide.Order, media: await map(slide.Order.media) },
+					id: slide.id
+			  }
+			: {
+					Order: {
+						title: slide.Order.title,
+						introduce_question: slide.Order.introduce_question,
+						time_limit: slide.Order.time_limit,
+						axis_labels: slide.Order.axis_labels,
+						points_awarded: slide.Order.points_awarded,
+						answers: slide.Order.answers
 					},
 					id: slide.id
 			  };
@@ -155,9 +204,26 @@ export async function mapIdlessMedia<T, O>(
 			: {
 					TypeAnswer: {
 						title: slide.TypeAnswer.title,
+						introduce_question: slide.TypeAnswer.introduce_question,
 						time_limit: slide.TypeAnswer.time_limit,
 						points_awarded: slide.TypeAnswer.points_awarded,
-						answers: slide.TypeAnswer.answers
+						answers: slide.TypeAnswer.answers,
+						case_sensitive: slide.TypeAnswer.case_sensitive
+					}
+			  };
+	if ('Order' in slide)
+		return slide.Order.media
+			? {
+					Order: { ...slide.Order, media: await map(slide.Order.media) }
+			  }
+			: {
+					Order: {
+						title: slide.Order.title,
+						introduce_question: slide.Order.introduce_question,
+						time_limit: slide.Order.time_limit,
+						points_awarded: slide.Order.points_awarded,
+						axis_labels: slide.Order.axis_labels,
+						answers: slide.Order.answers
 					}
 			  };
 	return slide;
@@ -169,6 +235,9 @@ export type GenericIdlessSlide<T> =
 	  }
 	| {
 			TypeAnswer: GenericIdlessTypeAnswer<T>;
+	  }
+	| {
+			Order: GenericIdlessOrderSlide<T>;
 	  };
 
 export type IdlessSlide = GenericIdlessSlide<Media | undefined>;
@@ -180,6 +249,10 @@ export type GenericSlide<T> =
 	  }
 	| {
 			TypeAnswer: GenericTypeAnswer<T>;
+			id: number;
+	  }
+	| {
+			Order: GenericOrderSlide<T>;
 			id: number;
 	  };
 

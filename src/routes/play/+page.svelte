@@ -7,6 +7,7 @@
 	import Play from './Play.svelte';
 	import { browser } from '$app/environment';
 	import { i18n } from '$lib/i18n';
+	import OrderAnswers from './OrderAnswers.svelte';
 
 	let code: string | null = null;
 

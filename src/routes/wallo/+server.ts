@@ -7,6 +7,7 @@ import { createFileInGit, updateFileInGit } from '$lib/gitlab';
 import { getThumbnail } from '$lib/serverOnlyUtils';
 import { env } from '$env/dynamic/private';
 import type { Ai } from '@cloudflare/workers-types';
+import { assertUnreachable } from '$lib';
 
 function timingSafeEqual(a: string, b: string): boolean {
 	if (a.length !== b.length) {
@@ -33,9 +34,18 @@ async function extractKeywords(ai: Ai, config: IdlessFuizConfig): Promise<string
 		{
 			role: 'user',
 			content: config.slides
-				.map((slide) =>
-					'MultipleChoice' in slide ? slide.MultipleChoice.title : slide.TypeAnswer.title
-				)
+				.map((slide) => {
+					switch (true) {
+						case 'TypeAnswer' in slide:
+							return slide.TypeAnswer.title;
+						case 'Order' in slide:
+							return slide.Order.title;
+						case 'MultipleChoice' in slide:
+							return slide.MultipleChoice.title;
+						default:
+							return assertUnreachable(slide);
+					}
+				})
 				.join('\n')
 		}
 	];
@@ -127,6 +137,38 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 					tag: 'Points Awarded'
 				},
 				serializeMedia(slide.TypeAnswer.media)
+			];
+
+			return medias.filter(isNotUndefined);
+		}
+		if ('Order' in slide) {
+			const medias: (WalloMedia | undefined)[] = [
+				{
+					kind: 'text',
+					message: slide.Order.title,
+					tag: 'Slide Title'
+				},
+				{
+					kind: 'text',
+					message: slide.Order.answers.map((a) => `- ${a}`).join('\n'),
+					tag: 'Slide Answers'
+				},
+				{
+					kind: 'text',
+					message: slide.Order.introduce_question.toString() + 'ms',
+					tag: 'Introduce Question'
+				},
+				{
+					kind: 'text',
+					message: slide.Order.time_limit.toString() + 'ms',
+					tag: 'Time Limit'
+				},
+				{
+					kind: 'text',
+					message: slide.Order.points_awarded.toString() + 'pts',
+					tag: 'Points Awarded'
+				},
+				serializeMedia(slide.Order.media)
 			];
 
 			return medias.filter(isNotUndefined);

@@ -6,6 +6,7 @@
 	import MultipleChoiceSlideEditor from './MultipleChoiceSlideEditor.svelte';
 	import type { Slide } from '$lib/types';
 	import TypeAnswerSlideEditor from './TypeAnswerSlideEditor.svelte';
+	import OrderSlideEditor from './OrderSlideEditor.svelte';
 
 	export let slide: Slide | undefined;
 </script>
@@ -26,6 +27,8 @@
 	</div>
 {:else if 'MultipleChoice' in slide}
 	<MultipleChoiceSlideEditor bind:slide={slide.MultipleChoice} />
+{:else if 'Order' in slide}
+	<OrderSlideEditor bind:slide={slide.Order} />
 {:else}
 	<TypeAnswerSlideEditor bind:slide={slide.TypeAnswer} />
 {/if}

@@ -22,6 +22,8 @@
 	import Summary from './Summary.svelte';
 	import { bring, zip } from '$lib/util';
 	import TypeAnswerStatistics from './TypeAnswerStatistics.svelte';
+	import OrderAnswers from './OrderAnswers.svelte';
+	import OrderStatistics from './OrderStatistics.svelte';
 
 	type GameState =
 		| {
@@ -38,7 +40,7 @@
 
 	type SlideState =
 		| {
-				MultipleChoice: 'QuestionAnnouncment' | 'AnswersAnnouncement' | 'AnswersResults';
+				MultipleChoice: 'QuestionAnnouncement' | 'AnswersAnnouncement' | 'AnswersResults';
 
 				question?: string;
 				media?: Media;
@@ -47,13 +49,27 @@
 				results?: AnswerResult[];
 		  }
 		| {
-				TypeAnswer: 'QuestionAnnouncment' | 'AnswersResults';
+				TypeAnswer: 'QuestionAnnouncement' | 'AnswersResults';
 
 				question?: string;
 				media?: Media;
 				answers?: string[];
 				answered_count?: number;
 				results?: [string, number][];
+				accept_answers?: boolean;
+		  }
+		| {
+				Order: 'QuestionAnnouncement' | 'AnswersAnnouncement' | 'AnswersResults';
+
+				question?: string;
+				media?: Media;
+				answers?: string[];
+				answered_count?: number;
+				results?: [number, number];
+				axis_labels?: {
+					from?: string;
+					to?: string;
+				};
 		  }
 		| {
 				Leaderboard: {
@@ -115,7 +131,7 @@
 
 	type MultipleChoiceIncomingMessage =
 		| {
-				QuestionAnnouncment: {
+				QuestionAnnouncement: {
 					index: number;
 					count: number;
 					question: string;
@@ -150,12 +166,13 @@
 
 	type TypeAnswerIncomingMessage =
 		| {
-				QuestionAnnouncment: {
+				QuestionAnnouncement: {
 					index: number;
 					count: number;
 					question: string;
 					media?: Media;
 					duration: number;
+					accept_answers: boolean;
 				};
 		  }
 		| {
@@ -172,6 +189,46 @@
 				};
 		  };
 
+	type OrderSlideIncomingMessage =
+		| {
+				QuestionAnnouncement: {
+					index: number;
+					count: number;
+					question: string;
+					media?: Media;
+					duration: number;
+				};
+		  }
+		| {
+				AnswersAnnouncement: {
+					index?: number;
+					count?: number;
+					question?: string;
+					media?: Media;
+					answered_count?: number;
+					duration: number;
+					answers: string[];
+					axis_labels: {
+						from?: string;
+						to?: string;
+					};
+				};
+		  }
+		| {
+				AnswersResults: {
+					index?: number;
+					count?: number;
+					question?: string;
+					media?: Media;
+					axis_labels?: {
+						from?: string;
+						to?: string;
+					};
+					answers: string[];
+					results: [number, number];
+				};
+		  };
+
 	type IncomingMessage =
 		| {
 				Game: GameIncomingMessage;
@@ -181,6 +238,9 @@
 		  }
 		| {
 				TypeAnswer: TypeAnswerIncomingMessage;
+		  }
+		| {
+				Order: OrderSlideIncomingMessage;
 		  };
 
 	let currentState: State | undefined = undefined;
@@ -270,13 +330,13 @@
 				let { index: previous_index = 0, count: previous_count = 1 } =
 					currentState && 'Slide' in currentState ? currentState : {};
 
-				if ('QuestionAnnouncment' in mc) {
-					let { index, count, question, media, duration } = mc.QuestionAnnouncment;
+				if ('QuestionAnnouncement' in mc) {
+					let { index, count, question, media, duration } = mc.QuestionAnnouncement;
 					currentState = {
 						index,
 						count,
 						Slide: {
-							MultipleChoice: 'QuestionAnnouncment',
+							MultipleChoice: 'QuestionAnnouncement',
 							question,
 							media
 						}
@@ -350,15 +410,16 @@
 				let { index: previous_index = 0, count: previous_count = 1 } =
 					currentState && 'Slide' in currentState ? currentState : {};
 
-				if ('QuestionAnnouncment' in ta) {
-					let { index, count, question, media, duration } = ta.QuestionAnnouncment;
+				if ('QuestionAnnouncement' in ta) {
+					let { index, count, question, media, duration, accept_answers } = ta.QuestionAnnouncement;
 					currentState = {
 						index,
 						count,
 						Slide: {
-							TypeAnswer: 'QuestionAnnouncment',
+							TypeAnswer: 'QuestionAnnouncement',
 							question,
-							media
+							media,
+							accept_answers
 						}
 					};
 					timer = duration;
@@ -368,7 +429,7 @@
 						...(currentState || { index: previous_index, count: previous_count }),
 						Slide: {
 							...previous_state,
-							TypeAnswer: previous_state?.TypeAnswer ?? 'QuestionAnnouncment'
+							TypeAnswer: previous_state?.TypeAnswer ?? 'QuestionAnnouncement'
 						}
 					};
 				} else if ('AnswersResults' in ta) {
@@ -389,6 +450,78 @@
 							media,
 							answers,
 							results
+						}
+					};
+				}
+			} else if ('Order' in new_msg) {
+				let order = new_msg.Order;
+
+				let previous_state =
+					currentState && 'Slide' in currentState && 'Order' in currentState.Slide
+						? currentState.Slide
+						: undefined;
+
+				let { index: previous_index = 0, count: previous_count = 1 } =
+					currentState && 'Slide' in currentState ? currentState : {};
+
+				if ('QuestionAnnouncement' in order) {
+					let { index, count, question, media, duration } = order.QuestionAnnouncement;
+					currentState = {
+						index,
+						count,
+						Slide: {
+							Order: 'QuestionAnnouncement',
+							question,
+							media
+						}
+					};
+					timer = duration;
+					initialTimer = duration;
+				} else if ('AnswersAnnouncement' in order) {
+					let {
+						index = previous_index,
+						count = previous_count,
+						question = previous_state?.question,
+						media = previous_state?.media,
+						answered_count = previous_state?.answered_count,
+						duration,
+						answers,
+						axis_labels
+					} = order.AnswersAnnouncement;
+					currentState = {
+						index,
+						count,
+						Slide: {
+							Order: 'AnswersAnnouncement',
+							question,
+							media,
+							answers,
+							answered_count,
+							axis_labels
+						}
+					};
+					timer = duration;
+					initialTimer = duration;
+				} else if ('AnswersResults' in order) {
+					let {
+						index = previous_index,
+						count = previous_count,
+						question = previous_state?.question,
+						media = previous_state?.media,
+						axis_labels = previous_state?.axis_labels,
+						answers,
+						results
+					} = order.AnswersResults;
+					currentState = {
+						index,
+						count,
+						Slide: {
+							Order: 'AnswersResults',
+							question,
+							media,
+							answers,
+							results,
+							axis_labels
 						}
 					};
 				}
@@ -490,7 +623,7 @@
 			answered_count: answeredCount,
 			results
 		} = slide}
-		{#if kind === 'QuestionAnnouncment'}
+		{#if kind === 'QuestionAnnouncement'}
 			<Question
 				on:next={next}
 				on:lock={receiveLock}
@@ -529,7 +662,7 @@
 		{/if}
 	{:else if 'TypeAnswer' in slide}
 		{@const { TypeAnswer: kind, question, media, answers, results } = slide}
-		{#if kind === 'QuestionAnnouncment'}
+		{#if kind === 'QuestionAnnouncement'}
 			<Question
 				on:next={next}
 				on:lock={receiveLock}
@@ -548,6 +681,51 @@
 				questionText={question || ''}
 				answers={answers || []}
 				results={results || []}
+			/>
+		{/if}
+	{:else if 'Order' in slide}
+		{@const { Order: kind, question, media, answers, results, axis_labels, answered_count } = slide}
+		{#if kind === 'QuestionAnnouncement'}
+			<Question
+				on:next={next}
+				on:lock={receiveLock}
+				bind:bindableGameInfo
+				{media}
+				{gameInfo}
+				timeStarted={initialTimer}
+				questionText={question || ''}
+			/>
+		{:else if kind === 'AnswersAnnouncement'}
+			<OrderAnswers
+				on:next={next}
+				on:lock={receiveLock}
+				bind:bindableGameInfo
+				{gameInfo}
+				questionText={question || ''}
+				answers={answers || []}
+				timeLeft={timer}
+				timeStarted={initialTimer}
+				answeredCount={answered_count ?? 0}
+				{media}
+				axis_labels={{
+					from: axis_labels?.from || '',
+					to: axis_labels?.to || ''
+				}}
+			/>
+		{:else if kind === 'AnswersResults'}
+			<OrderStatistics
+				on:next={next}
+				on:lock={receiveLock}
+				bind:bindableGameInfo
+				{gameInfo}
+				questionText={question || ''}
+				answers={answers || []}
+				results={results || [0, 0]}
+				axis_labels={{
+					from: axis_labels?.from || '',
+					to: axis_labels?.to || ''
+				}}
+				{media}
 			/>
 		{/if}
 	{/if}

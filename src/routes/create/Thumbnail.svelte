@@ -8,6 +8,7 @@
 	import IconButton from '$lib/IconButton.svelte';
 	import type { Slide } from '$lib/types';
 	import TypeAnswerThumbnail from './TypeAnswerThumbnail.svelte';
+	import OrderThumbnail from './OrderThumbnail.svelte';
 
 	export let slide: Slide;
 	export let index: number;
@@ -69,6 +70,8 @@
 	>
 		{#if 'MultipleChoice' in slide}
 			<MultipleChoiceThumbnail slide={slide.MultipleChoice} />
+		{:else if 'Order' in slide}
+			<OrderThumbnail slide={slide.Order} />
 		{:else}
 			<TypeAnswerThumbnail slide={slide.TypeAnswer} />
 		{/if}

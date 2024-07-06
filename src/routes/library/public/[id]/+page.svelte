@@ -10,7 +10,7 @@
 	import { addCreation, generateUuid, loadDatabase } from '$lib/storage';
 	import { i18n } from '$lib/i18n';
 	import { languageTag } from '$lib/paraglide/runtime';
-	import { buttonColors } from '$lib';
+	import { assertUnreachable, buttonColors } from '$lib';
 
 	export let data: PageData;
 
@@ -93,8 +93,18 @@
 			style:height="fit-content"
 		>
 			{#each config.slides as slide}
-				{@const { title, answers, media } =
-					'MultipleChoice' in slide ? slide.MultipleChoice : slide.TypeAnswer}
+				{@const { title, answers, media } = ((slide) => {
+					switch (true) {
+						case 'MultipleChoice' in slide:
+							return slide.MultipleChoice;
+						case 'TypeAnswer' in slide:
+							return slide.TypeAnswer;
+						case 'Order' in slide:
+							return slide.Order;
+						default:
+							return assertUnreachable(slide);
+					}
+				})(slide)}
 				<div
 					style:border="0.15em solid"
 					style:border-radius="0.7em"

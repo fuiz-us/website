@@ -163,8 +163,10 @@
 						slides.push({
 							TypeAnswer: {
 								title: '',
+								introduce_question: limits.fuiz.typeAnswer.introduceQuestion,
 								time_limit: limits.fuiz.typeAnswer.defaultTimeLimit,
 								points_awarded: limits.fuiz.typeAnswer.pointsAwarded,
+								case_sensitive: false,
 								answers: []
 							},
 							id: Date.now()
@@ -174,6 +176,26 @@
 					}}
 				>
 					<div style:padding="0.2em 0.6em">{m.short_answer()}</div>
+				</FancyButton>
+				<FancyButton
+					on:click={async () => {
+						popoverElement.hidePopover();
+						slides.push({
+							Order: {
+								title: '',
+								introduce_question: limits.fuiz.order.introduceQuestion,
+								time_limit: limits.fuiz.order.defaultTimeLimit,
+								points_awarded: limits.fuiz.order.pointsAwarded,
+								axis_labels: { from: '', to: '' },
+								answers: []
+							},
+							id: Date.now()
+						});
+						slides = slides;
+						await changeSelected(slides.length - 1);
+					}}
+				>
+					<div style:padding="0.2em 0.6em">Puzzle</div>
 				</FancyButton>
 			</div>
 			<FancyButton

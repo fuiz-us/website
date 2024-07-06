@@ -83,7 +83,7 @@
 						</ul>
 					{:else}
 						<div>
-							<FancyAnchorButton href={i18n.resolveRoute('/create')}>
+							<FancyAnchorButton href={'/create'}>
 								<div class="create">{m.create()}</div>
 							</FancyAnchorButton>
 						</div>

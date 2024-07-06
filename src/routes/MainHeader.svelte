@@ -15,7 +15,7 @@
 	<Header />
 	<nav style:font-size="0.8em">
 		<div>
-			<FancyAnchorButton href={i18n.resolveRoute('/create')}>
+			<FancyAnchorButton href={'/create'}>
 				<div class="a">
 					<Icon src="$lib/assets/paint.svg" alt={m.create()} size="1.2em" />
 					<div>{m.create()}</div>
@@ -23,7 +23,7 @@
 			</FancyAnchorButton>
 		</div>
 		<div>
-			<FancyAnchorButton href={i18n.resolveRoute('/play')}>
+			<FancyAnchorButton href={'/play'}>
 				<div class="a">
 					<Icon size="1.2em" src="$lib/assets/game.svg" alt={m.play()} />
 					<div>{m.play()}</div>
@@ -31,7 +31,7 @@
 			</FancyAnchorButton>
 		</div>
 		<div>
-			<FancyAnchorButton href={i18n.resolveRoute('/library')}>
+			<FancyAnchorButton href={'/library'}>
 				<div class="a">
 					<Icon size="1.2em" src="$lib/assets/library.svg" alt={m.library()} />
 					<div>{m.library()}</div>
@@ -39,7 +39,7 @@
 			</FancyAnchorButton>
 		</div>
 		<div>
-			<FancyAnchorButton href={i18n.resolveRoute('/posts')}>
+			<FancyAnchorButton href={'/posts'}>
 				<div class="a">
 					<Icon size="1.2em" src="$lib/assets/newspaper.svg" alt={m.blog()} />
 					<div>{m.blog()}</div>
@@ -65,7 +65,7 @@
 			</div>
 		{:else}
 			<div>
-				<FancyAnchorButton href={i18n.resolveRoute('/signin')}>
+				<FancyAnchorButton href={'/signin'}>
 					<div class="a">
 						<Icon size="1.2em" src="$lib/assets/login.svg" alt={m.login()} />
 						<div>{m.login()}</div>

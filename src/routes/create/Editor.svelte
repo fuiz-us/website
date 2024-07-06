@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$lib/paraglide/messages.js';
 
-	import { fixTimes, removeIds } from '$lib';
+	import { assertUnreachable, fixTimes, removeIds } from '$lib';
 	import { updateCreation, type Database, type ExportedFuiz } from '$lib/storage';
 	import type { FuizConfig } from '$lib/types';
 	import { debounce } from '$lib/util';
@@ -36,16 +36,32 @@
 	}
 
 	$: no_answer =
-		config.slides.filter((s) =>
-			'MultipleChoice' in s
-				? s.MultipleChoice.answers.length == 0
-				: s.TypeAnswer.answers.length == 0
-		).length > 0;
+		config.slides.filter((s) => {
+			switch (true) {
+				case 'MultipleChoice' in s:
+					return s.MultipleChoice.answers.length == 0;
+				case 'TypeAnswer' in s:
+					return s.TypeAnswer.answers.length == 0;
+				case 'Order' in s:
+					return s.Order.answers.length == 0;
+				default:
+					return assertUnreachable(s);
+			}
+		}).length > 0;
 
 	$: no_correct_answer =
-		config.slides.filter((s) =>
-			'MultipleChoice' in s ? s.MultipleChoice.answers.filter((s) => s.correct).length == 0 : false
-		).length > 0;
+		config.slides.filter((s) => {
+			switch (true) {
+				case 'MultipleChoice' in s:
+					return s.MultipleChoice.answers.filter((s) => s.correct).length == 0;
+				case 'TypeAnswer' in s:
+					return false;
+				case 'Order' in s:
+					return false;
+				default:
+					return assertUnreachable(s);
+			}
+		}).length > 0;
 </script>
 
 <div

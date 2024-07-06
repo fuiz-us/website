@@ -1,10 +1,10 @@
 <script lang="ts">
-	import * as m from '$lib/paraglide/messages.js';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import VerticalSplit from '$lib/Game/VerticalSplit.svelte';
-	import type { TypeAnswer } from '$lib/types';
+	import type { OrderSlide } from '$lib/types';
+	import { buttonColors } from '$lib';
 
-	export let slide: TypeAnswer;
+	export let slide: OrderSlide;
 </script>
 
 <div
@@ -12,6 +12,7 @@
 	style:gap="0.2em"
 	style:height="100%"
 	style:overflow="hidden"
+	style:max-height="5em"
 	style:flex-direction="column"
 	style:justify-content="space-between"
 	style:background="var(--background-color)"
@@ -35,24 +36,15 @@
 			{/if}
 		</svelte:fragment>
 		<svelte:fragment slot="bottom">
-			{#if slide.answers.length}
+			{#each slide.answers as _, i}
 				<div
-					style:border="0.1em solid var(--accent-color)"
-					style:margin="0.1em"
-					style:border-radius="0.4em"
-					style:height="0.8em"
+					style:background={buttonColors.at(i % buttonColors.length)?.at(0) ??
+						'var(--accent-color)'}
+					style:margin="0.05em"
+					style:border-radius="0.6em"
+					style:height="0.5em"
 				/>
-			{:else}
-				<div
-					style:font-size="18px"
-					style:padding="0.2em 0.1em"
-					style:font-weight="bold"
-					style:background="#F5C211"
-					style:flex="1"
-				>
-					{m.no_answers()}
-				</div>
-			{/if}
+			{/each}
 		</svelte:fragment>
 	</VerticalSplit>
 </div>

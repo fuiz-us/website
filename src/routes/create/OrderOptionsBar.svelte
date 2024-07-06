@@ -4,10 +4,10 @@
 	import { limits } from '$lib';
 	import Icon from '$lib/Icon.svelte';
 	import SelectTime from '$lib/SelectTime.svelte';
-	import type { TypeAnswer } from '$lib/types';
+	import type { OrderSlide } from '$lib/types';
 	import Switch from '$lib/Switch.svelte';
 
-	export let activeSlide: TypeAnswer;
+	export let activeSlide: OrderSlide;
 </script>
 
 <div id="sidebar-container">
@@ -57,14 +57,6 @@
 				>
 					<Icon src="$lib/assets/score.svg" size="1em" alt={m.points()} />
 				</SelectTime>
-			</div>
-		</div>
-		<div>
-			<div class="field-title">
-				Case-sesnsitive
-				<div>
-					<Switch bind:checked={activeSlide.case_sensitive} id="case-sensitive" />
-				</div>
 			</div>
 		</div>
 	</div>

@@ -178,25 +178,16 @@ export function internalizeMedia(
 	};
 }
 
-function internalizeFuiz(fuiz: ExportedFuiz, database: Database): InternalFuiz {
+async function internalizeFuiz(fuiz: ExportedFuiz, database: Database): Promise<InternalFuiz> {
 	return {
 		...fuiz,
 		config: {
 			...fuiz.config,
-			slides: fuiz.config.slides.map((slide) =>
-				'MultipleChoice' in slide
-					? {
-							MultipleChoice: {
-								...slide.MultipleChoice,
-								media: internalizeMedia(slide.MultipleChoice.media, database)
-							}
-					  }
-					: {
-							TypeAnswer: {
-								...slide.TypeAnswer,
-								media: internalizeMedia(slide.TypeAnswer.media, database)
-							}
-					  }
+			slides: await Promise.all(
+				fuiz.config.slides.map(
+					async (slide) =>
+						await mapIdlessMedia(slide, async (media) => internalizeMedia(media, database))
+				)
 			)
 		}
 	};
@@ -406,7 +397,7 @@ export async function addCreationLocal(
 }
 
 export async function addCreation(newSlide: ExportedFuiz, database: Database): Promise<CreationId> {
-	const internalFuiz = internalizeFuiz(newSlide, database);
+	const internalFuiz = await internalizeFuiz(newSlide, database);
 	const id = await addCreationLocal(internalFuiz, database.local);
 	database.remote?.create(newSlide.uniqueId, internalFuiz);
 	return id;
@@ -432,7 +423,7 @@ export async function updateCreation(
 	newSlide: ExportedFuiz,
 	database: Database
 ): Promise<void> {
-	const internalFuiz = internalizeFuiz(newSlide, database);
+	const internalFuiz = await internalizeFuiz(newSlide, database);
 	await updateCreationLocal(id, internalFuiz, database.local);
 	database.remote?.update(newSlide.uniqueId, internalFuiz);
 }

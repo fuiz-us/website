@@ -21,10 +21,11 @@
 	import ErrorPage from '$lib/ErrorPage.svelte';
 	import { browser } from '$app/environment';
 	import Summary from './Summary.svelte';
-	import { bring } from '$lib/util';
+	import { bring, zip } from '$lib/util';
 	import FindTeam from './FindTeam.svelte';
 	import ChooseTeammates from './ChooseTeammates.svelte';
 	import TypeAnswerQuestion from './TypeAnswerQuestion.svelte';
+	import OrderAnswers from './OrderAnswers.svelte';
 
 	type GameState =
 		| {
@@ -60,7 +61,7 @@
 
 	type SlideState =
 		| {
-				MultipleChoice: 'QuestionAnnouncment' | 'AnswersAnnouncement' | 'AnswersResults';
+				MultipleChoice: 'QuestionAnnouncement' | 'AnswersAnnouncement' | 'AnswersResults';
 
 				question?: string;
 				media?: Media;
@@ -69,13 +70,27 @@
 				answered?: number;
 		  }
 		| {
-				TypeAnswer: 'QuestionAnnouncment' | 'AnswersResults';
+				TypeAnswer: 'QuestionAnnouncement' | 'AnswersResults';
 
 				question?: string;
 				media?: Media;
 				answers?: string[];
 				results?: [string, number][];
 				answered?: string;
+				accept_answers?: boolean;
+		  }
+		| {
+				Order: 'QuestionAnnouncement' | 'AnswersAnnouncement' | 'AnswersResults';
+
+				question?: string;
+				media?: Media;
+				answers?: string[];
+				results?: [number, number];
+				axis_labels?: {
+					from?: string;
+					to?: string;
+				};
+				answered?: string[];
 		  }
 		| {
 				Score: {
@@ -156,7 +171,7 @@
 
 	type MultipleChoiceIncomingMessage =
 		| {
-				QuestionAnnouncment: {
+				QuestionAnnouncement: {
 					index: number;
 					count: number;
 					question: string;
@@ -188,12 +203,13 @@
 
 	type TypeAnswerIncomingMessage =
 		| {
-				QuestionAnnouncment: {
+				QuestionAnnouncement: {
 					index: number;
 					count: number;
 					question: string;
 					media?: Media;
 					duration: number;
+					accept_answers: boolean;
 				};
 		  }
 		| {
@@ -207,6 +223,46 @@
 				};
 		  };
 
+	type OrderSlideIncomingMessage =
+		| {
+				QuestionAnnouncement: {
+					index: number;
+					count: number;
+					question: string;
+					media?: Media;
+					duration: number;
+				};
+		  }
+		| {
+				AnswersAnnouncement: {
+					index?: number;
+					count?: number;
+					question?: string;
+					media?: Media;
+					answers: Array<string>;
+					axis_labels: {
+						from?: string;
+						to?: string;
+					};
+					answered_count?: number;
+					duration: number;
+				};
+		  }
+		| {
+				AnswersResults: {
+					index?: number;
+					count?: number;
+					question?: string;
+					media?: Media;
+					axis_labels?: {
+						from?: string;
+						to?: string;
+					};
+					answers: Array<string>;
+					results: [number, number];
+				};
+		  };
+
 	type IncomingMessage =
 		| {
 				Game: GameIncomingMessage;
@@ -216,6 +272,9 @@
 		  }
 		| {
 				TypeAnswer: TypeAnswerIncomingMessage;
+		  }
+		| {
+				Order: OrderSlideIncomingMessage;
 		  };
 
 	let currentState: State | undefined = undefined;
@@ -351,14 +410,14 @@
 						? currentState.Slide
 						: undefined;
 
-				if ('QuestionAnnouncment' in mc) {
-					let { index, count, question, media } = mc.QuestionAnnouncment;
+				if ('QuestionAnnouncement' in mc) {
+					let { index, count, question, media } = mc.QuestionAnnouncement;
 					currentState = {
 						index,
 						count,
 						score: previousScore,
 						Slide: {
-							MultipleChoice: 'QuestionAnnouncment',
+							MultipleChoice: 'QuestionAnnouncement',
 							question,
 							media
 						}
@@ -416,16 +475,17 @@
 						? currentState.Slide
 						: undefined;
 
-				if ('QuestionAnnouncment' in ta) {
-					let { index, count, question, media } = ta.QuestionAnnouncment;
+				if ('QuestionAnnouncement' in ta) {
+					let { index, count, question, media, accept_answers } = ta.QuestionAnnouncement;
 					currentState = {
 						index,
 						count,
 						score: previousScore,
 						Slide: {
-							TypeAnswer: 'QuestionAnnouncment',
+							TypeAnswer: 'QuestionAnnouncement',
 							question,
-							media
+							media,
+							accept_answers
 						}
 					};
 				} else if ('AnswersResults' in ta) {
@@ -448,6 +508,73 @@
 							answers,
 							results,
 							answered: previous_state?.answered
+						}
+					};
+				}
+			} else if ('Order' in newMsg) {
+				let ta = newMsg.Order;
+
+				let previous_state =
+					currentState && 'Slide' in currentState && 'Order' in currentState.Slide
+						? currentState.Slide
+						: undefined;
+
+				if ('QuestionAnnouncement' in ta) {
+					let { index, count, question, media } = ta.QuestionAnnouncement;
+					currentState = {
+						index,
+						count,
+						score: previousScore,
+						Slide: {
+							Order: 'QuestionAnnouncement',
+							question,
+							media
+						}
+					};
+				} else if ('AnswersAnnouncement' in ta) {
+					let {
+						index = previousIndex,
+						count = previousCount,
+						question = previous_state?.question,
+						media = previous_state?.media,
+						answers,
+						axis_labels
+					} = ta.AnswersAnnouncement;
+					currentState = {
+						index,
+						count,
+						score: previousScore,
+						Slide: {
+							Order: 'AnswersAnnouncement',
+							question,
+							media,
+							answers,
+							axis_labels,
+							answered: previous_state?.answered
+						}
+					};
+				} else if ('AnswersResults' in ta) {
+					let {
+						index = previousIndex,
+						count = previousCount,
+						question = previous_state?.question,
+						media = previous_state?.media,
+						axis_labels = previous_state?.axis_labels,
+						answers,
+						results
+					} = ta.AnswersResults;
+					currentState = {
+						index,
+						count,
+						score: previousScore,
+						Slide: {
+							Order: 'AnswersResults',
+							question,
+							media,
+							answers,
+							results,
+							answered: previous_state?.answered,
+							axis_labels
 						}
 					};
 				}
@@ -534,6 +661,20 @@
 		socket.send(JSON.stringify({ Player: { StringAnswer: text } }));
 	}
 
+	function sendStringArrayAnswer(texts: string[]) {
+		if (currentState && 'Slide' in currentState && 'Order' in currentState.Slide) {
+			currentState = {
+				...currentState,
+				Slide: {
+					...currentState.Slide,
+					answered: texts
+				}
+			};
+		}
+
+		socket.send(JSON.stringify({ Player: { StringArrayAnswer: texts } }));
+	}
+
 	function sendChooseTeammate(names: string[]) {
 		socket.send(JSON.stringify({ Player: { ChooseTeammates: names } }));
 	}
@@ -568,7 +709,7 @@
 	{@const { Slide: slide, index, count, score } = currentState}
 	{#if 'MultipleChoice' in slide}
 		{@const { MultipleChoice: kind, question, answers, media, results, answered } = slide}
-		{#if kind === 'QuestionAnnouncment'}
+		{#if kind === 'QuestionAnnouncement'}
 			<Question {name} {score} {media} questionText={question || ''} />
 		{:else if kind === 'AnswersAnnouncement'}
 			{#if answered === undefined}
@@ -595,20 +736,56 @@
 		{@const { points, position } = slide.Score}
 		<Leaderboard {name} score={points} {position} final={index + 1 === count} />
 	{:else if 'TypeAnswer' in slide}
-		{@const { TypeAnswer: kind, question, answers, media, answered } = slide}
-		{#if kind === 'QuestionAnnouncment'}
-			<TypeAnswerQuestion
-				on:answer={(e) => sendStringAnswer(e.detail)}
-				{name}
-				{score}
-				{media}
-				questionText={question || ''}
-			/>
+		{@const { TypeAnswer: kind, question, answers, media, answered, accept_answers } = slide}
+		{#if kind === 'QuestionAnnouncement'}
+			{#if answered === undefined}
+				{#if accept_answers}
+					<TypeAnswerQuestion
+						on:answer={(e) => sendStringAnswer(e.detail)}
+						{name}
+						{score}
+						{media}
+						questionText={question || ''}
+					/>
+				{:else}
+					<Question {name} {score} {media} questionText={question || ''} />
+				{/if}
+			{:else}
+				<WaitingOthers {name} {score} />
+			{/if}
 		{:else if kind === 'AnswersResults'}
 			<Result
 				{name}
 				{score}
 				correct={answered === undefined ? false : answers?.includes(answered) ?? false}
+			/>
+		{/if}
+	{:else if 'Order' in slide}
+		{@const { Order: kind, question, answers, media, results, answered, axis_labels } = slide}
+		{#if kind === 'QuestionAnnouncement'}
+			<Question {name} {score} {media} questionText={question || ''} />
+		{:else if kind === 'AnswersAnnouncement'}
+			{#if answered === undefined}
+				<OrderAnswers
+					on:answer={(e) => sendStringArrayAnswer(e.detail)}
+					questionText={question || ''}
+					{media}
+					{name}
+					{score}
+					{showAnswers}
+					answers={answers || []}
+					axisLabels={axis_labels ?? {}}
+				/>
+			{:else}
+				<WaitingOthers {name} {score} />
+			{/if}
+		{:else if kind === 'AnswersResults'}
+			<Result
+				{name}
+				{score}
+				correct={answered === undefined || answers === undefined
+					? false
+					: answers.length === answered.length && zip(answers, answered).every(([a, b]) => a === b)}
 			/>
 		{/if}
 	{/if}

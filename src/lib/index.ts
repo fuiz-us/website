@@ -55,11 +55,23 @@ export const limits = {
 		},
 		typeAnswer: {
 			maxTitleLength: 200,
+			introduceQuestion: 3000,
+			allowedIntroduceQuestion: [0, 3000, 5000, 7000, 10000, 15000],
 			pointsAwarded: 1000,
 			allowedPointsAwarded: [0, 500, 1000, 2000],
 			allowedTimeLimits: [5000, 15000, 30000, 60000, 120000, 240000],
 			defaultTimeLimit: 60000,
 			maxAnswerCount: 16
+		},
+		order: {
+			maxTitleLength: 200,
+			introduceQuestion: 3000,
+			allowedIntroduceQuestion: [0, 3000, 5000, 7000, 10000, 15000],
+			pointsAwarded: 1000,
+			allowedPointsAwarded: [0, 500, 1000, 2000],
+			allowedTimeLimits: [5000, 15000, 30000, 60000, 120000, 240000],
+			defaultTimeLimit: 60000,
+			maxAnswerCount: 8
 		},
 		maxAnswerTextLength: 200
 	}
@@ -97,18 +109,31 @@ export async function getBackendMedia(media: Media | undefined | null): Promise<
 	}
 }
 
+export function assertUnreachable(x: never): never {
+	throw new Error("it's impossible to reach here");
+}
+
 export function tomlifyConfig(config: IdlessFuizConfig): IdlessFuizConfig {
 	return {
 		title: config.title,
-		slides: config.slides.map((slide) =>
-			'MultipleChoice' in slide
-				? Section({
+		slides: config.slides.map((slide) => {
+			switch (true) {
+				case 'MultipleChoice' in slide:
+					return Section({
 						MultipleChoice: Section(slide.MultipleChoice)
-				  })
-				: Section({
+					});
+				case 'TypeAnswer' in slide:
+					return Section({
 						TypeAnswer: Section(slide.TypeAnswer)
-				  })
-		)
+					});
+				case 'Order' in slide:
+					return Section({
+						Order: Section(slide.Order)
+					});
+				default:
+					return assertUnreachable(slide);
+			}
+		})
 	};
 }
 
@@ -216,42 +241,50 @@ export function removeIds<T>(
 ): GenericIdlessFuizConfig<T> {
 	return {
 		title: config.title,
-		slides: config.slides.map((slide) =>
-			'MultipleChoice' in slide
-				? {
+		slides: config.slides.map((slide) => {
+			switch (true) {
+				case 'MultipleChoice' in slide:
+					return {
 						MultipleChoice: {
-							title: slide.MultipleChoice.title,
-							points_awarded: slide.MultipleChoice.points_awarded,
-							...(slide.MultipleChoice.media && { media: slide.MultipleChoice.media }),
-							introduce_question: slide.MultipleChoice.introduce_question,
-							time_limit: slide.MultipleChoice.time_limit,
+							...slide.MultipleChoice,
 							answers: slide.MultipleChoice.answers.map(({ content, correct }) => ({
 								content,
 								correct
 							}))
 						}
-				  }
-				: {
+					};
+				case 'TypeAnswer' in slide:
+					return {
 						TypeAnswer: {
-							title: slide.TypeAnswer.title,
-							...(slide.TypeAnswer.media && { media: slide.TypeAnswer.media }),
-							time_limit: slide.TypeAnswer.time_limit,
-							points_awarded: slide.TypeAnswer.points_awarded,
+							...slide.TypeAnswer,
 							answers: slide.TypeAnswer.answers.map((text) =>
 								typeof text === 'string' ? text : text.text
 							)
 						}
-				  }
-		)
+					};
+				case 'Order' in slide:
+					return {
+						Order: {
+							...slide.Order,
+							answers: slide.Order.answers.map((text) =>
+								typeof text === 'string' ? text : text.text
+							)
+						}
+					};
+				default:
+					return assertUnreachable(slide);
+			}
+		})
 	};
 }
 
 export function addIds<T>(config: GenericIdlessFuizConfig<T>): GenericFuizConfig<T> {
 	return {
 		title: config.title,
-		slides: config.slides.map((slide, id) =>
-			'MultipleChoice' in slide
-				? {
+		slides: config.slides.map((slide, id) => {
+			switch (true) {
+				case 'MultipleChoice' in slide:
+					return {
 						MultipleChoice: {
 							...slide.MultipleChoice,
 							answers: slide.MultipleChoice.answers.map(({ content, correct }, id) => ({
@@ -261,8 +294,9 @@ export function addIds<T>(config: GenericIdlessFuizConfig<T>): GenericFuizConfig
 							}))
 						},
 						id
-				  }
-				: {
+					};
+				case 'TypeAnswer' in slide:
+					return {
 						TypeAnswer: {
 							...slide.TypeAnswer,
 							answers: slide.TypeAnswer.answers.map((text, id) => ({
@@ -271,8 +305,22 @@ export function addIds<T>(config: GenericIdlessFuizConfig<T>): GenericFuizConfig
 							}))
 						},
 						id
-				  }
-		)
+					};
+				case 'Order' in slide:
+					return {
+						Order: {
+							...slide.Order,
+							answers: slide.Order.answers.map((text, id) => ({
+								text,
+								id
+							}))
+						},
+						id
+					};
+				default:
+					return assertUnreachable(slide);
+			}
+		})
 	};
 }
 
@@ -314,22 +362,36 @@ function fixTime(time: number): number {
 export function fixTimes(config: IdlessFuizConfig): IdlessFuizConfig {
 	return {
 		title: config.title,
-		slides: config.slides.map((slide) =>
-			'MultipleChoice' in slide
-				? {
+		slides: config.slides.map((slide) => {
+			switch (true) {
+				case 'MultipleChoice' in slide:
+					return {
 						MultipleChoice: {
 							...slide.MultipleChoice,
 							introduce_question: fixTime(slide.MultipleChoice.introduce_question),
 							time_limit: fixTime(slide.MultipleChoice.time_limit)
 						}
-				  }
-				: {
+					};
+				case 'TypeAnswer' in slide:
+					return {
 						TypeAnswer: {
 							...slide.TypeAnswer,
+							introduce_question: fixTime(slide.TypeAnswer.introduce_question),
 							time_limit: fixTime(slide.TypeAnswer.time_limit)
 						}
-				  }
-		)
+					};
+				case 'Order' in slide:
+					return {
+						Order: {
+							...slide.Order,
+							introduce_question: fixTime(slide.Order.introduce_question),
+							time_limit: fixTime(slide.Order.time_limit)
+						}
+					};
+				default:
+					return assertUnreachable(slide);
+			}
+		})
 	};
 }
 

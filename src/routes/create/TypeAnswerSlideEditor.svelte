@@ -24,26 +24,35 @@
 	style:align-items="center"
 	style:justify-content="space-between"
 >
-	<div style:max-width="25ch" style:width="100%" style:padding-top="0.5em" style:overflow="auto">
-		<Textarea
-			bind:value={slide.title}
-			placeholder={m.question_text()}
-			id="question_title"
-			required={false}
-			disabled={false}
-			maxHeight="4em"
-			maxLength={limits.fuiz.typeAnswer.maxTitleLength}
-		/>
-	</div>
 	<div
 		style:display="flex"
-		style:width="100%"
 		style:flex-wrap="wrap-reverse"
-		style:gap="0.2em"
-		style:align-items="center"
+		style:width="100%"
 		style:justify-content="center"
+		style:align-items="end"
+		style:max-width="30ch"
+		style:gap="0.2em"
 	>
-		<MediaChooser bind:media={slide.media} />
+		<div style:display="flex" style:align-items="center" style:justify-content="center">
+			<MediaChooser bind:media={slide.media} />
+		</div>
+		<div
+			style:max-width="25ch"
+			style:flex="1"
+			style:min-width="fit-content"
+			style:padding-top="0.5em"
+			style:overflow="auto"
+		>
+			<Textarea
+				bind:value={slide.title}
+				placeholder={m.question_text()}
+				id="question_title"
+				required={false}
+				disabled={false}
+				maxHeight="4em"
+				maxLength={limits.fuiz.typeAnswer.maxTitleLength}
+			/>
+		</div>
 	</div>
 	<div style:display="flex" style:flex-direction="column" style:gap="0.4em" style:width="20ch">
 		{#each slide.answers as answer}

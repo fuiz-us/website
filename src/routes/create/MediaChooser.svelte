@@ -45,7 +45,7 @@
 </script>
 
 {#if !media}
-	<div style:flex="1" style:padding="10px" style:display="flex" style:justify-content="center">
+	<div style:display="flex" style:justify-content="center">
 		<input
 			style:display="none"
 			type="file"
@@ -80,11 +80,11 @@
 		>
 			<div
 				style:aspect-ratio="1"
-				style:width="15ch"
+				style:width="2em"
 				style:background={dragOver ? buttonColors[0][0] : 'transparent'}
 				style:border="0.1em dashed {dragOver ? '#fff' : 'currentcolor'}"
-				style:border-radius="0.7em"
-				style:padding="0.4em"
+				style:border-radius="0.2em"
+				style:padding="0.2em"
 				style:box-sizing="border-box"
 				style:display="flex"
 				style:flex-direction="column"
@@ -102,10 +102,8 @@
 					style:cursor="pointer"
 					style:justify-content="center"
 				>
-					<Icon size="2em" src={add_photo} alt={m.open_image()} />
-					<div style:font-weight="bold">{m.open_image()}</div>
+					<Icon size="1em" src={add_photo} alt={m.open_image()} />
 				</label>
-				<div style:font-size="0.7em" style:font-weight="bold">{m.drop_here()}</div>
 			</div>
 		</button>
 	</div>

@@ -5,6 +5,8 @@
 	import Host from './Host.svelte';
 	import Options from './Options.svelte';
 	import { browser } from '$app/environment';
+	import OrderAnswers from './OrderAnswers.svelte';
+	import OrderStatistics from './OrderStatistics.svelte';
 
 	let code: string | null = null;
 	let id: number | null = null;
@@ -33,3 +35,4 @@
 {:else}
 	<Create {data} />
 {/if}
+

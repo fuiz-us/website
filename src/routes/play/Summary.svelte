@@ -37,6 +37,10 @@
 						<div class="question-text" title={slide.MultipleChoice.title}>
 							{slide.MultipleChoice.title}
 						</div>
+					{:else if 'Order' in slide}
+						<div class="question-text" title={slide.Order.title}>
+							{slide.Order.title}
+						</div>
 					{:else}
 						<div class="question-text" title={slide.TypeAnswer.title}>
 							{slide.TypeAnswer.title}
@@ -56,6 +60,14 @@
 										</li>
 									{/each}
 								</ul>
+							{:else if 'Order' in slide}
+								<ol>
+									{#each slide.Order.answers as answer}
+										<li>
+											{answer}
+										</li>
+									{/each}
+								</ol>
 							{:else}
 								<ul>
 									{#each slide.MultipleChoice.answers.filter((a) => a.correct) as answer}

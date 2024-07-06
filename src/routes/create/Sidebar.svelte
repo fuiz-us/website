@@ -195,7 +195,7 @@
 						await changeSelected(slides.length - 1);
 					}}
 				>
-					<div style:padding="0.2em 0.6em">Puzzle</div>
+					<div style:padding="0.2em 0.6em">{m.puzzle()}</div>
 				</FancyButton>
 			</div>
 			<FancyButton

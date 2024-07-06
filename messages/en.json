@@ -198,5 +198,7 @@
 	"which_feature": "Which feature do you like the most in Fuiz?",
 	"login": "Log in",
 	"logout": "Sign out",
-	"short_answer": "Short Answer"
+	"short_answer": "Short Answer",
+	"puzzle": "Puzzle",
+	"case_sensitive": "Case-sesnsitive"
 }

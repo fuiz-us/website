@@ -61,7 +61,7 @@
 		</div>
 		<div>
 			<div class="field-title">
-				Case-sesnsitive
+				{m.case_sensitive()}
 				<div>
 					<Switch bind:checked={activeSlide.case_sensitive} id="case-sensitive" />
 				</div>

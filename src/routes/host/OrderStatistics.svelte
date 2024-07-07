@@ -1,14 +1,9 @@
 <script lang="ts">
 	import * as m from '$lib/paraglide/messages';
-	import AnsweredCount from '$lib/Game/AnsweredCount.svelte';
-	import think from '$lib/assets/kevin_macleod_thinking_music.mp3';
 	import NiceBackground from '$lib/NiceBackground.svelte';
-	import TimeLeft from '$lib/Game/TimeLeft.svelte';
-	import VerticalTripleSplit from '$lib/Game/VerticalTripleSplit.svelte';
 	import Topbar from './Topbar.svelte';
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import factual from '$lib/assets/correct.svg';
-	import Audio from '$lib/Audio.svelte';
 	import type { BindableGameInfo, SharedGameInfo } from './+page';
 	import type { Media } from '$lib/types';
 	import TextAnswerButton from '$lib/Game/TextAnswerButton.svelte';

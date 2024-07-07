@@ -7,7 +7,6 @@
 	import Play from './Play.svelte';
 	import { browser } from '$app/environment';
 	import { i18n } from '$lib/i18n';
-	import OrderAnswers from './OrderAnswers.svelte';
 
 	let code: string | null = null;
 
@@ -26,7 +25,9 @@
 </svelte:head>
 
 {#if code !== null}
-	<Play {code} />
+	<div style:display="contents" style:font-size="0.75em">
+		<Play {code} />
+	</div>
 {:else}
 	<Join />
 {/if}

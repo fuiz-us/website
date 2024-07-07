@@ -761,7 +761,7 @@
 			/>
 		{/if}
 	{:else if 'Order' in slide}
-		{@const { Order: kind, question, answers, media, results, answered, axis_labels } = slide}
+		{@const { Order: kind, question, answers, media, answered, axis_labels } = slide}
 		{#if kind === 'QuestionAnnouncement'}
 			<Question {name} {score} {media} questionText={question || ''} />
 		{:else if kind === 'AnswersAnnouncement'}

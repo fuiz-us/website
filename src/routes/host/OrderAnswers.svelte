@@ -1,7 +1,6 @@
 <script lang="ts">
 	import AnsweredCount from '$lib/Game/AnsweredCount.svelte';
 	import think from '$lib/assets/kevin_macleod_thinking_music.mp3';
-	import Answers from '$lib/Game/Answers.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import TimeLeft from '$lib/Game/TimeLeft.svelte';

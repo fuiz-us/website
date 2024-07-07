@@ -7,7 +7,6 @@
 	import Icon from '$lib/Icon.svelte';
 	import LanguageSwitcher from '$lib/LanguageSwitcher.svelte';
 	import DarkModeSwitcher from '$lib/DarkModeSwitcher.svelte';
-	import { i18n } from '$lib/i18n';
 	import { page } from '$app/stores';
 </script>
 

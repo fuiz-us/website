@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as m from '$lib/paraglide/messages.js';
+	import type { DndEvent } from 'svelte-dnd-action';
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import MediaDisplay from '$lib/MediaDisplay.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
@@ -133,7 +135,7 @@
 							);
 						}}
 					>
-						Submit
+						{m.submit()}
 					</FancyButton>
 				</div>
 			</div>

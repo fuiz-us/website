@@ -36,7 +36,7 @@
 			<div style:font-family="Poppins">
 				{score}
 			</div>
-			<Icon src={score_image} alt="points" size="48px" />
+			<Icon src={score_image} alt="points" size="1.25em" />
 		</div>
 	{/if}
 </div>

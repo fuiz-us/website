@@ -10,7 +10,6 @@
 	import TypicalPage from '$lib/TypicalPage.svelte';
 	import { getAllCreations, loadDatabase } from '$lib/storage';
 	import type { PageData } from './$types';
-	import { i18n } from '$lib/i18n';
 
 	export let data: PageData;
 

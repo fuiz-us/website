@@ -5,7 +5,6 @@
 	import Icon from '$lib/Icon.svelte';
 	import SelectTime from '$lib/SelectTime.svelte';
 	import type { OrderSlide } from '$lib/types';
-	import Switch from '$lib/Switch.svelte';
 
 	export let activeSlide: OrderSlide;
 </script>
@@ -102,11 +101,6 @@
 		.field-title {
 			flex-direction: column;
 			align-items: start;
-		}
-
-		.field-title div {
-			font-size: 2em;
-			padding: 0.2em;
 		}
 	}
 </style>

@@ -199,6 +199,8 @@
 	"login": "Log in",
 	"logout": "Sign out",
 	"short_answer": "Short Answer",
-	"puzzle": "Puzzle",
-	"case_sensitive": "Case-sesnsitive"
+	"puzzle": "Ranking",
+	"case_sensitive": "Case-sesnsitive",
+	"empty_answer": "Empty Answer",
+	"duplicate_answers": "Duplicate Answers"
 }

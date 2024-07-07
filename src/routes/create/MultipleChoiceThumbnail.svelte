@@ -37,7 +37,47 @@
 			{/if}
 		</svelte:fragment>
 		<svelte:fragment slot="bottom">
-			{#if slide.answers.filter((a) => a.correct).length}
+			{#if !slide.answers.length}
+				<div
+					style:font-size="18px"
+					style:padding="0.2em 0.1em"
+					style:font-weight="bold"
+					style:background="#F5C211"
+					style:flex="1"
+				>
+					{m.no_answers()}
+				</div>
+			{:else if slide.answers.some((a) => !a.content.Text.length)}
+				<div
+					style:font-size="18px"
+					style:padding="0.2em 0.1em"
+					style:font-weight="bold"
+					style:background="#F5C211"
+					style:flex="1"
+				>
+					{m.empty_answer()}
+				</div>
+			{:else if new Set(slide.answers.map((a) => a.content.Text)).size !== slide.answers.length}
+				<div
+					style:font-size="18px"
+					style:padding="0.2em 0.1em"
+					style:font-weight="bold"
+					style:background="#F5C211"
+					style:flex="1"
+				>
+					{m.duplicate_answers()}
+				</div>
+			{:else if slide.answers.every((a) => !a.correct)}
+				<div
+					style:font-size="18px"
+					style:padding="0.2em 0.1em"
+					style:font-weight="bold"
+					style:background="#F5C211"
+					style:flex="1"
+				>
+					{m.no_correct()}
+				</div>
+			{:else}
 				<div
 					style:display="grid"
 					style:grid-template-columns="1fr 1fr"
@@ -51,20 +91,6 @@
 							style:border-radius="0.7em"
 						/>
 					{/each}
-				</div>
-			{:else}
-				<div
-					style:font-size="18px"
-					style:padding="0.2em 0.1em"
-					style:font-weight="bold"
-					style:background="#F5C211"
-					style:flex="1"
-				>
-					{#if slide.answers.length}
-						{m.no_correct()}
-					{:else}
-						{m.no_answers()}
-					{/if}
 				</div>
 			{/if}
 		</svelte:fragment>

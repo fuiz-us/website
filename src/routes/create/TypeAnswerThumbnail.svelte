@@ -3,6 +3,7 @@
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import VerticalSplit from '$lib/Game/VerticalSplit.svelte';
 	import type { TypeAnswer } from '$lib/types';
+	import { buttonColors } from '$lib';
 
 	export let slide: TypeAnswer;
 </script>
@@ -35,14 +36,7 @@
 			{/if}
 		</svelte:fragment>
 		<svelte:fragment slot="bottom">
-			{#if slide.answers.length}
-				<div
-					style:border="0.1em solid var(--accent-color)"
-					style:margin="0.1em"
-					style:border-radius="0.4em"
-					style:height="0.8em"
-				/>
-			{:else}
+			{#if !slide.answers.length}
 				<div
 					style:font-size="18px"
 					style:padding="0.2em 0.1em"
@@ -52,6 +46,36 @@
 				>
 					{m.no_answers()}
 				</div>
+			{:else if slide.answers.some((a) => !a.text.length)}
+				<div
+					style:font-size="18px"
+					style:padding="0.2em 0.1em"
+					style:font-weight="bold"
+					style:background="#F5C211"
+					style:flex="1"
+				>
+					{m.empty_answer()}
+				</div>
+			{:else if new Set(slide.answers.map((a) => a.text)).size !== slide.answers.length}
+				<div
+					style:font-size="18px"
+					style:padding="0.2em 0.1em"
+					style:font-weight="bold"
+					style:background="#F5C211"
+					style:flex="1"
+				>
+					{m.duplicate_answers()}
+				</div>
+			{:else}
+				{#each slide.answers as _, i}
+					<div
+						style:border="0.1em solid {buttonColors.at(i % buttonColors.length)?.at(0) ??
+							'var(--accent-color)'}"
+						style:margin="0.1em"
+						style:border-radius="0.6em"
+						style:height="0.5em"
+					/>
+				{/each}
 			{/if}
 		</svelte:fragment>
 	</VerticalSplit>

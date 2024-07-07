@@ -87,7 +87,7 @@
 							}
 						}}
 					/>
-				{:else}
+				{:else if slide.answers.length < limits.fuiz.order.maxAnswerCount}
 					<IconButton
 						src={addAnswer}
 						alt={m.add_answer()}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import * as m from '$lib/paraglide/messages.js';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 	import VerticalSplit from '$lib/Game/VerticalSplit.svelte';
 	import type { OrderSlide } from '$lib/types';
@@ -36,15 +37,47 @@
 			{/if}
 		</svelte:fragment>
 		<svelte:fragment slot="bottom">
-			{#each slide.answers as _, i}
+			{#if !slide.answers.length}
 				<div
-					style:background={buttonColors.at(i % buttonColors.length)?.at(0) ??
-						'var(--accent-color)'}
-					style:margin="0.05em"
-					style:border-radius="0.6em"
-					style:height="0.5em"
-				/>
-			{/each}
+					style:font-size="18px"
+					style:padding="0.2em 0.1em"
+					style:font-weight="bold"
+					style:background="#F5C211"
+					style:flex="1"
+				>
+					{m.no_answers()}
+				</div>
+			{:else if slide.answers.some((a) => !a.text.length)}
+				<div
+					style:font-size="18px"
+					style:padding="0.2em 0.1em"
+					style:font-weight="bold"
+					style:background="#F5C211"
+					style:flex="1"
+				>
+					{m.empty_answer()}
+				</div>
+			{:else if new Set(slide.answers.map((a) => a.text)).size !== slide.answers.length}
+				<div
+					style:font-size="18px"
+					style:padding="0.2em 0.1em"
+					style:font-weight="bold"
+					style:background="#F5C211"
+					style:flex="1"
+				>
+					{m.duplicate_answers()}
+				</div>
+			{:else}
+				{#each slide.answers as _, i}
+					<div
+						style:background={buttonColors.at(i % buttonColors.length)?.at(0) ??
+							'var(--accent-color)'}
+						style:margin="0.1em"
+						style:border-radius="0.6em"
+						style:height="0.5em"
+					/>
+				{/each}
+			{/if}
 		</svelte:fragment>
 	</VerticalSplit>
 </div>

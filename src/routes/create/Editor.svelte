@@ -62,6 +62,39 @@
 					return assertUnreachable(s);
 			}
 		}).length > 0;
+
+	$: empty_answer =
+		config.slides.filter((s) => {
+			switch (true) {
+				case 'MultipleChoice' in s:
+					return s.MultipleChoice.answers.some((a) => !a.content.Text.length);
+				case 'TypeAnswer' in s:
+					return s.TypeAnswer.answers.some((a) => !a.text.length);
+				case 'Order' in s:
+					return s.Order.answers.some((a) => !a.text.length);
+				default:
+					return assertUnreachable(s);
+			}
+		}).length > 0;
+
+	$: duplicate_answers =
+		config.slides.filter((s) => {
+			switch (true) {
+				case 'MultipleChoice' in s:
+					return (
+						new Set(s.MultipleChoice.answers.map((a) => a.content.Text)).size !==
+						s.MultipleChoice.answers.length
+					);
+				case 'TypeAnswer' in s:
+					return (
+						new Set(s.TypeAnswer.answers.map((a) => a.text)).size !== s.TypeAnswer.answers.length
+					);
+				case 'Order' in s:
+					return new Set(s.Order.answers.map((a) => a.text)).size !== s.Order.answers.length;
+				default:
+					return assertUnreachable(s);
+			}
+		}).length > 0;
 </script>
 
 <div
@@ -82,6 +115,10 @@
 			? m.missing_answers()
 			: no_correct_answer
 			? m.missing_correct()
+			: empty_answer
+			? m.empty_answer()
+			: duplicate_answers
+			? m.duplicate_answers()
 			: undefined}
 	/>
 	<Main bind:config />

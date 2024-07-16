@@ -57,6 +57,7 @@
 				answered_count?: number;
 				results?: [string, number][];
 				accept_answers?: boolean;
+				case_sensitive?: boolean;
 		  }
 		| {
 				Order: 'QuestionAnnouncement' | 'AnswersAnnouncement' | 'AnswersResults';
@@ -186,6 +187,7 @@
 					media?: Media;
 					answers: Array<string>;
 					results: Array<[string, number]>;
+					case_sensitive: boolean;
 				};
 		  };
 
@@ -439,7 +441,8 @@
 						question = previous_state?.question,
 						media = previous_state?.media,
 						answers,
-						results
+						results,
+						case_sensitive
 					} = ta.AnswersResults;
 					currentState = {
 						index,
@@ -449,7 +452,8 @@
 							question,
 							media,
 							answers,
-							results
+							results,
+							case_sensitive
 						}
 					};
 				}

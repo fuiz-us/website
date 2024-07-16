@@ -78,6 +78,7 @@
 				results?: [string, number][];
 				answered?: string;
 				accept_answers?: boolean;
+				case_sensitive?: boolean;
 		  }
 		| {
 				Order: 'QuestionAnnouncement' | 'AnswersAnnouncement' | 'AnswersResults';
@@ -220,6 +221,7 @@
 					media?: Media;
 					answers: string[];
 					results: [string, number][];
+					case_sensitive: boolean;
 				};
 		  };
 
@@ -736,7 +738,15 @@
 		{@const { points, position } = slide.Score}
 		<Leaderboard {name} score={points} {position} final={index + 1 === count} />
 	{:else if 'TypeAnswer' in slide}
-		{@const { TypeAnswer: kind, question, answers, media, answered, accept_answers } = slide}
+		{@const {
+			TypeAnswer: kind,
+			question,
+			answers,
+			media,
+			answered,
+			accept_answers,
+			case_sensitive
+		} = slide}
 		{#if kind === 'QuestionAnnouncement'}
 			{#if answered === undefined}
 				{#if accept_answers}
@@ -757,7 +767,10 @@
 			<Result
 				{name}
 				{score}
-				correct={answered === undefined ? false : answers?.includes(answered) ?? false}
+				correct={answered === undefined
+					? false
+					: answers?.includes(case_sensitive ? answered.trim() : answered.trim().toLowerCase()) ??
+					  false}
 			/>
 		{/if}
 	{:else if 'Order' in slide}

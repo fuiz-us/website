@@ -13,18 +13,6 @@
 <div id="sidebar-container">
 	<div id="sidebar">
 		<div>
-			<div class="field-title">{m.time_limit()}</div>
-			<div>
-				<SelectTime
-					options={[...limits.fuiz.typeAnswer.allowedTimeLimits]}
-					map={(v) => (parseInt(v) / 1000).toString()}
-					bind:selected={activeSlide.time_limit}
-				>
-					<Icon src="$lib/assets/timer.svg" size="1em" alt={m.time_limit()} />
-				</SelectTime>
-			</div>
-		</div>
-		<div>
 			<div class="field-title">{m.time_before_answers()}</div>
 			<div>
 				<SelectTime
@@ -33,6 +21,18 @@
 					bind:selected={activeSlide.introduce_question}
 				>
 					<Icon src="$lib/assets/timer.svg" size="1em" alt="{m.time_before_answers}()}" />
+				</SelectTime>
+			</div>
+		</div>
+		<div>
+			<div class="field-title">{m.time_limit()}</div>
+			<div>
+				<SelectTime
+					options={[...limits.fuiz.typeAnswer.allowedTimeLimits]}
+					map={(v) => (parseInt(v) / 1000).toString()}
+					bind:selected={activeSlide.time_limit}
+				>
+					<Icon src="$lib/assets/timer.svg" size="1em" alt={m.time_limit()} />
 				</SelectTime>
 			</div>
 		</div>

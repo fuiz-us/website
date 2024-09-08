@@ -769,8 +769,10 @@
 				{score}
 				correct={answered === undefined
 					? false
-					: answers?.includes(case_sensitive ? answered.trim() : answered.trim().toLowerCase()) ??
-					  false}
+					: answers
+							?.map((a) => a.trim())
+							.map((a) => (case_sensitive ? a : a.toLowerCase()))
+							.includes(case_sensitive ? answered.trim() : answered.trim().toLowerCase()) ?? false}
 			/>
 		{/if}
 	{:else if 'Order' in slide}

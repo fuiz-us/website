@@ -14,15 +14,33 @@
 
 	export let questionText: string;
 	export let answers: string[];
+	export let caseSensitive: boolean;
 	export let results: [string, number][];
 	export let timeLeft: number | undefined = undefined;
 	export let timeStarted: number | undefined = undefined;
 
 	$: allAnswers = results
-		.concat(answers.filter((a) => !results.some((r) => r[0] === a)).map((a) => [a, 0]))
-		.sort(([, a], [, b]) => b - a);
+		.concat(
+			answers
+				.filter(
+					(possibleAnswer) =>
+						!results.some(([correctAnswerText]) => correctAnswerText === possibleAnswer)
+				)
+				.map((wrongAnswer) => [wrongAnswer, 0])
+		)
+		.sort(([, frequencyA], [, frequencyB]) => frequencyB - frequencyA);
 
 	$: maxCount = Math.max(...allAnswers.map(([, count]) => count), 1);
+
+	function matches(answerA: string, answerB: string, caseSensitive: boolean): boolean {
+		const trimmedA = answerA.trim();
+		const trimmedB = answerB.trim();
+		return caseSensitive
+			? trimmedA === trimmedB
+			: trimmedA.toLowerCase() === trimmedB.toLowerCase();
+	}
+
+	$: isCorrect = (text: string) => answers.some((answer) => matches(answer, text, caseSensitive));
 
 	let fullscreenElement;
 </script>
@@ -49,7 +67,7 @@
 					style:gap="0.5em"
 				>
 					{#each allAnswers as [text, count]}
-						{@const correct = answers.includes(text)}
+						{@const correct = isCorrect(text)}
 						<div style:text-align="end" style:font-family="Poppins">
 							{text}
 						</div>

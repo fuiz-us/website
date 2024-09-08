@@ -665,7 +665,14 @@
 			/>
 		{/if}
 	{:else if 'TypeAnswer' in slide}
-		{@const { TypeAnswer: kind, question, media, answers, results } = slide}
+		{@const {
+			TypeAnswer: kind,
+			question,
+			media,
+			answers,
+			results,
+			case_sensitive: caseSensitive
+		} = slide}
 		{#if kind === 'QuestionAnnouncement'}
 			<Question
 				on:next={next}
@@ -682,6 +689,7 @@
 				on:lock={receiveLock}
 				bind:bindableGameInfo
 				{gameInfo}
+				caseSensitive={caseSensitive ?? false}
 				questionText={question || ''}
 				answers={answers || []}
 				results={results || []}

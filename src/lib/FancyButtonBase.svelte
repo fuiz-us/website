@@ -21,7 +21,7 @@
 	style:box-sizing="border-box"
 	style:padding="0.3em 0 0 0"
 	style:width="100%"
-	style:height="100%"
+	style:height="fit-content"
 	style:font="inherit"
 	style:outline="none"
 	disabled={disabled || !active}

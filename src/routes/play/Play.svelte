@@ -497,7 +497,8 @@
 						question = previous_state?.question,
 						media = previous_state?.media,
 						answers,
-						results
+						results,
+						case_sensitive
 					} = ta.AnswersResults;
 					currentState = {
 						index,
@@ -509,6 +510,7 @@
 							media,
 							answers,
 							results,
+							case_sensitive,
 							answered: previous_state?.answered
 						}
 					};

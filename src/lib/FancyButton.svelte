@@ -8,6 +8,7 @@
 	export let active = true;
 	export let type: 'button' | 'submit' | 'reset' | undefined = undefined;
 	export let action: Action | undefined = undefined;
+	export let height: string | undefined = undefined;
 </script>
 
 <FancyButtonBase
@@ -22,6 +23,7 @@
 	backgroundDeepColor={backgroundDeepColor ?? '#A40E13'}
 	{disabled}
 	{active}
+	{height}
 	on:click
 >
 	<div

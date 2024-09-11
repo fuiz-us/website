@@ -11,6 +11,7 @@
 		on:click
 		backgroundColor={buttonColors.at(index % buttonColors.length)?.at(0)}
 		backgroundDeepColor={buttonColors.at(index % buttonColors.length)?.at(1)}
+		height="100%"
 	>
 		<div
 			style:height="100%"

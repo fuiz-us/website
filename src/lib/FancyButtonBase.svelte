@@ -8,6 +8,7 @@
 	export let active = true;
 	export let type: 'button' | 'submit' | 'reset' | undefined = undefined;
 	export let action: Action;
+	export let height: string | undefined = undefined;
 </script>
 
 <button
@@ -21,7 +22,7 @@
 	style:box-sizing="border-box"
 	style:padding="0.3em 0 0 0"
 	style:width="100%"
-	style:height="fit-content"
+	style:height={height ?? 'fit-content'}
 	style:font="inherit"
 	style:outline="none"
 	disabled={disabled || !active}

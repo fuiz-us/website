@@ -31,51 +31,155 @@
 		style:gap="5px"
 		style:justify-content="center"
 		style:align-items="center"
-		style:max-width="40ch"
-		style:font-size="clamp(1em,4vw,1.25em)"
+		style:font-size="0.75em"
 		style:margin="auto"
 	>
-		<AnchorMessage
-			href="https://adhami.me"
-			image={{ src: computer, alt: m.developer() }}
-			background="#23456740"
-			message="Khaleel Al-Adhami"
-		/>
-		<AnchorMessage
-			href="https://www.linkedin.com/in/yichen-gao/"
-			image={{ src: people, alt: 'Community Lead' }}
-			background="#23456740"
-			message="Yichen Gao"
-		/>
-		<AnchorMessage
-			href="https://barish.me/"
-			image={{ src: computer, alt: m.developer() }}
-			background="#23456740"
-			message="Abutalib (Barish) Namazov"
-		/>
-		<AnchorMessage
-			href="https://bragefuglseth.dev/"
-			image={{ src: brush, alt: m.designer() }}
-			background="#23456740"
-			message="Brage Fuglseth"
-		/>
-		<AnchorMessage
-			href="https://www.linkedin.com/in/zhironwu/"
-			image={{ src: translator, alt: 'Translator' }}
-			background="#23456740"
-			message="Zhiron Wu"
-		/>
-		<AnchorMessage
-			href="https://incompetech.com/wordpress/"
-			image={{ src: music, alt: m.music() }}
-			background="#23456740"
-			message={'"Thinking Music" Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License. http://creativecommons.org/licenses/by/4.0/'}
-		/>
-		<AnchorMessage
-			href="https://www.youtube.com/watch?v=_h47TNIKJYo&pp=ygUHIGJlZS4gMw%3D%3D"
-			image={{ src: music, alt: m.music() }}
-			background="#23456740"
-			message={'"bee. 3" GroovyDominoes52. can use in your videos or games but always remember to credit and not steal'}
-		/>
+		<section style:width="100%">
+			<h2
+				style:margin="0.5em 0"
+				style:padding="0"
+				style:text-align="center"
+				style:font-family="Poppins"
+				style:font-size="1.25em"
+			>
+				Core Team
+			</h2>
+			<ul id="core-team">
+				<li>
+					<img
+						src={'https://images.opencollective.com/khaleel-al-adhami/63dc04f/avatar/256.png'}
+						alt="Khaleel Al-Adhami Avatar"
+					/>
+					<div>
+						<AnchorMessage
+							href="https://adhami.me"
+							image={{ src: computer, alt: m.developer() }}
+							background="#23456740"
+							message="Khaleel Al-Adhami"
+						/>
+					</div>
+				</li>
+				<li>
+					<img
+						src={'https://files.mastodon.social/accounts/avatars/112/736/220/093/949/873/original/b62dc3d558193714.jpg'}
+						alt="Abutalib (Barish) Namazov Avatar"
+					/>
+					<div>
+						<AnchorMessage
+							href="https://barish.me/"
+							image={{ src: computer, alt: m.developer() }}
+							background="#23456740"
+							message="Abutalib (Barish) Namazov"
+						/>
+					</div>
+				</li>
+				<li>
+					<img
+						src={'https://images.opencollective.com/yichen-gao/8ddd996/avatar/256.png'}
+						alt="Yichen Gao Avatar"
+					/>
+					<div>
+						<AnchorMessage
+							href="https://www.linkedin.com/in/yichen-gao/"
+							image={{ src: people, alt: 'Community Lead' }}
+							background="#23456740"
+							message="Yichen Gao"
+						/>
+					</div>
+				</li>
+				<li>
+					<img
+						src={'https://avatars.githubusercontent.com/u/21014508?v=4'}
+						alt="Sebastian Wich Avatar"
+					/>
+					<div>
+						<AnchorMessage
+							href="https://sebastianwich.com"
+							image={{ src: people, alt: 'Community Lead' }}
+							background="#23456740"
+							message="Sebastian Wich"
+						/>
+					</div>
+				</li>
+			</ul>
+		</section>
+		<section
+			style:display="flex"
+			style:gap="5px"
+			style:flex-direction="column"
+			style:justify-content="center"
+			style:align-items="center"
+			style:width="100%"
+			style:max-width="40ch"
+		>
+			<h2
+				style:margin="0.5em 0"
+				style:padding="0"
+				style:text-align="center"
+				style:font-family="Poppins"
+				style:font-size="1.25em"
+			>
+				Contributors
+			</h2>
+			<AnchorMessage
+				href="https://bragefuglseth.dev/"
+				image={{ src: brush, alt: m.designer() }}
+				background="#23456740"
+				message="Brage Fuglseth"
+			/>
+			<AnchorMessage
+				href="https://www.linkedin.com/in/zhironwu/"
+				image={{ src: translator, alt: 'Translator' }}
+				background="#23456740"
+				message="Zhiron Wu"
+			/>
+			<AnchorMessage
+				href="https://incompetech.com/wordpress/"
+				image={{ src: music, alt: m.music() }}
+				background="#23456740"
+				message={'"Thinking Music" Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0 License. http://creativecommons.org/licenses/by/4.0/'}
+			/>
+			<AnchorMessage
+				href="https://www.youtube.com/watch?v=_h47TNIKJYo&pp=ygUHIGJlZS4gMw%3D%3D"
+				image={{ src: music, alt: m.music() }}
+				background="#23456740"
+				message={'"bee. 3" GroovyDominoes52. can use in your videos or games but always remember to credit and not steal'}
+			/>
+		</section>
 	</div>
 </TypicalPage>
+
+<style>
+	#core-team {
+		max-width: min(80ch, 100%);
+		justify-content: center;
+		margin: 0 auto;
+		padding-inline-start: 0;
+
+		display: grid;
+
+		grid-template-columns: repeat(4, 300px);
+
+		@media screen and (max-width: 1200px) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		@media screen and (max-width: 800px) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		gap: 5px;
+
+		& li {
+			display: flex;
+			gap: 5px;
+			flex-direction: column;
+			justify-content: start;
+
+			& img {
+				width: 100%;
+				border-radius: 0.25em;
+			}
+		}
+	}
+</style>

@@ -24,6 +24,7 @@
 	import TypeAnswerStatistics from './TypeAnswerStatistics.svelte';
 	import OrderAnswers from './OrderAnswers.svelte';
 	import OrderStatistics from './OrderStatistics.svelte';
+	import { onMount } from 'svelte';
 
 	type GameState =
 		| {
@@ -581,6 +582,21 @@
 	}
 
 	const HOST_NEXT = JSON.stringify({ Host: 'Next' });
+
+	onMount(() => {
+		const handleKeydown = (e: KeyboardEvent) => {
+			if (e.key === 'PageDown') {
+				next();
+			}
+		};
+
+		window.addEventListener('keydown', handleKeydown);
+
+		return () => {
+			window.removeEventListener('keydown', handleKeydown);
+			socket.close();
+		};
+	});
 </script>
 
 {#if currentState === undefined}

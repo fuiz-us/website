@@ -63,7 +63,7 @@
 	style:justify-content="center"
 >
 	<a
-		href={i18n.resolveRoute('/create')}
+		href={'/create'}
 		style:height="65px"
 		style:margin="0 5px"
 		style:overflow="hidden"

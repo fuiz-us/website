@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { i18n } from '$lib/i18n';
 	import { languageTag } from '$lib/paraglide/runtime';
 	import type { PageData } from './$types';
 
@@ -12,7 +11,7 @@
 		{#each data.posts as post}
 			{@const url = `/posts/${post.slug}`}
 			<li>
-				<a href={i18n.resolveRoute(url)}>
+				<a href={url}>
 					<div class="image-side">
 						<div class="image-container">
 							<img src={post.image} alt={post.imageAlt} />

@@ -142,7 +142,7 @@
 					alt: m.warning()
 				}}
 				background="#23456740"
-				message="{m.fuiz_is_ongoing()}"
+				message={m.fuiz_is_ongoing()}
 				href="#ongoing"
 			/>
 		</div>
@@ -283,5 +283,24 @@
 		align-items: center;
 		justify-content: center;
 		gap: 1em;
+	}
+
+	:global(a.styled) {
+		text-decoration: none;
+		--highlight: color-mix(in srgb, currentColor 20%, transparent);
+		background: var(--highlight);
+		color: inherit;
+		padding: 0.05em 0.15em;
+		border-radius: 0.15em;
+		font-weight: bold;
+
+		display: inline-flex;
+		align-items: center;
+
+		&:focus,
+		&:hover {
+			outline: 0.15em solid var(--highlight);
+			text-decoration: underline solid;
+		}
 	}
 </style>

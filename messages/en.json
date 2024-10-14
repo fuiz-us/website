@@ -17,7 +17,7 @@
 	"always_open": "Always Open Source",
 	"always_open_desc": "As per the AGPLv3 license, Fuiz will always be open source. You can modify and run the source code as you please.",
 	"stay_in_touch": "Stay in touch!",
-	"stay_in_touch_desc": "We value the feedback of every user. Please fill out this <a href=\"https://forms.gle/orFqr1wnhm6dv7xY7\">form</a> and arrange a meeting with us! We are looking forward to meeting with you. You can also join our <a href=\"https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg\" >Slack community</a>.",
+	"stay_in_touch_desc": "We value the feedback of every user. Please fill out this <a class='styled' href='https://forms.gle/orFqr1wnhm6dv7xY7'>form</a> and arrange a meeting with us! We are looking forward to meeting with you. You can also join our <a class='styled' href='https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg' >Slack community</a>.",
 	"create_title": "Create Your Own Fuiz",
 	"create_desc": "Create your own fuiz with beautiful images to play it with others",
 	"missing_fuiz": "o no! cannot find this fuiz!",

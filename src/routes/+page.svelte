@@ -142,7 +142,7 @@
 					alt: m.warning()
 				}}
 				background="#23456740"
-				message="Fuiz is an ongoing project. Your feedback is important."
+				message="{m.fuiz_is_ongoing()}"
 				href="#ongoing"
 			/>
 		</div>
@@ -221,15 +221,9 @@
 	<section id="ongoing">
 		<div class="split">
 			<div>
-				<h2>Stay in Touch!</h2>
+				<h2>{m.stay_in_touch()}</h2>
 				<p>
-					We value the feedback of every user. Please fill out this <Anchor
-						href="https://forms.gle/orFqr1wnhm6dv7xY7">form</Anchor
-					> and arrange a meeting with us! We are looking forward to meeting with you. You can also join
-					our <Anchor
-						href="https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg"
-						>Slack community</Anchor
-					>.
+					{@html m.stay_in_touch_desc()}
 				</p>
 			</div>
 			<Icon src="$lib/assets/email.svg" size="7em" alt="Email" />

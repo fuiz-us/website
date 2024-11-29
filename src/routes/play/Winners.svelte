@@ -7,10 +7,14 @@
 	import Topbar from './Topbar.svelte';
 	import { languageTag } from '$lib/paraglide/runtime.js';
 
-	export let name: string;
-	export let score: number;
-	export let isWinner: boolean;
-	export let winners: string[];
+	interface Props {
+		name: string;
+		score: number;
+		isWinner: boolean;
+		winners: string[];
+	}
+
+	let { name, score, isWinner, winners }: Props = $props();
 
 	const formatter = new Intl.ListFormat(languageTag(), { style: 'long', type: 'conjunction' });
 </script>

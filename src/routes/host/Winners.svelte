@@ -6,18 +6,23 @@
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import type { BindableGameInfo, SharedGameInfo } from './+page';
 
-	export let bindableGameInfo: BindableGameInfo;
-	export let gameInfo: SharedGameInfo;
+	interface Props {
+		bindableGameInfo: BindableGameInfo;
+		gameInfo: SharedGameInfo;
+		winners: string[];
+		lock: () => void;
+		next: () => void;
+	}
 
-	export let winners: string[];
+	let { bindableGameInfo = $bindable(), gameInfo, winners, lock, next }: Props = $props();
 
-	let fullscreenElement;
+	let fullscreenElement: HTMLElement | undefined = $state();
 </script>
 
 <div style:height="100%" bind:this={fullscreenElement}>
 	<NiceBackground>
-		<Topbar bind:bindableGameInfo {gameInfo} {fullscreenElement} on:lock />
-		<TextBar on:next text={m.winners()} showNext={true} heading={true} />
+		<Topbar bind:bindableGameInfo {gameInfo} {fullscreenElement} onlock={lock} />
+		<TextBar onnext={next} text={m.winners()} showNext={true} heading={true} />
 		<div
 			style:display="flex"
 			style:flex-direction="column"

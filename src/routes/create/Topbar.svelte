@@ -7,26 +7,29 @@
 	import Logo from '$lib/Logo.svelte';
 	import Textfield from '$lib/Textfield.svelte';
 	import { getCreation, type Database } from '$lib/storage';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import tippy, { type Instance } from 'tippy.js';
-	import { i18n } from '$lib/i18n';
 
-	export let title: string;
-	export let id: number;
-	export let db: Database;
-	export let errorMessage: string | undefined;
+	interface Props {
+		title: string;
+		id: number;
+		db: Database;
+		errorMessage: string | undefined;
+		onshare: (instance: Instance) => void;
+	}
 
-	let dispatch = createEventDispatcher<{
-		share: Instance;
-	}>();
+	let { title = $bindable(), id, db, errorMessage, onshare }: Props = $props();
 
-	let element: HTMLElement;
+	let shareButton: HTMLElement | undefined = $state();
+	let shareTippyInstance: Instance | undefined = $state();
 
-	let instance: Instance;
-	let hostElement: HTMLElement;
+	let playButton: HTMLElement | undefined = $state();
+	let playTippyInstance: Instance | undefined = $state();
 
 	onMount(() => {
-		instance = tippy(element, {
+		if (!shareButton) return;
+
+		shareTippyInstance = tippy(shareButton, {
 			trigger: 'manual',
 			content: m.copied(),
 			arrow: false,
@@ -34,21 +37,24 @@
 		});
 	});
 
-	let hostTippy: undefined | Instance;
-
-	$: {
-		if (hostElement) {
-			if (errorMessage) {
-				hostTippy?.destroy();
-				hostTippy = tippy(hostElement, {
-					content: errorMessage,
-					arrow: false,
-					theme: 'fuiz'
-				});
-			} else {
-				hostTippy?.destroy();
-			}
+	$effect(() => {
+		if (errorMessage === undefined || errorMessage.length === 0) {
+			playTippyInstance?.destroy();
 		}
+	});
+
+	function onmouseenter() {
+		if (!playButton || !errorMessage) return;
+
+		playTippyInstance?.destroy();
+
+		playTippyInstance = tippy(playButton, {
+			content: errorMessage,
+			arrow: false,
+			theme: 'fuiz'
+		});
+
+		playTippyInstance.show();
 	}
 </script>
 
@@ -101,34 +107,38 @@
 				size="1em"
 				src="$lib/assets/publish.svg"
 				alt={m.publish_title()}
-				on:click={() => goto('publish?id=' + id)}
+				onclick={() => goto('publish?id=' + id)}
 			/>
-			<div bind:this={element}>
+			<div bind:this={shareButton}>
 				<IconButton
 					size="1em"
 					src="$lib/assets/share.svg"
 					alt={m.share()}
-					on:click={() => dispatch('share', instance)}
+					onclick={() => {
+						if (shareTippyInstance) onshare(shareTippyInstance);
+					}}
 				/>
 			</div>
 			<IconButton
 				size="1em"
 				src="$lib/assets/download.svg"
 				alt={m.download()}
-				on:click={async () => {
+				onclick={async () => {
 					const creation = await getCreation(id, db);
 					if (!creation) return;
 					const configJson = creation.config;
 					await downloadFuiz(configJson);
 				}}
 			/>
-			<div bind:this={hostElement}>
+			<div bind:this={playButton}>
 				<IconButton
 					size="1em"
 					src="$lib/assets/slideshow.svg"
 					alt={m.host()}
 					disabled={errorMessage != undefined}
-					on:click={() => goto('host?id=' + id)}
+					onclick={async () => await goto('host?id=' + id)}
+					onmouseenter={() => onmouseenter()}
+					onfocus={() => onmouseenter()}
 				/>
 			</div>
 		</div>

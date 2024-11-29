@@ -4,7 +4,11 @@
 	import { backOut } from 'svelte/easing';
 	import TypicalPage from './TypicalPage.svelte';
 
-	export let errorMessage: string;
+	interface Props {
+		errorMessage: string;
+	}
+
+	let { errorMessage }: Props = $props();
 </script>
 
 <TypicalPage>

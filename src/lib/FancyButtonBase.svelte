@@ -1,19 +1,30 @@
 <script lang="ts">
-	import type { Action } from 'svelte/action';
+	interface Props {
+		foregroundColor: string;
+		backgroundColor: string;
+		backgroundDeepColor: string;
+		disabled?: boolean;
+		active?: boolean;
+		type?: 'button' | 'submit' | 'reset' | undefined;
+		height?: string | undefined;
+		children?: import('svelte').Snippet;
+		onclick?: () => void;
+	}
 
-	export let foregroundColor: string;
-	export let backgroundColor: string;
-	export let backgroundDeepColor: string;
-	export let disabled = false;
-	export let active = true;
-	export let type: 'button' | 'submit' | 'reset' | undefined = undefined;
-	export let action: Action;
-	export let height: string | undefined = undefined;
+	let {
+		foregroundColor,
+		backgroundColor,
+		backgroundDeepColor,
+		disabled = false,
+		active = true,
+		type = undefined,
+		height = undefined,
+		children,
+		onclick
+	}: Props = $props();
 </script>
 
 <button
-	use:action
-	on:select
 	{type}
 	style:display="flex"
 	style:background="none"
@@ -26,7 +37,9 @@
 	style:font="inherit"
 	style:outline="none"
 	disabled={disabled || !active}
-	on:click
+	onclick={() => {
+		if (onclick) onclick();
+	}}
 >
 	<div
 		style:background={disabled ? '#636363' : backgroundDeepColor}
@@ -46,7 +59,7 @@
 			style:width="100%"
 			style:height="100%"
 		>
-			<slot />
+			{@render children?.()}
 		</div>
 	</div>
 </button>
@@ -54,14 +67,17 @@
 <style>
 	button .front {
 		transform: translateY(-0.15em);
-		transition: transform 150ms, background-color 300ms linear, border-color 300ms linear;
+		transition:
+			transform 150ms,
+			background-color 300ms linear,
+			border-color 300ms linear;
 	}
 
 	button:active:not(:disabled) .front {
 		transform: translateY(0em);
 	}
 
-	button:where(:hover, :focus) .front {
+	button:where(:global(:hover, :focus)) .front {
 		transform: translateY(-0.3em);
 	}
 </style>

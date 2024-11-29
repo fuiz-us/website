@@ -6,7 +6,11 @@
 	import SelectTime from '$lib/SelectTime.svelte';
 	import type { OrderSlide } from '$lib/types';
 
-	export let activeSlide: OrderSlide;
+	interface Props {
+		activeSlide: OrderSlide;
+	}
+
+	let { activeSlide = $bindable() }: Props = $props();
 </script>
 
 <div id="sidebar-container">

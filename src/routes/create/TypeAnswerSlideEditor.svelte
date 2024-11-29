@@ -10,7 +10,11 @@
 	import FancyButton from '$lib/FancyButton.svelte';
 	import IconButton from '$lib/IconButton.svelte';
 
-	export let slide: TypeAnswer;
+	interface Props {
+		slide: TypeAnswer;
+	}
+
+	let { slide = $bindable() }: Props = $props();
 
 	if (slide.time_limit < 1000) slide.time_limit *= 1000;
 </script>
@@ -74,13 +78,13 @@
 					src={deleteAnswer}
 					size="1.5em"
 					alt={m.delete_answer()}
-					on:click={() => (slide.answers = slide.answers.filter((a) => a.id !== answer.id))}
+					onclick={() => (slide.answers = slide.answers.filter((a) => a.id !== answer.id))}
 				/>
 			</div>
 		{/each}
 		{#if slide.answers.length < limits.fuiz.typeAnswer.maxAnswerCount}
 			<FancyButton
-				on:click={() => (slide.answers = [...slide.answers, { text: '', id: Date.now() }])}
+				onclick={() => (slide.answers = [...slide.answers, { text: '', id: Date.now() }])}
 			>
 				{m.add_answer()}
 			</FancyButton>

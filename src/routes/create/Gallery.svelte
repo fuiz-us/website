@@ -32,14 +32,17 @@
 	import { page } from '$app/stores';
 	import { signIn, signOut } from '@auth/sveltekit/client';
 
-	export let creations: Creation[];
+	interface Props {
+		creations: Creation[];
+		db: Database;
+		data: PageData;
+	}
 
-	export let db: Database;
-	export let data: PageData;
+	let { creations = $bindable(), db, data }: Props = $props();
 
-	$: sortedCreations = creations.sort((a, b) => b.lastEdited - a.lastEdited);
+	let sortedCreations = $derived(creations.toSorted((a, b) => b.lastEdited - a.lastEdited));
 
-	async function addSlide() {
+	async function newCreation() {
 		let newSlide = {
 			lastEdited: Date.now(),
 			uniqueId: generateUuid(),
@@ -62,7 +65,7 @@
 			}
 		];
 
-		goto(`?id=${id}`);
+		await goto(`?id=${id}`);
 	}
 
 	async function deleteSlide(id: number) {
@@ -71,9 +74,9 @@
 	}
 
 	const dialog = createDialog();
-	let selectedToDeletion = 0;
+	let selectedToDeletion = $state(0);
 
-	let fileInput: HTMLInputElement;
+	let fileInput: HTMLInputElement | undefined = $state();
 
 	function loadFromInput() {
 		const target = document.querySelector('input[type=file]');
@@ -234,7 +237,7 @@
 		style:padding="0 0.5em"
 	>
 		<div>
-			<FancyButton on:click={addSlide}>
+			<FancyButton onclick={newCreation}>
 				<div
 					style:display="flex"
 					style:align-items="center"
@@ -257,9 +260,9 @@
 				accept="application/toml, .toml, application/x-zip, .zip"
 				name="config"
 				multiple
-				on:change={loadFromInput}
+				onchange={() => loadFromInput()}
 			/>
-			<FancyButton on:click={() => fileInput.click()}>
+			<FancyButton onclick={() => fileInput?.click()}>
 				<div
 					style:display="flex"
 					style:align-items="center"
@@ -275,7 +278,7 @@
 		</div>
 		{#if data.session}
 			<div>
-				<FancyButton on:click={() => signOut()}>
+				<FancyButton onclick={signOut}>
 					<div
 						style:display="flex"
 						style:align-items="center"
@@ -291,7 +294,7 @@
 			</div>
 		{:else}
 			<div>
-				<FancyButton on:click={() => signIn()}>
+				<FancyButton onclick={signIn}>
 					<div
 						style:display="flex"
 						style:align-items="center"
@@ -343,23 +346,23 @@
 							{lastEdited}
 							{slidesCount}
 							{media}
-							on:delete={() => {
+							ondelete={() => {
 								selectedToDeletion = id;
 								dialog.open();
 							}}
-							on:play={() => goto('host?id=' + id)}
-							on:download={async () => {
+							onplay={() => goto('host?id=' + id)}
+							ondownload={async () => {
 								const creation = await getCreation(id, db);
 								if (!creation) return;
 								const configJson = creation.config;
 								await downloadFuiz(configJson);
 							}}
-							on:share={async (e) => {
+							onshare={async (e) => {
 								const creation = await getCreation(id, db);
 								if (creation) {
 									await share(creation.config, $page.data.user ? creation.uniqueId : undefined);
 								}
-								e.detail.show();
+								e.show();
 							}}
 						/>
 					{/each}
@@ -387,14 +390,14 @@
 											backgroundColor="var(--background-color)"
 											backgroundDeepColor="currentcolor"
 											foregroundColor="currentColor"
-											on:click={dialog.close}
+											onclick={dialog.close}
 										>
 											<div style:padding="0.2em 0.4em">{m.cancel()}</div>
 										</FancyButton>
 									</div>
 									<div style:flex="1">
 										<FancyButton
-											on:click={() => {
+											onclick={() => {
 												deleteSlide(selectedToDeletion);
 												dialog.close();
 											}}

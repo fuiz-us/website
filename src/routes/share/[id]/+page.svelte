@@ -12,7 +12,11 @@
 	import { mapIdlessMedia, type IdlessFuizConfig } from '$lib/types';
 	import { i18n } from '$lib/i18n';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	onMount(async () => {
 		const db = await loadDatabase(data.session !== null);
@@ -56,7 +60,7 @@
 			db
 		);
 
-		goto(i18n.resolveRoute('/create') + '?id=' + id.toString());
+		await goto(i18n.resolveRoute('/create') + '?id=' + id.toString());
 	});
 </script>
 

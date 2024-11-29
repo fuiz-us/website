@@ -1,10 +1,21 @@
 <script lang="ts">
 	import FancyAnchorButtonBase from './FancyAnchorButtonBase.svelte';
-	export let foregroundColor: string | undefined = undefined;
-	export let backgroundColor: string | undefined = undefined;
-	export let backgroundDeepColor: string | undefined = undefined;
 
-	export let href: string;
+	interface Props {
+		foregroundColor?: string | undefined;
+		backgroundColor?: string | undefined;
+		backgroundDeepColor?: string | undefined;
+		href: string;
+		children?: import('svelte').Snippet;
+	}
+
+	let {
+		foregroundColor = undefined,
+		backgroundColor = undefined,
+		backgroundDeepColor = undefined,
+		href,
+		children
+	}: Props = $props();
 </script>
 
 <FancyAnchorButtonBase
@@ -19,6 +30,6 @@
 		style:font-weight="bold"
 		style:box-sizing="border-box"
 	>
-		<slot />
+		{@render children?.()}
 	</div>
 </FancyAnchorButtonBase>

@@ -1,6 +1,6 @@
 import { type MdPost, type Metadata } from './lib';
 
-async function getPosts() {
+function getPosts() {
 	let posts: MdPost[] = [];
 
 	const paths = import.meta.glob('./*/+page.md', { eager: true });
@@ -12,15 +12,17 @@ async function getPosts() {
 		if (file && typeof file === 'object' && 'metadata' in file && slug) {
 			const metadata = file.metadata as Metadata;
 			const post = { ...metadata, slug } satisfies MdPost;
-			post.published && posts.push(post);
+			if (post.published) {
+				posts.push(post);
+			}
 		}
 	}
 
-	posts = posts.sort((first, second) => second.date.getTime() - first.date.getTime());
+	posts = posts.toSorted((first, second) => second.date.getTime() - first.date.getTime());
 
 	return posts;
 }
 
-export async function load() {
-	return { posts: await getPosts() };
+export function load() {
+	return { posts: getPosts() };
 }

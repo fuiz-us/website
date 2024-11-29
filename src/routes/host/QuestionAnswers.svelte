@@ -12,17 +12,35 @@
 	import type { BindableGameInfo, SharedGameInfo } from './+page';
 	import type { Media } from '$lib/types';
 
-	export let bindableGameInfo: BindableGameInfo;
-	export let gameInfo: SharedGameInfo;
+	interface Props {
+		bindableGameInfo: BindableGameInfo;
+		gameInfo: SharedGameInfo;
+		questionText: string;
+		answers: (string | undefined)[];
+		timeLeft: number | undefined;
+		timeStarted: number | undefined;
+		answeredCount: number;
+		media: Media | undefined;
+		onlock?: (locked: boolean) => void;
+		onnext?: () => void;
+		onanswer?: (answer: number) => void;
+	}
 
-	export let questionText: string;
-	export let answers: (string | undefined)[];
-	export let timeLeft: number | undefined;
-	export let timeStarted: number | undefined;
-	export let answeredCount: number;
-	export let media: Media | undefined;
+	let {
+		bindableGameInfo = $bindable(),
+		gameInfo,
+		questionText,
+		answers,
+		timeLeft,
+		timeStarted,
+		answeredCount,
+		media,
+		onlock,
+		onnext,
+		onanswer
+	}: Props = $props();
 
-	let fullscreenElement;
+	let fullscreenElement: HTMLElement | undefined = $state();
 </script>
 
 <Audio audioUrl={think} volumeOn={bindableGameInfo.volumeOn} />
@@ -32,12 +50,12 @@
 	style:display="flex"
 	style:flex-direction="column"
 >
-	<Topbar bind:bindableGameInfo {gameInfo} on:lock on:next {fullscreenElement} showSkip={true} />
+	<Topbar bind:bindableGameInfo {gameInfo} {onlock} {onnext} {fullscreenElement} showSkip={true} />
 	<TextBar text={questionText} />
 	<div style:flex="1">
 		<NiceBackground>
 			<VerticalTripleSplit>
-				<svelte:fragment slot="top">
+				{#snippet top()}
 					<div
 						style:display="flex"
 						style:justify-content="space-between"
@@ -49,19 +67,19 @@
 						{/if}
 						<AnsweredCount {answeredCount} />
 					</div>
-				</svelte:fragment>
-				<svelte:fragment slot="center">
+				{/snippet}
+				{#snippet center()}
 					<MediaContainer {media} showFallback={false} />
-				</svelte:fragment>
-				<svelte:fragment slot="bottom">
+				{/snippet}
+				{#snippet bottom()}
 					<Answers
-						on:answer
+						{onanswer}
 						answers={answers.map((a) => {
 							if (a === undefined) return { text: '?', correct: undefined };
 							return { text: a, correct: undefined };
 						})}
 					/>
-				</svelte:fragment>
+				{/snippet}
 			</VerticalTripleSplit>
 		</NiceBackground>
 	</div>

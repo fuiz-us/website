@@ -6,7 +6,6 @@
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 	import type { Media } from '$lib/types';
-	import { createEventDispatcher } from 'svelte';
 	import downArrow from '$lib/assets/arrow-down.svg';
 	import Topbar from './Topbar.svelte';
 	import TextAnswerButton from '$lib/Game/TextAnswerButton.svelte';
@@ -14,25 +13,27 @@
 	import { dndzone } from 'svelte-dnd-action';
 	import { flip } from 'svelte/animate';
 
-	const dispatch = createEventDispatcher<{
-		answer: string[];
-	}>();
+	interface Props {
+		questionText: string;
+		name: string;
+		score: number;
+		media: undefined | Media;
+		axisLabels: { from?: string; to?: string };
+		showAnswers: boolean;
+		answers: string[];
+		onanswer: (answer: string[]) => void;
+	}
 
-	export let questionText: string;
-	export let name: string;
-	export let score: number;
-	export let media: undefined | Media;
-	export let axisLabels: { from?: string; to?: string };
-	export let showAnswers: boolean;
-	export let answers: string[];
+	let { questionText, name, score, media, axisLabels, showAnswers, answers, onanswer }: Props =
+		$props();
 
-	$: answersIndexed = answers.map((answer, index) => ({ answer, id: index }));
+	let answersIndexed = $state(answers.map((answer, index) => ({ answer, id: index })));
 
-	async function handleConsider(e: CustomEvent<DndEvent<{ answer: string; id: number }>>) {
+	function handleConsider(e: CustomEvent<DndEvent<{ answer: string; id: number }>>) {
 		answersIndexed = e.detail.items;
 	}
 
-	async function handleFinalize(e: CustomEvent<DndEvent<{ answer: string; id: number }>>) {
+	function handleFinalize(e: CustomEvent<DndEvent<{ answer: string; id: number }>>) {
 		answersIndexed = e.detail.items;
 	}
 </script>
@@ -75,7 +76,7 @@
 								style:height="100%"
 								style:background-color="currentColor"
 								style:box-sizing="border-box"
-							/>
+							></div>
 							<!-- arrow head -->
 							<div
 								style:width="0"
@@ -83,7 +84,7 @@
 								style:border-left="0.6em solid transparent"
 								style:border-right="0.6em solid transparent"
 								style:border-top="0.6em solid currentColor"
-							/>
+							></div>
 						</div>
 						<section
 							use:dndzone={{ items: answersIndexed, flipDurationMs: 100, dropTargetStyle: {} }}
@@ -91,8 +92,8 @@
 							style:flex-direction="column"
 							style:gap="0.4em"
 							style:flex="1"
-							on:consider={handleConsider}
-							on:finalize={handleFinalize}
+							onconsider={handleConsider}
+							onfinalize={handleFinalize}
 						>
 							{#each answersIndexed as { answer, id }, actualIndex (id)}
 								<div
@@ -110,7 +111,7 @@
 											src={downArrow}
 											alt="Move down"
 											size="1.5em"
-											on:click={() => {
+											onclick={() => {
 												answersIndexed = [
 													...answersIndexed.slice(0, actualIndex),
 													answersIndexed[actualIndex + 1],
@@ -128,11 +129,8 @@
 						<div>{axisLabels.to}</div>
 					{/if}
 					<FancyButton
-						on:click={() => {
-							dispatch(
-								'answer',
-								answersIndexed.map(({ answer }) => answer)
-							);
+						onclick={() => {
+							onanswer(answersIndexed.map(({ answer }) => answer));
 						}}
 					>
 						{m.submit()}

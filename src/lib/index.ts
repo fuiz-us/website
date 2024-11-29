@@ -109,7 +109,8 @@ export async function getBackendMedia(media: Media | undefined | null): Promise<
 	}
 }
 
-export function assertUnreachable(x: never): never {
+/* eslint-disable @typescript-eslint/no-unused-vars */
+export function assertUnreachable(_: never): never {
 	throw new Error("it's impossible to reach here");
 }
 
@@ -335,7 +336,7 @@ export async function getBackendConfig(config: IdlessFuizConfig): Promise<Idless
 	};
 }
 
-export async function playJsonString(config: string): Promise<void | string> {
+export async function playJsonString(config: string): Promise<undefined | string> {
 	const res = await bring(PUBLIC_BACKEND_URL + '/add', {
 		method: 'POST',
 		mode: 'cors',
@@ -398,7 +399,7 @@ export function fixTimes(config: IdlessFuizConfig): IdlessFuizConfig {
 export async function playIdlessConfig(
 	config: IdlessFuizConfig,
 	options: FuizOptions
-): Promise<void | string> {
+): Promise<undefined | string> {
 	try {
 		const backendReadyConfig = await getBackendConfig(config);
 		return await playJsonString(
@@ -407,11 +408,14 @@ export async function playIdlessConfig(
 				options
 			})
 		);
-	} catch (e) {
+	} catch {
 		return 'Failed to upload images';
 	}
 }
 
-export async function playConfig(config: FuizConfig, options: FuizOptions): Promise<void | string> {
+export async function playConfig(
+	config: FuizConfig,
+	options: FuizOptions
+): Promise<undefined | string> {
 	return await playIdlessConfig(removeIds(config), options);
 }

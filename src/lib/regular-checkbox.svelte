@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { scale } from 'svelte/transition';
 
-	export let checked;
+	let { checked } = $props();
 </script>
 
 <div class="border">
 	{#if checked}
-		<div class="fill" transition:scale={{ duration: 200 }} />
+		<div class="fill" transition:scale={{ duration: 200 }}></div>
 	{/if}
 </div>
 

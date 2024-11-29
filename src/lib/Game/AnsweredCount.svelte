@@ -4,7 +4,11 @@
 	import Icon from '$lib/Icon.svelte';
 	import assignmentTurned from '$lib/assets/answer_turned.svg';
 
-	export let answeredCount: number;
+	interface Props {
+		answeredCount: number;
+	}
+
+	let { answeredCount }: Props = $props();
 </script>
 
 <div

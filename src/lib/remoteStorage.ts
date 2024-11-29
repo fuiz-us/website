@@ -115,9 +115,11 @@ export async function reconcile(
 				}) ?? []
 			)
 		).filter(isNotUndefined);
-		references.map(([hash, media]) => {
-			updateLocalImagesDatabse(media, hash, localDatabase);
-		});
+		await Promise.all(
+			references.map(async ([hash, media]) => {
+				await updateLocalImagesDatabse(media, hash, localDatabase);
+			})
+		);
 	}
 
 	async function images(internal: InternalFuiz): Promise<[string, string | Media][]> {
@@ -190,9 +192,9 @@ export async function reconcile(
 				localDatabase
 			);
 			await Promise.all(
-				(
-					await filterNotExists(await images(internal))
-				).map(async ([hash, media]) => await remoteDatabase.createImage(hash, media))
+				(await filterNotExists(await images(internal))).map(
+					async ([hash, media]) => await remoteDatabase.createImage(hash, media)
+				)
 			);
 			await remoteDatabase.create(uniqueId, internal);
 		}),
@@ -221,13 +223,14 @@ export async function reconcile(
 				},
 				localDatabase
 			);
-			internal &&
-				(await Promise.all(
-					(
-						await filterNotExists(await images(internal))
-					).map(async ([hash, media]) => await remoteDatabase.createImage(hash, media))
-				));
-			internal && (await remoteDatabase.update(uniqueId, internal));
+			if (internal) {
+				await Promise.all(
+					(await filterNotExists(await images(internal))).map(
+						async ([hash, media]) => await remoteDatabase.createImage(hash, media)
+					)
+				);
+				await remoteDatabase.create(uniqueId, internal);
+			}
 		})
 	]);
 }
@@ -293,7 +296,7 @@ class OauthSync implements RemoteSync {
 		const media = await res.text();
 		try {
 			return JSON.parse(media);
-		} catch (e) {
+		} catch {
 			return media;
 		}
 	}

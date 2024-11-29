@@ -1,8 +1,13 @@
 <script lang="ts">
-	import type { Metadata } from '../routes/[[lang]]/posts/lib';
+	import type { Metadata } from '../routes/posts/lib';
 	import { languageTag } from '$lib/paraglide/runtime.js';
 
-	export let metadata: Metadata;
+	interface Props {
+		metadata: Metadata;
+		children?: import('svelte').Snippet;
+	}
+
+	let { metadata, children }: Props = $props();
 </script>
 
 <svelte:head>
@@ -32,7 +37,7 @@
 		</div>
 	</hgroup>
 	<div class="article">
-		<slot />
+		{@render children?.()}
 	</div>
 </div>
 

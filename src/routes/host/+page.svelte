@@ -4,13 +4,7 @@
 	import Create from './Create.svelte';
 	import Host from './Host.svelte';
 	import Options from './Options.svelte';
-	import { browser } from '$app/environment';
-
-	let code: string | null = null;
-	let id: number | null = null;
-
-	$: browser && ((c) => (code = c))($page.url.searchParams.get('code'));
-	$: browser && ((i) => (id = i))(parseInt($page.url.searchParams.get('id')));
+	import { derived } from 'svelte/store';
 
 	function parseInt(str: string | null): number | null {
 		if (str === null) {
@@ -23,13 +17,20 @@
 		}
 	}
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
+
+	const code = derived(page, ($page) => $page.url.searchParams.get('code'));
+	const id = derived(page, ($page) => parseInt($page.url.searchParams.get('id')));
 </script>
 
-{#if code !== null}
-	<Host {code} />
-{:else if id !== null}
-	<Options {id} {data} />
+{#if $code !== null}
+	<Host code={$code} />
+{:else if $id !== null}
+	<Options id={$id} {data} />
 {:else}
 	<Create {data} />
 {/if}

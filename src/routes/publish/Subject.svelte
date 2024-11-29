@@ -2,20 +2,24 @@
 	import RegularCheckbox from '$lib/regular-checkbox.svelte';
 	import { subjects } from '$lib/types';
 
-	export let tags: string[];
-
-	let selectedOptions: [string, boolean][] = subjects.map((o) => [o, false]);
-
-	$: {
-		tags = selectedOptions.filter(([, selected]) => selected).map(([option]) => option);
+	interface Props {
+		tags: string[];
 	}
+
+	let { tags = $bindable() }: Props = $props();
+
+	let selectedOptions: [string, boolean][] = $state(subjects.map((o) => [o, false]));
+
+	$effect.pre(() => {
+		tags = selectedOptions.filter(([, selected]) => selected).map(([option]) => option);
+	});
 </script>
 
 Subject:
 <div id="container">
-	{#each selectedOptions as [option, selected] (option)}
+	{#each selectedOptions as [option, selected], index (option)}
 		<label>
-			<input type="checkbox" bind:checked={selected} style:display="none" />
+			<input type="checkbox" bind:checked={selectedOptions[index][1]} style:display="none" />
 			<RegularCheckbox checked={selected} />
 			{option}
 		</label>

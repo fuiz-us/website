@@ -9,10 +9,21 @@
 	import IconButton from '$lib/IconButton.svelte';
 	import type { TextOrMedia } from '$lib/types';
 
-	export let correct: boolean;
-	export let content: TextOrMedia;
-	export let index: number;
-	export let attention = false;
+	interface Props {
+		correct: boolean;
+		content: TextOrMedia;
+		index: number;
+		attention?: boolean;
+		onclick?: () => void;
+	}
+
+	let {
+		correct = $bindable(),
+		content = $bindable(),
+		index,
+		attention = false,
+		onclick
+	}: Props = $props();
 </script>
 
 <FancyButton
@@ -41,6 +52,6 @@
 			lightText
 			maxLength={limits.fuiz.maxAnswerTextLength}
 		/>
-		<IconButton src={deleteAnswer} alt={m.delete_answer()} size="1.25em" on:click />
+		<IconButton src={deleteAnswer} alt={m.delete_answer()} size="1.25em" {onclick} />
 	</div>
 </FancyButton>

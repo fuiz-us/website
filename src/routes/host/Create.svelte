@@ -11,11 +11,15 @@
 	import { getAllCreations, loadDatabase } from '$lib/storage';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
 
-	let loading = false;
-	let fuizConfig = '';
-	let errorMessage = '';
+	let { data }: Props = $props();
+
+	let loading = $state(false);
+	let fuizConfig = $state('');
+	let errorMessage = $state('');
 
 	function reset(error: string) {
 		errorMessage = error;
@@ -36,7 +40,7 @@
 {#await loadDatabase(data.session !== null).then((db) => getAllCreations(db))}
 	<Loading />
 {:then creations}
-	{@const sortedCreations = creations.sort((a, b) => -b.lastEdited - a.lastEdited)}
+	{@const sortedCreations = creations.toSorted((a, b) => -b.lastEdited - a.lastEdited)}
 	<TypicalPage>
 		<div style:max-width="25ch" style:margin="auto">
 			{#if creations.length > 0}
@@ -57,7 +61,12 @@
 				</div>
 			{/if}
 
-			<form on:submit|preventDefault={submit}>
+			<form
+				onsubmit={(e) => {
+					e.preventDefault();
+					submit();
+				}}
+			>
 				<h2>{m.or_paste_config()}</h2>
 				<ErrorMessage {errorMessage} />
 				<Textarea

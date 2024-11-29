@@ -3,7 +3,11 @@
 
 	import type { PublishedFuiz } from '$lib/types';
 
-	export let data: PublishedFuiz;
+	interface Props {
+		data: PublishedFuiz;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <a class="container" href="library/public/{data.storage_id}">

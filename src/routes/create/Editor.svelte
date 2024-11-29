@@ -10,10 +10,14 @@
 	import { share } from './lib';
 	import { page } from '$app/stores';
 
-	export let id: number;
-	export let exportedFuiz: ExportedFuiz;
-	export let config: FuizConfig;
-	export let db: Database;
+	interface Props {
+		id: number;
+		exportedFuiz: ExportedFuiz;
+		config: FuizConfig;
+		db: Database;
+	}
+
+	let { id = $bindable(), exportedFuiz = $bindable(), config = $bindable(), db }: Props = $props();
 
 	const updateStorage = debounce(() => {
 		exportedFuiz = {
@@ -23,19 +27,20 @@
 		updateCreation(
 			id,
 			{
-				...exportedFuiz,
-				config: fixTimes(removeIds(config)),
+				...$state.snapshot(exportedFuiz),
+				config: fixTimes(removeIds($state.snapshot(config))),
 				lastEdited: Date.now()
 			},
 			db
 		);
 	}, 500);
 
-	$: {
-		config && updateStorage();
-	}
+	$effect(() => {
+		$state.snapshot(config);
+		updateStorage();
+	});
 
-	$: no_answer =
+	let no_answer = $derived(
 		config.slides.filter((s) => {
 			switch (true) {
 				case 'MultipleChoice' in s:
@@ -47,9 +52,10 @@
 				default:
 					return assertUnreachable(s);
 			}
-		}).length > 0;
+		}).length > 0
+	);
 
-	$: no_correct_answer =
+	let no_correct_answer = $derived(
 		config.slides.filter((s) => {
 			switch (true) {
 				case 'MultipleChoice' in s:
@@ -61,9 +67,10 @@
 				default:
 					return assertUnreachable(s);
 			}
-		}).length > 0;
+		}).length > 0
+	);
 
-	$: empty_answer =
+	let empty_answer = $derived(
 		config.slides.filter((s) => {
 			switch (true) {
 				case 'MultipleChoice' in s:
@@ -75,9 +82,10 @@
 				default:
 					return assertUnreachable(s);
 			}
-		}).length > 0;
+		}).length > 0
+	);
 
-	$: duplicate_answers =
+	let duplicate_answers = $derived(
 		config.slides.filter((s) => {
 			switch (true) {
 				case 'MultipleChoice' in s:
@@ -94,7 +102,8 @@
 				default:
 					return assertUnreachable(s);
 			}
-		}).length > 0;
+		}).length > 0
+	);
 </script>
 
 <div
@@ -105,21 +114,21 @@
 >
 	<Topbar
 		bind:title={config.title}
-		bind:id
+		{id}
 		{db}
-		on:share={async (e) => {
+		onshare={async (e) => {
 			await share(removeIds(config), $page.data.user ? exportedFuiz.uniqueId : undefined);
-			e.detail.show();
+			e.show();
 		}}
 		errorMessage={no_answer
 			? m.missing_answers()
 			: no_correct_answer
-			? m.missing_correct()
-			: empty_answer
-			? m.empty_answer()
-			: duplicate_answers
-			? m.duplicate_answers()
-			: undefined}
+				? m.missing_correct()
+				: empty_answer
+					? m.empty_answer()
+					: duplicate_answers
+						? m.duplicate_answers()
+						: undefined}
 	/>
 	<Main bind:config />
 </div>

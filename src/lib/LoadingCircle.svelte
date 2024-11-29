@@ -1,8 +1,12 @@
-<script>
-	export let borderWidth = 4;
+<script lang="ts">
+	interface Props {
+		borderWidth?: number;
+	}
+
+	let { borderWidth = 4 }: Props = $props();
 </script>
 
-<div style:--border-width="{borderWidth}px" />
+<div style:--border-width="{borderWidth}px"></div>
 
 <style>
 	div {

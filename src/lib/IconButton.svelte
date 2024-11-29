@@ -1,11 +1,29 @@
 <script lang="ts">
 	import Icon from './Icon.svelte';
 
-	export let src: string;
-	export let alt: string;
-	export let size: string;
-	export let disabled = false;
-	export let padding = '0';
+	interface Props {
+		src: string;
+		alt: string;
+		size: string;
+		disabled?: boolean;
+		padding?: string;
+		onclick?: () => void;
+		onmouseover?: () => void;
+		onmouseenter?: () => void;
+		onfocus?: () => void;
+	}
+
+	let {
+		src,
+		alt,
+		size,
+		disabled = false,
+		padding = '0',
+		onclick,
+		onmouseover,
+		onmouseenter,
+		onfocus
+	}: Props = $props();
 </script>
 
 <button
@@ -20,7 +38,10 @@
 	style:opacity={disabled ? '0.7' : '1'}
 	style:color="inherit"
 	{disabled}
-	on:click
+	{onclick}
+	{onmouseover}
+	{onmouseenter}
+	{onfocus}
 >
 	<Icon {alt} {src} {size} />
 </button>
@@ -31,7 +52,7 @@
 		border-radius: 4px;
 	}
 
-	button:where(:hover, :focus) {
+	button:where(:global(:hover, :focus)) {
 		background: #00000040;
 		outline: 2px solid #ffffff40;
 	}

@@ -9,12 +9,16 @@
 
 	const dialog = createDialog();
 
-	export let up = false;
+	interface Props {
+		up?: boolean;
+	}
+
+	let { up = false }: Props = $props();
 </script>
 
 <div>
 	<IconButton
-		on:click={() => {
+		onclick={() => {
 			dialog.open();
 		}}
 		src="$lib/assets/language.svg"

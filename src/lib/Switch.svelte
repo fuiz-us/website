@@ -1,36 +1,47 @@
 <script lang="ts">
-	export let checked: boolean;
-	export let id: string;
-	export let stuck: boolean | undefined = undefined;
+	interface Props {
+		checked: boolean;
+		id: string;
+		stuck?: boolean | undefined;
+		children?: import('svelte').Snippet;
+	}
 
-	$: ((stuck: boolean | undefined) => {
-		if (stuck !== undefined) {
-			checked = stuck;
-		}
-	})(stuck);
+	let { checked = $bindable(), id, stuck = undefined, children }: Props = $props();
 </script>
 
 <div id="group" data-checked={checked}>
-	<input {id} type="checkbox" role="switch" bind:checked disabled={stuck !== undefined} />
-	<label for={id}><slot /></label>
+	<input
+		{id}
+		type="checkbox"
+		role="switch"
+		{checked}
+		disabled={stuck !== undefined}
+		onchange={(e) => {
+			if (stuck === undefined) {
+				checked = (e?.target as HTMLInputElement | undefined)?.checked ?? checked;
+			}
+		}}
+	/>
+	<label for={id}>{@render children?.()}</label>
 	<button
-		on:click={() => {
+		onclick={() => {
 			if (stuck === undefined) {
 				checked = !checked;
 			}
 		}}
+		aria-labelledby={id}
 		type="button"
 	>
 		<div id="knob-container">
-			<div id="start" />
+			<div id="start"></div>
 			<div id="middle">
 				<div id="middle-color">
 					<div class="align">
-						<div id="knob" />
+						<div id="knob"></div>
 					</div>
 				</div>
 			</div>
-			<div id="end" />
+			<div id="end"></div>
 		</div>
 	</button>
 </div>

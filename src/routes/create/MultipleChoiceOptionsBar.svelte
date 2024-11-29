@@ -6,7 +6,11 @@
 	import SelectTime from '$lib/SelectTime.svelte';
 	import type { MultipleChoiceSlide } from '$lib/types';
 
-	export let activeSlide: MultipleChoiceSlide;
+	interface Props {
+		activeSlide: MultipleChoiceSlide;
+	}
+
+	let { activeSlide = $bindable() }: Props = $props();
 </script>
 
 <div id="sidebar-container">

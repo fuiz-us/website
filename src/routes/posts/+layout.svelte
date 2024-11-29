@@ -1,12 +1,17 @@
-<script>
+<script lang="ts">
 	import Footer from '$lib/Footer.svelte';
 	import MainHeader from '../MainHeader.svelte';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 </script>
 
 <main>
 	<MainHeader />
 	<div style:flex="1">
-		<slot />
+		{@render children?.()}
 	</div>
 	<footer>
 		<Footer />

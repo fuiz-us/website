@@ -9,28 +9,46 @@
 	import Icon from '$lib/Icon.svelte';
 	import { buttonColors } from '$lib';
 
-	export let bindableGameInfo: BindableGameInfo;
-	export let gameInfo: SharedGameInfo;
+	interface Props {
+		bindableGameInfo: BindableGameInfo;
+		gameInfo: SharedGameInfo;
+		questionText: string;
+		answers: string[];
+		caseSensitive: boolean;
+		results: [string, number][];
+		timeLeft?: number | undefined;
+		timeStarted?: number | undefined;
+		onlock?: (locked: boolean) => void;
+		onnext?: () => void;
+	}
 
-	export let questionText: string;
-	export let answers: string[];
-	export let caseSensitive: boolean;
-	export let results: [string, number][];
-	export let timeLeft: number | undefined = undefined;
-	export let timeStarted: number | undefined = undefined;
+	let {
+		bindableGameInfo = $bindable(),
+		gameInfo,
+		questionText,
+		answers,
+		caseSensitive,
+		results,
+		timeLeft = undefined,
+		timeStarted = undefined,
+		onlock = undefined,
+		onnext = undefined
+	}: Props = $props();
 
-	$: allAnswers = results
-		.concat(
-			answers
-				.filter(
-					(possibleAnswer) =>
-						!results.some(([correctAnswerText]) => correctAnswerText === possibleAnswer)
-				)
-				.map((wrongAnswer) => [wrongAnswer, 0])
-		)
-		.sort(([, frequencyA], [, frequencyB]) => frequencyB - frequencyA);
+	let allAnswers = $derived(
+		results
+			.concat(
+				answers
+					.filter(
+						(possibleAnswer) =>
+							!results.some(([correctAnswerText]) => correctAnswerText === possibleAnswer)
+					)
+					.map((wrongAnswer) => [wrongAnswer, 0])
+			)
+			.toSorted(([, frequencyA], [, frequencyB]) => frequencyB - frequencyA)
+	);
 
-	$: maxCount = Math.max(...allAnswers.map(([, count]) => count), 1);
+	let maxCount = $derived(Math.max(...allAnswers.map(([, count]) => count), 1));
 
 	function matches(answerA: string, answerB: string, caseSensitive: boolean): boolean {
 		const trimmedA = answerA.trim();
@@ -40,9 +58,11 @@
 			: trimmedA.toLowerCase() === trimmedB.toLowerCase();
 	}
 
-	$: isCorrect = (text: string) => answers.some((answer) => matches(answer, text, caseSensitive));
+	let isCorrect = $derived((text: string) =>
+		answers.some((answer) => matches(answer, text, caseSensitive))
+	);
 
-	let fullscreenElement;
+	let fullscreenElement: HTMLElement | undefined = $state();
 </script>
 
 <div
@@ -51,8 +71,8 @@
 	style:display="flex"
 	style:flex-direction="column"
 >
-	<Topbar bind:bindableGameInfo {gameInfo} {fullscreenElement} on:lock />
-	<TextBar on:next text={questionText} showNext={true} />
+	<Topbar bind:bindableGameInfo {gameInfo} {fullscreenElement} {onlock} />
+	<TextBar {onnext} text={questionText} showNext={true} />
 	<div style:flex="1">
 		<NiceBackground>
 			{#if timeLeft !== undefined && timeStarted !== undefined}
@@ -84,7 +104,7 @@
 								style:width="calc(0.5em + {(count / maxCount) * 100}%)"
 								style:border-radius="0.6em"
 								style:height="100%"
-							/>
+							></div>
 							<div style:font-family="Poppins" style:display="flex" style:gap="0.2em">
 								{count}
 								{#if correct}

@@ -1,9 +1,13 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import TextAnswerButton from './TextAnswerButton.svelte';
 	import EmptyAnswerButton from './EmptyAnswerButton.svelte';
 
-	export let answers: { text: string | undefined; correct: boolean | undefined }[];
+	interface Props {
+		answers: { text: string | undefined; correct: boolean | undefined }[];
+		onanswer?: (index: number) => void;
+	}
+
+	let { answers, onanswer }: Props = $props();
 
 	type knownAnswer = { index: number; text: string; correct: boolean | undefined };
 	type unknownAnswer = { index: number; correct: boolean | undefined };
@@ -34,11 +38,7 @@
 		};
 	}
 
-	$: answersFiltered = filterAnswers(answers);
-
-	const dispatch = createEventDispatcher<{
-		answer: number;
-	}>();
+	let answersFiltered = $derived(filterAnswers(answers));
 </script>
 
 <div id="container">
@@ -48,16 +48,16 @@
 				index={answer.index}
 				answerText={answer.text}
 				correct={answer.correct}
-				on:click={() => {
-					dispatch('answer', answer.index);
+				onclick={() => {
+					if (onanswer) onanswer(answer.index);
 				}}
 			/>
 		{/each}
 		{#each answersFiltered.unknownAnswers as { index }}
 			<EmptyAnswerButton
 				{index}
-				on:click={() => {
-					dispatch('answer', index);
+				onclick={() => {
+					if (onanswer) onanswer(index);
 				}}
 			/>
 		{/each}

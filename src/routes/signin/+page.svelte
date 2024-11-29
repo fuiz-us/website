@@ -6,7 +6,11 @@
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import { i18n } from '$lib/i18n';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <NiceBackground>
@@ -29,7 +33,7 @@
 				<div>
 					{#each data.providers as provider}
 						<FancyButton
-							on:click={() =>
+							onclick={() =>
 								signIn(provider.id, {
 									callbackUrl: i18n.resolveRoute('/create')
 								})}

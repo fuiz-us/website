@@ -4,7 +4,11 @@
 	import warning from '$lib/assets/warning.svg';
 	import Message from './Message.svelte';
 
-	export let errorMessage: string;
+	interface Props {
+		errorMessage: string;
+	}
+
+	let { errorMessage }: Props = $props();
 </script>
 
 <Message

@@ -1,46 +1,37 @@
 <script lang="ts">
 	import FancyButton from './FancyButton.svelte';
-	import { createListbox } from 'svelte-headlessui';
 
-	export let options: string[] | number[];
-	export let selected: string | number;
-
-	export let map: (a: string) => string = (a) => a;
-
-	const listbox = createListbox({ label: 'Actions', selected });
-
-	function onSelect(e: Event) {
-		selected = (e as CustomEvent).detail.selected.guard;
+	interface Props {
+		options: string[] | number[];
+		selected: string | number;
+		map?: (a: string) => string;
+		children?: import('svelte').Snippet;
 	}
 
-	$: {
-		if (options.find((s) => s == selected) === undefined) {
-			selected = options[0];
-		}
-	}
+	let { options, selected = $bindable(), map = (a) => a, children }: Props = $props();
+
+	let dialog: HTMLDialogElement | undefined = $state();
 </script>
 
-<FancyButton action={listbox.button} on:select={onSelect}>
+<FancyButton onclick={() => dialog?.showModal()}>
 	<div style:display="flex" style:align-items="center" style:justify-content="center">
-		<slot />
+		{@render children?.()}
 		<div style:padding="0 5px" style:text-transform="capitalize">
 			{map(selected.toString())}
 		</div>
 	</div>
 </FancyButton>
 
-{#if $listbox.expanded}
+<dialog bind:this={dialog}>
 	<div id="container">
-		<ul use:listbox.items>
+		<ul>
 			{#each options as value}
 				<li>
 					<FancyButton
-						action={(n) =>
-							listbox.item(n, {
-								value: {
-									guard: value
-								}
-							})}
+						onclick={() => {
+							selected = value;
+							dialog?.close();
+						}}
 					>
 						<div style:padding="0.25em 0.5em" style:text-transform="capitalize">
 							{map(value.toString())}
@@ -50,7 +41,7 @@
 			{/each}
 		</ul>
 	</div>
-{/if}
+</dialog>
 
 <style>
 	#container {

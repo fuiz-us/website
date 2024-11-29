@@ -1,10 +1,10 @@
 export async function bring(
 	input: URL | RequestInfo,
-	init?: RequestInit | undefined
+	init?: RequestInit
 ): Promise<Response | undefined> {
 	try {
 		return await fetch(input, init);
-	} catch (e) {
+	} catch {
 		return undefined;
 	}
 }

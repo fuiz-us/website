@@ -1,9 +1,13 @@
 <script lang="ts">
-	export let src: string;
-	export let alt: string;
-	export let size: string;
+	interface Props {
+		src: string;
+		alt: string;
+		size: string;
+	}
 
-	$: urlString = `url("${src}")`;
+	let { src, alt, size }: Props = $props();
+
+	let urlString = $derived(`url("${src}")`);
 </script>
 
 <div
@@ -20,4 +24,4 @@
 	style:mask-repeat="no-repeat"
 	style:-webkit-mask-image={urlString}
 	title={alt}
-/>
+></div>

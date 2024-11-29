@@ -8,15 +8,29 @@
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import type { BindableGameInfo, SharedGameInfo } from './+page';
 
-	export let bindableGameInfo: BindableGameInfo;
-	export let gameInfo: SharedGameInfo;
+	interface Props {
+		bindableGameInfo: BindableGameInfo;
+		gameInfo: SharedGameInfo;
+		questionText: string;
+		answers: { text: string; count: number; correct: boolean }[];
+		timeLeft?: number | undefined;
+		timeStarted?: number | undefined;
+		onlock?: (locked: boolean) => void;
+		onnext?: () => void;
+	}
 
-	export let questionText: string;
-	export let answers: { text: string; count: number; correct: boolean }[];
-	export let timeLeft: number | undefined = undefined;
-	export let timeStarted: number | undefined = undefined;
+	let {
+		bindableGameInfo = $bindable(),
+		gameInfo,
+		questionText,
+		answers,
+		timeLeft = undefined,
+		timeStarted = undefined,
+		onlock,
+		onnext
+	}: Props = $props();
 
-	let fullscreenElement;
+	let fullscreenElement: HTMLElement | undefined = $state();
 </script>
 
 <div
@@ -25,12 +39,12 @@
 	style:display="flex"
 	style:flex-direction="column"
 >
-	<Topbar bind:bindableGameInfo {gameInfo} {fullscreenElement} on:lock />
-	<TextBar on:next text={questionText} showNext={true} />
+	<Topbar bind:bindableGameInfo {gameInfo} {fullscreenElement} {onlock} />
+	<TextBar {onnext} text={questionText} showNext={true} />
 	<div style:flex="1">
 		<NiceBackground>
 			<VerticalSplit>
-				<svelte:fragment slot="top">
+				{#snippet top()}
 					{#if timeLeft !== undefined && timeStarted !== undefined}
 						<TimeLeft {timeLeft} {timeStarted} />
 					{/if}
@@ -39,10 +53,10 @@
 							return { count, correct };
 						})}
 					/>
-				</svelte:fragment>
-				<svelte:fragment slot="bottom">
+				{/snippet}
+				{#snippet bottom()}
 					<Answers {answers} />
-				</svelte:fragment>
+				{/snippet}
 			</VerticalSplit>
 		</NiceBackground>
 	</div>

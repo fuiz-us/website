@@ -4,13 +4,24 @@
 	import { backOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
-	export let players: [string, boolean][];
-	export let selectable = false;
-	export let max: undefined | number = undefined;
-	export let exactCount: number;
+	interface Props {
+		players: [string, boolean][];
+		selectable?: boolean;
+		max?: undefined | number;
+		exactCount: number;
+		onchoose?: (players: string[]) => void;
+	}
+
+	let {
+		players = $bindable(),
+		selectable = false,
+		max = undefined,
+		exactCount,
+		onchoose
+	}: Props = $props();
 </script>
 
-{#each players as [player, selected] (player)}
+{#each players as [player, selected], index (player)}
 	<button
 		style:background="var(--background-color)"
 		style:border="0.15em solid currentColor"
@@ -24,11 +35,12 @@
 		style:word-break="break-word"
 		disabled={!selectable}
 		style:cursor={selectable ? 'pointer' : 'normal'}
-		on:click={() => {
+		onclick={() => {
 			if (!selected && players.filter(([, s]) => s).length >= (max ?? players.length)) {
 				return;
 			}
-			selected = !selected;
+			players[index][1] = !selected;
+			onchoose?.(players.filter(([, sel]) => sel).map(([name]) => name));
 		}}
 		transition:scale={{ duration: 300, easing: backOut }}
 	>

@@ -7,14 +7,19 @@
 	import FancyButton from '../FancyButton.svelte';
 	import Icon from '$lib/Icon.svelte';
 
-	export let index: number;
-	export let answerText: string;
-	export let correct: boolean | undefined;
+	interface Props {
+		index: number;
+		answerText: string;
+		correct: boolean | undefined;
+		onclick?: () => void;
+	}
+
+	let { index, answerText, correct, onclick }: Props = $props();
 </script>
 
 <div style:opacity={correct === false ? '50%' : '100%'}>
 	<FancyButton
-		on:click
+		{onclick}
 		backgroundColor={buttonColors.at(index % buttonColors.length)?.at(0)}
 		backgroundDeepColor={buttonColors.at(index % buttonColors.length)?.at(1)}
 		height="100%"

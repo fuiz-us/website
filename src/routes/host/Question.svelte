@@ -7,14 +7,27 @@
 	import type { Media } from '$lib/types';
 	import MediaContainer from '$lib/MediaContainer.svelte';
 
-	export let bindableGameInfo: BindableGameInfo;
-	export let gameInfo: SharedGameInfo;
+	interface Props {
+		bindableGameInfo: BindableGameInfo;
+		gameInfo: SharedGameInfo;
+		questionText: string;
+		timeStarted: number;
+		media: Media | undefined;
+		onlock?: (locked: boolean) => void;
+		onnext?: () => void;
+	}
 
-	export let questionText: string;
-	export let timeStarted: number;
-	export let media: Media | undefined;
+	let {
+		bindableGameInfo = $bindable(),
+		gameInfo,
+		questionText,
+		timeStarted,
+		media,
+		onlock,
+		onnext
+	}: Props = $props();
 
-	let fullscreenElement;
+	let fullscreenElement: HTMLElement | undefined = $state();
 </script>
 
 <svelte:head>
@@ -34,7 +47,14 @@
 	style:flex-direction="column"
 >
 	<div style:border-bottom="0.15em solid currentcolor">
-		<Topbar on:lock on:next {fullscreenElement} bind:bindableGameInfo {gameInfo} showSkip={true} />
+		<Topbar
+			{onlock}
+			{onnext}
+			{fullscreenElement}
+			bind:bindableGameInfo
+			{gameInfo}
+			showSkip={true}
+		/>
 	</div>
 	<div style:flex="1">
 		<NiceBackground>
@@ -46,7 +66,7 @@
 			>
 				<TextBar text={questionText} topShadow={media === undefined} />
 				<div id="progress" style:--duration="{timeStarted}ms">
-					<div id="value" />
+					<div id="value"></div>
 				</div>
 				{#if media}
 					<div style:flex="1" style:position="relative">

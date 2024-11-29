@@ -1,4 +1,4 @@
-import { fail, json } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import type { IdlessFuizConfig, IdlessSlide, Media, OnlineFuiz } from '$lib/types';
 import { isNotUndefined } from '$lib/util';
@@ -8,8 +8,9 @@ import { getThumbnail } from '$lib/serverOnlyUtils';
 import { env } from '$env/dynamic/private';
 import type { Ai } from '@cloudflare/workers-types';
 import { assertUnreachable } from '$lib';
+import { timingSafeEqual } from 'crypto';
 
-function timingSafeEqual(a: string, b: string): boolean {
+function timingSafeEqualString(a: string, b: string): boolean {
 	if (a.length !== b.length) {
 		return false;
 	}
@@ -21,11 +22,11 @@ function timingSafeEqual(a: string, b: string): boolean {
 
 	if (aEncoded.byteLength !== bEncoded.byteLength) return false;
 
-	return crypto.subtle.timingSafeEqual(aEncoded, bEncoded);
+	return timingSafeEqual(aEncoded, bEncoded);
 }
 
 async function extractKeywords(ai: Ai, config: IdlessFuizConfig): Promise<string[]> {
-	const messages = [
+	const messages: { role: 'system' | 'user'; content: string }[] = [
 		{
 			role: 'system',
 			content:
@@ -49,25 +50,15 @@ async function extractKeywords(ai: Ai, config: IdlessFuizConfig): Promise<string
 				.join('\n')
 		}
 	];
-	const response = await ai.run('@cf/meta/llama-3-8b-instruct', { messages });
+
+	const response = await ai.run('@cf/meta/llama-3.1-8b-instruct', { messages, stream: false });
 
 	if (!response) {
 		return [];
 	}
 
 	if ('getReader' in response) {
-		const reader = response.getReader();
-		let fullValue = '';
-		/*eslint no-constant-condition: ["error", { "checkLoops": false }]*/
-		while (true) {
-			const { done, value } = await reader.read();
-			fullValue += value;
-			if (done) {
-				break;
-			}
-		}
-
-		return fullValue.split(',').slice(0, 16);
+		return (await new Response(response as ReadableStream).text())?.split(',')?.slice(0, 16) ?? [];
 	}
 	return response.response?.split(',')?.slice(0, 16) ?? [];
 }
@@ -208,7 +199,8 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 	}
 
 	const auth = request.headers.get('Authorization')?.trim();
-	if (!timingSafeEqual(auth ?? '', `Basic ${env.WALLO_CLIENT_SECRET}`)) throw fail(403);
+	if (!timingSafeEqualString(auth ?? '', `Basic ${env.WALLO_CLIENT_SECRET}`))
+		return new Response(null, { status: 401 });
 
 	const body = (await request.json()) as {
 		kind: 'content';
@@ -237,12 +229,13 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 					.bind(relevantId)
 					.first<string>('desired_id')) ?? null;
 
-			if (!desiredId) throw fail(404);
+			if (!desiredId) return new Response('No subject found', { status: 404 });
 
 			if (body.action === 'approve') {
 				const fuizText = await (await platform?.env.BUCKET.get(relevantId))?.text();
 
-				if (!fuizText) throw fail(404);
+				if (!fuizText)
+					return new Response('Subject cannot be found in object storage', { status: 404 });
 
 				let played_count = 0;
 
@@ -320,7 +313,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 					.bind(relevantId, desiredId)
 					.run();
 			} else {
-				throw fail(400);
+				return new Response('Invalid action', { status: 400 });
 			}
 
 			return json({ success: true });
@@ -348,7 +341,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 				return json({ success: true });
 			} else {
-				throw fail(400);
+				return new Response('Invalid action', { status: 400 });
 			}
 		}
 
@@ -366,11 +359,12 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 					.bind(relevantId)
 					.first<string>('desired_id');
 
-				if (!desiredId) throw fail(404);
+				if (!desiredId) return new Response('No subject found', { status: 404 });
 
 				const fuizText = await (await platform?.env.BUCKET.get(relevantId))?.text();
 
-				if (!fuizText) throw fail(404);
+				if (!fuizText)
+					return new Response('Subject cannot be found in object storage', { status: 404 });
 
 				let played_count = 0;
 
@@ -443,7 +437,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 					.run();
 				return json({ success: true });
 			} else {
-				throw fail(400);
+				return new Response('Invalid action', { status: 400 });
 			}
 		}
 	} else {
@@ -451,7 +445,8 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 		const fuiz_str = await (await platform?.env.BUCKET.get(relevantId))?.text();
 
-		if (!fuiz_str) throw fail(404);
+		if (!fuiz_str)
+			return new Response('Subject cannot be found in object storage', { status: 404 });
 
 		const fuiz = parse(fuiz_str, { bigint: false }) as OnlineFuiz;
 
@@ -551,7 +546,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 			return json(response);
 		}
 
-		throw fail(404);
+		return new Response('No submission found', { status: 404 });
 	}
 
 	return new Response();

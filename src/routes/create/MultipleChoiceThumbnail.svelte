@@ -6,7 +6,11 @@
 	import VerticalSplit from '$lib/Game/VerticalSplit.svelte';
 	import type { MultipleChoiceSlide } from '$lib/types';
 
-	export let slide: MultipleChoiceSlide;
+	interface Props {
+		slide: MultipleChoiceSlide;
+	}
+
+	let { slide }: Props = $props();
 </script>
 
 <div
@@ -29,14 +33,14 @@
 		{slide.title ? slide.title : '...'}
 	</div>
 	<VerticalSplit>
-		<svelte:fragment slot="top">
+		{#snippet top()}
 			{#if slide.media}
 				<div style:height="50px">
 					<MediaContainer media={slide.media} />
 				</div>
 			{/if}
-		</svelte:fragment>
-		<svelte:fragment slot="bottom">
+		{/snippet}
+		{#snippet bottom()}
 			{#if !slide.answers.length}
 				<div
 					style:font-size="18px"
@@ -89,10 +93,10 @@
 							style:background={buttonColors.at(i % buttonColors.length)?.[0]}
 							style:height="0.5em"
 							style:border-radius="0.7em"
-						/>
+						></div>
 					{/each}
 				</div>
 			{/if}
-		</svelte:fragment>
+		{/snippet}
 	</VerticalSplit>
 </div>

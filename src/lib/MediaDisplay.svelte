@@ -4,8 +4,12 @@
 	import MediaFallback from './MediaFallback.svelte';
 	import type { Media } from './types';
 
-	export let media: Media;
-	export let fit: string;
+	interface Props {
+		media: Media;
+		fit: string;
+	}
+
+	let { media, fit }: Props = $props();
 </script>
 
 {#if 'Base64' in media.Image}

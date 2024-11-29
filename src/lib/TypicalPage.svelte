@@ -2,6 +2,11 @@
 	import NiceBackground from './NiceBackground.svelte';
 	import Header from './Header.svelte';
 	import Footer from './Footer.svelte';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 </script>
 
 <NiceBackground>
@@ -18,7 +23,7 @@
 			<Header />
 		</header>
 		<section style:flex="1" style:width="100%">
-			<slot />
+			{@render children?.()}
 		</section>
 		<footer>
 			<Footer />

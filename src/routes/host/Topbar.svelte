@@ -8,23 +8,29 @@
 	import locked from '$lib/assets/locked.svg';
 	import IconButton from '$lib/IconButton.svelte';
 	import skip from '$lib/assets/skip.svg';
-	import { createEventDispatcher } from 'svelte';
 	import type { BindableGameInfo, SharedGameInfo } from './+page';
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
 	import LanguageSwitcher from '$lib/LanguageSwitcher.svelte';
 	import DarkModeSwitcher from '$lib/DarkModeSwitcher.svelte';
 	import ExitFuiz from './ExitFuiz.svelte';
 
-	export let bindableGameInfo: BindableGameInfo;
-	export let gameInfo: SharedGameInfo;
+	interface Props {
+		bindableGameInfo: BindableGameInfo;
+		gameInfo: SharedGameInfo;
+		fullscreenElement?: HTMLElement | undefined;
+		showSkip?: boolean;
+		onnext?: () => void;
+		onlock?: (locked: boolean) => void;
+	}
 
-	export let fullscreenElement: HTMLElement | undefined = undefined;
-	export let showSkip = false;
-
-	const dispatch = createEventDispatcher<{
-		next: undefined;
-		lock: boolean;
-	}>();
+	let {
+		bindableGameInfo = $bindable(),
+		gameInfo,
+		fullscreenElement = undefined,
+		showSkip = false,
+		onnext,
+		onlock
+	}: Props = $props();
 </script>
 
 <div
@@ -77,7 +83,7 @@
 		style:padding="0.2em"
 	>
 		{#if showSkip}
-			<IconButton src={skip} alt={m.skip()} size="1em" on:click={() => dispatch('next')} />
+			<IconButton src={skip} alt={m.skip()} size="1em" onclick={onnext} />
 		{/if}
 		<StatedIconButton
 			icons={[
@@ -86,9 +92,7 @@
 			]}
 			size="1em"
 			bind:state={bindableGameInfo.locked}
-			on:change={(e) => {
-				dispatch('lock', e.detail);
-			}}
+			onchange={onlock}
 		/>
 		<LanguageSwitcher />
 		<DarkModeSwitcher />

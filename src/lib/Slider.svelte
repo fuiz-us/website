@@ -1,12 +1,17 @@
 <script lang="ts">
-	export let id: string;
-	export let value: number;
-	export let min: number;
-	export let max: number;
+	interface Props {
+		id: string;
+		value: number;
+		min: number;
+		max: number;
+		children?: import('svelte').Snippet;
+	}
+
+	let { id, value = $bindable(), min, max, children }: Props = $props();
 </script>
 
 <div id="group">
-	<label for={id}><slot /></label>
+	<label for={id}>{@render children?.()}</label>
 	<div id="input-container">
 		<input {id} type="range" bind:value {min} {max} step={1} />
 		<div id="value">

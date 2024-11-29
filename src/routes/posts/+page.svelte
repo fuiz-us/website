@@ -2,7 +2,11 @@
 	import { languageTag } from '$lib/paraglide/runtime';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <section>

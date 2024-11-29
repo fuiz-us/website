@@ -7,12 +7,17 @@
 	import type { Media, TextOrMedia } from '$lib/types';
 	import Topbar from './Topbar.svelte';
 
-	export let questionText: string;
-	export let name: string;
-	export let score: number;
-	export let media: undefined | Media;
-	export let showAnswers: boolean;
-	export let answers: (TextOrMedia | undefined)[];
+	interface Props {
+		questionText: string;
+		name: string;
+		score: number;
+		media: undefined | Media;
+		showAnswers: boolean;
+		answers: (TextOrMedia | undefined)[];
+		onanswer?: (answer: number) => void;
+	}
+
+	let { questionText, name, score, media, showAnswers, answers, onanswer }: Props = $props();
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">
@@ -31,12 +36,12 @@
 					</div>
 				{/if}
 				{#if !showAnswers}
-					<EmptyAnswers indices={[...new Array(answers.length).keys()]} on:answer />
+					<EmptyAnswers indices={[...new Array(answers.length).keys()]} {onanswer} />
 				{:else}
 					<div style:flex="1" style:font-size="1.5em">
 						<Answers
 							answers={answers.map((t) => ({ text: t?.Text, correct: undefined }))}
-							on:answer
+							{onanswer}
 						/>
 					</div>
 				{/if}

@@ -16,8 +16,12 @@
 	import { tick } from 'svelte';
 	import type { Slide } from '$lib/types';
 
-	export let slides: Slide[];
-	export let selectedSlideIndex: number;
+	interface Props {
+		slides: Slide[];
+		selectedSlideIndex: number;
+	}
+
+	let { slides = $bindable(), selectedSlideIndex = $bindable() }: Props = $props();
 
 	async function handleConsider(e: CustomEvent<DndEvent<Slide>>) {
 		const id = slides.at(selectedSlideIndex)?.id ?? 0;
@@ -41,13 +45,15 @@
 		}
 	}
 
-	let section: HTMLElement;
+	let section: HTMLElement | undefined = $state();
 
 	function clamp(min: number, value: number, max: number): number {
 		return Math.min(max, Math.max(value, min));
 	}
 
 	async function changeSelected(newValue: number) {
+		if (!section) return;
+
 		const clamped = Math.min(Math.max(0, newValue), slides.length - 1);
 		selectedSlideIndex = clamped;
 
@@ -68,7 +74,7 @@
 		});
 	}
 
-	let popoverElement: HTMLElement;
+	let popoverElement: HTMLElement | undefined = $state();
 </script>
 
 <div id="sidebar" style:display="flex" style:flex-direction="column">
@@ -91,8 +97,8 @@
 				style:min-width="100%"
 				style:gap="0.2em"
 				style:overflow="auto"
-				on:consider={handleConsider}
-				on:finalize={handleFinalize}
+				onconsider={handleConsider}
+				onfinalize={handleFinalize}
 			>
 				{#each slides as slide, index (slide.id)}
 					<div
@@ -106,15 +112,15 @@
 							{slide}
 							{index}
 							selected={index === selectedSlideIndex}
-							on:select={() => changeSelected(index)}
-							on:delete={async () => {
+							onselect={() => changeSelected(index)}
+							ondelete={async () => {
 								slides.splice(index, 1);
 								if (index <= selectedSlideIndex) {
 									await changeSelected(selectedSlideIndex - 1);
 								}
 								slides = slides;
 							}}
-							on:duplicate={async () => {
+							onduplicate={async () => {
 								const sameSlide = structuredClone(slide);
 								sameSlide.id = Date.now();
 								slides.splice(index + 1, 0, sameSlide);
@@ -136,8 +142,8 @@
 				style:padding="1em"
 			>
 				<FancyButton
-					on:click={async () => {
-						popoverElement.hidePopover();
+					onclick={async () => {
+						popoverElement?.hidePopover();
 						slides.push({
 							MultipleChoice: {
 								title: '',
@@ -158,8 +164,8 @@
 					</div>
 				</FancyButton>
 				<FancyButton
-					on:click={async () => {
-						popoverElement.hidePopover();
+					onclick={async () => {
+						popoverElement?.hidePopover();
 						slides.push({
 							TypeAnswer: {
 								title: '',
@@ -178,8 +184,8 @@
 					<div style:padding="0.2em 0.6em">{m.short_answer()}</div>
 				</FancyButton>
 				<FancyButton
-					on:click={async () => {
-						popoverElement.hidePopover();
+					onclick={async () => {
+						popoverElement?.hidePopover();
 						slides.push({
 							Order: {
 								title: '',
@@ -200,9 +206,7 @@
 			</div>
 			<FancyButton
 				disabled={slides.length >= limits.fuiz.maxSlidesCount}
-				on:click={async () => {
-					popoverElement.showPopover();
-				}}
+				onclick={() => popoverElement?.showPopover()}
 			>
 				<div
 					style:padding="0.2em 0.4em"
@@ -226,7 +230,7 @@
 				alt={m.first_slide()}
 				size="1.2em"
 				padding="0.2em"
-				on:click={() => changeSelected(0)}
+				onclick={() => changeSelected(0)}
 			/>
 		</div>
 		<div>
@@ -235,7 +239,7 @@
 				alt={m.prev_slide()}
 				size="1.2em"
 				padding="0.2em"
-				on:click={() => changeSelected(selectedSlideIndex - 1)}
+				onclick={() => changeSelected(selectedSlideIndex - 1)}
 			/>
 		</div>
 		<div>
@@ -255,7 +259,7 @@
 				alt={m.next_slide()}
 				size="1.2em"
 				padding="0.2em"
-				on:click={() => changeSelected(selectedSlideIndex + 1)}
+				onclick={() => changeSelected(selectedSlideIndex + 1)}
 			/>
 		</div>
 		<div>
@@ -264,7 +268,7 @@
 				alt={m.last_slide()}
 				size="1.2em"
 				padding="0.2em"
-				on:click={() => changeSelected(slides.length - 1)}
+				onclick={() => changeSelected(slides.length - 1)}
 			/>
 		</div>
 	</div>

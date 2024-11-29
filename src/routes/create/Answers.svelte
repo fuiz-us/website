@@ -11,18 +11,22 @@
 	import { flip } from 'svelte/animate';
 	import type { MultipleChoiceAnswer } from '$lib/types';
 
-	export let answers: MultipleChoiceAnswer[];
+	interface Props {
+		answers: MultipleChoiceAnswer[];
+	}
+
+	let { answers = $bindable() }: Props = $props();
 </script>
 
 <div id="grid" style:display="grid" style:gap="0.2em" style:width="100%">
-	{#each answers as { correct, content, id }, index (id)}
+	{#each answers as answer, index (answer.id)}
 		<div transition:scale={{ easing: backOut, duration: 300 }} animate:flip={{ duration: 300 }}>
 			<Answer
 				attention={answers.filter((a) => a.correct).length == 0}
-				bind:content
-				bind:correct
+				bind:content={answers[index].content}
+				bind:correct={answers[index].correct}
 				{index}
-				on:click={() => {
+				onclick={() => {
 					answers.splice(index, 1);
 					answers = answers;
 				}}
@@ -34,7 +38,7 @@
 			<FancyButton
 				backgroundColor={buttonColors.at(answers.length % buttonColors.length)?.[0]}
 				backgroundDeepColor={buttonColors.at(answers.length % buttonColors.length)?.[1]}
-				on:click={() => {
+				onclick={() => {
 					answers.push({
 						correct: false,
 						content: {

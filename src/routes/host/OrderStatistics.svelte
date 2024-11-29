@@ -11,16 +11,30 @@
 	import wrong from '$lib/assets/wrong.svg';
 	import VerticalSplit from '$lib/Game/VerticalSplit.svelte';
 
-	export let bindableGameInfo: BindableGameInfo;
-	export let gameInfo: SharedGameInfo;
+	interface Props {
+		bindableGameInfo: BindableGameInfo;
+		gameInfo: SharedGameInfo;
+		questionText: string;
+		axis_labels: { from: string; to: string };
+		answers: string[];
+		results: [number, number];
+		media: Media | undefined;
+		onnext?: () => void;
+		onlock?: (locked: boolean) => void;
+	}
 
-	export let questionText: string;
-	export let axis_labels: { from: string; to: string };
-	export let answers: string[];
-	export let results: [number, number];
-	export let media: Media | undefined;
+	let {
+		bindableGameInfo = $bindable(),
+		gameInfo,
+		questionText,
+		axis_labels,
+		answers,
+		results,
+		onnext,
+		onlock
+	}: Props = $props();
 
-	let fullscreenElement;
+	let fullscreenElement: HTMLElement | undefined = $state();
 </script>
 
 <div
@@ -29,12 +43,12 @@
 	style:display="flex"
 	style:flex-direction="column"
 >
-	<Topbar bind:bindableGameInfo {gameInfo} on:lock {fullscreenElement} />
-	<TextBar text={questionText} showNext={true} on:next />
+	<Topbar bind:bindableGameInfo {gameInfo} {onlock} {fullscreenElement} />
+	<TextBar text={questionText} showNext={true} {onnext} />
 	<div style:flex="1">
 		<NiceBackground>
 			<VerticalSplit>
-				<svelte:fragment slot="top">
+				{#snippet top()}
 					<div
 						style:display="flex"
 						style:justify-content="center"
@@ -62,8 +76,8 @@
 							<Icon src={wrong} alt={m.wrong()} size="1.25em" />
 						</div>
 					</div>
-				</svelte:fragment>
-				<svelte:fragment slot="bottom">
+				{/snippet}
+				{#snippet bottom()}
 					<div
 						style:display="flex"
 						style:flex-direction="column"
@@ -87,7 +101,7 @@
 									style:height="100%"
 									style:background-color="currentColor"
 									style:box-sizing="border-box"
-								/>
+								></div>
 								<!-- arrow head -->
 								<div
 									style:width="0"
@@ -95,7 +109,7 @@
 									style:border-left="0.6em solid transparent"
 									style:border-right="0.6em solid transparent"
 									style:border-top="0.6em solid currentColor"
-								/>
+								></div>
 							</div>
 							<div
 								style:display="flex"
@@ -112,7 +126,7 @@
 							<div>{axis_labels.to}</div>
 						{/if}
 					</div>
-				</svelte:fragment>
+				{/snippet}
 			</VerticalSplit>
 		</NiceBackground>
 	</div>

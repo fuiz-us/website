@@ -11,7 +11,7 @@ export const GET: RequestHandler = async () => {
 				default: 'en',
 				alternates: ['ar', 'az', 'de', 'es', 'fr', 'it', 'nl', 'zh-cn']
 			},
-			excludePatterns: ['.*\\[id\\].*']
+			excludeRoutePatterns: ['.*\\[id\\].*']
 		})
 	).text();
 

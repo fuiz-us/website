@@ -25,9 +25,13 @@
 		}
 	}
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
 
-	$: id = parseInt($page.url.searchParams.get('id'));
+	let { data }: Props = $props();
+
+	let id = $derived(parseInt($page.url.searchParams.get('id')));
 	const title = m.publish_title();
 	const description = m.publish_desc();
 </script>
@@ -55,7 +59,7 @@
 	{#await loadDatabase(data.session !== null).then((db) => getAllCreations(db))}
 		<Loading />
 	{:then creations}
-		{@const sortedCreations = creations.sort((a, b) => -b.lastEdited - a.lastEdited)}
+		{@const sortedCreations = creations.toSorted((a, b) => -b.lastEdited - a.lastEdited)}
 		<NiceBackground>
 			<div
 				style:height="100%"

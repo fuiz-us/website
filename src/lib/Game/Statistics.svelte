@@ -2,9 +2,13 @@
 	import { buttonColors, buttonSymbols } from '$lib';
 	import Icon from '$lib/Icon.svelte';
 
-	export let statistics: { count: number; correct: boolean }[] = [];
+	interface Props {
+		statistics?: { count: number; correct: boolean }[];
+	}
 
-	$: maximum = statistics.reduce((a, b) => (a > b.count ? a : b.count), 0);
+	let { statistics = [] }: Props = $props();
+
+	let maximum = $derived(statistics.reduce((a, b) => (a > b.count ? a : b.count), 0));
 </script>
 
 <div
@@ -44,7 +48,7 @@
 					style:border="0.15em solid {buttonColors.at(index % buttonColors.length)?.at(1)}"
 					style:border-radius="0.7em"
 					style:height="max(1em, calc((100% - 2em) * {maximum === 0 ? 0 : count / maximum}))"
-				/>
+				></div>
 				<div
 					style:display="flex"
 					style:justify-content="center"

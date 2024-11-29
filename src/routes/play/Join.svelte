@@ -12,10 +12,10 @@
 	import Textfield from '$lib/Textfield.svelte';
 	import { bring } from '$lib/util';
 
-	let sending = false;
-	let gameCode = '';
+	let sending = $state(false);
+	let gameCode = $state('');
 
-	let errorMessage = '';
+	let errorMessage = $state('');
 
 	async function submit() {
 		sending = true;
@@ -29,7 +29,7 @@
 		} else {
 			let text = await res.text();
 			if (text === 'true') {
-				goto('?code=' + gameCode.toUpperCase());
+				await goto('?code=' + gameCode.toUpperCase());
 				return;
 			} else {
 				errorMessage = m.code_not_exist();
@@ -50,7 +50,12 @@
 		<header style:margin="0.5em 0">
 			<Header />
 		</header>
-		<form on:submit|preventDefault={submit}>
+		<form
+			onsubmit={async (e) => {
+				e.preventDefault();
+				await submit();
+			}}
+		>
 			<div
 				style:flex="1"
 				style:display="flex"

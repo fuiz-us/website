@@ -130,7 +130,7 @@ export async function mapMedia<T, O>(
 			? {
 					MultipleChoice: { ...slide.MultipleChoice, media: await map(slide.MultipleChoice.media) },
 					id: slide.id
-			  }
+				}
 			: {
 					MultipleChoice: {
 						title: slide.MultipleChoice.title,
@@ -140,13 +140,13 @@ export async function mapMedia<T, O>(
 						answers: slide.MultipleChoice.answers
 					},
 					id: slide.id
-			  };
+				};
 	if ('TypeAnswer' in slide)
 		return slide.TypeAnswer.media
 			? {
 					TypeAnswer: { ...slide.TypeAnswer, media: await map(slide.TypeAnswer.media) },
 					id: slide.id
-			  }
+				}
 			: {
 					TypeAnswer: {
 						title: slide.TypeAnswer.title,
@@ -157,13 +157,13 @@ export async function mapMedia<T, O>(
 						case_sensitive: slide.TypeAnswer.case_sensitive
 					},
 					id: slide.id
-			  };
+				};
 	if ('Order' in slide)
 		return slide.Order.media
 			? {
 					Order: { ...slide.Order, media: await map(slide.Order.media) },
 					id: slide.id
-			  }
+				}
 			: {
 					Order: {
 						title: slide.Order.title,
@@ -174,7 +174,7 @@ export async function mapMedia<T, O>(
 						answers: slide.Order.answers
 					},
 					id: slide.id
-			  };
+				};
 	return slide;
 }
 
@@ -186,7 +186,7 @@ export async function mapIdlessMedia<T, O>(
 		return slide.MultipleChoice.media
 			? {
 					MultipleChoice: { ...slide.MultipleChoice, media: await map(slide.MultipleChoice.media) }
-			  }
+				}
 			: {
 					MultipleChoice: {
 						title: slide.MultipleChoice.title,
@@ -195,12 +195,12 @@ export async function mapIdlessMedia<T, O>(
 						points_awarded: slide.MultipleChoice.points_awarded,
 						answers: slide.MultipleChoice.answers
 					}
-			  };
+				};
 	if ('TypeAnswer' in slide)
 		return slide.TypeAnswer.media
 			? {
 					TypeAnswer: { ...slide.TypeAnswer, media: await map(slide.TypeAnswer.media) }
-			  }
+				}
 			: {
 					TypeAnswer: {
 						title: slide.TypeAnswer.title,
@@ -210,12 +210,12 @@ export async function mapIdlessMedia<T, O>(
 						answers: slide.TypeAnswer.answers,
 						case_sensitive: slide.TypeAnswer.case_sensitive
 					}
-			  };
+				};
 	if ('Order' in slide)
 		return slide.Order.media
 			? {
 					Order: { ...slide.Order, media: await map(slide.Order.media) }
-			  }
+				}
 			: {
 					Order: {
 						title: slide.Order.title,
@@ -225,7 +225,7 @@ export async function mapIdlessMedia<T, O>(
 						axis_labels: slide.Order.axis_labels,
 						answers: slide.Order.answers
 					}
-			  };
+				};
 	return slide;
 }
 

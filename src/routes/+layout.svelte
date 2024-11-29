@@ -8,8 +8,16 @@
 	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
 	import { i18n } from '$lib/i18n';
 	import { onMount } from 'svelte';
+	import { derived } from 'svelte/store';
 
-	let mounting = true;
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
+
+	let mounting = $state(true);
+	let navigatingBoolean = derived(navigating, ($navigating) => $navigating !== null);
 
 	const startTimer = (f: () => void, ms: number) => {
 		let timer = setTimeout(f, ms);
@@ -18,21 +26,24 @@
 		};
 	};
 
-	let longNavigating = false;
-	let stopTimer: () => void = () => {
-		// left empty for a reason
-	};
+	let longNavigating = $state(false);
 
-	$: {
-		if ($navigating) {
-			stopTimer = startTimer(() => {
-				longNavigating = true;
-			}, 100);
+	let stopTimer = $state(() => {
+		// left empty for a reason
+	});
+
+	navigatingBoolean.subscribe((value) => {
+		if (value) {
+			if ($navigatingBoolean == false) {
+				stopTimer = startTimer(() => {
+					longNavigating = true;
+				}, 100);
+			}
 		} else {
 			stopTimer();
 			longNavigating = false;
 		}
-	}
+	});
 
 	onMount(() => {
 		mounting = false;
@@ -43,7 +54,7 @@
 	{#if mounting || longNavigating}
 		<Loading />
 	{:else}
-		<slot />
+		{@render children?.()}
 	{/if}
 </ParaglideJS>
 

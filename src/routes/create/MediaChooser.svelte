@@ -11,9 +11,13 @@
 	import type { Media } from '$lib/types';
 	import tippy from 'tippy.js';
 
-	export let media: Media | null | undefined;
+	interface Props {
+		media: Media | null | undefined;
+	}
 
-	let dragOver = false;
+	let { media = $bindable() }: Props = $props();
+
+	let dragOver = $state(false);
 
 	function load_from_input() {
 		const target = document.querySelector('input[type=file]');
@@ -52,7 +56,7 @@
 			name="image_input"
 			accept="image/png, image/jpeg, image/gif, image/webp"
 			id="image_input"
-			on:change={load_from_input}
+			onchange={load_from_input}
 		/>
 		<button
 			style:appearance="none"
@@ -61,16 +65,18 @@
 			style:padding="none"
 			style:font="inherit"
 			style:background="none"
-			on:dragover|preventDefault={() => {
+			ondragover={(e) => {
+				e.preventDefault();
 				dragOver = true;
 			}}
-			on:dragenter={() => {
+			ondragenter={() => {
 				dragOver = true;
 			}}
-			on:dragleave={() => {
+			ondragleave={() => {
 				dragOver = false;
 			}}
-			on:drop|preventDefault={(e) => {
+			ondrop={(e) => {
+				e.preventDefault();
 				dragOver = false;
 				const files = e.dataTransfer?.files ?? undefined;
 				if (files && files.length > 0) {
@@ -130,7 +136,7 @@
 					src={delete_image}
 					alt={m.remove()}
 					size="1.2em"
-					on:click={() => {
+					onclick={() => {
 						media = undefined;
 					}}
 				/>
@@ -171,7 +177,7 @@
 							size="1.2em"
 							src="$lib/assets/help.svg"
 							alt={m.image_alt()}
-							on:click={() => {
+							onclick={() => {
 								let element = document.getElementById('alt-help');
 								if (!element) return;
 								const instance = tippy(element, {

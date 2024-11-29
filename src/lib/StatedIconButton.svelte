@@ -1,25 +1,24 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import IconButton from './IconButton.svelte';
 
-	export let icons: [{ src: string; alt: string }, { src: string; alt: string }];
-	export let size: string;
+	interface Props {
+		icons: [{ src: string; alt: string }, { src: string; alt: string }];
+		size: string;
+		state: boolean;
+		onchange?: (state: boolean) => void;
+	}
 
-	export let state: boolean;
+	let { icons, size, state = $bindable(), onchange }: Props = $props();
 
-	$: icon = icons[state ? 1 : 0];
-
-	const dispatch = createEventDispatcher<{
-		change: boolean;
-	}>();
+	let icon = $derived(icons[state ? 1 : 0]);
 </script>
 
 <IconButton
 	src={icon.src}
 	alt={icon.alt}
 	{size}
-	on:click={() => {
+	onclick={() => {
 		state = !state;
-		dispatch('change', state);
+		if (onchange) onchange(state);
 	}}
 />

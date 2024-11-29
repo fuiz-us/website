@@ -1,10 +1,15 @@
-<script>
+<script lang="ts">
 	import * as m from '$lib/paraglide/messages.js';
 
 	import heart from '$lib/assets/cards-heart.svg';
 	import club from '$lib/assets/cards-club.svg';
 	import spade from '$lib/assets/cards-spade.svg';
 	import diamond from '$lib/assets/cards-diamond.svg';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 </script>
 
 <div style:height="100%" style:position="relative">
@@ -42,7 +47,7 @@
 		</div>
 	</div>
 	<div style:height="100%">
-		<slot />
+		{@render children?.()}
 	</div>
 </div>
 

@@ -3,24 +3,17 @@
 
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
-	import { createEventDispatcher } from 'svelte';
 	import PlayersList from '$lib/Game/PlayersList.svelte';
 
-	export let name: string;
-	export let gameCode: string;
-	export let available: [string, boolean][];
-	export let max: number;
-
-	let dispatch = createEventDispatcher<{
-		choose: string[];
-	}>();
-
-	$: {
-		dispatch(
-			'choose',
-			available.filter(([, sel]) => sel).map(([name]) => name)
-		);
+	interface Props {
+		name: string;
+		gameCode: string;
+		available: [string, boolean][];
+		max: number;
+		onchoose: (players: string[]) => void;
 	}
+
+	let { name, gameCode, available = $bindable(), max, onchoose }: Props = $props();
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">
@@ -61,6 +54,7 @@
 							exactCount={available.length}
 							{max}
 							selectable={true}
+							{onchoose}
 						/>
 					</div>
 				</div>

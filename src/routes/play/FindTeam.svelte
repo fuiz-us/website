@@ -4,9 +4,13 @@
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Topbar from './Topbar.svelte';
 
-	export let name: string;
-	export let gameCode: string;
-	export let teamName: string;
+	interface Props {
+		name: string;
+		gameCode: string;
+		teamName: string;
+	}
+
+	let { name, gameCode, teamName }: Props = $props();
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">

@@ -7,7 +7,7 @@
 	import ErrorPage from '$lib/ErrorPage.svelte';
 	import Gallery from './Gallery.svelte';
 	import { PUBLIC_PLAY_URL } from '$env/static/public';
-	import type { Creation } from '$lib/types';
+	import type { Creation, FuizConfig } from '$lib/types';
 	import {
 		getAllCreations,
 		getCreation,
@@ -19,6 +19,7 @@
 	import type { PageData } from '../$types';
 	import { browser } from '$app/environment';
 	import { i18n } from '$lib/i18n';
+	import { derived } from 'svelte/store';
 
 	let status:
 		| 'loading'
@@ -27,32 +28,42 @@
 					| 'failure'
 					| {
 							id: number;
-							config: ExportedFuiz;
+							exportedFuiz: ExportedFuiz;
+							config: FuizConfig;
 					  };
 				db: Database;
 		  }
 		| {
 				creations: Creation[];
 				db: Database;
-		  } = 'loading';
+		  } = $state('loading');
 
 	async function getStatus(idParam: string | null) {
 		const db = await loadDatabase(data.session !== null);
 		if (idParam) {
 			const id = parseInt(idParam);
-			const config = await getCreation(id, db);
+			const exportedFuiz = await getCreation(id, db);
+			if (!exportedFuiz) {
+				status = {
+					creation: 'failure',
+					db
+				};
+				return;
+			}
+			const config = addIds(exportedFuiz.config);
 			status = config
 				? {
 						creation: {
 							id,
+							exportedFuiz,
 							config
 						},
 						db
-				  }
+					}
 				: {
 						creation: 'failure',
 						db
-				  };
+					};
 		} else {
 			const creations = await getAllCreations(db);
 			status = {
@@ -62,9 +73,17 @@
 		}
 	}
 
-	$: browser && getStatus($page.url.searchParams.get('id'));
+	const creationId = derived(page, ($page) => $page.url.searchParams.get('id'));
 
-	export let data: PageData;
+	creationId.subscribe((id) => {
+		if (browser) getStatus(id);
+	});
+
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 
 	const title = m.create_title();
 	const description = m.create_desc();
@@ -85,6 +104,10 @@
 {:else if status.creation === 'failure'}
 	<ErrorPage errorMessage={m.missing_fuiz()} />
 {:else}
-	{@const config = addIds(status.creation.config.config)}
-	<Editor id={status.creation.id} exportedFuiz={status.creation.config} {config} db={status.db} />
+	<Editor
+		bind:id={status.creation.id}
+		bind:exportedFuiz={status.creation.exportedFuiz}
+		bind:config={status.creation.config}
+		db={status.db}
+	/>
 {/if}

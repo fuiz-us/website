@@ -1,31 +1,41 @@
 <script lang="ts">
-	import { afterUpdate, beforeUpdate } from 'svelte';
+	interface Props {
+		value: string;
+		placeholder: string;
+		textAlign?: string;
+		lightText?: boolean;
+		padding?: string;
+		maxLength?: number | undefined;
+	}
 
-	export let value: string;
-	export let placeholder: string;
-	export let textAlign = 'center';
-	export let lightText = false;
-	export let padding = '5px';
+	let {
+		value = $bindable(),
+		placeholder,
+		textAlign = 'center',
+		lightText = false,
+		padding = '5px',
+		maxLength = undefined
+	}: Props = $props();
 
-	export let maxLength: number | undefined = undefined;
+	let placeholderColor = $derived(lightText ? '#FFFFFF80' : '#00000080');
 
-	$: placeholderColor = lightText ? '#FFFFFF80' : '#00000080';
+	let editableElement: HTMLTextAreaElement | undefined = $state();
 
-	let editableElement: HTMLTextAreaElement;
-
-	beforeUpdate(async () => {
-		value = value.replaceAll('\n', '').replaceAll('\r', '');
-	});
-
-	afterUpdate(async () => {
-		editableElement.style.minHeight = '0';
-		editableElement.style.minHeight = editableElement.scrollHeight.toString() + 'px';
+	$effect(() => {
+		if (!editableElement) return;
+		editableElement.style.height = '0';
+		editableElement.style.height = (editableElement.scrollHeight + 4).toString() + 'px';
 	});
 </script>
 
 <textarea
 	bind:this={editableElement}
-	bind:value
+	{value}
+	oninput={(e) => {
+		const target: EventTarget | undefined = e?.target ?? undefined;
+		const inputtedValue = (target as HTMLTextAreaElement | null)?.value;
+		value = inputtedValue?.replaceAll('\n', '').replaceAll('\r', '') ?? value;
+	}}
 	style:background="none"
 	style:color="inherit"
 	style:display="flex"
@@ -44,7 +54,7 @@
 	style="--placeholderColor: {placeholderColor}"
 	rows="1"
 	maxlength={maxLength}
-/>
+></textarea>
 
 <style>
 	textarea::placeholder {

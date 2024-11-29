@@ -8,7 +8,11 @@
 	import TypeAnswerSlideEditor from './TypeAnswerSlideEditor.svelte';
 	import OrderSlideEditor from './OrderSlideEditor.svelte';
 
-	export let slide: Slide | undefined;
+	interface Props {
+		slide: Slide | undefined;
+	}
+
+	let { slide = $bindable() }: Props = $props();
 </script>
 
 {#if slide === undefined}

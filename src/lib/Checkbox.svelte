@@ -7,9 +7,13 @@
 	import { scale } from 'svelte/transition';
 	import Icon from './Icon.svelte';
 
-	export let value: boolean;
-	export let color: string | undefined = undefined;
-	export let attention = false;
+	interface Props {
+		value: boolean;
+		color?: string | undefined;
+		attention?: boolean;
+	}
+
+	let { value = $bindable(), color = undefined, attention = false }: Props = $props();
 
 	const duration = 150;
 </script>
@@ -31,7 +35,7 @@
 	style:font="inherit"
 	style:color="var(--palette-light)"
 	style:border="none"
-	on:click={() => (value = !value)}
+	onclick={() => (value = !value)}
 >
 	<div
 		style:height="100%"

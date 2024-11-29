@@ -279,21 +279,25 @@
 				Order: OrderSlideIncomingMessage;
 		  };
 
-	let currentState: State | undefined = undefined;
+	let currentState: State | undefined = $state(undefined);
 
 	let socket: WebSocket;
 
-	let setName: string | undefined = undefined;
+	let setName: string | undefined = $state(undefined);
 
 	let points: number | undefined = undefined;
 
-	export let code: string;
+	interface Props {
+		code: string;
+	}
+
+	let { code }: Props = $props();
 
 	let finished = false;
 
-	let leaderboardName = '';
+	let leaderboardName = $state('');
 
-	let showAnswers = false;
+	let showAnswers = $state(false);
 
 	let watcherId = (browser && localStorage.getItem(code + '_play')) || undefined;
 
@@ -623,7 +627,7 @@
 		});
 	});
 
-	$: name = (leaderboardName ? leaderboardName + ' - ' : '') + setName || m.you();
+	let name = $derived((leaderboardName ? leaderboardName + ' - ' : '') + setName || m.you());
 
 	function requestName(name: string) {
 		currentState = {
@@ -692,7 +696,7 @@
 	{@const game = currentState.Game}
 	{#if 'NameChoose' in game}
 		{@const { sending, error: errorMessage } = game.NameChoose}
-		<ChooseName on:setName={(x) => requestName(x.detail)} {sending} {errorMessage} />
+		<ChooseName setName={requestName} {sending} {errorMessage} />
 	{:else if 'WaitingScreen' in game}
 		<WaitingMobile {name} gameCode={code} />
 	{:else if 'Summary' in game}
@@ -706,7 +710,7 @@
 			gameCode={code}
 			max={game.ChooseTeammates.max_selection - 1}
 			available={game.ChooseTeammates.available.filter(([name]) => name !== setName)}
-			on:choose={(e) => sendChooseTeammate(e.detail)}
+			onchoose={sendChooseTeammate}
 		/>
 	{/if}
 {:else if 'Slide' in currentState}
@@ -718,7 +722,7 @@
 		{:else if kind === 'AnswersAnnouncement'}
 			{#if answered === undefined}
 				<Answers
-					on:answer={(e) => sendAnswer(e.detail)}
+					onanswer={sendAnswer}
 					questionText={question || ''}
 					{media}
 					{name}
@@ -753,7 +757,7 @@
 			{#if answered === undefined}
 				{#if accept_answers}
 					<TypeAnswerQuestion
-						on:answer={(e) => sendStringAnswer(e.detail)}
+						onanswer={sendStringAnswer}
 						{name}
 						{score}
 						{media}
@@ -771,10 +775,10 @@
 				{score}
 				correct={answered === undefined
 					? false
-					: answers
+					: (answers
 							?.map((a) => a.trim())
 							.map((a) => (case_sensitive ? a : a.toLowerCase()))
-							.includes(case_sensitive ? answered.trim() : answered.trim().toLowerCase()) ?? false}
+							.includes(case_sensitive ? answered.trim() : answered.trim().toLowerCase()) ?? false)}
 			/>
 		{/if}
 	{:else if 'Order' in slide}
@@ -784,7 +788,7 @@
 		{:else if kind === 'AnswersAnnouncement'}
 			{#if answered === undefined}
 				<OrderAnswers
-					on:answer={(e) => sendStringArrayAnswer(e.detail)}
+					onanswer={sendStringArrayAnswer}
 					questionText={question || ''}
 					{media}
 					{name}

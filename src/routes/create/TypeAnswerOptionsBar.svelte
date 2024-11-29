@@ -7,7 +7,11 @@
 	import type { TypeAnswer } from '$lib/types';
 	import Switch from '$lib/Switch.svelte';
 
-	export let activeSlide: TypeAnswer;
+	interface Props {
+		activeSlide: TypeAnswer;
+	}
+
+	let { activeSlide = $bindable() }: Props = $props();
 </script>
 
 <div id="sidebar-container">

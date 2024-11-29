@@ -5,12 +5,15 @@
 	import correct_penguin from '$lib/assets/correct_penguin.svg';
 	import wrong_penguin from '$lib/assets/wrong_penguin.svg';
 	import Topbar from './Topbar.svelte';
-	import { onMount } from 'svelte';
 	import { Confetti } from 'svelte-confetti';
 
-	export let name: string;
-	export let score: number;
-	export let correct: boolean;
+	interface Props {
+		name: string;
+		score: number;
+		correct: boolean;
+	}
+
+	let { name, score, correct }: Props = $props();
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">

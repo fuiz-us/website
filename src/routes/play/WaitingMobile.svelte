@@ -5,8 +5,12 @@
 	import waiting_penguin from '$lib/assets/waiting.svg';
 	import Topbar from './Topbar.svelte';
 
-	export let name: string;
-	export let gameCode: string;
+	interface Props {
+		name: string;
+		gameCode: string;
+	}
+
+	let { name, gameCode }: Props = $props();
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">

@@ -13,7 +13,11 @@
 	import deleteAnswer from '$lib/assets/delete.svg';
 	import Textbox from '$lib/Textbox.svelte';
 
-	export let slide: OrderSlide;
+	interface Props {
+		slide: OrderSlide;
+	}
+
+	let { slide = $bindable() }: Props = $props();
 
 	if (slide.time_limit < 1000) slide.time_limit *= 1000;
 </script>
@@ -72,14 +76,14 @@
 			required={false}
 			bind:value={slide.axis_labels.from}
 		/>
-		{#each slide.answers as { text, id }, index (id)}
+		{#each slide.answers as answer, index (answer.id)}
 			<div style:display="flex" style:gap="0.5em" style:align-items="center">
 				{#if index < slide.answers.length - 1}
 					<IconButton
 						src={arrowDown}
 						alt="Move down"
 						size="1.25em"
-						on:click={() => {
+						onclick={() => {
 							if (index < slide.answers.length - 1) {
 								const temp = slide.answers[index];
 								slide.answers[index] = slide.answers[index + 1];
@@ -92,7 +96,7 @@
 						src={addAnswer}
 						alt={m.add_answer()}
 						size="1.25em"
-						on:click={() => {
+						onclick={() => {
 							slide.answers = [...slide.answers, { text: '', id: Date.now() }];
 						}}
 					/>
@@ -103,7 +107,7 @@
 					active={false}
 				>
 					<Textbox
-						bind:value={text}
+						bind:value={slide.answers[index].text}
 						placeholder={m.answer_text()}
 						textAlign="start"
 						lightText
@@ -114,15 +118,15 @@
 					src={deleteAnswer}
 					alt={m.delete_answer()}
 					size="1.25em"
-					on:click={() => {
-						slide.answers = slide.answers.filter((a) => a.id !== id);
+					onclick={() => {
+						slide.answers = slide.answers.filter((a) => a.id !== answer.id);
 					}}
 				/>
 			</div>
 		{/each}
 		{#if slide.answers.length === 0}
 			<FancyButton
-				on:click={() => {
+				onclick={() => {
 					slide.answers = [...slide.answers, { text: '', id: Date.now() }];
 				}}
 			>

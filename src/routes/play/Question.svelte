@@ -5,7 +5,14 @@
 	import type { Media } from '$lib/types';
 	import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
 
-	export let name: string, score: number, questionText: string, media: Media | undefined;
+	interface Props {
+		name: string;
+		score: number;
+		questionText: string;
+		media: Media | undefined;
+	}
+
+	let { name, score, questionText, media }: Props = $props();
 </script>
 
 <svelte:head>

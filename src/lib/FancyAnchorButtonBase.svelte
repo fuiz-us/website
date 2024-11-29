@@ -1,9 +1,13 @@
 <script lang="ts">
-	export let foregroundColor: string;
-	export let backgroundColor: string;
-	export let backgroundDeepColor: string;
+	interface Props {
+		foregroundColor: string;
+		backgroundColor: string;
+		backgroundDeepColor: string;
+		href: string;
+		children?: import('svelte').Snippet;
+	}
 
-	export let href: string;
+	let { foregroundColor, backgroundColor, backgroundDeepColor, href, children }: Props = $props();
 </script>
 
 <a
@@ -36,7 +40,7 @@
 			style:width="100%"
 			style:height="100%"
 		>
-			<slot />
+			{@render children?.()}
 		</div>
 	</div>
 </a>
@@ -51,7 +55,7 @@
 		transform: translateY(0em);
 	}
 
-	a:where(:hover, :focus) .front {
+	a:where(:global(:hover, :focus)) .front {
 		transform: translateY(-0.3em);
 	}
 </style>

@@ -3,12 +3,17 @@
 	import Icon from '$lib/Icon.svelte';
 	import FancyButton from '../FancyButton.svelte';
 
-	export let index: number;
+	interface Props {
+		index: number;
+		onclick?: () => void;
+	}
+
+	let { index, onclick }: Props = $props();
 </script>
 
 <div>
 	<FancyButton
-		on:click
+		{onclick}
 		backgroundColor={buttonColors.at(index % buttonColors.length)?.at(0)}
 		backgroundDeepColor={buttonColors.at(index % buttonColors.length)?.at(1)}
 		height="100%"

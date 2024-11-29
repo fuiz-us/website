@@ -8,20 +8,19 @@
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Textfield from '$lib/Textfield.svelte';
-	import { createEventDispatcher } from 'svelte';
-
-	export let sending: boolean;
 
 	let placeholder = m.nickname();
-	export let errorMessage = '';
-	let name = '';
+	interface Props {
+		sending: boolean;
+		errorMessage?: string;
+		setName: (name: string) => void;
+	}
 
-	const dispatch = createEventDispatcher<{
-		setName: string;
-	}>();
+	let { sending, errorMessage = '', setName }: Props = $props();
+	let name = $state('');
 
-	async function submit() {
-		dispatch('setName', name);
+	function submit() {
+		setName(name);
 	}
 </script>
 
@@ -35,7 +34,12 @@
 		<header style:margin="0.5em 0">
 			<Header />
 		</header>
-		<form on:submit|preventDefault={submit}>
+		<form
+			onsubmit={(e) => {
+				e.preventDefault();
+				submit();
+			}}
+		>
 			<ErrorMessage {errorMessage} />
 			<Textfield
 				id="name"

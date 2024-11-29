@@ -1,21 +1,29 @@
 <script lang="ts">
-	import { afterUpdate, beforeUpdate } from 'svelte';
+	interface Props {
+		id: string;
+		placeholder: string;
+		required: boolean;
+		disabled: boolean;
+		value: string;
+		maxHeight?: string;
+		maxLength?: number | undefined;
+	}
 
-	export let id: string;
-	export let placeholder: string;
-	export let required: boolean;
-	export let disabled: boolean;
-	export let value: string;
-	export let maxHeight = '4em';
-	export let maxLength: number | undefined = undefined;
+	let {
+		id,
+		placeholder,
+		required,
+		disabled,
+		value = $bindable(),
+		maxHeight = '4em',
+		maxLength = undefined
+	}: Props = $props();
 
-	let editableElement: HTMLTextAreaElement;
+	let editableElement: HTMLTextAreaElement | undefined = $state();
 
-	beforeUpdate(async () => {
-		value = value.replaceAll('\n', '').replaceAll('\r', '');
-	});
-
-	afterUpdate(async () => {
+	$effect(() => {
+		value = value;
+		if (!editableElement) return;
 		editableElement.style.height = '0';
 		editableElement.style.height = (editableElement.scrollHeight + 4).toString() + 'px';
 	});
@@ -29,10 +37,15 @@
 		name={id}
 		{required}
 		{disabled}
-		bind:value
+		oninput={(e) => {
+			const target: EventTarget | undefined = e?.target ?? undefined;
+			const inputtedValue = (target as HTMLTextAreaElement | null)?.value;
+			value = inputtedValue?.replaceAll('\n', '').replaceAll('\r', '') ?? value;
+		}}
+		{value}
 		placeholder=""
 		maxlength={maxLength}
-	/>
+	></textarea>
 	<label for={id}>{placeholder}</label>
 </div>
 
@@ -57,7 +70,7 @@
 		transition: all 100ms linear;
 	}
 
-	textarea:where(:not(:placeholder-shown), :focus, :active) + label {
+	textarea:where(:global(:not(:placeholder-shown), :focus, :active)) + label {
 		top: 0;
 		scale: 0.75;
 		background: var(--background-color);

@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import EmptyAnswerButton from './EmptyAnswerButton.svelte';
 
-	export let indices: number[];
+	interface Props {
+		indices: number[];
+		onanswer?: (index: number) => void;
+	}
 
-	const dispatch = createEventDispatcher<{
-		answer: number;
-	}>();
+	let { indices, onanswer }: Props = $props();
 </script>
 
 <div
@@ -18,6 +18,11 @@
 	style:padding="0.2em"
 >
 	{#each indices as index}
-		<EmptyAnswerButton {index} on:click={() => dispatch('answer', index)} />
+		<EmptyAnswerButton
+			{index}
+			onclick={() => {
+				if (onanswer) onanswer(index);
+			}}
+		/>
 	{/each}
 </div>

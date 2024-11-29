@@ -10,11 +10,15 @@
 	import RegularCheckbox from '$lib/regular-checkbox.svelte';
 	import { availableLanguageTags } from '$lib/paraglide/runtime';
 
-	export let recentlyPublished: PublishedFuiz[];
+	interface Props {
+		recentlyPublished: PublishedFuiz[];
+	}
 
-	let searchTerm = '';
+	let { recentlyPublished }: Props = $props();
 
-	let results: Promise<PublishedFuiz[] | undefined> | undefined = undefined;
+	let searchTerm = $state('');
+
+	let results: Promise<PublishedFuiz[] | undefined> | undefined = $state(undefined);
 
 	const search = debounce(
 		() =>
@@ -33,31 +37,39 @@
 		500
 	);
 
-	$: {
-		subjectsList.length || gradesList.length || languagesList.length || searchTerm.length
-			? search()
-			: (results = undefined);
-	}
+	let subjectsSelected = $state(subjects.map((subject) => ({ name: subject, selected: false })));
 
-	let subjectsSelected = subjects.map((subject) => ({ name: subject, selected: false }));
+	let gradesSelected = $state(grades.map((grade) => ({ name: grade, selected: false })));
 
-	$: subjectsList = subjectsSelected
-		.filter((subject) => subject.selected)
-		.map((subject) => subject.name);
+	let languagesSelected = $state(
+		availableLanguageTags.map((language) => ({
+			name: language,
+			display: new Intl.DisplayNames([language], { type: 'language' }).of(language),
+			selected: false
+		}))
+	);
 
-	let gradesSelected = grades.map((grade) => ({ name: grade, selected: false }));
+	let subjectsList = $derived(
+		subjectsSelected.filter((subject) => subject.selected).map((subject) => subject.name)
+	);
+	let gradesList = $derived(
+		gradesSelected.filter((grade) => grade.selected).map((grade) => grade.name)
+	);
+	let languagesList = $derived(
+		languagesSelected.filter((language) => language.selected).map((language) => language.name)
+	);
 
-	$: gradesList = gradesSelected.filter((grade) => grade.selected).map((grade) => grade.name);
+	let searchCriteria = $derived(
+		subjectsList.length + gradesList.length + languagesList.length + searchTerm.length
+	);
 
-	let languagesSelected = availableLanguageTags.map((language) => ({
-		name: language,
-		display: new Intl.DisplayNames([language], { type: 'language' }).of(language),
-		selected: false
-	}));
-
-	$: languagesList = languagesSelected
-		.filter((language) => language.selected)
-		.map((language) => language.name);
+	$effect(() => {
+		if (searchCriteria > 0) {
+			search();
+		} else {
+			results = undefined;
+		}
+	});
 </script>
 
 <Textfield

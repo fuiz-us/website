@@ -5,7 +5,11 @@
 	import type { TypeAnswer } from '$lib/types';
 	import { buttonColors } from '$lib';
 
-	export let slide: TypeAnswer;
+	interface Props {
+		slide: TypeAnswer;
+	}
+
+	let { slide }: Props = $props();
 </script>
 
 <div
@@ -28,14 +32,14 @@
 		{slide.title ? slide.title : '...'}
 	</div>
 	<VerticalSplit>
-		<svelte:fragment slot="top">
+		{#snippet top()}
 			{#if slide.media}
 				<div style:height="50px">
 					<MediaContainer media={slide.media} />
 				</div>
 			{/if}
-		</svelte:fragment>
-		<svelte:fragment slot="bottom">
+		{/snippet}
+		{#snippet bottom()}
 			{#if !slide.answers.length}
 				<div
 					style:font-size="18px"
@@ -67,16 +71,16 @@
 					{m.duplicate_answers()}
 				</div>
 			{:else}
-				{#each slide.answers as _, i}
+				{#each slide.answers.keys() as i}
 					<div
 						style:border="0.1em solid {buttonColors.at(i % buttonColors.length)?.at(0) ??
 							'var(--accent-color)'}"
 						style:margin="0.1em"
 						style:border-radius="0.6em"
 						style:height="0.5em"
-					/>
+					></div>
 				{/each}
 			{/if}
-		</svelte:fragment>
+		{/snippet}
 	</VerticalSplit>
 </div>

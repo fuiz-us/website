@@ -6,8 +6,12 @@
 	import { onMount } from 'svelte';
 	import IconButton from './IconButton.svelte';
 
-	let fullscreen = false;
-	export let fullscreenElement: HTMLElement | undefined = undefined;
+	let fullscreen = $state(false);
+	interface Props {
+		fullscreenElement?: HTMLElement | undefined;
+	}
+
+	let { fullscreenElement = undefined }: Props = $props();
 
 	onMount(() => {
 		document.addEventListener('fullscreenchange', () => {
@@ -27,7 +31,7 @@
 </script>
 
 <IconButton
-	on:click={toggle}
+	onclick={toggle}
 	src={fullscreen ? fullscreenExit : fullscreenEnter}
 	alt={fullscreen ? m.exit_fullscreen() : m.enter_fullscreen()}
 	size="1em"

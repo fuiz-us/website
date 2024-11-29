@@ -12,7 +12,7 @@
 	import unlocked from '$lib/assets/unlocked.svg';
 	import locked from '$lib/assets/locked.svg';
 	import QrCode from '$lib/Game/QRCode.svelte';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import type { BindableGameInfo } from './+page';
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
 	import Icon from '$lib/Icon.svelte';
@@ -20,28 +20,36 @@
 	import tippy from 'tippy.js';
 	import { i18n } from '$lib/i18n';
 
-	export let code: string;
-	export let players: string[];
-	export let exact_count: number;
+	interface Props {
+		code: string;
+		players: string[];
+		exact_count: number;
+		bindableGameInfo: BindableGameInfo;
+		onnext?: () => void;
+		onlock?: (locked: boolean) => void;
+	}
 
-	export let bindableGameInfo: BindableGameInfo;
+	let {
+		code,
+		players,
+		exact_count,
+		bindableGameInfo = $bindable(),
+		onnext,
+		onlock
+	}: Props = $props();
 
-	$: actualUrl = PUBLIC_PLAY_URL + i18n.resolveRoute('/play?code=' + code);
-
-	const dispatch = createEventDispatcher<{
-		next: undefined;
-		lock: boolean;
-	}>();
+	let actualUrl = $derived(PUBLIC_PLAY_URL + i18n.resolveRoute('/play?code=' + code));
 
 	function copy_url_to_clipboard() {
 		navigator.clipboard.writeText(actualUrl);
 	}
 
-	let fullscreenElement;
+	let fullscreenElement: HTMLElement | undefined = $state();
 
-	let copyUrlButton: HTMLButtonElement;
+	let copyUrlButton: HTMLButtonElement | undefined = $state();
 
 	onMount(() => {
+		if (!copyUrlButton) return;
 		tippy(copyUrlButton, {
 			content: m.copy_clipboard(),
 			arrow: false,
@@ -86,7 +94,7 @@
 			style:border-radius="0.4em"
 		>
 			<button
-				on:click={copy_url_to_clipboard}
+				onclick={copy_url_to_clipboard}
 				bind:this={copyUrlButton}
 				style:font="inherit"
 				style:color="inherit"
@@ -110,7 +118,7 @@
 			style:width="fit-content"
 			style:font-size="1.5em"
 		>
-			<FancyButton on:click={() => dispatch('next')}>
+			<FancyButton onclick={onnext}>
 				<div style:padding="0 1em" style:font-family="Poppins">{m.start()}</div>
 			</FancyButton>
 		</div>
@@ -137,9 +145,7 @@
 						]}
 						size="1em"
 						bind:state={bindableGameInfo.locked}
-						on:change={(e) => {
-							dispatch('lock', e.detail);
-						}}
+						onchange={onlock}
 					/>
 					<StatedIconButton
 						icons={[

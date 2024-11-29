@@ -40,7 +40,7 @@ export function generateUuid(): string {
 
 	try {
 		return crypto.randomUUID();
-	} catch (e) {
+	} catch {
 		return splitString(generateRandomHex(32), [8, 4, 4, 4, 12]).join('-');
 	}
 }
@@ -157,17 +157,17 @@ export async function updateLocalImagesDatabse(
 
 async function updateImagesDatabse(media: Media | string, hash: string, database: Database) {
 	if (await updateLocalImagesDatabse(media, hash, database.local)) {
-		database?.remote?.createImage(hash, media);
+		await database?.remote?.createImage(hash, media);
 	}
 }
 
-export function internalizeMedia(
+export async function internalizeMedia(
 	media: Media | undefined,
 	database: Database
-): MediaReference | undefined {
+): Promise<MediaReference | undefined> {
 	if (media == undefined) return undefined;
 	const [hash, alt, newMedia] = hashMedia(media);
-	updateImagesDatabse(newMedia, hash, database);
+	await updateImagesDatabse(newMedia, hash, database);
 	return {
 		Image: {
 			HashReference: {
@@ -186,7 +186,7 @@ async function internalizeFuiz(fuiz: ExportedFuiz, database: Database): Promise<
 			slides: await Promise.all(
 				fuiz.config.slides.map(
 					async (slide) =>
-						await mapIdlessMedia(slide, async (media) => internalizeMedia(media, database))
+						await mapIdlessMedia(slide, async (media) => await internalizeMedia(media, database))
 				)
 			)
 		}
@@ -298,7 +298,7 @@ export async function getAllCreationsLocal(
 	return await new Promise((resolve) => {
 		const internals: [IDBValidKey, StrictInternalFuiz][] = [];
 
-		creationsTransaction.addEventListener('success', async () => {
+		creationsTransaction.addEventListener('success', () => {
 			const cursor = creationsTransaction.result;
 			if (cursor) {
 				const value = cursor.value as InternalFuiz;
@@ -345,7 +345,7 @@ export async function getCreationLocal(
 	const creationsStore = database.transaction(['creations'], 'readonly').objectStore('creations');
 	const creationsTransaction = creationsStore.get(id);
 	return await new Promise((resolve) => {
-		creationsTransaction.addEventListener('success', async () => {
+		creationsTransaction.addEventListener('success', () => {
 			resolve(creationsTransaction.result ?? undefined);
 		});
 	});
@@ -378,7 +378,7 @@ export async function deleteCreation(id: CreationId, database: Database): Promis
 	const uniqueId = (await getCreation(id, database))?.uniqueId;
 	if (!uniqueId) return;
 	await deleteCreationLocal(id, database.local);
-	database.remote?.delete(uniqueId);
+	await database.remote?.delete(uniqueId);
 }
 
 export async function addCreationLocal(
@@ -399,7 +399,7 @@ export async function addCreationLocal(
 export async function addCreation(newSlide: ExportedFuiz, database: Database): Promise<CreationId> {
 	const internalFuiz = await internalizeFuiz(newSlide, database);
 	const id = await addCreationLocal(internalFuiz, database.local);
-	database.remote?.create(newSlide.uniqueId, internalFuiz);
+	await database.remote?.create(newSlide.uniqueId, internalFuiz);
 	return id;
 }
 
@@ -425,5 +425,5 @@ export async function updateCreation(
 ): Promise<void> {
 	const internalFuiz = await internalizeFuiz(newSlide, database);
 	await updateCreationLocal(id, internalFuiz, database.local);
-	database.remote?.update(newSlide.uniqueId, internalFuiz);
+	await database.remote?.update(newSlide.uniqueId, internalFuiz);
 }

@@ -4,8 +4,12 @@
 	import hourglassFilled from '$lib/assets/hourglass_filled.svg';
 	import hourglassEmpty from '$lib/assets/hourglass_empty.svg';
 	import Icon from '$lib/Icon.svelte';
-	export let timeLeft: number;
-	export let timeStarted: number;
+	interface Props {
+		timeLeft: number;
+		timeStarted: number;
+	}
+
+	let { timeLeft, timeStarted }: Props = $props();
 
 	const size = '1.2em';
 </script>

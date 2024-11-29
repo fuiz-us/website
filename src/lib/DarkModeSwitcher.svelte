@@ -4,34 +4,33 @@
 	import StatedIconButton from '$lib/StatedIconButton.svelte';
 	import darkMode from '$lib/assets/dark_mode.svg';
 	import lightMode from '$lib/assets/light_mode.svg';
-	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 
-	let state: boolean | undefined = undefined;
+	let theme: boolean | undefined = $state(undefined);
 
 	function getName(state: boolean): string {
 		return state ? 'dark' : 'light';
 	}
 
-	onMount(() => {
-		state = (localStorage.getItem('theme') ?? 'light') === 'dark';
+	$effect(() => {
+		theme = (localStorage.getItem('theme') ?? 'light') === 'dark';
 	});
 
-	$: {
-		if (browser && state !== undefined) {
-			localStorage.setItem('theme', getName(state));
-			document.documentElement.setAttribute('data-theme', getName(state));
+	$effect.pre(() => {
+		if (browser && theme !== undefined) {
+			localStorage.setItem('theme', getName(theme));
+			document.documentElement.setAttribute('data-theme', getName(theme));
 		}
-	}
+	});
 </script>
 
-{#if state !== undefined}
+{#if theme !== undefined}
 	<StatedIconButton
 		icons={[
 			{ src: lightMode, alt: m.switch_dark() },
 			{ src: darkMode, alt: m.switch_light() }
 		]}
-		bind:state
+		bind:state={theme}
 		size="1em"
 	/>
 {/if}

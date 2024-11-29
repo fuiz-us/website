@@ -17,7 +17,6 @@
 	import Loading from '$lib/Loading.svelte';
 	import { PUBLIC_BACKEND_URL, PUBLIC_WS_URL } from '$env/static/public';
 	import ErrorPage from '$lib/ErrorPage.svelte';
-	import { browser } from '$app/environment';
 	import type { BindableGameInfo, TruncatedList } from './+page';
 	import Summary from './Summary.svelte';
 	import { bring, zip } from '$lib/util';
@@ -246,12 +245,12 @@
 				Order: OrderSlideIncomingMessage;
 		  };
 
-	let currentState: State | undefined = undefined;
+	let currentState: State | undefined = $state(undefined);
 
 	let socket: WebSocket;
 
-	let timer = 0;
-	let initialTimer = 0;
+	let timer = $state(0);
+	let initialTimer = $state(0);
 
 	const UPDATE_DURATION = 100;
 
@@ -259,14 +258,18 @@
 		timer = Math.max(0, timer - UPDATE_DURATION);
 	}, UPDATE_DURATION);
 
-	export let code: string;
+	interface Props {
+		code: string;
+	}
+
+	let { code }: Props = $props();
 
 	let watcherId: string | undefined = undefined;
 
-	let bindableGameInfo: BindableGameInfo = {
+	let bindableGameInfo: BindableGameInfo = $state({
 		volumeOn: true,
 		locked: false
-	};
+	});
 
 	let finished = false;
 
@@ -571,14 +574,16 @@
 		});
 	}
 
-	$: browser && connect_server(code);
+	$effect(() => {
+		connect_server(code);
+	});
 
-	function next() {
+	function onnext() {
 		socket.send(HOST_NEXT);
 	}
 
-	function receiveLock(e: CustomEvent<boolean>) {
-		socket.send(JSON.stringify({ Host: { Lock: e.detail } }));
+	function onlock(e: boolean) {
+		socket.send(JSON.stringify({ Host: { Lock: e } }));
 	}
 
 	const HOST_NEXT = JSON.stringify({ Host: 'Next' });
@@ -586,7 +591,7 @@
 	onMount(() => {
 		const handleKeydown = (e: KeyboardEvent) => {
 			if (e.key === 'PageDown') {
-				next();
+				onnext();
 			}
 		};
 
@@ -606,12 +611,12 @@
 {:else if 'Game' in currentState}
 	{#if 'WaitingScreen' in currentState.Game}
 		<Waiting
-			on:next={next}
+			{onnext}
+			{onlock}
 			{code}
 			players={currentState.Game.WaitingScreen.items}
 			exact_count={currentState.Game.WaitingScreen.exact_count}
 			bind:bindableGameInfo
-			on:lock={receiveLock}
 		/>
 	{:else if 'Summary' in currentState.Game}
 		{@const { stats, player_count, config, options } = currentState.Game.Summary}
@@ -626,8 +631,8 @@
 	}}
 	{#if 'Leaderboard' in slide}
 		<Leaderboard
-			on:next={next}
-			on:lock={receiveLock}
+			{onnext}
+			{onlock}
 			bind:bindableGameInfo
 			{gameInfo}
 			current={slide.Leaderboard.current}
@@ -645,8 +650,8 @@
 		} = slide}
 		{#if kind === 'QuestionAnnouncement'}
 			<Question
-				on:next={next}
-				on:lock={receiveLock}
+				{onnext}
+				{onlock}
 				bind:bindableGameInfo
 				{media}
 				{gameInfo}
@@ -655,8 +660,8 @@
 			/>
 		{:else if kind === 'AnswersAnnouncement'}
 			<QuestionAnswers
-				on:next={next}
-				on:lock={receiveLock}
+				{onnext}
+				{onlock}
 				bind:bindableGameInfo
 				{gameInfo}
 				questionText={question || ''}
@@ -668,8 +673,8 @@
 			/>
 		{:else if kind === 'AnswersResults'}
 			<QuestionStatistics
-				on:next={next}
-				on:lock={receiveLock}
+				{onnext}
+				{onlock}
 				bind:bindableGameInfo
 				{gameInfo}
 				questionText={question || ''}
@@ -691,8 +696,8 @@
 		} = slide}
 		{#if kind === 'QuestionAnnouncement'}
 			<Question
-				on:next={next}
-				on:lock={receiveLock}
+				{onnext}
+				{onlock}
 				bind:bindableGameInfo
 				{media}
 				{gameInfo}
@@ -701,8 +706,8 @@
 			/>
 		{:else if kind === 'AnswersResults'}
 			<TypeAnswerStatistics
-				on:next={next}
-				on:lock={receiveLock}
+				{onnext}
+				{onlock}
 				bind:bindableGameInfo
 				{gameInfo}
 				caseSensitive={caseSensitive ?? false}
@@ -715,8 +720,8 @@
 		{@const { Order: kind, question, media, answers, results, axis_labels, answered_count } = slide}
 		{#if kind === 'QuestionAnnouncement'}
 			<Question
-				on:next={next}
-				on:lock={receiveLock}
+				{onnext}
+				{onlock}
 				bind:bindableGameInfo
 				{media}
 				{gameInfo}
@@ -725,8 +730,8 @@
 			/>
 		{:else if kind === 'AnswersAnnouncement'}
 			<OrderAnswers
-				on:next={next}
-				on:lock={receiveLock}
+				{onnext}
+				{onlock}
 				bind:bindableGameInfo
 				{gameInfo}
 				questionText={question || ''}
@@ -742,8 +747,8 @@
 			/>
 		{:else if kind === 'AnswersResults'}
 			<OrderStatistics
-				on:next={next}
-				on:lock={receiveLock}
+				{onnext}
+				{onlock}
 				bind:bindableGameInfo
 				{gameInfo}
 				questionText={question || ''}

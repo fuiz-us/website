@@ -4,17 +4,20 @@
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import type { Media } from '$lib/types';
 	import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
-	import { createEventDispatcher } from 'svelte';
 	import Textfield from '$lib/Textfield.svelte';
 	import FancyButton from '$lib/FancyButton.svelte';
 
-	let dispatch = createEventDispatcher<{
-		answer: string;
-	}>();
+	let value = $state('');
 
-	let value = '';
+	interface Props {
+		name: string;
+		score: number;
+		questionText: string;
+		media: Media | undefined;
+		onanswer: (answer: string) => void;
+	}
 
-	export let name: string, score: number, questionText: string, media: Media | undefined;
+	let { name, score, questionText, media, onanswer }: Props = $props();
 </script>
 
 <svelte:head>
@@ -44,7 +47,7 @@
 		>
 			<Textfield id="answer" placeholder="Answer" required disabled={false} bind:value />
 			<div style:width="100%">
-				<FancyButton on:click={() => dispatch('answer', value)}>Submit</FancyButton>
+				<FancyButton onclick={() => onanswer(value)}>Submit</FancyButton>
 			</div>
 		</div>
 	</NiceBackground>

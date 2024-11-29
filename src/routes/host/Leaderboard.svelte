@@ -10,20 +10,32 @@
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 
-	export let bindableGameInfo: BindableGameInfo;
-	export let gameInfo: SharedGameInfo;
+	interface Props {
+		bindableGameInfo: BindableGameInfo;
+		gameInfo: SharedGameInfo;
+		final: boolean;
+		prior: TruncatedList<[string, number]>;
+		current: TruncatedList<[string, number]>;
+		onlock?: (locked: boolean) => void;
+		onnext?: () => void;
+	}
 
-	export let final: boolean;
+	let {
+		bindableGameInfo = $bindable(),
+		gameInfo,
+		final,
+		prior,
+		current,
+		onlock,
+		onnext
+	}: Props = $props();
 
-	export let prior: TruncatedList<[string, number]>;
-	export let current: TruncatedList<[string, number]>;
-
-	let displayed = {
+	let displayed = $state({
 		exact_count: current.exact_count,
 		items: prior.items
-	};
+	});
 
-	let displayed_final = false;
+	let displayed_final = $state(false);
 
 	const duration = 3000,
 		delay = 1000;
@@ -33,7 +45,7 @@
 		displayed_final = final;
 	});
 
-	let fullscreenElement;
+	let fullscreenElement: HTMLElement | undefined = $state();
 </script>
 
 <div
@@ -42,8 +54,8 @@
 	style:display="flex"
 	style:flex-direction="column"
 >
-	<Topbar bind:bindableGameInfo {gameInfo} {fullscreenElement} on:lock />
-	<TextBar on:next text={m.scores()} showNext={true} heading={true} />
+	<Topbar bind:bindableGameInfo {gameInfo} {fullscreenElement} {onlock} />
+	<TextBar {onnext} text={m.scores()} showNext={true} heading={true} />
 	<div style:flex="1">
 		<NiceBackground>
 			<div

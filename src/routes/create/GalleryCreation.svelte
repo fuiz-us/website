@@ -5,24 +5,26 @@
 	import present from '$lib/assets/slideshow.svg';
 	import IconButton from '$lib/IconButton.svelte';
 	import MediaContainer from '$lib/MediaContainer.svelte';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import type { Media } from '$lib/types';
 	import { languageTag } from '$lib/paraglide/runtime.js';
 	import type { Instance } from 'tippy.js';
 	import tippy from 'tippy.js';
 
-	const dispatch = createEventDispatcher<{
-		delete: undefined;
-		play: undefined;
-		download: undefined;
-		share: Instance;
-	}>();
-
-	export let id: number,
-		title: string,
-		lastEdited: number,
-		slidesCount: number,
+	interface Props {
+		id: number;
+		title: string;
+		lastEdited: number;
+		slidesCount: number;
 		media: Media | undefined;
+		ondelete: () => void;
+		onplay: () => void;
+		ondownload: () => void;
+		onshare: (tippyInstance: Instance) => void;
+	}
+
+	let { id, title, lastEdited, slidesCount, media, ondelete, onplay, ondownload, onshare }: Props =
+		$props();
 
 	const same_year = { month: 'short', day: 'numeric' } as const;
 	const diff_year = { year: 'numeric', month: 'numeric', day: 'numeric' } as const;
@@ -36,10 +38,11 @@
 		}
 	}
 
-	let shareElement: HTMLElement;
-	let tippyInstance: Instance;
+	let shareElement: HTMLElement | undefined = $state();
+	let tippyInstance: Instance | undefined = $state();
 
 	onMount(() => {
+		if (!shareElement) return;
 		tippyInstance = tippy(shareElement, {
 			trigger: 'manual',
 			content: m.copied(),
@@ -64,26 +67,16 @@
 		</div>
 	</a>
 	<div class="panel">
-		<IconButton size="1em" src={present} alt={m.host()} on:click={() => dispatch('play')} />
-		<IconButton
-			size="1em"
-			src={delete_fuiz}
-			alt={m.delete_confirm()}
-			on:click={() => dispatch('delete')}
-		/>
-		<IconButton
-			size="1em"
-			src="$lib/assets/download.svg"
-			alt={m.download()}
-			on:click={() => dispatch('download')}
-		/>
+		<IconButton size="1em" src={present} alt={m.host()} onclick={onplay} />
+		<IconButton size="1em" src={delete_fuiz} alt={m.delete_confirm()} onclick={ondelete} />
+		<IconButton size="1em" src="$lib/assets/download.svg" alt={m.download()} onclick={ondownload} />
 		<div bind:this={shareElement}>
 			<IconButton
 				size="1em"
 				src="$lib/assets/share.svg"
 				alt={m.share()}
-				on:click={() => {
-					dispatch('share', tippyInstance);
+				onclick={() => {
+					if (tippyInstance) onshare(tippyInstance);
 				}}
 			/>
 		</div>
@@ -105,10 +98,14 @@
 		left: 50%;
 		transform: translateX(-50%);
 
-		transition: background 150ms ease-out, border 150ms ease-out;
+		transition:
+			background 150ms ease-out,
+			border 150ms ease-out;
 
 		& .main {
-			transition: margin-right 150ms ease-out, background 150ms ease-out;
+			transition:
+				margin-right 150ms ease-out,
+				background 150ms ease-out;
 			outline: none;
 			background: var(--background-color);
 
@@ -154,14 +151,14 @@
 			gap: 0.2em;
 		}
 
-		&:where(:focus-within, :hover) {
+		&:where(:global(:focus-within, :hover)) {
 			background: var(--accent-color);
 			--border-color: var(--accent-color);
 
 			& .main {
 				margin-right: 1.5em;
 
-				&:where(:focus, :hover) {
+				&:where(:global(:focus, :hover)) {
 					--trans-color: color-mix(in srgb, currentColor 10%, transparent);
 					background: linear-gradient(var(--trans-color), var(--trans-color)),
 						var(--background-color);

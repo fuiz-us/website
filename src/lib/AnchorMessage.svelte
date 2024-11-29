@@ -1,11 +1,15 @@
 <script lang="ts">
 	import Icon from './Icon.svelte';
 
-	export let message: string;
-	export let image: { src: string; alt: string };
-	export let background: string;
-	export let color = 'inherit';
-	export let href: string;
+	interface Props {
+		message: string;
+		image: { src: string; alt: string };
+		background: string;
+		color?: string;
+		href: string;
+	}
+
+	let { message, image, background, color = 'inherit', href }: Props = $props();
 </script>
 
 {#if message}

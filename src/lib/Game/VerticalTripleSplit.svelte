@@ -1,5 +1,15 @@
+<script lang="ts">
+	interface Props {
+		top?: import('svelte').Snippet;
+		center?: import('svelte').Snippet;
+		bottom?: import('svelte').Snippet;
+	}
+
+	let { top, center, bottom }: Props = $props();
+</script>
+
 <div style:height="100%" style:display="grid" style:grid-template-rows="auto 1fr auto">
-	<slot name="top" />
+	{@render top?.()}
 	<div
 		style:flex="1"
 		style:display="flex"
@@ -8,7 +18,7 @@
 		style:justify-content="center"
 		style:position="relative"
 	>
-		<slot name="center" />
+		{@render center?.()}
 	</div>
-	<slot name="bottom" />
+	{@render bottom?.()}
 </div>

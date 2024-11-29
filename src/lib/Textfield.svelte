@@ -3,26 +3,42 @@
 
 	import Icon from './Icon.svelte';
 
-	export let id: string;
-	export let placeholder: string;
-	export let required: boolean;
-	export let disabled: boolean;
-	export let value: string | undefined;
-	export let textTransform = '';
-	export let autocomplete = 'off';
-	export let maxLength: number | undefined = undefined;
-	export let minLength: number | undefined = undefined;
-	export let showInvalid = true;
-	export let inputmode:
-		| 'text'
-		| 'search'
-		| 'none'
-		| 'tel'
-		| 'url'
-		| 'email'
-		| 'numeric'
-		| 'decimal'
-		| undefined = undefined;
+	interface Props {
+		id: string;
+		placeholder: string;
+		required: boolean;
+		disabled: boolean;
+		value: string | undefined;
+		textTransform?: string;
+		autocomplete?: string;
+		maxLength?: number | undefined;
+		minLength?: number | undefined;
+		showInvalid?: boolean;
+		inputmode?:
+			| 'text'
+			| 'search'
+			| 'none'
+			| 'tel'
+			| 'url'
+			| 'email'
+			| 'numeric'
+			| 'decimal'
+			| undefined;
+	}
+
+	let {
+		id,
+		placeholder,
+		required,
+		disabled,
+		value = $bindable(),
+		textTransform = '',
+		autocomplete = 'off',
+		maxLength = undefined,
+		minLength = undefined,
+		showInvalid = true,
+		inputmode = undefined
+	}: Props = $props();
 </script>
 
 <div style:position="relative">
@@ -68,7 +84,7 @@
 		transition: all 100ms linear;
 	}
 
-	input:is(:not(:placeholder-shown), :focus, :active) + label {
+	input:is(:global(:not(:placeholder-shown), :focus, :active)) + label {
 		top: 0;
 		scale: 0.75;
 		background: var(--background-color);

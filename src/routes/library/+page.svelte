@@ -3,7 +3,11 @@
 	import type { PageServerData } from './$types';
 	import Listing from './Listing.svelte';
 
-	export let data: PageServerData;
+	interface Props {
+		data: PageServerData;
+	}
+
+	let { data }: Props = $props();
 </script>
 
 <TypicalPage>

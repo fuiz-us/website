@@ -16,14 +16,18 @@
 	import Subject from './Subject.svelte';
 	import Grade from './Grade.svelte';
 
-	export let creation: ExportedFuiz;
-	export let id: number;
-	export let db: Database;
+	interface Props {
+		creation: ExportedFuiz;
+		id: number;
+		db: Database;
+	}
 
-	let author = $page.data.session?.user?.name || '';
-	let subjects: string[] = [];
-	let grades: string[] = [];
-	let lang = languageTag();
+	let { creation = $bindable(), id, db }: Props = $props();
+
+	let author = $state($page.data.session?.user?.name || '');
+	let subjects: string[] = $state([]);
+	let grades: string[] = $state([]);
+	let lang = $state(languageTag());
 
 	function map(lang: string): string {
 		return (
@@ -33,9 +37,8 @@
 		);
 	}
 
-	$: media = creation.config.slides.reduce<Media | undefined>(
-		(m, s) => m || getMedia(s),
-		undefined
+	let media = $derived(
+		creation.config.slides.reduce<Media | undefined>((m, s) => m || getMedia(s), undefined)
 	);
 
 	async function publish() {
@@ -87,7 +90,7 @@
 		await updateCreation(id, creation, db);
 	}
 
-	let reasonState: string | undefined = undefined;
+	let reasonState: string | undefined = $state(undefined);
 
 	async function checkRequest(
 		pending_r2_key: string | undefined
@@ -138,7 +141,7 @@
 		return status;
 	}
 
-	$: requestStatus = checkRequest(creation.publish?.pending_r2_key);
+	let requestStatus = $derived(checkRequest(creation.publish?.pending_r2_key));
 
 	async function memorize(
 		requestStatus: Promise<'pending' | 'approved' | 'denied' | undefined>
@@ -146,7 +149,7 @@
 		return (await rememberStatus) || (await requestStatus);
 	}
 
-	$: rememberStatus = memorize(requestStatus);
+	let rememberStatus = $derived(memorize(requestStatus));
 </script>
 
 <TypicalPage>
@@ -158,7 +161,10 @@
 				style:justify-content="center"
 				style:flex-direction="column"
 				style:gap="0.5em"
-				on:submit|preventDefault={publish}
+				onsubmit={(e) => {
+					e.preventDefault();
+					publish();
+				}}
 			>
 				{#await rememberStatus then res}
 					{#if res === 'approved' || creation?.publish?.released_r2_key}

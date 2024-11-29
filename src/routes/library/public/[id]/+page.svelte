@@ -12,11 +12,15 @@
 	import { languageTag } from '$lib/paraglide/runtime';
 	import { assertUnreachable, buttonColors } from '$lib';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
 
-	$: fuiz = data.fuiz;
+	let { data }: Props = $props();
 
-	$: config = data.config;
+	let fuiz = $derived(data.fuiz);
+
+	let config = $derived(data.config);
 
 	async function addToCollection(): Promise<number> {
 		const db = await loadDatabase(data.session !== null);
@@ -67,7 +71,7 @@
 				</div>
 			</div>
 			<FancyButton
-				on:click={async () => {
+				onclick={async () => {
 					const id = await addToCollection();
 					await goto(i18n.resolveRoute('/create') + '?id=' + id.toString());
 				}}
@@ -75,7 +79,7 @@
 				<div style:font-family="Poppins">{m.import_fuiz()}</div>
 			</FancyButton>
 			<FancyButton
-				on:click={async () => {
+				onclick={async () => {
 					const id = await addToCollection();
 					await goto(i18n.resolveRoute('/host') + '?id=' + id.toString());
 				}}

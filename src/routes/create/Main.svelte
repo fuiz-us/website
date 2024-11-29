@@ -6,11 +6,15 @@
 	import SlideEditor from './SlideEditor.svelte';
 	import TypeAnswerOptionsBar from './TypeAnswerOptionsBar.svelte';
 
-	export let config: FuizConfig;
+	interface Props {
+		config: FuizConfig;
+	}
 
-	let selectedSlideIndex = 0;
+	let { config = $bindable() }: Props = $props();
 
-	$: activeSlide = config.slides.at(selectedSlideIndex);
+	let selectedSlideIndex = $state(0);
+
+	let activeSlide = $derived(config.slides.at(selectedSlideIndex));
 </script>
 
 <div
@@ -22,7 +26,7 @@
 >
 	<Sidebar bind:slides={config.slides} bind:selectedSlideIndex />
 	<div style:flex="1" style:display="flex" style:flex-direction="column">
-		<SlideEditor bind:slide={activeSlide} />
+		<SlideEditor bind:slide={config.slides[selectedSlideIndex]} />
 	</div>
 	{#if activeSlide}
 		{#if 'MultipleChoice' in activeSlide}

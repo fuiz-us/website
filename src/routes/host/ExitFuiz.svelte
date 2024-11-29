@@ -11,7 +11,7 @@
 </script>
 
 <button
-	on:click={exitDialog.open}
+	onclick={exitDialog.open}
 	style:cursor="pointer"
 	style:appearance="none"
 	style:display="flex"
@@ -69,7 +69,7 @@
 			>
 				<div style:flex="1">
 					<FancyButton
-						on:click={exitDialog.close}
+						onclick={exitDialog.close}
 						backgroundColor="var(--background-color)"
 						backgroundDeepColor="currentcolor"
 						foregroundColor="currentcolor"
@@ -78,7 +78,7 @@
 					</FancyButton>
 				</div>
 				<div style:flex="1">
-					<FancyButton on:click={() => goto('create')}>
+					<FancyButton onclick={async () => await goto('create')}>
 						<div style:padding="5px 10px" style:white-space="nowrap">{m.end()}</div>
 					</FancyButton>
 				</div>

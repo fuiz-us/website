@@ -1,6 +1,6 @@
 import type { D1Database, R2Bucket } from '@cloudflare/workers-types';
 
-async function sequential<O>(values: Array<Awaited<O>>): Promise<Array<O>> {
+async function sequential<O>(values: Array<PromiseLike<O>>): Promise<Array<O>> {
 	const results: O[] = [];
 	for (const value of values) {
 		results.push(await value);
@@ -12,10 +12,10 @@ export function delay(ms: number): Promise<void> {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export async function attempt(f: () => Awaited<void>) {
+export async function attempt(f: () => PromiseLike<void>) {
 	try {
 		await f();
-	} catch (e) {
+	} catch {
 		return undefined;
 	}
 }
@@ -30,7 +30,7 @@ export type File = {
 export async function getCreations<T>(
 	db: D1Database,
 	userId: string,
-	f: (file: File) => Awaited<T>
+	f: (file: File) => PromiseLike<T>
 ): Promise<T[]> {
 	return await sequential<T>(
 		(
@@ -40,7 +40,7 @@ export async function getCreations<T>(
 }
 
 export async function deleteFile(db: D1Database, userId: string, id: string) {
-	return await await db
+	return await db
 		.prepare('DELETE FROM user_creations WHERE id = ? AND creator = ?')
 		.bind(id, userId)
 		.run();

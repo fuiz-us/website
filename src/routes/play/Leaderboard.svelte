@@ -7,10 +7,14 @@
 	import medal from '$lib/assets/medal.svg';
 	import Icon from '$lib/Icon.svelte';
 
-	export let name: string;
-	export let score: number;
-	export let position: number | undefined;
-	export let final: boolean;
+	interface Props {
+		name: string;
+		score: number;
+		position: number | undefined;
+		final: boolean;
+	}
+
+	let { name, score, position, final }: Props = $props();
 </script>
 
 <div style:height="100%" style:display="flex" style:flex-direction="column">

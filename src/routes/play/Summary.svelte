@@ -5,16 +5,18 @@
 	import type { IdlessFuizConfig } from '$lib/types';
 	import TypicalPage from '$lib/TypicalPage.svelte';
 
-	export let score:
-		| {
-				points: number;
-				position: number;
-		  }
-		| undefined;
+	interface Props {
+		score:
+			| {
+					points: number;
+					position: number;
+			  }
+			| undefined;
+		points: number[];
+		config: IdlessFuizConfig;
+	}
 
-	export let points: number[];
-
-	export let config: IdlessFuizConfig;
+	let { score, points, config }: Props = $props();
 </script>
 
 <TypicalPage>

@@ -15,12 +15,16 @@
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
 
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data = $bindable() }: Props = $props();
 
 	const title = m.main_title();
 	const description = m.main_desc();
 
-	let answered = false;
+	let answered = $state(false);
 
 	onMount(() => {
 		answered = (localStorage.getItem('answered') ?? '').length > 0;
@@ -79,8 +83,8 @@
 						/>
 					{:else}
 						<QuestionAnswers
-							on:answer={async (e) => {
-								const field = Object.keys(data.stats)[e.detail];
+							onanswer={async (e) => {
+								const field = Object.keys(data.stats)[e];
 
 								let resp = await fetch('/increment', {
 									method: 'POST',
@@ -223,6 +227,7 @@
 			<div>
 				<h2>{m.stay_in_touch()}</h2>
 				<p>
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 					{@html m.stay_in_touch_desc()}
 				</p>
 			</div>

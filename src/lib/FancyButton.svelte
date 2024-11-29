@@ -1,22 +1,31 @@
 <script lang="ts">
-	import type { Action } from 'svelte/action';
 	import FancyButtonBase from './FancyButtonBase.svelte';
-	export let foregroundColor: string | undefined = undefined;
-	export let backgroundColor: string | undefined = undefined;
-	export let backgroundDeepColor: string | undefined = undefined;
-	export let disabled = false;
-	export let active = true;
-	export let type: 'button' | 'submit' | 'reset' | undefined = undefined;
-	export let action: Action | undefined = undefined;
-	export let height: string | undefined = undefined;
+	interface Props {
+		foregroundColor?: string | undefined;
+		backgroundColor?: string | undefined;
+		backgroundDeepColor?: string | undefined;
+		disabled?: boolean;
+		active?: boolean;
+		type?: 'button' | 'submit' | 'reset' | undefined;
+		height?: string | undefined;
+		children?: import('svelte').Snippet;
+		onclick?: () => void;
+	}
+
+	let {
+		foregroundColor = undefined,
+		backgroundColor = undefined,
+		backgroundDeepColor = undefined,
+		disabled = false,
+		active = true,
+		type = undefined,
+		height = undefined,
+		onclick = undefined,
+		children
+	}: Props = $props();
 </script>
 
 <FancyButtonBase
-	action={action ||
-		(() => {
-			// do nothing
-		})}
-	on:select
 	{type}
 	foregroundColor={foregroundColor ?? '#FFFFFF'}
 	backgroundColor={backgroundColor ?? '#D4131B'}
@@ -24,7 +33,7 @@
 	{disabled}
 	{active}
 	{height}
-	on:click
+	{onclick}
 >
 	<div
 		style:height="100%"
@@ -32,6 +41,6 @@
 		style:font-weight="bold"
 		style:box-sizing="border-box"
 	>
-		<slot />
+		{@render children?.()}
 	</div>
 </FancyButtonBase>

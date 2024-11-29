@@ -1,11 +1,14 @@
 <script lang="ts">
-	export let value: number;
+	interface Props {
+		value: number;
+		duration: number;
+		delay: number;
+	}
 
-	export let duration: number;
-	export let delay: number;
+	let { value, duration, delay }: Props = $props();
 </script>
 
-<div style:--num={value} style:--duration="{duration}ms" style:--delay="{delay}ms" />
+<div style:--num={value} style:--duration="{duration}ms" style:--delay="{delay}ms"></div>
 
 <style>
 	@property --num {

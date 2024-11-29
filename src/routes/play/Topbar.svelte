@@ -2,8 +2,12 @@
 	import Icon from '$lib/Icon.svelte';
 	import score_image from '$lib/assets/score.svg';
 
-	export let name: string;
-	export let score: number | undefined = undefined;
+	interface Props {
+		name: string;
+		score?: number | undefined;
+	}
+
+	let { name, score = undefined }: Props = $props();
 </script>
 
 <div

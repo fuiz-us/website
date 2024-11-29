@@ -14,21 +14,25 @@
 	import ErrorPage from '$lib/ErrorPage.svelte';
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
 
-	export let id: number;
-	export let data: PageData;
+	interface Props {
+		id: number;
+		data: PageData;
+	}
 
-	let loading = false;
+	let { id, data }: Props = $props();
 
-	let errorMessage = '';
+	let loading = $state(false);
 
-	let randomizedNames = false,
-		questionsOnPlayersDevices = false,
-		shuffleAnswers = false,
-		shuffleSlides = false,
-		leaderboard = true,
-		teams = false,
-		teamSize = 4,
-		assignRandom = false;
+	let errorMessage = $state('');
+
+	let randomizedNames = $state(false),
+		questionsOnPlayersDevices = $state(false),
+		shuffleAnswers = $state(false),
+		shuffleSlides = $state(false),
+		leaderboard = $state(true),
+		teams = $state(false),
+		teamSize = $state(4),
+		assignRandom = $state(false);
 
 	// https://stackoverflow.com/a/2450976
 	function shuffleArray<T>(array: T[]): T[] {
@@ -85,7 +89,8 @@
 		{@const { config } = fuiz}
 		<TypicalPage>
 			<form
-				on:submit|preventDefault={() => {
+				onsubmit={(e) => {
+					e.preventDefault();
 					errorMessage = '';
 					loading = true;
 					playIdlessConfig(shuffle(config, shuffleSlides, shuffleAnswers), {

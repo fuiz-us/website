@@ -4,13 +4,17 @@
 	import Icon from '$lib/Icon.svelte';
 	import medal from '$lib/assets/medal.svg';
 	import { scale } from 'svelte/transition';
-	export let name: string;
-	export let score: number;
-	export let index: number;
-	export let final: boolean;
 
-	export let duration: number;
-	export let delay: number;
+	interface Props {
+		name: string;
+		score: number;
+		index: number;
+		final: boolean;
+		duration: number;
+		delay: number;
+	}
+
+	let { name, score, index, final, duration, delay }: Props = $props();
 </script>
 
 <div id="container" style:display="flex" style:align-items="start" style:gap="0.2em">

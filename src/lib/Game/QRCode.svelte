@@ -5,10 +5,14 @@
 	import LoadingCircle from '../LoadingCircle.svelte';
 	import { createDialog } from 'svelte-headlessui';
 
-	export let url: string;
-	export let smallSize: string;
+	interface Props {
+		url: string;
+		smallSize: string;
+	}
 
-	$: image = toDataURL(url, { scale: 1 });
+	let { url, smallSize }: Props = $props();
+
+	let image = $derived(toDataURL(url, { scale: 1 }));
 
 	const dialog = createDialog({});
 </script>
@@ -28,7 +32,7 @@
 	</div>
 {:then url}
 	<button
-		on:click={dialog.open}
+		onclick={dialog.open}
 		style:font="inherit"
 		style:appearance="none"
 		style:border="none"
@@ -58,7 +62,7 @@
 		>
 			<div style:margin="auto" use:dialog.modal>
 				<button
-					on:click={dialog.close}
+					onclick={dialog.close}
 					style:appearance="none"
 					style:border="none"
 					style:font="inherit"

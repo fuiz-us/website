@@ -204,5 +204,7 @@
 	"fuiz_is_ongoing": "فويز مشروع متطور باستمرار. رأيك يهمنا",
 	"create": "إنشاء",
 	"none": "لا شيء",
-	"donate": "تبرع"
+	"donate": "تبرع",
+	"stay_in_touch_desc": "نحن نقدر ملاحظات كل مستخدم. يرجى ملء هذا <a class='styled' href='https://forms.gle/orFqr1wnhm6dv7xY7'>النموذج</a> وترتيب موعد معنا! نحن نتطلع إلى لقائكم. يمكنكم أيضاً الانضمام إلى <a class='styled' href='https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg'>مجتمعنا على Slack</a>.",
+	"stay_in_touch": "ابق على تواصل"
 }

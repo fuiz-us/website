@@ -4,19 +4,22 @@ import { SvelteKitAuth } from '@auth/sveltekit';
 import type { Provider } from '@auth/sveltekit/providers';
 import google from '@auth/sveltekit/providers/google';
 
-const providers: Provider[] = [
-	google({
-		clientId: env.AUTH_GOOGLE_ID,
-		clientSecret: env.AUTH_GOOGLE_SECRET,
-		authorization: {
-			params: {
-				prompt: 'consent',
-				access_type: 'offline',
-				response_type: 'code'
-			}
-		}
-	})
-];
+const providers: Provider[] =
+	(env.AUTH_GOOGLE_ID?.length ?? 0) > 0 && (env.AUTH_GOOGLE_SECRET?.length ?? 0) > 0
+		? [
+				google({
+					clientId: env.AUTH_GOOGLE_ID,
+					clientSecret: env.AUTH_GOOGLE_SECRET,
+					authorization: {
+						params: {
+							prompt: 'consent',
+							access_type: 'offline',
+							response_type: 'code'
+						}
+					}
+				})
+			]
+		: [];
 
 export const providerMap = providers.map((provider) => {
 	if (typeof provider === 'function') {

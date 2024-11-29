@@ -2,18 +2,18 @@
 
 Host live quizzes freely
 
-<img src="https://gitlab.com/opencode-mit/fuiz-website/-/raw/main/static/favicon.svg?ref_type=heads" width="128" height="128" alt="Switcheroo icon">
+<img src="https://gitlab.com/opencode-mit/fuiz/website/-/raw/main/static/favicon.svg?ref_type=heads" width="128" height="128" alt="Fuiz icon">
 
-[![License](https://img.shields.io/gitlab/license/opencode-mit/fuiz?style=for-the-badge)](https://gitlab.com/opencode-mit/fuiz/-/raw/main/LICENSE)
+[![License](https://img.shields.io/gitlab/license/opencode-mit/fuiz/website?style=for-the-badge)](https://gitlab.com/opencode-mit/fuiz/website/-/raw/main/LICENSE)
 
 ## Dependencies
 
 This is the code for the website (developed in Svelte). It relies on two other components to function properly:
 
-- Backend game server: Code is open source under [opencode-mit/fuiz](https://gitlab.com/opencode-mit/fuiz). The urls to it are defined by: PUBLIC_BACKEND_URL and PUBLIC_WS_URL. In production, this is [api.fuiz.us](https://api.fuiz.us/).
-- Backend image server: Code is open source under [opencode-mit/corkboard](https://gitlab.com/opencode-mit/corkboard). The url to it is defined by PUBLIC_CORKBOARD_URL. In production, this is [corkboard.fuiz.us](https://corkboard.fuiz.us/).
+- Backend game server: Code is open source under [fuiz/hosted-server](https://gitlab.com/opencode-mit/fuiz/hosted-server). The urls to it are defined by: PUBLIC_BACKEND_URL and PUBLIC_WS_URL. In production, this uses a serverless version [fuiz/cloudflare-serverless](https://gitlab.com/opencode-mit/fuiz/cloudflare-serverless) hosted at [api.fuiz.us](https://api.fuiz.us/).
+- Backend image server: Code is open source under [fuiz/corkboard](https://gitlab.com/opencode-mit/fuiz/corkboard). The url to it is defined by PUBLIC_CORKBOARD_URL. In production, this uses a similar open source serverless version [fuiz/corkboard-serverless](https://gitlab.com/opencode-mit/fuiz/corkboard-serverless) hosted at [corkboard.fuiz.us](https://corkboard.fuiz.us/).
 
-Additionally, the website relies on Cloudflare APIs for viewing the library. Since this is not a core component of the website, we will be putting off its proper documentation.
+Additionally, the website relies on Cloudflare APIs for viewing the library and basic user authentication and storage. If you want to enable these features you need to use [wrangler](https://github.com/cloudflare/workers-sdk).
 
 Due to the nature of fast development, it's not a goal at the moment to make self-hosting as easy as possible. Once things stabilize a bit more we will put an effort towards providing docker images.
 
@@ -26,6 +26,31 @@ bun run dev
 ```
 
 While we use `bun` ourselves, `npm` should work just as fine.
+
+You might need the following environment variables (`.env.local`):
+
+```python
+# the link to the current hosted version, production: fuiz.us
+PUBLIC_DISPLAY_PLAY_URL="localhost:5173"
+# same as above but with the actual protocol, production: https://fuiz.us
+PUBLIC_PLAY_URL="http://localhost:5173"
+# the game backend, production: https://api.fuiz.us
+PUBLIC_BACKEND_URL="http://localhost:8787"
+# same as above but a websocket url, production: wss://api.fuiz.us
+PUBLIC_WS_URL="ws://localhost:8787"
+# image server url, in pproduction: https://corkboard.fuiz.us
+PUBLIC_CORKBOARD_URL="http://localhost:43907"
+```
+
+You might also need:
+
+```python
+# Needed for Auth.js, can be generated with: bunx/npx auth secret
+AUTH_SECRET={random string}
+# Google Auth Client Id and Secret Key
+AUTH_GOOGLE_ID=
+AUTH_GOOGLE_SECRET
+```
 
 ## Status
 

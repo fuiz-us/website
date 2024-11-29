@@ -9,6 +9,7 @@
 	import Topbar from './Topbar.svelte';
 	import { share } from './lib';
 	import { page } from '$app/stores';
+	import { untrack } from 'svelte';
 
 	interface Props {
 		id: number;
@@ -37,7 +38,7 @@
 
 	$effect(() => {
 		$state.snapshot(config);
-		updateStorage();
+		untrack(() => updateStorage());
 	});
 
 	let no_answer = $derived(

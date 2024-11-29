@@ -23,7 +23,7 @@
 	import TypeAnswerStatistics from './TypeAnswerStatistics.svelte';
 	import OrderAnswers from './OrderAnswers.svelte';
 	import OrderStatistics from './OrderStatistics.svelte';
-	import { onMount } from 'svelte';
+	import { onMount, untrack } from 'svelte';
 
 	type GameState =
 		| {
@@ -276,6 +276,7 @@
 	function connect_server(code: string) {
 		watcherId = localStorage.getItem(code + '_host') || undefined;
 		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code + '/' + (watcherId ?? ''));
+
 		currentState = undefined;
 		bindableGameInfo = {
 			volumeOn: bindableGameInfo.volumeOn,
@@ -575,7 +576,8 @@
 	}
 
 	$effect(() => {
-		connect_server(code);
+		const gameCode = code;
+		untrack(() => connect_server(gameCode));
 	});
 
 	function onnext() {

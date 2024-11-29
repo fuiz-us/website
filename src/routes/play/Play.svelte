@@ -8,7 +8,7 @@
 		IdlessFuizConfig,
 		ServerPossiblyHidden
 	} from '$lib/types';
-	import { onMount } from 'svelte';
+	import { untrack } from 'svelte';
 	import ChooseName from './ChooseName.svelte';
 	import WaitingMobile from './WaitingMobile.svelte';
 	import Question from './Question.svelte';
@@ -301,7 +301,7 @@
 
 	let watcherId = (browser && localStorage.getItem(code + '_play')) || undefined;
 
-	onMount(() => {
+	function connectServer(code: string) {
 		socket = new WebSocket(PUBLIC_WS_URL + '/watch/' + code + '/' + (watcherId ?? 'none'));
 		setName = undefined;
 
@@ -625,6 +625,11 @@
 				Error: m.code_not_exist()
 			};
 		});
+	}
+
+	$effect(() => {
+		const gameCode = code;
+		untrack(() => connectServer(gameCode));
 	});
 
 	let name = $derived((leaderboardName ? leaderboardName + ' - ' : '') + setName || m.you());

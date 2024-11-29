@@ -9,6 +9,7 @@
 	import { debounce } from '$lib/util';
 	import RegularCheckbox from '$lib/regular-checkbox.svelte';
 	import { availableLanguageTags } from '$lib/paraglide/runtime';
+	import { untrack } from 'svelte';
 
 	interface Props {
 		recentlyPublished: PublishedFuiz[];
@@ -65,7 +66,7 @@
 
 	$effect(() => {
 		if (searchCriteria > 0) {
-			search();
+			untrack(search);
 		} else {
 			results = undefined;
 		}

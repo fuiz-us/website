@@ -64,7 +64,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 						allQueries ? ' AND ' + allQueries : ''
 					} LIMIT 24`
 				)
-					.bind(fixedTerm, fixedTerm, fixedTerm, fixedTerm)
+					.bind(fixedTerm, fixedTerm, fixedTerm, fixedTerm, fixedTerm)
 					.all<PublishedFuizDB>()
 			)?.results || []
 		).map(fixPublish);

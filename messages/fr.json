@@ -161,7 +161,7 @@
 	"switch_dark": "Passer en mode nuit",
 	"switch_light": "Passer en mode jour",
 	"library": "Bibliothèque",
-	"author_played_times": "{author} • joué {times} fois",
+	"author_played_times": "{author}",
 	"fallback": "Secours",
 	"played_times": "Joué {times} fois",
 	"import_fuiz": "Importer",
@@ -195,5 +195,16 @@
 	"none": "Aucun",
 	"points": "Points",
 	"image_alt_desc": "Le texte alternatif décrit l'image en une ou deux phrases pour aider les personnes malvoyantes.",
-	"which_feature": "Quelle fonctionnalité préférez-vous dans Fuiz ?"
+	"which_feature": "Quelle fonctionnalité préférez-vous dans Fuiz ?",
+	"stay_in_touch": "Stay in touch!",
+	"stay_in_touch_desc": "We value the feedback of every user. Please fill out this <a class='styled' href='https://forms.gle/orFqr1wnhm6dv7xY7'>form</a> and arrange a meeting with us! We are looking forward to meeting with you. You can also join our <a class='styled' href='https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg' >Slack community</a>.",
+	"fuiz_is_ongoing": "Fuiz is an ongoing project. Your feedback is important.",
+	"submit": "Submit",
+	"login": "Login",
+	"logout": "Logout",
+	"short_answer": "Short Answer",
+	"puzzle": "Ranking",
+	"case_sensitive": "Case sensitive",
+	"empty_answer": "Enter answer",
+	"duplicate_answers": "Remove duplicate answers"
 }

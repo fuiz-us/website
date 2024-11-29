@@ -195,5 +195,16 @@
 	"none": "Geen",
 	"points": "Punten",
 	"image_alt_desc": "Afbeelding Alt is een beschrijving van één of twee zinnen van de afbeelding om visueel beperkten te helpen.",
-	"which_feature": "Welke functie vind je het leukst in Fuiz?"
+	"which_feature": "Welke functie vind je het leukst in Fuiz?",
+	"fuiz_is_ongoing": "Fuiz is een lopend project. Jouw feedback is belangrijk.",
+	"login": "Inloggen",
+	"logout": "Uitloggen",
+	"short_answer": "Kort Antwoord",
+	"puzzle": "Rangschikking",
+	"case_sensitive": "Hoofdlettergevoelig",
+	"empty_answer": "Voer antwoord in",
+	"duplicate_answers": "Verwijder dubbele antwoorden",
+	"submit": "Versturen",
+	"stay_in_touch": "Blijf in contact!",
+	"stay_in_touch_desc": "We waarderen de feedback van elke gebruiker. Vul alsjeblieft dit <a class='styled' href='https://forms.gle/orFqr1wnhm6dv7xY7'>formulier</a> in en maak een afspraak met ons! We kijken ernaar uit om je te ontmoeten. Je kunt ook lid worden van onze <a class='styled' href='https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg'>Slack community</a>."
 }

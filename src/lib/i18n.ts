@@ -6,13 +6,14 @@ export const i18n = createI18n(runtime, {
 	defaultLanguageTag: 'en',
 	textDirection: {
 		ar: 'rtl',
-		en: 'ltr',
+		az: 'ltr',
 		de: 'ltr',
+		en: 'ltr',
 		es: 'ltr',
 		fr: 'ltr',
-		az: 'ltr',
 		it: 'ltr',
 		nl: 'ltr',
+		pl: 'ltr',
 		'zh-cn': 'ltr'
 	}
 });

@@ -121,7 +121,7 @@
 								slides = slides;
 							}}
 							onduplicate={async () => {
-								const sameSlide = structuredClone(slide);
+								const sameSlide = structuredClone($state.snapshot(slide));
 								sameSlide.id = Date.now();
 								slides.splice(index + 1, 0, sameSlide);
 								slides = slides;

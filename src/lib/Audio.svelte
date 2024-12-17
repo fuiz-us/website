@@ -7,7 +7,7 @@
 	let { audioUrl, volumeOn }: Props = $props();
 </script>
 
-<audio autoplay loop muted={!volumeOn} src={audioUrl}></audio>
+<audio autoplay loop src={audioUrl} volume={volumeOn ? 1 : 0}></audio>
 
 <style>
 	audio {

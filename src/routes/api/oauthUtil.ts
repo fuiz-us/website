@@ -1,6 +1,6 @@
 import type { D1Database, R2Bucket } from '@cloudflare/workers-types';
 
-async function sequential<O>(values: Array<PromiseLike<O>>): Promise<Array<O>> {
+async function sequential<O>(values: Array<PromiseLike<O> | O>): Promise<Array<O>> {
 	const results: O[] = [];
 	for (const value of values) {
 		results.push(await value);
@@ -30,7 +30,7 @@ export type File = {
 export async function getCreations<T>(
 	db: D1Database,
 	userId: string,
-	f: (file: File) => PromiseLike<T>
+	f: (file: File) => PromiseLike<T> | T
 ): Promise<T[]> {
 	return await sequential<T>(
 		(

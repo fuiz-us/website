@@ -1,6 +1,4 @@
 <script lang="ts">
-	import * as m from '$lib/paraglide/messages.js';
-
 	import type { PublishedFuiz } from '$lib/types';
 
 	interface Props {
@@ -21,10 +19,7 @@
 			{data.title}
 		</div>
 		<div class="little">
-			{m.author_played_times({
-				author: data.author,
-				times: data.played_count
-			})}
+			{data.author}
 		</div>
 	</div>
 </a>

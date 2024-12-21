@@ -8,7 +8,7 @@ export async function createFileInGit(filePath: string, fileContent: string): Pr
 		{
 			method: 'POST',
 			headers: {
-				'PRIVATE-TOKEN': env.GITLAB_PERSONAL_API,
+				Authorization: `Bearer ${env.GITLAB_PERSONAL_API}`,
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
@@ -30,7 +30,7 @@ export async function updateFileInGit(filePath: string, fileContent: string) {
 		{
 			method: 'PUT',
 			headers: {
-				'PRIVATE-TOKEN': env.GITLAB_PERSONAL_API,
+				Authorization: `Bearer ${env.GITLAB_PERSONAL_API}`,
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({

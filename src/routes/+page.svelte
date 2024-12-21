@@ -14,6 +14,7 @@
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
 	import { i18n } from '$lib/i18n';
+	import FancyButton from '$lib/FancyButton.svelte';
 
 	interface Props {
 		data: PageData;
@@ -138,6 +139,28 @@
 			</div>
 		</div>
 	</section>
+	{#if (data.gamesPlayed ?? undefined !== undefined) && (data.playersJoined ?? undefined !== undefined)}
+		<section>
+			<div class="split">
+				<div class="stat">
+					<FancyButton active={false}>
+						<span class="header">
+							{data.gamesPlayed}
+						</span>
+						<span class="subheader">Total Games</span>
+					</FancyButton>
+				</div>
+				<div class="stat">
+					<FancyButton active={false}>
+						<span class="header">
+							{data.playersJoined}
+						</span>
+						<span class="subheader">Total Players</span>
+					</FancyButton>
+				</div>
+			</div>
+		</section>
+	{/if}
 	<section>
 		<div>
 			<AnchorMessage
@@ -288,6 +311,17 @@
 		align-items: center;
 		justify-content: center;
 		gap: 1em;
+	}
+
+	.stat {
+		flex: 1;
+
+		& .header {
+			display: block;
+			font-size: 2em;
+			font-weight: bold;
+			font-family: 'Poppins';
+		}
 	}
 
 	:global(a.styled) {

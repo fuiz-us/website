@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import { getStats } from './lib';
+import { getGamesPlayed, getPlayersJoined, getStats } from './lib';
 
 export type Stats = {
 	openSource: number;
@@ -9,7 +9,15 @@ export type Stats = {
 };
 
 export const load = (async ({ platform }) => {
+	const [stats, gamesPlayed, playersJoined] = await Promise.all([
+		getStats(platform),
+		getGamesPlayed(platform),
+		getPlayersJoined(platform)
+	]);
+
 	return {
-		stats: await getStats(platform)
+		stats,
+		gamesPlayed,
+		playersJoined
 	};
 }) satisfies PageServerLoad;

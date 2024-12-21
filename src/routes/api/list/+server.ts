@@ -1,7 +1,7 @@
 import type { RequestHandler } from './$types';
 import { isNotUndefined } from '$lib/util';
 import { error } from '@sveltejs/kit';
-import { getCreations } from '../oauthUtil';
+import { getCreations, type File } from '../oauthUtil';
 
 export const GET: RequestHandler = async ({ platform, locals }) => {
 	const session = await locals.auth();
@@ -11,7 +11,11 @@ export const GET: RequestHandler = async ({ platform, locals }) => {
 
 	if (!db || !userId || !storage) error(500);
 
-	const files = await getCreations(db, userId, (f) => ({ ...f, uniqueId: f.id }));
+	const files = await getCreations<
+		File & {
+			uniqueId: string;
+		}
+	>(db, userId, (f) => ({ ...f, uniqueId: f.id }));
 
 	return new Response(JSON.stringify(files.filter(isNotUndefined)), {
 		headers: {

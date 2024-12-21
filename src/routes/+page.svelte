@@ -147,7 +147,7 @@
 						<span class="header">
 							{data.gamesPlayed}
 						</span>
-						<span class="subheader">Total Games</span>
+						<span class="subheader">{m.total_games()}</span>
 					</FancyButton>
 				</div>
 				<div class="stat">
@@ -155,7 +155,7 @@
 						<span class="header">
 							{data.playersJoined}
 						</span>
-						<span class="subheader">Total Players</span>
+						<span class="subheader">{m.total_players()}</span>
 					</FancyButton>
 				</div>
 			</div>

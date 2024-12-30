@@ -1,3 +1,5 @@
+import type { AvailableLanguageTag } from '$lib/paraglide/runtime';
+import type { ParaglideLocals } from '@inlang/paraglide-sveltekit';
 import type {
 	Ai,
 	D1Database,

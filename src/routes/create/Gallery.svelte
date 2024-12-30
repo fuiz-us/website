@@ -29,7 +29,7 @@
 	import type { PageData } from './$types';
 	import { share } from './lib';
 	import JSZip from 'jszip';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { signIn, signOut } from '@auth/sveltekit/client';
 
 	interface Props {
@@ -360,7 +360,7 @@
 							onshare={async (e) => {
 								const creation = await getCreation(id, db);
 								if (creation) {
-									await share(creation.config, $page.data.user ? creation.uniqueId : undefined);
+									await share(creation.config, page.data.user ? creation.uniqueId : undefined);
 								}
 								e.show();
 							}}

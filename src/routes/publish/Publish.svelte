@@ -12,7 +12,7 @@
 	import { deserialize } from '$app/forms';
 	import { getMedia, type Media } from '$lib/types';
 	import { updateCreation, type Database, type ExportedFuiz } from '$lib/storage';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import Subject from './Subject.svelte';
 	import Grade from './Grade.svelte';
 
@@ -24,7 +24,7 @@
 
 	let { creation = $bindable(), id, db }: Props = $props();
 
-	let author = $state($page.data.session?.user?.name || '');
+	let author = $state(page.data.session?.user?.name || '');
 	let subjects: string[] = $state([]);
 	let grades: string[] = $state([]);
 	let lang = $state(languageTag());

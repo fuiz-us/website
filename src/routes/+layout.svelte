@@ -3,12 +3,11 @@
 	import '@fontsource/atkinson-hyperlegible';
 	import 'tippy.js/dist/tippy.css';
 
-	import { navigating } from '$app/stores';
+	import { navigating } from '$app/state';
 	import Loading from '$lib/Loading.svelte';
 	import { ParaglideJS } from '@inlang/paraglide-sveltekit';
 	import { i18n } from '$lib/i18n';
-	import { onMount } from 'svelte';
-	import { derived } from 'svelte/store';
+	import { onMount, untrack } from 'svelte';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -17,7 +16,7 @@
 	let { children }: Props = $props();
 
 	let mounting = $state(true);
-	let navigatingBoolean = derived(navigating, ($navigating) => $navigating !== null);
+	let navigatingBoolean = $derived(navigating.type !== null);
 
 	const startTimer = (f: () => void, ms: number) => {
 		let timer = setTimeout(f, ms);
@@ -32,16 +31,18 @@
 		// left empty for a reason
 	});
 
-	navigatingBoolean.subscribe((value) => {
-		if (value) {
-			if ($navigatingBoolean == false) {
+	$effect(() => {
+		if (navigatingBoolean) {
+			untrack(() => {
 				stopTimer = startTimer(() => {
 					longNavigating = true;
 				}, 100);
-			}
+			});
 		} else {
-			stopTimer();
-			longNavigating = false;
+			untrack(() => {
+				stopTimer();
+				longNavigating = false;
+			});
 		}
 	});
 

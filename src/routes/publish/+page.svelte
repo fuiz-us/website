@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$lib/paraglide/messages.js';
 
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import Loading from '$lib/Loading.svelte';
 	import NiceBackground from '$lib/NiceBackground.svelte';
 	import Header from '$lib/Header.svelte';
@@ -31,7 +31,7 @@
 
 	let { data }: Props = $props();
 
-	let id = $derived(parseInt($page.url.searchParams.get('id')));
+	let id = $derived(parseInt(page.url.searchParams.get('id')));
 	const title = m.publish_title();
 	const description = m.publish_desc();
 </script>

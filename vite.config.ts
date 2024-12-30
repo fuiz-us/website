@@ -6,10 +6,10 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	plugins: [
 		enhancedImages(),
-		sveltekit(),
 		paraglide({
 			project: './project.inlang',
 			outdir: './src/lib/paraglide'
-		})
+		}),
+		sveltekit()
 	]
 });

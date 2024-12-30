@@ -2,7 +2,7 @@
 	import * as m from '$lib/paraglide/messages.js';
 
 	import { availableLanguageTags, languageTag } from '$lib/paraglide/runtime.js';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import IconButton from './IconButton.svelte';
 	import { createDialog } from 'svelte-headlessui';
 	import { i18n } from './i18n';
@@ -32,7 +32,7 @@
 				<li>
 					<!-- the hreflang attribute decides which language the link points to -->
 					<a
-						href={i18n.route($page.url.pathname + $page.url.search)}
+						href={i18n.route(page.url.pathname + page.url.search)}
 						hreflang={lang}
 						aria-current={lang === languageTag() ? 'page' : undefined}
 					>

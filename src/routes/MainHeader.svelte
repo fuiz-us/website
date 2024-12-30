@@ -7,7 +7,7 @@
 	import Icon from '$lib/Icon.svelte';
 	import LanguageSwitcher from '$lib/LanguageSwitcher.svelte';
 	import DarkModeSwitcher from '$lib/DarkModeSwitcher.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { signOut } from '@auth/sveltekit/client';
 </script>
 
@@ -54,7 +54,7 @@
 				</div>
 			</FancyAnchorButton>
 		</div>
-		{#if $page.data.session?.user}
+		{#if page.data.session?.user}
 			<div>
 				<FancyButton onclick={() => signOut()}>
 					<div class="a">

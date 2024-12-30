@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$lib/paraglide/messages.js';
 
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import Editor from './Editor.svelte';
 	import Loading from '$lib/Loading.svelte';
 	import ErrorPage from '$lib/ErrorPage.svelte';
@@ -17,9 +17,7 @@
 	} from '$lib/storage';
 	import { addIds } from '$lib';
 	import type { PageData } from '../$types';
-	import { browser } from '$app/environment';
 	import { i18n } from '$lib/i18n';
-	import { derived } from 'svelte/store';
 
 	let status:
 		| 'loading'
@@ -73,10 +71,10 @@
 		}
 	}
 
-	const creationId = derived(page, ($page) => $page.url.searchParams.get('id'));
+	let creationId = $derived(page.url.searchParams.get('id'));
 
-	creationId.subscribe((id) => {
-		if (browser) getStatus(id);
+	$effect(() => {
+		getStatus(creationId);
 	});
 
 	interface Props {

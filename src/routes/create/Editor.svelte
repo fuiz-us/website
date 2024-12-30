@@ -8,7 +8,7 @@
 	import Main from './Main.svelte';
 	import Topbar from './Topbar.svelte';
 	import { share } from './lib';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { untrack } from 'svelte';
 
 	interface Props {
@@ -118,7 +118,7 @@
 		{id}
 		{db}
 		onshare={async (e) => {
-			await share(removeIds(config), $page.data.user ? exportedFuiz.uniqueId : undefined);
+			await share(removeIds(config), page.data.user ? exportedFuiz.uniqueId : undefined);
 			e.show();
 		}}
 		errorMessage={no_answer

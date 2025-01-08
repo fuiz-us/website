@@ -13,6 +13,7 @@
 	import type { PageData } from './$types';
 	import ErrorPage from '$lib/ErrorPage.svelte';
 	import LoadingCircle from '$lib/LoadingCircle.svelte';
+	import Radio from '$lib/Radio.svelte';
 
 	interface Props {
 		id: number;
@@ -26,6 +27,8 @@
 	let errorMessage = $state('');
 
 	let randomizedNames = $state(false),
+		roman = $state(false),
+		parts = $state(2),
 		questionsOnPlayersDevices = $state(false),
 		shuffleAnswers = $state(false),
 		shuffleSlides = $state(false),
@@ -33,6 +36,11 @@
 		teams = $state(false),
 		teamSize = $state(4),
 		assignRandom = $state(false);
+
+	const randomNameOptions = [
+		{ value: false, label: m.petnames() },
+		{ value: true, label: m.romannames() }
+	];
 
 	// https://stackoverflow.com/a/2450976
 	function shuffleArray<T>(array: T[]): T[] {
@@ -95,6 +103,8 @@
 					loading = true;
 					playIdlessConfig(shuffle(config, shuffleSlides, shuffleAnswers), {
 						random_names: randomizedNames,
+						is_roman: roman,
+						name_parts: parts,
 						show_answers: questionsOnPlayersDevices || teams,
 						no_leaderboard: !leaderboard,
 						...(teams && { teams: { size: teamSize, assign_random: assignRandom } })
@@ -137,6 +147,16 @@
 					<div class="switch">
 						<Switch id="random" bind:checked={randomizedNames}>{m.randomized_names()}</Switch>
 					</div>
+					{#if randomizedNames}
+						<Radio 
+							options={randomNameOptions}
+							label="Name Type"
+							bind:value={roman}
+						/>
+						<Slider id="team_size" bind:value={parts} min={2} max={3}
+							>{m.random_name_length()}</Slider
+						>
+					{/if}
 					<hr />
 					<div class="switch">
 						<Switch id="shuffle_slides" bind:checked={shuffleSlides}>{m.shuffle_slides()}</Switch>

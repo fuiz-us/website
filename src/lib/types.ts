@@ -282,6 +282,8 @@ export type Creation = {
 
 export type FuizOptions = {
 	random_names: boolean;
+	is_roman: boolean;
+	name_parts: number;
 	show_answers: boolean;
 	no_leaderboard: boolean;
 	teams?: {

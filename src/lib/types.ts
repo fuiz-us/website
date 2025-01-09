@@ -280,10 +280,16 @@ export type Creation = {
 	media?: Media | undefined;
 };
 
+export type NameStyle =
+	| {
+			Roman: number;
+	  }
+	| {
+			Petname: number;
+	  };
+
 export type FuizOptions = {
-	random_names: boolean;
-	is_roman: boolean;
-	name_parts: number;
+	random_names: NameStyle | null;
 	show_answers: boolean;
 	no_leaderboard: boolean;
 	teams?: {

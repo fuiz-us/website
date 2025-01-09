@@ -7,7 +7,7 @@
 	import Loading from '$lib/Loading.svelte';
 	import Switch from '$lib/Switch.svelte';
 	import TypicalPage from '$lib/TypicalPage.svelte';
-	import type { IdlessFuizConfig, IdlessSlide } from '$lib/types';
+	import type { IdlessFuizConfig, IdlessSlide, NameStyle } from '$lib/types';
 	import Slider from '$lib/Slider.svelte';
 	import { getCreation, loadDatabase } from '$lib/storage';
 	import type { PageData } from './$types';
@@ -26,9 +26,7 @@
 
 	let errorMessage = $state('');
 
-	let randomizedNames = $state(false),
-		roman = $state(false),
-		parts = $state(2),
+	let nameStyle = $state<NameStyle | null>(null),
 		questionsOnPlayersDevices = $state(false),
 		shuffleAnswers = $state(false),
 		shuffleSlides = $state(false),
@@ -38,8 +36,8 @@
 		assignRandom = $state(false);
 
 	const randomNameOptions = [
-		{ value: false, label: m.petnames() },
-		{ value: true, label: m.romannames() }
+		{ value: 'Pet', label: m.petnames() },
+		{ value: 'Roman', label: m.romannames() }
 	];
 
 	// https://stackoverflow.com/a/2450976
@@ -102,9 +100,7 @@
 					errorMessage = '';
 					loading = true;
 					playIdlessConfig(shuffle(config, shuffleSlides, shuffleAnswers), {
-						random_names: randomizedNames,
-						is_roman: roman,
-						name_parts: parts,
+						random_names: nameStyle,
 						show_answers: questionsOnPlayersDevices || teams,
 						no_leaderboard: !leaderboard,
 						...(teams && { teams: { size: teamSize, assign_random: assignRandom } })
@@ -145,17 +141,48 @@
 					</div>
 					<hr />
 					<div class="switch">
-						<Switch id="random" bind:checked={randomizedNames}>{m.randomized_names()}</Switch>
+						<Switch
+							id="random"
+							checked={false}
+							onchange={(checked) => {
+								if (checked) {
+									nameStyle = {
+										Petname: 2
+									};
+								} else {
+									nameStyle = null;
+								}
+							}}
+						>
+							{m.randomized_names()}
+						</Switch>
 					</div>
-					{#if randomizedNames}
-						<Radio 
+					{#if nameStyle !== null}
+						<Radio
 							options={randomNameOptions}
 							label="Name Type"
-							bind:value={roman}
+							value={'Roman' in nameStyle ? 'Roman' : 'Pet'}
+							onchange={(value) => {
+								if (nameStyle !== null) {
+									const currentValue = 'Roman' in nameStyle ? nameStyle.Roman : nameStyle.Petname;
+									nameStyle =
+										value === 'Roman' ? { Roman: currentValue } : { Petname: currentValue };
+								}
+							}}
 						/>
-						<Slider id="team_size" bind:value={parts} min={2} max={3}
-							>{m.random_name_length()}</Slider
+						<Slider
+							id="team_size"
+							value={'Roman' in nameStyle ? nameStyle.Roman : nameStyle.Petname}
+							onchange={(value) => {
+								if (nameStyle !== null) {
+									nameStyle = 'Roman' in nameStyle ? { Roman: value } : { Petname: value };
+								}
+							}}
+							min={2}
+							max={3}
 						>
+							{m.random_name_length()}
+						</Slider>
 					{/if}
 					<hr />
 					<div class="switch">

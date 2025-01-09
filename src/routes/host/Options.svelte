@@ -174,7 +174,7 @@
 							id="team_size"
 							value={'Roman' in nameStyle ? nameStyle.Roman : nameStyle.Petname}
 							onchange={(value) => {
-								if (nameStyle !== null) {
+								if (nameStyle !== null && (value == 2 || value == 3)) {
 									nameStyle = 'Roman' in nameStyle ? { Roman: value } : { Petname: value };
 								}
 							}}

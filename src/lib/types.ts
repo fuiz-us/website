@@ -282,10 +282,10 @@ export type Creation = {
 
 export type NameStyle =
 	| {
-			Roman: number;
+			Roman: 2 | 3;
 	  }
 	| {
-			Petname: number;
+			Petname: 2 | 3;
 	  };
 
 export type FuizOptions = {

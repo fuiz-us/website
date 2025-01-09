@@ -49,9 +49,9 @@
 						</div>
 					{/if}
 					{#if correct}
-						<Icon src=lib/assets/correct.svg alt={m.correct()} size="1em" />
+						<Icon src=$lib/assets/correct.svg alt={m.correct()} size="1em" />
 					{:else}
-						<Icon src=lib/assets/wrong.svg alt={m.wrong()} size="1em" />
+						<Icon src=$lib/assets/wrong.svg alt={m.wrong()} size="1em" />
 						<div class="answers">
 							<div>{m.correct_answers()}</div>
 							{#if 'TypeAnswer' in slide}

@@ -175,7 +175,7 @@
 					<div id="alt-help">
 						<IconButton
 							size="1.2em"
-							src=lib/assets/help.svg
+							src=$lib/assets/help.svg
 							alt={m.image_alt()}
 							onclick={() => {
 								let element = document.getElementById('alt-help');

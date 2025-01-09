@@ -246,7 +246,7 @@
 					style:padding="0.15em 0.25em"
 					style:justify-content="center"
 				>
-					<Icon size="1.25em" src=lib/assets/file_new.svg alt={m.start_blank()} />
+					<Icon size="1.25em" src=$lib/assets/file_new.svg alt={m.start_blank()} />
 					<div>{m.start_blank()}</div>
 				</div>
 			</FancyButton>
@@ -271,7 +271,7 @@
 					style:padding="0.15em 0.25em"
 					style:justify-content="center"
 				>
-					<Icon size="1.25em" src=lib/assets/file_open.svg alt={m.open_file()} />
+					<Icon size="1.25em" src=$lib/assets/file_open.svg alt={m.open_file()} />
 					<div>{m.open_file()}</div>
 				</div>
 			</FancyButton>
@@ -287,7 +287,7 @@
 						style:padding="0.15em 0.25em"
 						style:justify-content="center"
 					>
-						<Icon size="1.25em" src=lib/assets/logout.svg alt="Log out from OpenCollective" />
+						<Icon size="1.25em" src=$lib/assets/logout.svg alt="Log out from OpenCollective" />
 						<div>Log Out</div>
 					</div>
 				</FancyButton>
@@ -305,7 +305,7 @@
 					>
 						<Icon
 							size="1.25em"
-							src=lib/assets/login.svg
+							src=$lib/assets/login.svg
 							alt="Synchronize your data with OpenCollective"
 						/>
 						<div>Backup</div>

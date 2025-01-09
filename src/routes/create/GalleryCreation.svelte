@@ -69,11 +69,11 @@
 	<div class="panel">
 		<IconButton size="1em" src={present} alt={m.host()} onclick={onplay} />
 		<IconButton size="1em" src={delete_fuiz} alt={m.delete_confirm()} onclick={ondelete} />
-		<IconButton size="1em" src="$lib/assets/download.svg" alt={m.download()} onclick={ondownload} />
+		<IconButton size="1em" src=lib/assets/download.svg alt={m.download()} onclick={ondownload} />
 		<div bind:this={shareElement}>
 			<IconButton
 				size="1em"
-				src="$lib/assets/share.svg"
+				src=lib/assets/share.svg
 				alt={m.share()}
 				onclick={() => {
 					if (tippyInstance) onshare(tippyInstance);

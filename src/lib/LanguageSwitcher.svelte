@@ -21,7 +21,7 @@
 		onclick={() => {
 			dialog.open();
 		}}
-		src="$lib/assets/language.svg"
+		src=$lib/assets/language.svg
 		alt={m.language()}
 		size="1em"
 	/>

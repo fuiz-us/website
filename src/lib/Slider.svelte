@@ -5,15 +5,26 @@
 		min: number;
 		max: number;
 		children?: import('svelte').Snippet;
+		onchange?: (value: number) => void;
 	}
 
-	let { id, value = $bindable(), min, max, children }: Props = $props();
+	let { id, value = $bindable(), min, max, children, onchange }: Props = $props();
 </script>
 
 <div id="group">
 	<label for={id}>{@render children?.()}</label>
 	<div id="input-container">
-		<input {id} type="range" bind:value {min} {max} step={1} />
+		<input
+			{id}
+			type="range"
+			bind:value
+			{min}
+			{max}
+			step={1}
+			onchange={() => {
+				onchange?.(value);
+			}}
+		/>
 		<div id="value">
 			{value}
 		</div>

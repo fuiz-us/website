@@ -4,9 +4,10 @@
 		id: string;
 		stuck?: boolean | undefined;
 		children?: import('svelte').Snippet;
+		onchange?: (boolean: boolean) => void;
 	}
 
-	let { checked = $bindable(), id, stuck = undefined, children }: Props = $props();
+	let { checked = $bindable(), id, stuck = undefined, children, onchange }: Props = $props();
 </script>
 
 <div id="group" data-checked={checked}>
@@ -16,9 +17,10 @@
 		role="switch"
 		{checked}
 		disabled={stuck !== undefined}
-		onchange={(e) => {
+		oninput={(e) => {
 			if (stuck === undefined) {
 				checked = (e?.target as HTMLInputElement | undefined)?.checked ?? checked;
+				onchange?.(checked);
 			}
 		}}
 	/>
@@ -27,6 +29,7 @@
 		onclick={() => {
 			if (stuck === undefined) {
 				checked = !checked;
+				onchange?.(checked);
 			}
 		}}
 		aria-labelledby={id}

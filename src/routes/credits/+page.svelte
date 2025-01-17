@@ -1,6 +1,11 @@
 <script lang="ts">
 	import * as m from '$lib/paraglide/messages.js';
 
+	import khaleel from '$lib/assets/people/Khaleel.webp';
+	import barish from '$lib/assets/people/Barish.webp';
+	import yichen from '$lib/assets/people/Yichen.webp';
+	import sebastian from '$lib/assets/people/Sebastian.webp';
+
 	import computer from '$lib/assets/computer.svg';
 	import people from '$lib/assets/email.svg';
 	import translator from '$lib/assets/language.svg';
@@ -46,10 +51,7 @@
 			</h2>
 			<ul id="core-team">
 				<li>
-					<img
-						src={'https://images.opencollective.com/khaleel-al-adhami/63dc04f/avatar/256.png'}
-						alt="Khaleel Al-Adhami Avatar"
-					/>
+					<img src={khaleel} alt="Khaleel Al-Adhami Avatar" />
 					<div>
 						<AnchorMessage
 							href="https://adhami.me"
@@ -60,24 +62,7 @@
 					</div>
 				</li>
 				<li>
-					<img
-						src={'https://files.mastodon.social/accounts/avatars/112/736/220/093/949/873/original/b62dc3d558193714.jpg'}
-						alt="Abutalib (Barish) Namazov Avatar"
-					/>
-					<div>
-						<AnchorMessage
-							href="https://barish.me/"
-							image={{ src: computer, alt: m.developer() }}
-							background="#23456740"
-							message="Abutalib (Barish) Namazov"
-						/>
-					</div>
-				</li>
-				<li>
-					<img
-						src={'https://images.opencollective.com/yichen-gao/8ddd996/avatar/256.png'}
-						alt="Yichen Gao Avatar"
-					/>
+					<img src={yichen} alt="Yichen Gao Avatar" />
 					<div>
 						<AnchorMessage
 							href="https://www.linkedin.com/in/yichen-gao/"
@@ -88,10 +73,18 @@
 					</div>
 				</li>
 				<li>
-					<img
-						src={'https://avatars.githubusercontent.com/u/21014508?v=4'}
-						alt="Sebastian Wich Avatar"
-					/>
+					<img src={barish} alt="Abutalib (Barish) Namazov Avatar" />
+					<div>
+						<AnchorMessage
+							href="https://barish.me/"
+							image={{ src: computer, alt: m.developer() }}
+							background="#23456740"
+							message="Abutalib (Barish) Namazov"
+						/>
+					</div>
+				</li>
+				<li>
+					<img src={sebastian} alt="Sebastian Wich Avatar" />
 					<div>
 						<AnchorMessage
 							href="https://sebastianwich.com"
@@ -178,7 +171,12 @@
 
 			& img {
 				width: 100%;
-				border-radius: 0.25em;
+				aspect-ratio: 1;
+				box-sizing: border-box;
+				background: white;
+				border: 0.2em solid var(--accent-color);
+				object-fit: contain;
+				border-radius: 0.5em;
 			}
 		}
 	}

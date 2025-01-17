@@ -13,24 +13,26 @@
 </script>
 
 {#if message}
-	<a
-		{href}
-		style:width="100%"
-		style:display="flex"
-		style:align-items="center"
-		style:background
-		style:padding="5px 10px"
-		style:box-sizing="border-box"
-		style:border-radius="5px"
-		style:gap="10px"
-		style:color
-		style:font-weight="bold"
-		style:border="1px solid {color}"
-		style:word-wrap="anywhere"
-	>
+	<a {href} style:--background={background} style:--color={color}>
 		<Icon size="1em" src={image.src} alt={image.alt} />
 		<div style:flex="1" style:text-align="center">
 			{message}
 		</div>
 	</a>
 {/if}
+
+<style>
+	a {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		padding: 5px 10px;
+		box-sizing: border-box;
+		border-radius: 5px;
+		gap: 10px;
+		background: var(--background);
+		color: var(--color);
+		font-weight: bold;
+		word-wrap: anywhere;
+	}
+</style>

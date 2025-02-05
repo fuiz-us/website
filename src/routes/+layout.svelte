@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '@oddbird/popover-polyfill';
 	import '@fontsource/poppins/800.css';
 	import '@fontsource/atkinson-hyperlegible';
 	import 'tippy.js/dist/tippy.css';

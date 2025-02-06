@@ -13,6 +13,7 @@
 	import type { PageData } from '../$types';
 	import ErrorMessage from '$lib/ErrorMessage.svelte';
 	import { i18n } from '$lib/i18n';
+	import { toSorted } from '$lib/util';
 
 	function parseInt(str: string | null): number | null {
 		if (str === null) {
@@ -59,7 +60,7 @@
 	{#await loadDatabase(data.session !== null).then((db) => getAllCreations(db))}
 		<Loading />
 	{:then creations}
-		{@const sortedCreations = creations.toSorted((a, b) => -b.lastEdited - a.lastEdited)}
+		{@const sortedCreations = toSorted(creations, (a, b) => -b.lastEdited - a.lastEdited)}
 		<NiceBackground>
 			<div
 				style:height="100%"

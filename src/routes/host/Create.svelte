@@ -10,6 +10,7 @@
 	import TypicalPage from '$lib/TypicalPage.svelte';
 	import { getAllCreations, loadDatabase } from '$lib/storage';
 	import type { PageData } from './$types';
+	import { toSorted } from '$lib/util';
 
 	interface Props {
 		data: PageData;
@@ -40,7 +41,7 @@
 {#await loadDatabase(data.session !== null).then((db) => getAllCreations(db))}
 	<Loading />
 {:then creations}
-	{@const sortedCreations = creations.toSorted((a, b) => -b.lastEdited - a.lastEdited)}
+	{@const sortedCreations = toSorted(creations, (a, b) => -b.lastEdited - a.lastEdited)}
 	<TypicalPage>
 		<div style:max-width="25ch" style:margin="auto">
 			{#if creations.length > 0}

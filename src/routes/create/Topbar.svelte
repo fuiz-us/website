@@ -105,14 +105,14 @@
 		<div style:display="flex" style:align-items="center" style:gap="0.2em" style:padding="0.2em">
 			<IconButton
 				size="1em"
-				src=$lib/assets/publish.svg
+				src="$lib/assets/publish.svg"
 				alt={m.publish_title()}
 				onclick={() => goto('publish?id=' + id)}
 			/>
 			<div bind:this={shareButton}>
 				<IconButton
 					size="1em"
-					src=$lib/assets/share.svg
+					src="$lib/assets/share.svg"
 					alt={m.share()}
 					onclick={() => {
 						if (shareTippyInstance) onshare(shareTippyInstance);
@@ -121,7 +121,7 @@
 			</div>
 			<IconButton
 				size="1em"
-				src=$lib/assets/download.svg
+				src="$lib/assets/download.svg"
 				alt={m.download()}
 				onclick={async () => {
 					const creation = await getCreation(id, db);
@@ -133,7 +133,7 @@
 			<div bind:this={playButton}>
 				<IconButton
 					size="1em"
-					src=$lib/assets/slideshow.svg
+					src="$lib/assets/slideshow.svg"
 					alt={m.host()}
 					disabled={errorMessage != undefined}
 					onclick={async () => await goto('host?id=' + id)}

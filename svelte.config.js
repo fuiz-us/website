@@ -28,6 +28,15 @@ const config = {
 		})
 	],
 
+	compilerOptions: {
+		warningFilter: (warning) => {
+			if (warning.code === 'attribute_quoted') {
+				return false;
+			}
+			return true;
+		}
+	},
+
 	kit: {
 		adapter: adapter(),
 

@@ -17,7 +17,7 @@
 		type IdlessFuizConfig,
 		type Media
 	} from '$lib/types';
-	import { isNotUndefined } from '$lib/util';
+	import { isNotUndefined, toSorted } from '$lib/util';
 	import TypicalPage from '$lib/TypicalPage.svelte';
 	import {
 		getCreation,
@@ -40,7 +40,7 @@
 
 	let { creations = $bindable(), db, data }: Props = $props();
 
-	let sortedCreations = $derived(creations.toSorted((a, b) => b.lastEdited - a.lastEdited));
+	let sortedCreations = $derived(toSorted(creations, (a, b) => b.lastEdited - a.lastEdited));
 
 	async function newCreation() {
 		let newSlide = {
@@ -246,7 +246,7 @@
 					style:padding="0.15em 0.25em"
 					style:justify-content="center"
 				>
-					<Icon size="1.25em" src=$lib/assets/file_new.svg alt={m.start_blank()} />
+					<Icon size="1.25em" src="$lib/assets/file_new.svg" alt={m.start_blank()} />
 					<div>{m.start_blank()}</div>
 				</div>
 			</FancyButton>
@@ -271,7 +271,7 @@
 					style:padding="0.15em 0.25em"
 					style:justify-content="center"
 				>
-					<Icon size="1.25em" src=$lib/assets/file_open.svg alt={m.open_file()} />
+					<Icon size="1.25em" src="$lib/assets/file_open.svg" alt={m.open_file()} />
 					<div>{m.open_file()}</div>
 				</div>
 			</FancyButton>
@@ -287,7 +287,7 @@
 						style:padding="0.15em 0.25em"
 						style:justify-content="center"
 					>
-						<Icon size="1.25em" src=$lib/assets/logout.svg alt="Log out from OpenCollective" />
+						<Icon size="1.25em" src="$lib/assets/logout.svg" alt="Log out from OpenCollective" />
 						<div>Log Out</div>
 					</div>
 				</FancyButton>
@@ -305,7 +305,7 @@
 					>
 						<Icon
 							size="1.25em"
-							src=$lib/assets/login.svg
+							src="$lib/assets/login.svg"
 							alt="Synchronize your data with OpenCollective"
 						/>
 						<div>Backup</div>

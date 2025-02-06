@@ -8,6 +8,7 @@
 	import type { BindableGameInfo, SharedGameInfo } from './+page';
 	import Icon from '$lib/Icon.svelte';
 	import { buttonColors } from '$lib';
+	import { toSorted } from '$lib/util';
 
 	interface Props {
 		bindableGameInfo: BindableGameInfo;
@@ -36,16 +37,17 @@
 	}: Props = $props();
 
 	let allAnswers = $derived(
-		results
-			.concat(
+		toSorted(
+			results.concat(
 				answers
 					.filter(
 						(possibleAnswer) =>
 							!results.some(([correctAnswerText]) => correctAnswerText === possibleAnswer)
 					)
 					.map((wrongAnswer) => [wrongAnswer, 0])
-			)
-			.toSorted(([, frequencyA], [, frequencyB]) => frequencyB - frequencyA)
+			),
+			([, frequencyA], [, frequencyB]) => frequencyB - frequencyA
+		)
 	);
 
 	let maxCount = $derived(Math.max(...allAnswers.map(([, count]) => count), 1));

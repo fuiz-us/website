@@ -7,7 +7,7 @@
 	},
 	"scripts": {
 		"dev": "vite dev",
-		"build": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide && vite build",
+		"build": "paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide && vite build",
 		"preview": "bun run build && wrangler pages dev --compatibility-flags=nodejs_compat",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
@@ -15,7 +15,7 @@
 		"format": "prettier --write .",
 		"deploy": "bun run build && wrangler pages deploy",
 		"cf-typegen": "wrangler types && mv worker-configuration.d.ts src/",
-		"postinstall": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide"
+		"postinstall": "paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20250204.0",

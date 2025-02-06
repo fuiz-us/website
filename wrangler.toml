@@ -5,6 +5,8 @@ compatibility_flags = ["nodejs_compat", "nodejs_als"]
 
 services = [{ binding = "COUNTER", service = "counter" }]
 
+vars = { "BUN_VERSION" = "1.2.2" }
+
 [ai]
 binding = "AI"
 

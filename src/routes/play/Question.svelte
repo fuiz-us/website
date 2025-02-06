@@ -4,6 +4,7 @@
 	import TextBar from '$lib/Game/TextBar.svelte';
 	import type { Media } from '$lib/types';
 	import { PUBLIC_CORKBOARD_URL } from '$env/static/public';
+	import MediaContainer from '$lib/MediaContainer.svelte';
 
 	interface Props {
 		name: string;
@@ -32,8 +33,15 @@
 			style:height="100%"
 			style:display="flex"
 			style:flex-direction="column"
-			style:justify-content="center"
+			style:justify-content="start"
 		>
+			{#if media}
+				<div style:height="40vh" style:padding="0.5em" style:box-sizing="border-box">
+					<div style:position="relative" style:height="100%">
+						<MediaContainer {media} fit="contain" />
+					</div>
+				</div>
+			{/if}
 			<TextBar text={questionText} topShadow={true} />
 		</div>
 	</NiceBackground>

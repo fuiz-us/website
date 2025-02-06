@@ -7,7 +7,7 @@
 	},
 	"scripts": {
 		"dev": "vite dev",
-		"build": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide && vite build",
+		"build": "bun run paraglide-js compile --project ./project.inlang --outdir ./src/paraglide && bun run vite build",
 		"preview": "bun run build && wrangler pages dev --compatibility-flags=nodejs_compat",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",

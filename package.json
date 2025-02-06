@@ -2,6 +2,9 @@
 	"name": "fuiz-website",
 	"version": "0.1.0",
 	"private": true,
+	"engines": {
+		"bun": ">=1.2.0"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide && vite build",

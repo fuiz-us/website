@@ -10,6 +10,7 @@ export const i18n = createI18n(runtime, {
 		de: 'ltr',
 		en: 'ltr',
 		es: 'ltr',
+		eu: 'ltr',
 		fr: 'ltr',
 		id: 'ltr',
 		it: 'ltr',

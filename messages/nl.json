@@ -1,6 +1,5 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"create": "Maak",
 	"main_title": "Fuiz | Presenteer Vrijelijk Livequizzen ",
 	"main_desc": "Een gratis online platform voor het hosten en spelen van livequizzen",
 	"play": "Speel",
@@ -184,7 +183,6 @@
 	"free_of_charge_desc": "Fuiz wordt gratis aangeboden, zonder dat dit ten koste gaat van je privacy. Als je het project financieel wilt ondersteunen, laat het ons weten.",
 	"number_of_participants": "Fuiz biedt een redelijk goede server met tot 1000 deelnemers tegelijk. Het zal echter het meest betrouwbaar zijn met minder dan 200 deelnemers.",
 	"assign_random": "Teams willekeurig toewijzen",
-	"donate": "Doneren",
 	"no_correct": "Geen Juiste Antwoorden",
 	"no_answers": "Geen Antwoorden",
 	"missing_answers": "Ontbrekende antwoorden",
@@ -192,11 +190,9 @@
 	"double": "Dubbel",
 	"regular": "Normaal",
 	"half": "Half",
-	"none": "Geen",
 	"points": "Punten",
 	"image_alt_desc": "Afbeelding Alt is een beschrijving van één of twee zinnen van de afbeelding om visueel beperkten te helpen.",
 	"which_feature": "Welke functie vind je het leukst in Fuiz?",
-	"fuiz_is_ongoing": "Fuiz is een lopend project. Jouw feedback is belangrijk.",
 	"login": "Inloggen",
 	"logout": "Uitloggen",
 	"short_answer": "Kort Antwoord",
@@ -205,6 +201,10 @@
 	"empty_answer": "Voer antwoord in",
 	"duplicate_answers": "Verwijder dubbele antwoorden",
 	"submit": "Versturen",
-	"stay_in_touch": "Blijf in contact!",
-	"stay_in_touch_desc": "We waarderen de feedback van elke gebruiker. Vul alsjeblieft dit <a class='styled' href='https://forms.gle/orFqr1wnhm6dv7xY7'>formulier</a> in en maak een afspraak met ons! We kijken ernaar uit om je te ontmoeten. Je kunt ook lid worden van onze <a class='styled' href='https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg'>Slack community</a>."
+	"fuiz_is_ongoing": "Fuiz is een lopend project. Jouw feedback is belangrijk.",
+	"create": "Maak",
+	"none": "Geen",
+	"donate": "Doneren",
+	"stay_in_touch_desc": "We waarderen de feedback van elke gebruiker. Vul alsjeblieft dit <a class='styled' href='https://forms.gle/orFqr1wnhm6dv7xY7'>formulier</a> in en maak een afspraak met ons! We kijken ernaar uit om je te ontmoeten. Je kunt ook lid worden van onze <a class='styled' href='https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg'>Slack community</a>.",
+	"stay_in_touch": "Blijf in contact!"
 }

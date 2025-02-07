@@ -65,9 +65,6 @@
 	"more": "{count} gehiago...",
 	"options": "Ezarpenak",
 	"randomized_names": "Ausazko Izenak",
-	"petnames": "Maskota Izenak",
-	"romannames": "Erromatar Izenak",
-	"random_name_length": "Hitz kopurua izen bakoitzeko",
 	"questions_on_players_devices": "Galderak erakutsi gailuetan",
 	"shuffle_slides": "Galderen Ausazko Ordena",
 	"shuffle_answers": "Erantzunen Ausazko Ordena",
@@ -210,6 +207,9 @@
 	"donate": "Eman",
 	"stay_in_touch_desc": "Garrantzitsua da erabiltzaile bakoitzaren feedback-a. Mesedez, bete formulario hau <a class='styled' href='https://forms.gle/orFqr1wnhm6dv7xY7'>formularioa</a> eta hitzordua hartu gurekin! Zurekin hitz egitea espero dugu. Baita gure <a class='styled' href='https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg' >Slack komunitatean</a> ere bat dezakezu.",
 	"stay_in_touch": "Harremandu!",
+	"petnames": "Maskota Izenak",
+	"romannames": "Erromatar Izenak",
+	"random_name_length": "Hitz kopurua izen bakoitzeko",
 	"total_games": "Jokoak guztira",
 	"total_players": "Jokalariak guztira"
 }

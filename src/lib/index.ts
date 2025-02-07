@@ -1,9 +1,13 @@
 import * as m from '$lib/paraglide/messages.js';
 
-import heart from '$lib/assets/cards-heart.svg';
-import club from '$lib/assets/cards-club.svg';
-import spade from '$lib/assets/cards-spade.svg';
-import diamond from '$lib/assets/cards-diamond.svg';
+import strawberry from '$lib/assets/strawberry.svg';
+import carrot from '$lib/assets/carrot.svg';
+import broccoli from '$lib/assets/broccoli.svg';
+import grape from '$lib/assets/grape.svg';
+import corn from '$lib/assets/corn.svg';
+import tomato from '$lib/assets/tomato.svg';
+import olive from '$lib/assets/olive.svg';
+import watermelon from '$lib/assets/watermelon.svg';
 import { PUBLIC_BACKEND_URL, PUBLIC_CORKBOARD_URL } from '$env/static/public';
 import { goto } from '$app/navigation';
 import { Section, stringify } from '@ltd/j-toml';
@@ -25,16 +29,24 @@ export const buttonColors = [
 	['hsl(358, 84%, 45%)', 'hsl(358, 84%, 35%)'],
 	['hsl(213, 76%, 44%)', 'hsl(213, 76%, 34%)'],
 	['hsl(152, 62%, 32%)', 'hsl(152, 63%, 22%)'],
-	['hsl(25, 100%, 43%)', 'hsl(25, 100%, 33%)']
+	['hsl(25, 100%, 43%)', 'hsl(25, 100%, 33%)'],
+	['hsl(41, 100%, 45%)', 'hsl(41, 100%, 35%)'],
+	['hsl(340, 95%, 45%)', 'hsl(340, 95%, 35%)'],
+	['hsl(120, 100%, 25%)', 'hsl(120, 100%, 15%)'],
+	['hsl(0, 0%, 20%)', 'hsl(0, 0%, 10%)']
 ] as const;
 
 export const medalColors = ['#FEDD1E', '#D0D0D0', '#D7995A'] as const;
 
 export const buttonSymbols = [
-	[heart, m.heart()],
-	[diamond, m.diamond()],
-	[spade, m.spade()],
-	[club, m.club()]
+	[strawberry, m.strawberry()],
+	[grape, m.grape()],
+	[broccoli, m.broccoli()],
+	[carrot, m.carrot()],
+	[corn, m.corn()],
+	[tomato, m.tomato()],
+	[olive, m.olives()],
+	[watermelon, m.watermelon()]
 ] as const;
 
 // must be a subset of https://gitlab.com/opencode-mit/fuiz/game/-/raw/main/config.toml

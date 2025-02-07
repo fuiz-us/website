@@ -65,9 +65,6 @@
 	"more": "{count} altro...",
 	"options": "Opzioni:",
 	"randomized_names": "Usa nomi casuali",
-	"petnames": "Nomi di animali",
-	"romannames": "Nomi romani",
-	"random_name_length": "Parole per nome",
 	"questions_on_players_devices": "Mostra domande e risposte sui dispositivi dei giocatori",
 	"shuffle_slides": "Mescola diapositive",
 	"shuffle_answers": "Mescola risposte",
@@ -210,6 +207,9 @@
 	"donate": "Fai una donazione",
 	"stay_in_touch_desc": "Valutiamo i pareri di ogni utente. Compila questo <a class='styled' href='https://forms.gle/orFqr1wnhm6dv7xY7'>modulo</a> e organizza un incontro con noi! Non vediamo l'ora di incontrarti. Puoi anche unirti alla nostra <a class='styled' href='https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg'>comunità Slack</a>.",
 	"stay_in_touch": "Rimani in contatto!",
+	"petnames": "Nomi di animali",
+	"romannames": "Nomi romani",
+	"random_name_length": "Parole per nome",
 	"total_games": "Giochi totali",
 	"total_players": "Giocatori totali"
 }

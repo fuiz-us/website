@@ -65,9 +65,6 @@
 	"more": "{count} more...",
 	"options": "Settings",
 	"randomized_names": "Random Names",
-	"petnames": "Pet Names",
-	"romannames": "Roman Names",
-	"random_name_length": "Words per name",
 	"questions_on_players_devices": "Show Questions on Devices",
 	"shuffle_slides": "Random Question Order",
 	"shuffle_answers": "Random Answer Order",
@@ -210,6 +207,17 @@
 	"donate": "Donate",
 	"stay_in_touch_desc": "We value the feedback of every user. Please fill out this <a class='styled' href='https://forms.gle/orFqr1wnhm6dv7xY7'>form</a> and arrange a meeting with us! We are looking forward to meeting with you. You can also join our <a class='styled' href='https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg' >Slack community</a>.",
 	"stay_in_touch": "Stay in touch!",
+	"petnames": "Pet Names",
+	"romannames": "Roman Names",
+	"random_name_length": "Words per name",
 	"total_games": "Total Games",
-	"total_players": "Total Players"
+	"total_players": "Total Players",
+	"strawberry": "Strawberry",
+	"grape": "Grape",
+	"broccoli": "Broccoli",
+	"carrot": "Carrot",
+	"corn": "Corn",
+	"tomato": "Tomato",
+	"olives": "Olives",
+	"watermelon": "Watermelon"
 }

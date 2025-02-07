@@ -1,6 +1,5 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"create": "Yarat",
 	"main_title": "Fuiz | Canlı Bilik Yarışlarını Pulsuz Keçirin",
 	"main_desc": "Canlı bilik yarışları keçirmək və oynamaq üçün pulsuz onlayn platforma",
 	"play": "Oyna",
@@ -184,7 +183,6 @@
 	"free_of_charge_desc": "Fuiz məxfiliyinizə heç bir zərər vurmadan pulsuz təklif olunur. Əgər layihəyə maddi dəstək göstərmək istəyirsinizsə, bizə bildirin.",
 	"number_of_participants": "Fuiz eyni vaxtda 1000 iştirakçıya qədər dəstək göstərən olduqca güclü server təmin edir. Effektiv oyun üçün 200 iştirakçını keçməmək tövsiyə olunur.",
 	"assign_random": "Komandaları təsadüfi təyin et",
-	"donate": "İanə",
 	"no_correct": "Düzgün Cavab Yoxdur",
 	"no_answers": "Cavab Yoxdur",
 	"missing_answers": "Cavablar Yoxdur",
@@ -192,7 +190,6 @@
 	"double": "İkiqat",
 	"regular": "Adi",
 	"half": "Yarım",
-	"none": "Heç biri",
 	"points": "Xallar",
 	"image_alt_desc": "Şəkil üçün alt bir-iki cümləlik izahdır. Bu izah görmə problemi olanlar üçün köməkçi olur.",
 	"which_feature": "Fuizdə ən çox hansı xüsusiyyəti bəyənirsiniz?",
@@ -204,7 +201,10 @@
 	"empty_answer": "Boş Cavab",
 	"duplicate_answers": "Dublikat Cavablar",
 	"submit": "Təsdiq et",
+	"fuiz_is_ongoing": "Fuiz davam edən bir layihədir. Sizin rəyiniz vacibdir.",
+	"create": "Yarat",
+	"none": "Heç biri",
+	"donate": "İanə",
 	"stay_in_touch_desc": "Biz hər istifadəçinin rəyini dəyərləndiririk. Zəhmət olmasa bu <a class='styled' href='https://forms.gle/orFqr1wnhm6dv7xY7'>formanı</a> doldurun və bizimlə görüş təyin edin! Sizinlə görüşməyi səbirsizliklə gözləyirik. Siz həmçinin bizim <a class='styled' href='https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg'>Slack icmamıza</a> qoşula bilərsiniz.",
-	"stay_in_touch": "Bizimlə Əlaqədə Olun",
-	"fuiz_is_ongoing": "Fuiz davam edən bir layihədir. Sizin rəyiniz vacibdir."
+	"stay_in_touch": "Bizimlə Əlaqədə Olun"
 }

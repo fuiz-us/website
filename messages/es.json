@@ -206,5 +206,18 @@
 	"none": "Ninguno",
 	"donate": "Donar",
 	"stay_in_touch_desc": "Valoramos la opinión de cada usuario. ¡Por favor, complete este <a class='styled' href='https://forms.gle/orFqr1wnhm6dv7xY7'>formulario</a> y programe una reunión con nosotros! Esperamos reunirnos con usted. También puede unirse a nuestra <a class='styled' href='https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg'>comunidad de Slack</a>.",
-	"stay_in_touch": "Mantente en Contacto"
+	"stay_in_touch": "Mantente en Contacto",
+	"petnames": "Nombres de Mascotas",
+	"romannames": "Nombres Romanos",
+	"random_name_length": "Palabras por nombre",
+	"total_games": "Juegos Totales",
+	"total_players": "Jugadores Totales",
+	"strawberry": "Fresa",
+	"grape": "Uva",
+	"broccoli": "Brócoli",
+	"carrot": "Zanahoria",
+	"corn": "Maíz",
+	"tomato": "Tomate",
+	"olives": "Aceitunas",
+	"watermelon": "Sandía"
 }

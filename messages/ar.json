@@ -206,5 +206,18 @@
 	"none": "لا شيء",
 	"donate": "تبرع",
 	"stay_in_touch_desc": "نحن نقدر ملاحظات كل مستخدم. يرجى ملء هذا <a class='styled' href='https://forms.gle/orFqr1wnhm6dv7xY7'>النموذج</a> وترتيب موعد معنا! نحن نتطلع إلى لقائكم. يمكنكم أيضاً الانضمام إلى <a class='styled' href='https://join.slack.com/t/fuiz/shared_invite/zt-2enihgtpy-C1KxJ96pEQN707msi~vNRg'>مجتمعنا على Slack</a>.",
-	"stay_in_touch": "ابق على تواصل"
+	"stay_in_touch": "ابق على تواصل",
+	"petnames": "أسماء الحيوانات الأليفة",
+	"romannames": "أسماء رومانية",
+	"random_name_length": "كلمات لكل اسم",
+	"total_games": "إجمالي الألعاب",
+	"total_players": "إجمالي اللاعبين",
+	"strawberry": "فراولة",
+	"grape": "عنب",
+	"broccoli": "بروكلي",
+	"carrot": "جزر",
+	"corn": "ذرة",
+	"tomato": "طماطم",
+	"olives": "زيتون",
+	"watermelon": "بطيخ"
 }

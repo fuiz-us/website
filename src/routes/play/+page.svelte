@@ -6,6 +6,7 @@
 	import Join from './Join.svelte';
 	import Play from './Play.svelte';
 	import { i18n } from '$lib/i18n';
+	import Answers from './Answers.svelte';
 
 	let code = $derived(page.url.searchParams.get('code'));
 
@@ -21,10 +22,19 @@
 	<link rel="canonical" href="{PUBLIC_PLAY_URL}{i18n.resolveRoute('/play')}" />
 </svelte:head>
 
-{#if code !== null}
+<!-- {#if code !== null}
 	<div style:display="contents" style:font-size="0.75em">
 		<Play {code} />
 	</div>
 {:else}
 	<Join />
-{/if}
+{/if} -->
+
+<Answers
+	questionText=""
+	name=""
+	score={0}
+	media={undefined}
+	showAnswers={false}
+	answers={[undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined]}
+/>

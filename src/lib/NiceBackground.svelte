@@ -1,10 +1,10 @@
 <script lang="ts">
 	import * as m from '$lib/paraglide/messages.js';
 
-	import strawberry from '$lib/assets/strawberry.svg';
-	import carrot from '$lib/assets/carrot.svg';
-	import broccoli from '$lib/assets/broccoli.svg';
-	import grape from '$lib/assets/grape.svg';
+	import strawberry from '$lib/assets/fruits/strawberry.svg';
+	import blueberry from '$lib/assets/fruits/blueberry.svg';
+	import kiwi from '$lib/assets/fruits/kiwi.svg';
+	import orange from '$lib/assets/fruits/orange.svg';
 
 	interface Props {
 		children?: import('svelte').Snippet;
@@ -13,7 +13,7 @@
 	let { children }: Props = $props();
 </script>
 
-<div style:height="100%" style:position="relative">
+<div style:height="100%" style:position="relat ive">
 	<div
 		style:background-color="var(--background-color)"
 		style:inset="0"
@@ -30,19 +30,19 @@
 					class="card-container"
 					style:transform="scale(1) translate(0%, -25%) rotate(-0.0625turn)"
 				>
-					<img src={grape} alt={m.grape()} />
+					<img src={blueberry} alt={m.blueberries()} />
 				</div>
 				<div
 					class="card-container"
 					style:transform="scale(1) translate(-25%, 12.5%) rotate(-0.0625turn)"
 				>
-					<img src={broccoli} alt={m.broccoli()} />
+					<img src={kiwi} alt={m.kiwi()} />
 				</div>
 				<div
 					class="card-container"
 					style:transform="scale(1) translate(12.5%, -25%) rotate(0.0625turn)"
 				>
-					<img src={carrot} alt={m.carrot()} />
+					<img src={orange} alt={m.orange()} />
 				</div>
 			</div>
 		</div>

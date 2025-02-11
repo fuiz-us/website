@@ -29,7 +29,7 @@ While we use `bun` ourselves, `npm` should work just as fine.
 
 You might need the following environment variables (`.env.local`):
 
-```python
+```bash
 # the link to the current hosted version, production: fuiz.us
 PUBLIC_DISPLAY_PLAY_URL="localhost:5173"
 # same as above but with the actual protocol, production: https://fuiz.us
@@ -44,12 +44,21 @@ PUBLIC_CORKBOARD_URL="http://localhost:43907"
 
 You might also need:
 
-```python
+```bash
 # Needed for Auth.js, can be generated with: bunx/npx auth secret
 AUTH_SECRET={random string}
 # Google Auth Client Id and Secret Key
 AUTH_GOOGLE_ID=
-AUTH_GOOGLE_SECRET
+AUTH_GOOGLE_SECRET=
+```
+
+If you're using the library feature, you should also have:
+
+```bash
+WALLO_ORIGIN=https://wallo.dev
+# From https://wallo.dev
+WALLO_CLIENT_ID=
+WALLO_CLIENT_SECRET=
 ```
 
 ## Status

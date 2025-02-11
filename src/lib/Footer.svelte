@@ -30,7 +30,7 @@
 			<div>{m.community()}</div>
 		</div>
 	</Anchor>
-	<Anchor href="https://gitlab.com/opencode-mit/fuiz-website">
+	<Anchor href="https://gitlab.com/fuiz/website">
 		<div style:display="inline-flex" style:align-items="center" style:gap="0.2em">
 			<Icon src={balance} alt={m.open_source()} size="1em" />
 			<div>GNU AGPLv3</div>

@@ -236,7 +236,7 @@
 		<div class="split">
 			<div>
 				<h2>
-					<Anchor href="https://gitlab.com/opencode-mit/fuiz-us">{m.always_open()}</Anchor>
+					<Anchor href="https://gitlab.com/fuiz">{m.always_open()}</Anchor>
 				</h2>
 				<p>
 					{m.always_open_desc()}

@@ -49,7 +49,7 @@ export const buttonSymbols = [
 	[watermelon, m.watermelon()]
 ] as const;
 
-// must be a subset of https://gitlab.com/opencode-mit/fuiz/game/-/raw/main/config.toml
+// must be a subset of https://gitlab.com/fuiz/game/-/raw/main/config.toml
 export const limits = {
 	fuiz: {
 		maxSlidesCount: 100,

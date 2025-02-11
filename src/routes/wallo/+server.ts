@@ -3,7 +3,6 @@ import type { RequestHandler } from './$types';
 import type { IdlessFuizConfig, IdlessSlide, Media, OnlineFuiz } from '$lib/types';
 import { isNotUndefined } from '$lib/util';
 import { parse } from '@ltd/j-toml';
-import { createFileInGit, updateFileInGit } from '$lib/gitlab';
 import { getThumbnail } from '$lib/serverOnlyUtils';
 import { env } from '$env/dynamic/private';
 import type { Ai } from '@cloudflare/workers-types';
@@ -239,7 +238,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 				let played_count = 0;
 
-				let gitUrl: string;
+				const gitUrl = '';
 
 				if (desiredId !== relevantId) {
 					await platform?.env.BUCKET.delete(desiredId);
@@ -251,9 +250,6 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 						)
 							.bind(desiredId)
 							.first<number>('played_count')) ?? 0;
-					gitUrl = await updateFileInGit(desiredId + '.toml', fuizText);
-				} else {
-					gitUrl = await createFileInGit(desiredId + '.toml', fuizText);
 				}
 
 				const {
@@ -368,7 +364,7 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 
 				let played_count = 0;
 
-				let gitUrl: string;
+				const gitUrl = '';
 
 				if (desiredId !== relevantId) {
 					await platform?.env.BUCKET.delete(desiredId);
@@ -380,9 +376,6 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 						)
 							.bind(desiredId)
 							.first<number>('played_count')) ?? 0;
-					gitUrl = await updateFileInGit(desiredId + '.toml', fuizText);
-				} else {
-					gitUrl = await createFileInGit(desiredId + '.toml', fuizText);
 				}
 
 				const {

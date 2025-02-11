@@ -309,7 +309,6 @@ export type PublishedFuizDB = {
 	title: string;
 	author: string;
 	published_at: string;
-	public_url: string;
 	subjects: string;
 	grades: string;
 	slides_count: number;

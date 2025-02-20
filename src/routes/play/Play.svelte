@@ -591,7 +591,7 @@
 		});
 
 		socket.addEventListener('close', async (closeEvent) => {
-			if (closeEvent.code === 50058) {
+			if (closeEvent.code === 4141) {
 				redirect(300, '/');
 			}
 			if (!(currentState && 'Error' in currentState) && !finished) {

@@ -26,6 +26,7 @@
 	import ChooseTeammates from './ChooseTeammates.svelte';
 	import TypeAnswerQuestion from './TypeAnswerQuestion.svelte';
 	import OrderAnswers from './OrderAnswers.svelte';
+	import { redirect } from '@sveltejs/kit';
 
 	type GameState =
 		| {
@@ -589,7 +590,10 @@
 			}
 		});
 
-		socket.addEventListener('close', async () => {
+		socket.addEventListener('close', async (closeEvent) => {
+			if (closeEvent.code === 50058) {
+				redirect(300, '/');
+			}
 			if (!(currentState && 'Error' in currentState) && !finished) {
 				const res = await bring(PUBLIC_BACKEND_URL + '/alive/' + code, {
 					method: 'GET',

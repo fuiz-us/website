@@ -26,7 +26,6 @@
 	import ChooseTeammates from './ChooseTeammates.svelte';
 	import TypeAnswerQuestion from './TypeAnswerQuestion.svelte';
 	import OrderAnswers from './OrderAnswers.svelte';
-	import { redirect } from '@sveltejs/kit';
 
 	type GameState =
 		| {
@@ -592,7 +591,7 @@
 
 		socket.addEventListener('close', async (closeEvent) => {
 			if (closeEvent.code === 4141) {
-				redirect(300, '/');
+				location.assign('/');
 			}
 			if (!(currentState && 'Error' in currentState) && !finished) {
 				const res = await bring(PUBLIC_BACKEND_URL + '/alive/' + code, {

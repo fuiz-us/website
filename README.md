@@ -63,4 +63,4 @@ WALLO_CLIENT_SECRET=
 
 ## Status
 
-The live components' status can be accessed on [status.fuiz.us](https://status.fuiz.us/).
+The live components' status can be accessed on [status.fuiz.org](https://status.fuiz.org/).

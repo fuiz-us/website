@@ -31,7 +31,7 @@ In the example below, Student A and Student B each receive two different screens
 
 **We value your feedback!** Please share your thoughts on Fuiz through this [form](https://forms.gle/orFqr1wnhm6dv7xY7) and schedule a meeting with us! We're eager to hear from you and improve Fuiz together. We would also love to attend a class when the Fuiz is used during lecture, it will really help us to gather information about how to improve Fuiz.
 
-**Have Questions?** Please contact us at <ins>yichen@fuiz.us</ins> for any inquiries.
+**Have Questions?** Please contact us at <ins>yichen@fuiz.org</ins> for any inquiries.
 
 This is an excellent opportunity to explore the intersection of technology and classroom teaching. **Please help us by sharing this article with anyone who may be interested**. Thank you very much!
 

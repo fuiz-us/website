@@ -21,7 +21,7 @@
 			any related to advertisement nor tracking.
 		</p>
 		<p>
-			If you have any questions, email us at <Anchor href="mailto:info@fuiz.us">info@fuiz.us</Anchor
+			If you have any questions, email us at <Anchor href="mailto:info@fuiz.org">info@fuiz.org</Anchor
 			>.
 		</p>
 	</section>

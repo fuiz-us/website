@@ -6,7 +6,7 @@ export const prerender = false;
 export const GET: RequestHandler = async () => {
 	const text = await (
 		await sitemap.response({
-			origin: 'https://fuiz.us',
+			origin: 'https://fuiz.org',
 			lang: {
 				default: 'en',
 				alternates: ['ar', 'az', 'de', 'es', 'eu', 'fr', 'it', 'id', 'nl', 'pl', 'zh-cn']

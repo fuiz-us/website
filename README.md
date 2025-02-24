@@ -30,9 +30,9 @@ While we use `bun` ourselves, `npm` should work just as fine.
 You might need the following environment variables (`.env.local`):
 
 ```bash
-# the link to the current hosted version, production: fuiz.us
+# the link to the current hosted version, production: fuiz.org
 PUBLIC_DISPLAY_PLAY_URL="localhost:5173"
-# same as above but with the actual protocol, production: https://fuiz.us
+# same as above but with the actual protocol, production: https://fuiz.org
 PUBLIC_PLAY_URL="http://localhost:5173"
 # the game backend, production: https://api.fuiz.us
 PUBLIC_BACKEND_URL="http://localhost:8787"

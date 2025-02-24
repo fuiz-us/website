@@ -45,7 +45,7 @@ const config = {
 		},
 
 		prerender: {
-			origin: 'https://fuiz.us'
+			origin: 'https://fuiz.org'
 		}
 	}
 };

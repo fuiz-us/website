@@ -27,7 +27,7 @@
 	style:border-radius="100px"
 >
 	<Icon src={icon} alt={m.exit()} size="1em" />
-	<div>fuiz.us</div>
+	<div>fuiz</div>
 </button>
 {#if $exitDialog.expanded}
 	<div
